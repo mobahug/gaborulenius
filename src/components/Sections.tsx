@@ -106,7 +106,7 @@ export function AboutSection() {
               "📍 Based in Your City",
               "🎓 B.Sc. in Computer Science",
               "💼 3+ years freelance",
-            ].map((text, i) => (
+            ].map(text => (
               <ListItem key={text}>
                 <ListItemText primary={text} />
               </ListItem>
