@@ -136,6 +136,7 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           color: "inherit",
+          cursor: "pointer",
           textDecoration: "none",
           position: "relative",
           "&:after": {

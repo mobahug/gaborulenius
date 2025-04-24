@@ -62,7 +62,6 @@ const CoverSection: React.FC = () => {
             boxShadow: "0 6px 20px rgba(0, 0, 0, 0.5)",
           }}
         />
-
         <Typography
           variant="h3"
           sx={{
@@ -74,7 +73,6 @@ const CoverSection: React.FC = () => {
         >
           Hi, I'm Gabor
         </Typography>
-
         <Link
           href="#home"
           underline="none"
