@@ -1,4 +1,3 @@
-// Theme-aware MUI sections using your design tokens and glassy Paper
 import {
   Box,
   Button,
@@ -10,6 +9,7 @@ import {
   ListItemText,
   Paper,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Timeline,
@@ -21,303 +21,390 @@ import {
 } from "@mui/lab";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
+import { motion } from "framer-motion";
 import colors from "../colors";
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
+  }),
+};
+
 export function HomeSection() {
-  const theme = useTheme();
   return (
-    <Paper id="home">
-      <Typography variant="h1" gutterBottom fontSize={{ md: "3rem" }}>
-        Hello, I’m{" "}
-        <Box component="span" sx={{ color: "primary.main" }}>
-          Your Name
-        </Box>
-      </Typography>
-      <Typography
-        variant="body1"
-        sx={{ fontSize: { xs: "1.25rem", md: "1.375rem" }, mb: 4 }}
-      >
-        Front‑End Developer & UX Explorer crafting immersive digital experiences
-        that blend aesthetics with purpose.
-      </Typography>
-      <Button variant="outlined" color="primary" href="#projects">
-        Explore My Work
-      </Button>
-    </Paper>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <Paper id="home">
+        <motion.div custom={1} variants={fadeUp}>
+          <Typography
+            variant="h3"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+              fontWeight: 700,
+              color: colors.textHeading,
+              mb: 2,
+            }}
+          >
+            Hello, I’m{" "}
+            <Box component="span" sx={{ color: "primary.main" }}>
+              Your Name
+            </Box>
+          </Typography>
+        </motion.div>
+        <motion.div custom={2} variants={fadeUp}>
+          <Typography variant="body1" sx={{ mb: 4 }}>
+            Front-End Developer & UX Explorer crafting immersive digital
+            experiences that blend aesthetics with purpose.
+          </Typography>
+        </motion.div>
+        <motion.div custom={3} variants={fadeUp}>
+          <Button variant="contained" href="#projects">
+            Explore My Work
+          </Button>
+        </motion.div>
+      </Paper>
+    </motion.div>
   );
 }
 
 export function AboutSection() {
   return (
-    <Paper id="about">
-      <Typography variant="h1" gutterBottom fontSize={{ md: "3rem" }}>
-        About Me
-      </Typography>
-      <Typography variant="body1" paragraph>
-        I’m a curious developer driven by the desire to build elegant, useful,
-        and human-centered interfaces. Nature is my constant inspiration—both in
-        design and in life.
-      </Typography>
-      <List>
-        <ListItem>
-          <ListItemText primary="📍 Based in Your City" />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="🎓 B.Sc. in Computer Science" />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="💼 3+ years of creative freelance work" />
-        </ListItem>
-      </List>
-    </Paper>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <Paper id="about">
+        <motion.div custom={1} variants={fadeUp}>
+          <Typography
+            variant="h2"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+              fontWeight: 700,
+              color: colors.textHeading,
+              mb: 2,
+            }}
+          >
+            About Me
+          </Typography>
+        </motion.div>
+        <motion.div custom={2} variants={fadeUp}>
+          <Typography variant="body1" paragraph>
+            I’m a curious developer driven by the desire to build elegant,
+            useful, and human-centered interfaces. Nature is my constant
+            inspiration—both in design and in life.
+          </Typography>
+        </motion.div>
+        <motion.div custom={3} variants={fadeUp}>
+          <List>
+            {[
+              "📍 Based in Your City",
+              "🎓 B.Sc. in Computer Science",
+              "💼 3+ years freelance",
+            ].map((text, i) => (
+              <ListItem key={text}>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </motion.div>
+      </Paper>
+    </motion.div>
   );
 }
 
 export function ProjectsSection() {
+  const projects = [
+    {
+      title: "Project One — Smooth animated portfolio.",
+      href: "https://project1.example.com",
+    },
+    {
+      title: "Project Two — Data viz dashboard with D3.js.",
+      href: "https://project2.example.com",
+    },
+    {
+      title: "Project Three — E-commerce prototype with custom UI.",
+      href: "https://project3.example.com",
+    },
+  ];
+
   return (
-    <Paper id="projects">
-      <Typography variant="h1" gutterBottom fontSize={{ md: "3rem" }}>
-        Projects
-      </Typography>
-      <List>
-        <ListItem sx={{ mb: 2 }}>
-          <ListItemText
-            primary={
-              <Typography variant="body1" sx={{ fontSize: "1.25rem" }}>
-                Project One — Smooth animated portfolio.
-              </Typography>
-            }
-            secondary={
-              <Link
-                href="https://project1.example.com"
-                target="_blank"
-                sx={{ color: colors.textLight, fontSize: "1rem" }}
-              >
-                project1.example.com
-              </Link>
-            }
-          />
-        </ListItem>
-        <ListItem sx={{ mb: 2 }}>
-          <ListItemText
-            primary={
-              <Typography variant="body1" sx={{ fontSize: "1.25rem" }}>
-                Project Two — Data viz dashboard with D3.js.
-              </Typography>
-            }
-            secondary={
-              <Link
-                href="https://project2.example.com"
-                target="_blank"
-                sx={{ color: colors.textLight, fontSize: "1rem" }}
-              >
-                project2.example.com
-              </Link>
-            }
-          />
-        </ListItem>
-        <ListItem>
-          <ListItemText
-            primary={
-              <Typography variant="body1" sx={{ fontSize: "1.25rem" }}>
-                Project Three — E‑commerce prototype with custom UI.
-              </Typography>
-            }
-            secondary={
-              <Link
-                href="https://project3.example.com"
-                target="_blank"
-                sx={{ color: colors.textLight, fontSize: "1rem" }}
-              >
-                project3.example.com
-              </Link>
-            }
-          />
-        </ListItem>
-      </List>
-    </Paper>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <Paper id="projects">
+        <motion.div custom={1} variants={fadeUp}>
+          <Typography
+            variant="h2"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+              fontWeight: 700,
+              color: colors.textHeading,
+              mb: 2,
+            }}
+          >
+            Projects
+          </Typography>
+        </motion.div>
+        {projects.map((proj, i) => (
+          <motion.div key={proj.title} custom={i + 2} variants={fadeUp}>
+            <ListItem sx={{ mb: 2 }}>
+              <ListItemText
+                primary={<Typography variant="body1">{proj.title}</Typography>}
+                secondary={
+                  <Link href={proj.href} target="_blank">
+                    {proj.href.replace(/^https?:\/\//, "")}
+                  </Link>
+                }
+              />
+            </ListItem>
+          </motion.div>
+        ))}
+      </Paper>
+    </motion.div>
   );
 }
 
+const MotionTimelineItem = motion(TimelineItem);
+
 export function QualificationSection() {
+  const events = [
+    {
+      icon: <WorkIcon />,
+      // dark olive background
+      bgColor: colors.btnBg,
+      title: "Full Stack Developer – Tietoevry",
+      when: "Espoo, 2023 – Present",
+    },
+    {
+      icon: <WorkIcon />,
+      bgColor: colors.btnBg,
+      title: "Full Stack Developer – Anyhau",
+      when: "Espoo, 2022 – 2023",
+    },
+    {
+      icon: <SchoolIcon />,
+      // light accent background
+      bgColor: colors.btnBg,
+      title: "Software Developer – Hive Helsinki",
+      when: "2021 – 2023",
+    },
+    {
+      icon: <SchoolIcon />,
+      bgColor: colors.btnBg,
+      title: "Finnish Language School – SataEdu",
+      when: "2016 – 2017",
+    },
+    {
+      icon: <SchoolIcon />,
+      bgColor: colors.btnBg,
+      title: "Construction Technician – Budapest",
+      when: "2011 – 2016",
+    },
+  ];
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <Paper id="qualification">
-      <Typography variant="h1" gutterBottom fontSize={{ md: "3rem" }}>
-        Qualification
-      </Typography>
-      <Timeline position="alternate">
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot color="primary">
-              <WorkIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <Typography variant="h6">
-              Full Stack Developer – Tietoevry
-            </Typography>
-            <Typography color="text.secondary">
-              Espoo, 2023 – Present
-            </Typography>
-          </TimelineContent>
-        </TimelineItem>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <Paper id="qualification">
+        <motion.div custom={1} variants={fadeUp}>
+          <Typography
+            variant="h2"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+              fontWeight: 700,
+              color: colors.textHeading,
+              mb: 2,
+            }}
+          >
+            Qualification
+          </Typography>
+        </motion.div>
 
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot color="primary">
-              <WorkIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <Typography variant="h6">Full Stack Developer – Anyhau</Typography>
-            <Typography color="text.secondary">Espoo, 2022 – 2023</Typography>
-          </TimelineContent>
-        </TimelineItem>
-
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot color="secondary">
-              <SchoolIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <Typography variant="h6">
-              Software Developer – Hive Helsinki
-            </Typography>
-            <Typography color="text.secondary">2021 – 2023</Typography>
-          </TimelineContent>
-        </TimelineItem>
-
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot color="secondary">
-              <SchoolIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent>
-            <Typography variant="h6">
-              Finnish Language School – SataEdu
-            </Typography>
-            <Typography color="text.secondary">2016 – 2017</Typography>
-          </TimelineContent>
-        </TimelineItem>
-
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineDot color="secondary">
-              <SchoolIcon />
-            </TimelineDot>
-          </TimelineSeparator>
-          <TimelineContent>
-            <Typography variant="h6">
-              Construction Technician – Budapest
-            </Typography>
-            <Typography color="text.secondary">2011 – 2016</Typography>
-          </TimelineContent>
-        </TimelineItem>
-      </Timeline>
-    </Paper>
+        <Timeline
+          position={isSmallScreen ? "right" : "alternate"}
+          sx={{
+            // hide MUI's full-height center line on mobile
+            "& .MuiTimelineItem-root:before": {
+              display: isSmallScreen ? "none" : undefined,
+            },
+          }}
+        >
+          {events.map((evt, i) => (
+            <MotionTimelineItem
+              key={evt.title}
+              custom={i + 2}
+              variants={fadeUp}
+              // these props ensure the item itself animates
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <TimelineSeparator>
+                <TimelineDot
+                  sx={{
+                    bgcolor: evt.bgColor, // your dark or light green
+                    color: colors.textLight, // icon color
+                  }}
+                >
+                  {evt.icon}
+                </TimelineDot>
+                {i < events.length - 1 && <TimelineConnector />}
+              </TimelineSeparator>
+              <TimelineContent>
+                <Typography variant="h6">{evt.title}</Typography>
+                <Typography color="text.secondary">{evt.when}</Typography>
+              </TimelineContent>
+            </MotionTimelineItem>
+          ))}
+        </Timeline>
+      </Paper>
+    </motion.div>
   );
 }
 
 export function SkillsSection() {
+  const lists = [
+    {
+      label: "Frontend",
+      items: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "GraphQL",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+      ],
+    },
+    {
+      label: "Backend",
+      items: ["Node.js/Express", "PHP", "C", "PostgreSQL", "MySQL", "MongoDB"],
+    },
+    {
+      label: "Tools & DevOps",
+      items: [
+        "Git/GitHub",
+        "CI/CD",
+        "Docker",
+        "Kubernetes",
+        "Terraform",
+        "Azure DevOps",
+        "Jest",
+        "Figma",
+        "Jira",
+        "Tailwind",
+        "Redux",
+      ],
+    },
+  ];
+
   return (
-    <Paper id="skills-tools">
-      <Typography variant="h1" gutterBottom fontSize={{ md: "3rem" }}>
-        Skills & Tools
-      </Typography>
-      <Grid container spacing={4}>
-        <Grid item xs={6}>
-          <Typography variant="h5">Frontend</Typography>
-          <List dense>
-            {[
-              "React",
-              "Next.js",
-              "TypeScript",
-              "GraphQL",
-              "HTML5 & CSS",
-              "JavaScript",
-            ].map(item => (
-              <ListItem key={item}>
-                <ListItemText primary={item} />
-              </ListItem>
-            ))}
-          </List>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <Paper id="skills-tools">
+        <motion.div custom={1} variants={fadeUp}>
+          <Typography
+            variant="h2"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+              fontWeight: 700,
+              color: colors.textHeading,
+              mb: 2,
+            }}
+          >
+            Skills & Tools
+          </Typography>
+        </motion.div>
+        <Grid container spacing={4}>
+          {lists.map((group, i) => (
+            <motion.div key={group.label} custom={i + 2} variants={fadeUp}>
+              <Grid item xs={12} md={group.items.length > 6 ? 12 : 6}>
+                <Typography variant="h5" gutterBottom>
+                  {group.label}
+                </Typography>
+                <List dense>
+                  {group.items.map(item => (
+                    <ListItem key={item}>
+                      <ListItemText primary={item} />
+                    </ListItem>
+                  ))}
+                </List>
+              </Grid>
+            </motion.div>
+          ))}
         </Grid>
-        <Grid item xs={6}>
-          <Typography variant="h5">Backend</Typography>
-          <List dense>
-            {[
-              "Node.js / Express",
-              "PHP",
-              "C",
-              "PostgreSQL",
-              "MySQL",
-              "MariaDB",
-              "MongoDB / Mongoose",
-            ].map(item => (
-              <ListItem key={item}>
-                <ListItemText primary={item} />
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h5">Tools & DevOps</Typography>
-          <List dense>
-            {[
-              "Git & GitHub / GitLab",
-              "CI/CD pipelines",
-              "Docker",
-              "Kubernetes",
-              "Terraform",
-              "Azure DevOps / Cloud",
-              "Jest",
-              "Figma",
-              "Asana · Jira · Confluence",
-              "MAMP · XAMPP · LAMP",
-              "pgAdmin · DBeaver",
-              "Postman",
-              "Lucidchart",
-              "Bulma · MUI · Tailwind",
-              "Redux · Recoil · Jotai",
-              "VS Code · Vim · CLI · Termux",
-            ].map(item => (
-              <ListItem key={item}>
-                <ListItemText primary={item} />
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-      </Grid>
-    </Paper>
+      </Paper>
+    </motion.div>
   );
 }
 
 export function ContactSection() {
   return (
-    <Paper id="contact">
-      <Typography variant="h1" gutterBottom fontSize={{ md: "3rem" }}>
-        Let’s Connect
-      </Typography>
-      <Typography variant="body1" paragraph>
-        Got a project or want to chat about nature & design? I’d love to hear
-        from you.
-      </Typography>
-      <Typography variant="body1" paragraph>
-        Email: <Link href="mailto:you@example.com">you@example.com</Link>
-      </Typography>
-      <Button
-        variant="outlined"
-        href="https://linkedin.com/in/yourprofile"
-        target="_blank"
-      >
-        LinkedIn
-      </Button>
-    </Paper>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <Paper id="contact">
+        <motion.div custom={1} variants={fadeUp}>
+          <Typography
+            variant="h2"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+              fontWeight: 700,
+              color: colors.textHeading,
+              mb: 2,
+            }}
+          >
+            Let’s Connect
+          </Typography>
+        </motion.div>
+        <motion.div custom={2} variants={fadeUp}>
+          <Typography variant="body1" paragraph>
+            Got a project or want to chat about nature & design? I’d love to
+            hear from you.
+          </Typography>
+        </motion.div>
+        <motion.div custom={3} variants={fadeUp}>
+          <Typography variant="body1" paragraph>
+            Email: <Link href="mailto:you@example.com">you@example.com</Link>
+          </Typography>
+        </motion.div>
+        <motion.div custom={4} variants={fadeUp}>
+          <Button
+            variant="contained"
+            href="https://linkedin.com/in/yourprofile"
+            target="_blank"
+          >
+            LinkedIn
+          </Button>
+        </motion.div>
+      </Paper>
+    </motion.div>
   );
 }
