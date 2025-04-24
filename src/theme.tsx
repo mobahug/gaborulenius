@@ -1,4 +1,3 @@
-// theme.ts
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import colors from "./colors";
 
@@ -25,34 +24,55 @@ let theme = createTheme({
   typography: {
     fontFamily: '"Inter", sans-serif',
     fontSize: 16,
+
     h1: {
-      fontWeight: 700,
-      // clamp(min, ideal, max)
-      fontSize: "clamp(2rem, 6vw, 4rem)",
-      lineHeight: 1.2,
+      fontWeight: 800,
+      fontSize: "3rem",
+      lineHeight: 1.15,
+      color: colors.textLight,
+      letterSpacing: "-0.02em",
     },
+
     h2: {
-      fontWeight: 600,
-      fontSize: "clamp(1.75rem, 5vw, 3rem)",
+      fontWeight: 700,
+      fontSize: "2.25rem",
+      lineHeight: 1.2,
+      color: colors.textLight,
+      mb: 2,
+      letterSpacing: "-0.015em",
     },
+
     h3: {
-      fontWeight: 600,
-      fontSize: "clamp(1.5rem, 4vw, 2.25rem)",
+      fontWeight: 700,
+      fontSize: "1.75rem",
+      lineHeight: 1.3,
+      color: colors.textLight,
     },
+
     body1: {
-      fontSize: "clamp(1rem, 2.5vw, 1.25rem)",
-      lineHeight: 1.6,
+      fontSize: "1.5rem",
+      lineHeight: 1.75,
+      fontWeight: 400,
+      color: colors.textLight,
+      mb: 2,
     },
+
     body2: {
-      fontSize: "clamp(0.875rem, 2vw, 1rem)",
+      fontSize: "1rem",
+      lineHeight: 1.6,
+      color: colors.textHeading,
     },
+
     button: {
       textTransform: "none",
       fontWeight: 700,
-      fontSize: "1rem",
+      fontSize: "1.125rem",
     },
+
     caption: {
       fontSize: "0.75rem",
+      lineHeight: 1.4,
+      color: colors.textHeading,
     },
   },
   shape: {
@@ -84,7 +104,6 @@ let theme = createTheme({
         },
       },
     },
-    // in theme.ts, under components:
     MuiButton: {
       styleOverrides: {
         root: {
@@ -93,14 +112,13 @@ let theme = createTheme({
           borderRadius: 12,
           fontWeight: 700,
           fontSize: "1rem",
-          backgroundColor: colors.btnBg, // dark olive button
-          color: colors.textLight, // light text for contrast
+          backgroundColor: colors.btnBg,
+          color: colors.textLight,
           transition: "background 0.3s ease, transform 0.2s ease",
           "&:hover": {
-            backgroundColor: colors.btnBgHover, // lighter olive on hover
+            backgroundColor: colors.btnBgHover, 
             transform: "scale(1.03)",
           },
-          // if you want to preserve an outlined variant but reverse colors:
           "&.MuiButton-outlined": {
             borderColor: colors.textLight,
             color: colors.textLight,

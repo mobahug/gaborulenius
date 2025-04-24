@@ -10,7 +10,7 @@ import {
 
 export default function Hero() {
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ px: 0 }}>
       <Stack direction="column" spacing={40}>
         <HomeSection />
         <AboutSection />

@@ -47,9 +47,7 @@ export function HomeSection() {
             gutterBottom
             sx={{
               fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-              fontWeight: 700,
               color: colors.textHeading,
-              mb: 2,
             }}
           >
             Hello, I’m{" "}
@@ -88,16 +86,15 @@ export function AboutSection() {
             gutterBottom
             sx={{
               fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-              fontWeight: 700,
+
               color: colors.textHeading,
-              mb: 2,
             }}
           >
             About Me
           </Typography>
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
-          <Typography variant="body1" paragraph>
+          <Typography variant="body1">
             I’m a curious developer driven by the desire to build elegant,
             useful, and human-centered interfaces. Nature is my constant
             inspiration—both in design and in life.
@@ -150,9 +147,7 @@ export function ProjectsSection() {
             gutterBottom
             sx={{
               fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-              fontWeight: 700,
               color: colors.textHeading,
-              mb: 2,
             }}
           >
             Projects
@@ -231,9 +226,7 @@ export function QualificationSection() {
             gutterBottom
             sx={{
               fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-              fontWeight: 700,
               color: colors.textHeading,
-              mb: 2,
             }}
           >
             Qualification
@@ -331,9 +324,7 @@ export function SkillsSection() {
             gutterBottom
             sx={{
               fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-              fontWeight: 700,
               color: colors.textHeading,
-              mb: 2,
             }}
           >
             Skills & Tools
@@ -376,22 +367,20 @@ export function ContactSection() {
             gutterBottom
             sx={{
               fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-              fontWeight: 700,
               color: colors.textHeading,
-              mb: 2,
             }}
           >
             Let’s Connect
           </Typography>
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
-          <Typography variant="body1" paragraph>
+          <Typography variant="body1">
             Got a project or want to chat about nature & design? I’d love to
             hear from you.
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
-          <Typography variant="body1" paragraph>
+          <Typography variant="body1">
             Email: <Link href="mailto:you@example.com">you@example.com</Link>
           </Typography>
         </motion.div>
