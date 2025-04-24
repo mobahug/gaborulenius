@@ -36,7 +36,7 @@ const CoverSection: React.FC = () => {
         left: 0,
         right: 0,
         height: "100vh",
-        zIndex: 10,
+        zIndex: 200,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
