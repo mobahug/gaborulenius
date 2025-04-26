@@ -34,7 +34,7 @@ export default function Footer() {
           justifyContent="space-between"
           alignItems="flex-start"
         >
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
             <Typography
               fontWeight={theme.typography.fontWeightBold}
               variant="h3"
@@ -54,10 +54,7 @@ export default function Footer() {
           </Grid>
 
           <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
+            size={{ xs: 12, sm: 6, md: 4 }}
             sx={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
           >
             <Link
@@ -86,11 +83,8 @@ export default function Footer() {
             </Link>
           </Grid>
 
-          {/* Social */}
           <Grid
-            item
-            xs={12}
-            md={4}
+            size={{ xs: 12, md: 4 }}
             sx={{
               display: "flex",
               justifyContent: { xs: "center", md: "flex-end" },
@@ -101,7 +95,6 @@ export default function Footer() {
               href="https://linkedin.com/in/yourprofile"
               target="_blank"
               aria-label="LinkedIn"
-              // sx={{ color: "#f2f3ef", "&:hover": { color: "#c8e59f" } }}
             >
               <LinkedInIcon fontSize="large" />
             </IconButton>
@@ -109,7 +102,6 @@ export default function Footer() {
               href="https://github.com/yourusername"
               target="_blank"
               aria-label="GitHub"
-              sx={{ color: "#f2f3ef", "&:hover": { color: "#c8e59f" } }}
             >
               <GitHubIcon fontSize="large" />
             </IconButton>
@@ -117,7 +109,6 @@ export default function Footer() {
               href="https://instagram.com/yourhandle"
               target="_blank"
               aria-label="Instagram"
-              sx={{ color: "#f2f3ef", "&:hover": { color: "#c8e59f" } }}
             >
               <InstagramIcon fontSize="large" />
             </IconButton>
@@ -125,7 +116,6 @@ export default function Footer() {
               href="https://youtube.com/@yourchannel"
               target="_blank"
               aria-label="YouTube"
-              sx={{ color: "#f2f3ef", "&:hover": { color: "#c8e59f" } }}
             >
               <YouTubeIcon fontSize="large" />
             </IconButton>

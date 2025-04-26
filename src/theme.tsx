@@ -24,7 +24,6 @@ let theme = createTheme({
   typography: {
     fontFamily: '"Inter", sans-serif',
     fontSize: 16,
-
     h1: {
       fontWeight: 800,
       fontSize: "3rem",
@@ -32,7 +31,6 @@ let theme = createTheme({
       color: colors.textLight,
       letterSpacing: "-0.02em",
     },
-
     h2: {
       fontWeight: 700,
       fontSize: "2.25rem",
@@ -41,14 +39,12 @@ let theme = createTheme({
       mb: 2,
       letterSpacing: "-0.015em",
     },
-
     h3: {
       fontWeight: 700,
       fontSize: "1.75rem",
       lineHeight: 1.3,
       color: colors.textLight,
     },
-
     body1: {
       fontSize: "1.5rem",
       lineHeight: 1.75,
@@ -56,19 +52,16 @@ let theme = createTheme({
       color: colors.textLight,
       mb: 2,
     },
-
     body2: {
       fontSize: "1rem",
       lineHeight: 1.6,
       color: colors.textHeading,
     },
-
     button: {
       textTransform: "none",
       fontWeight: 700,
       fontSize: "1.125rem",
     },
-
     caption: {
       fontSize: "0.75rem",
       lineHeight: 1.4,
@@ -99,8 +92,8 @@ let theme = createTheme({
           transition: "transform 0.4s ease, box-shadow 0.4s ease",
           "&:hover": {
             transform: "translateY(-5px)",
-            boxShadow: "0 16px 50px rgba(0,0,0,0.5)",
           },
+          scrollMarginTop: "100px",
         },
       },
     },
@@ -116,7 +109,7 @@ let theme = createTheme({
           color: colors.textLight,
           transition: "background 0.3s ease, transform 0.2s ease",
           "&:hover": {
-            backgroundColor: colors.btnBgHover, 
+            backgroundColor: colors.btnBgHover,
             transform: "scale(1.03)",
           },
           "&.MuiButton-outlined": {
@@ -124,14 +117,13 @@ let theme = createTheme({
             color: colors.textLight,
             backgroundColor: "transparent",
             "&:hover": {
-              backgroundColor: "rgba(" + colors.textLightRgb + ", 0.1)",
+              backgroundColor: `rgba(${colors.textLightRgb}, 0.1)`,
               borderColor: colors.textLight,
             },
           },
         },
       },
     },
-
     MuiLink: {
       styleOverrides: {
         root: {
@@ -139,6 +131,12 @@ let theme = createTheme({
           cursor: "pointer",
           textDecoration: "none",
           position: "relative",
+          padding: "0.5rem 1rem",
+          borderRadius: "0.375rem",
+          "&:hover": {
+            backgroundColor: `rgba(${colors.textLightRgb}, 0.1)`,
+            color: colors.accentHover,
+          },
           "&:after": {
             content: '""',
             position: "absolute",
@@ -149,8 +147,15 @@ let theme = createTheme({
             backgroundColor: colors.accent,
             transition: "width 0.3s ease",
           },
-          "&:hover:after": {
-            width: "100%",
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            backgroundColor: `rgba(${colors.textLightRgb}, 0.1)`,
+            color: colors.accentHover,
           },
         },
       },

@@ -333,7 +333,7 @@ export function SkillsSection() {
         <Grid container spacing={4}>
           {lists.map((group, i) => (
             <motion.div key={group.label} custom={i + 2} variants={fadeUp}>
-              <Grid item xs={12} md={group.items.length > 6 ? 12 : 6}>
+              <Grid size={{ xs: 12, md: group.items.length > 6 ? 12 : 6 }}>
                 <Typography variant="h5" gutterBottom>
                   {group.label}
                 </Typography>
