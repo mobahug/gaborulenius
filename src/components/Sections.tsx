@@ -54,14 +54,14 @@ export function HomeSection() {
           >
             Hello, I’m{" "}
             <Box component="span" sx={{ color: "primary.main" }}>
-              Your Name
+              Gábor
             </Box>
           </Typography>
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
           <Typography variant="body1" sx={{ mb: 4 }}>
-            Front-End Developer & UX Explorer crafting immersive digital
-            experiences that blend aesthetics with purpose.
+            Full Stack Developer at Tietoevry Care, specializing in
+            cloud-native, AI-powered healthcare solutions.
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
@@ -97,17 +97,20 @@ export function AboutSection() {
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
           <Typography variant="body1">
-            I’m a curious developer driven by the desire to build elegant,
-            useful, and human-centered interfaces. Nature is my constant
-            inspiration—both in design and in life.
+            Contributed to Finland’s largest healthcare data platform (HUS
+            DataLake), improving data accessibility. Proficient in React,
+            TypeScript, GraphQL, Node.js, Docker, Kubernetes, Terraform, and
+            Azure Cloud. Worked on LLM-based AI prototypes, including a demo at
+            ICT Days and a diagnostic tool piloted at the New Children’s
+            Hospital for faster symptom-based searches.
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
           <List>
             {[
-              "📍 Based in Your City",
-              "🎓 B.Sc. in Computer Science",
-              "💼 3+ years freelance",
+              "📍 Finland, Espoo",
+              "🎓 Hive Helsinki Alumni",
+              "💼 2+ years professional work experience",
             ].map(text => (
               <ListItem key={text}>
                 <ListItemText primary={text} />
@@ -123,15 +126,18 @@ export function AboutSection() {
 export function ProjectsSection() {
   const projects = [
     {
-      title: "Project One — Smooth animated portfolio.",
+      title:
+        " Developed an LLM-based AI solution for ICT Days, Finland’s largest healthcare tech event",
       href: "https://project1.example.com",
     },
     {
-      title: "Project Two — Data viz dashboard with D3.js.",
+      title:
+        "Built an AI PoC to assist doctors in faster diagnosis via medical document analysis",
       href: "https://project2.example.com",
     },
     {
-      title: "Project Three — E-commerce prototype with custom UI.",
+      title:
+        "Contributing to the HUS DataLake platform for real-time healthcare data access",
       href: "https://project3.example.com",
     },
   ];
@@ -308,22 +314,54 @@ export function SkillsSection() {
     },
     {
       label: "Backend",
-      items: ["Node.js/Express", "PHP", "PostgreSQL", "MySQL", "MongoDB"],
+      items: [
+        "Node.js/Express",
+        "PHP",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "MariaDB",
+        "Redis",
+        "GraphQL",
+      ],
     },
     {
-      label: "Tools & DevOps",
+      label: "Tools",
       items: [
-        "Git/GitHub",
-        "CI/CD",
+        "Azure DevOps",
+        "Azure Cloud",
+        "GitHub",
+        "GitLab",
+        "Git",
+        "CI/CD pipelines",
         "Docker",
         "Kubernetes",
-        "Terraform",
-        "Azure DevOps",
-        "Jest",
-        "Figma",
+        "Asana",
+        "Atlassian",
         "Jira",
+        "Confluence",
+        "Miro",
+        "MAMP",
+        "XAMPP",
+        "LAMP",
+        "MyphpAdmin",
+        "pgAdmin",
+        "DataGrip",
+        "Postico 2",
+        "DBeaver",
+        "Mongoose",
+        "Postman",
+        "Lucidchart",
+        "Bulma",
+        "MUI",
         "Tailwind",
         "Redux",
+        "Recoil",
+        "Jotai",
+        "VS Code",
+        "Vim",
+        "CLI",
+        "Termux",
       ],
     },
   ];
