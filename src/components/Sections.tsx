@@ -21,6 +21,7 @@ import {
 } from "@mui/lab";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { motion } from "framer-motion";
 import colors from "../colors";
 
@@ -236,7 +237,6 @@ export function QualificationSection() {
         <Timeline
           position={isSmallScreen ? "right" : "alternate"}
           sx={{
-            // hide MUI's full-height center line on mobile
             "& .MuiTimelineItem-root:before": {
               display: isSmallScreen ? "none" : undefined,
             },
@@ -247,7 +247,6 @@ export function QualificationSection() {
               key={evt.title}
               custom={i + 2}
               variants={fadeUp}
-              // these props ensure the item itself animates
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -255,17 +254,33 @@ export function QualificationSection() {
               <TimelineSeparator>
                 <TimelineDot
                   sx={{
-                    bgcolor: evt.bgColor, // your dark or light green
-                    color: colors.textLight, // icon color
+                    bgcolor: evt.bgColor,
+                    color: colors.textLight,
+                    border: `2px solid ${colors.accent}`,
                   }}
+                  variant="outlined"
                 >
                   {evt.icon}
                 </TimelineDot>
                 {i < events.length - 1 && <TimelineConnector />}
               </TimelineSeparator>
               <TimelineContent>
-                <Typography variant="h6">{evt.title}</Typography>
-                <Typography color="text.secondary">{evt.when}</Typography>
+                <Typography variant="h5" gutterBottom>
+                  {evt.title}
+                </Typography>
+                <Box
+                  component="time"
+                  dateTime={evt.when}
+                  sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 1,
+                    color: "text.secondary",
+                  }}
+                >
+                  <CalendarMonthIcon fontSize="small" />
+                  <Typography variant="body2">{evt.when}</Typography>
+                </Box>
               </TimelineContent>
             </MotionTimelineItem>
           ))}

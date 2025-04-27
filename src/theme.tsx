@@ -46,6 +46,25 @@ let theme = createTheme({
       letterSpacing: "-0.010em",
       color: colors.textLight,
     },
+    h4: {
+      fontWeight: 600,
+      fontSize: "1.5rem",
+      lineHeight: 1.4,
+      letterSpacing: "-0.008em",
+      color: colors.textLight,
+    },
+    h5: {
+      fontWeight: 600,
+      fontSize: "1.25rem",
+      lineHeight: 1.5,
+      color: colors.textLight,
+    },
+    h6: {
+      fontWeight: 500,
+      fontSize: "1rem",
+      lineHeight: 1.6,
+      color: colors.textLight,
+    },
     body1: {
       fontWeight: 400,
       fontSize: "1.5rem",
