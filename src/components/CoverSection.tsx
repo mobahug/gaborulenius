@@ -63,10 +63,9 @@ const CoverSection: React.FC = () => {
           }}
         />
         <Typography
-          variant="h3"
+          variant="h1"
           sx={{
             fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-            fontWeight: 700,
             color: colors.textHeading,
             mb: 2,
           }}
@@ -78,14 +77,17 @@ const CoverSection: React.FC = () => {
           underline="none"
           sx={{
             mt: 4,
-            display: "inline-block",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
             fontSize: "1.5rem",
             color: colors.accentHover,
             animation: "bounce 2s infinite",
             textDecoration: "none",
           }}
         >
-          <ExpandMoreIcon fontSize="inherit" /> Scroll Down
+          <ExpandMoreIcon fontSize="large" />
+          <Typography variant="h4">Scroll Down</Typography>
         </Link>
         <style>
           {`
