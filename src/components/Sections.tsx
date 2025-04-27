@@ -455,7 +455,10 @@ export function ContactSection() {
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
           <Typography variant="body1">
-            Email: <Link href="mailto:you@example.com">you@example.com</Link>
+            Email:{" "}
+            <Link href="mailto:gaborulenius@gmail.com">
+              gaborulenius@gmail.com
+            </Link>
           </Typography>
         </motion.div>
         <motion.div custom={4} variants={fadeUp}>
