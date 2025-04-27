@@ -275,11 +275,13 @@ export function QualificationSection() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 1,
-                    color: "text.secondary",
+                    color: "primary.main",
                   }}
                 >
                   <CalendarMonthIcon fontSize="small" />
-                  <Typography variant="body2">{evt.when}</Typography>
+                  <Typography variant="body2" color="primary.main">
+                    {evt.when}
+                  </Typography>
                 </Box>
               </TimelineContent>
             </MotionTimelineItem>
