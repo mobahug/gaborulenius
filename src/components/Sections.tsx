@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Typography,
-  Grid,
   Link,
   List,
   ListItem,
@@ -10,6 +9,8 @@ import {
   Paper,
   useTheme,
   useMediaQuery,
+  Stack,
+  Chip,
 } from "@mui/material";
 import {
   Timeline,
@@ -179,7 +180,6 @@ export function QualificationSection() {
   const events = [
     {
       icon: <WorkIcon />,
-      // dark olive background
       bgColor: colors.btnBg,
       title: "Full Stack Developer – Tietoevry",
       when: "Espoo, 2023 – Present",
@@ -192,7 +192,6 @@ export function QualificationSection() {
     },
     {
       icon: <SchoolIcon />,
-      // light accent background
       bgColor: colors.btnBg,
       title: "Software Developer – Hive Helsinki",
       when: "2021 – 2023",
@@ -240,6 +239,7 @@ export function QualificationSection() {
             "& .MuiTimelineItem-root:before": {
               display: isSmallScreen ? "none" : undefined,
             },
+            p: 0,
           }}
         >
           {events.map((evt, i) => (
@@ -293,7 +293,7 @@ export function QualificationSection() {
 }
 
 export function SkillsSection() {
-  const lists = [
+  const categories = [
     {
       label: "Frontend",
       items: [
@@ -308,7 +308,7 @@ export function SkillsSection() {
     },
     {
       label: "Backend",
-      items: ["Node.js/Express", "PHP", "C", "PostgreSQL", "MySQL", "MongoDB"],
+      items: ["Node.js/Express", "PHP", "PostgreSQL", "MySQL", "MongoDB"],
     },
     {
       label: "Tools & DevOps",
@@ -344,27 +344,46 @@ export function SkillsSection() {
               color: colors.textHeading,
             }}
           >
-            Skills & Tools
+            Skills &amp; Tools
           </Typography>
         </motion.div>
-        <Grid container spacing={4}>
-          {lists.map((group, i) => (
-            <motion.div key={group.label} custom={i + 2} variants={fadeUp}>
-              <Grid size={{ xs: 12, md: group.items.length > 6 ? 12 : 6 }}>
-                <Typography variant="h5" gutterBottom>
-                  {group.label}
-                </Typography>
-                <List dense>
-                  {group.items.map(item => (
-                    <ListItem key={item}>
-                      <ListItemText primary={item} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Grid>
+
+        <Stack spacing={4}>
+          {categories.map((cat, idx) => (
+            <motion.div key={cat.label} custom={idx + 2} variants={fadeUp}>
+              <Typography variant="h5" sx={{ color: colors.textLight, mb: 2 }}>
+                {cat.label}
+              </Typography>
+              <Box
+                component="ul"
+                sx={{
+                  listStyle: "none",
+                  p: 1,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 1.5,
+                }}
+              >
+                {cat.items.map(skill => (
+                  <Box component="li" key={skill}>
+                    <Chip
+                      label={skill}
+                      size="medium"
+                      clickable
+                      sx={{
+                        border: `1px solid ${colors.glassBorder}`,
+                        bgcolor: "rgba(255,255,255,0.1)",
+                        color: colors.accent,
+                        transition: "background 0.3s",
+                        "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
+                      }}
+                    />
+                  </Box>
+                ))}
+              </Box>
             </motion.div>
           ))}
-        </Grid>
+        </Stack>
       </Paper>
     </motion.div>
   );

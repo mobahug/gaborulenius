@@ -7,27 +7,31 @@ import {
   Link,
   IconButton,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import colors from "../colors";
 
 export default function Footer() {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Box
       component="footer"
       sx={{
-        background: "rgba(30, 42, 32, 0.9)", // fallback for --nav-bg
+        backgroundColor: colors.navBg,
         backdropFilter: "blur(10px)",
-        color: "#f2f3ef", // fallback for --text-light
+        color: colors.textLight,
         width: "100%",
         mt: 12,
         zIndex: 100,
+        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
       }}
     >
-      <Container sx={{ py: 6 }}>
+      <Container sx={{ py: 10, px: isMobile ? 8 : 4 }}>
         <Grid
           container
           spacing={4}
@@ -126,7 +130,7 @@ export default function Footer() {
           className="footer-bottom"
           sx={{ textAlign: "center", fontSize: "0.9rem", mt: 6 }}
         >
-          © 2025 Gabor Ulenius. All rights reserved
+          © {new Date().getFullYear()} Gabor Ulenius. All rights reserved
         </Box>
       </Container>
     </Box>

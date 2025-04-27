@@ -79,7 +79,7 @@ const CoverSection: React.FC = () => {
             mt: 4,
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-start",
+            justifyContent: "center",
             fontSize: "1.5rem",
             color: colors.accentHover,
             animation: "bounce 2s infinite",
@@ -87,7 +87,9 @@ const CoverSection: React.FC = () => {
           }}
         >
           <ExpandMoreIcon fontSize="large" />
-          <Typography variant="h4">Scroll Down</Typography>
+          <Typography variant="h4" color={colors.accentHover}>
+            Scroll Down
+          </Typography>
         </Link>
         <style>
           {`

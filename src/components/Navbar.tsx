@@ -56,6 +56,7 @@ const NavBar: React.FC = () => {
           position="fixed"
           elevation={0}
           sx={{
+            px: 2,
             borderRadius: 0,
             boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
             backdropFilter: "blur(10px)",
