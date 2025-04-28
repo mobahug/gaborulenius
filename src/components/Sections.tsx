@@ -18,6 +18,8 @@ import {
   DialogTitle,
   IconButton,
   Slide,
+  Tabs,
+  Tab,
 } from "@mui/material";
 
 import {
@@ -28,8 +30,6 @@ import {
   TimelineContent,
   TimelineDot,
 } from "@mui/lab";
-import SchoolIcon from "@mui/icons-material/School";
-import WorkIcon from "@mui/icons-material/Work";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { motion } from "framer-motion";
@@ -37,14 +37,12 @@ import colors from "../colors";
 import { useState } from "react";
 import React from "react";
 import { TransitionProps } from "@mui/material/transitions";
-
-interface Event {
-  icon: React.ReactNode;
-  bgColor: string;
-  title: string;
-  when: string;
-  details: React.ReactNode;
-}
+import {
+  categories,
+  HighlightedEvents,
+  highlightedEvents,
+  projects,
+} from "../contexts";
 
 export function HomeSection() {
   return (
@@ -135,23 +133,6 @@ export function AboutSection() {
 }
 
 export function ProjectsSection() {
-  const projects = [
-    {
-      title:
-        " Developed an LLM-based AI solution for ICT Days, Finland’s largest healthcare tech event",
-    },
-    {
-      title:
-        "Built an AI PoC to assist doctors in faster diagnosis via medical document analysis",
-      href: "https://www.tietoevry.com/fi/asiakkaitamme/2024/generatiivinen-tekoaly-auttaa-kliinikoita-paatoksenteossa-uudessa-lastensairaalassa/",
-    },
-    {
-      title:
-        "Contributing to the HUS DataLake platform for real-time healthcare data access",
-      href: "https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/",
-    },
-  ];
-
   return (
     <motion.div
       initial="hidden"
@@ -213,95 +194,25 @@ export function ProjectsSection() {
 
 const MotionTimelineItem = motion(TimelineItem);
 
-const events: Event[] = [
-  {
-    icon: <WorkIcon />,
-    bgColor: colors.btnBg,
-    title: "Full Stack Developer – Tietoevry",
-    when: "Espoo, 2023 – Present",
-    details: (
-      <>
-        <Typography sx={{ color: colors.textLight }}>
-          I’m working as a Full Stack Developer in the healthcare domain,
-          building cloud-native, AI-powered solutions that improve the
-          accessibility and usability of patient data across the Nordic region.
-          My work focuses on React, TypeScript, Node.js, GraphQL, PostgreSQL,
-          Docker, Kubernetes, Terraform, and Azure DevOps within Agile Scrum
-          teams.
-        </Typography>
-        <Typography sx={{ color: colors.textLight, fontWeight: 600 }}>
-          Notable contributions:
-        </Typography>
-        <List
-          sx={{
-            listStyle: "disc",
-            pl: 4,
-            color: colors.textLight,
-            "& .MuiListItem-root": { display: "list-item", p: 0 },
-          }}
-        >
-          <ListItem>
-            <ListItemText primary="Developed an LLM-powered AI solution at ICT Days, Finland’s largest healthcare tech event" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Contributed to the HUS DataLake, enabling real-time access to healthcare data across multiple systems" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Built an AI PoC leveraging LLMs to help doctors find diagnoses faster through medical documents" />
-          </ListItem>
-        </List>
-      </>
-    ),
-  },
-  {
-    icon: <WorkIcon />,
-    bgColor: colors.btnBg,
-    title: "Full Stack Developer – Anyhau",
-    when: "Espoo, 2022 – 2023",
-    details: (
-      <>
-        <Typography sx={{ color: colors.textLight }}>
-          Worked on a greenfield web application for booking animal-related
-          services, in collaboration with the 2022 Diili show winner. Built from
-          the ground up using Next.js, Material UI, and MongoDB. The platform
-          enable service providers to list offerings and customers to book and
-          pay online.
-        </Typography>
-      </>
-    ),
-  },
-  {
-    icon: <SchoolIcon />,
-    bgColor: colors.btnBg,
-    title: "Software Developer – Hive Helsinki",
-    when: "2021 – 2023",
-    details: (
-      <>
-        <Typography sx={{ color: colors.textLight }}>
-          Completed a project-based program focused on teamwork,
-          problem-solving, and self-directed learning. Built skills in
-          collaboration, critical thinking, and adaptability for real-world
-          software development.
-        </Typography>
-      </>
-    ),
-  },
-  {
-    icon: <SchoolIcon />,
-    bgColor: colors.btnBg,
-    title: "Finnish Language School – SataEdu",
-    when: "2016 – 2017",
-    details: (
-      <>
-        <Typography sx={{ color: colors.textLight }}>
-          After the school I continued self-studies in Finnish to advance fluent
-          conversational proficiency. Comfortable in everyday discussions, with
-          ongoing efforts to improve further.
-        </Typography>
-      </>
-    ),
-  },
-];
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`qualification-tabpanel-${index}`}
+      aria-labelledby={`qualification-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
+    </div>
+  );
+}
 
 export function QualificationSection() {
   const theme = useTheme();
@@ -310,95 +221,201 @@ export function QualificationSection() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [open, setOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<HighlightedEvents | null>(
+    null
+  );
+  const [tabIndex, setTabIndex] = useState(0);
 
-  const handleOpen = (evt: Event) => () => {
+  const handleOpen = (evt: HighlightedEvents) => () => {
     setSelectedEvent(evt);
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleTabChange = (_event: React.SyntheticEvent, newIndex: number) => {
+    setTabIndex(newIndex);
+  };
   return (
     <>
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        <Paper id="qualification">
-          <motion.div custom={1} variants={fadeUp}>
-            <Typography
-              variant="h2"
-              gutterBottom
+      <Paper id="qualification" sx={{ pt: 0 }}>
+        <Tabs
+          value={tabIndex}
+          onChange={handleTabChange}
+          aria-label="Qualification Tabs"
+          centered
+          variant="fullWidth"
+          sx={{
+            p: 2,
+          }}
+        >
+          <Tab
+            label="Tab One"
+            id="qualification-tab-0"
+            aria-controls="qualification-tabpanel-0"
+          />
+          <Tab
+            label="Tab Two"
+            id="qualification-tab-1"
+            aria-controls="qualification-tabpanel-1"
+          />
+        </Tabs>
+        <TabPanel value={tabIndex} index={0}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.div custom={1} variants={fadeUp}>
+              <Typography
+                variant="h2"
+                gutterBottom
+                sx={{
+                  fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+                  color: colors.textHeading,
+                }}
+              >
+                Professional Highlights
+              </Typography>
+            </motion.div>
+
+            <Timeline
+              position={isSmallScreen ? "right" : "alternate"}
               sx={{
-                fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-                color: colors.textHeading,
+                "& .MuiTimelineItem-root:before": {
+                  display: isSmallScreen ? "none" : undefined,
+                },
               }}
             >
-              Professional Highlights
-            </Typography>
-          </motion.div>
+              {highlightedEvents.map((evt, i) => (
+                <MotionTimelineItem
+                  key={evt.title}
+                  custom={i + 2}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
+                  <TimelineSeparator>
+                    <TimelineDot
+                      sx={{
+                        bgcolor: evt.bgColor,
+                        color: colors.textLight,
+                        border: `2px solid ${colors.accent}`,
+                      }}
+                      variant="outlined"
+                    >
+                      {evt.icon}
+                    </TimelineDot>
+                    {i < highlightedEvents.length - 1 && (
+                      <TimelineConnector sx={{ bgcolor: colors.dividerBg }} />
+                    )}
+                  </TimelineSeparator>
 
-          <Timeline
-            position={isSmallScreen ? "right" : "alternate"}
-            sx={{
-              "& .MuiTimelineItem-root:before": {
-                display: isSmallScreen ? "none" : undefined,
-              },
-            }}
-          >
-            {events.map((evt, i) => (
-              <MotionTimelineItem
-                key={evt.title}
-                custom={i + 2}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                <TimelineSeparator>
-                  <TimelineDot
-                    sx={{
-                      bgcolor: evt.bgColor,
-                      color: colors.textLight,
-                      border: `2px solid ${colors.accent}`,
-                    }}
-                    variant="outlined"
-                  >
-                    {evt.icon}
-                  </TimelineDot>
-                  {i < events.length - 1 && (
-                    <TimelineConnector sx={{ bgcolor: colors.dividerBg }} />
-                  )}
-                </TimelineSeparator>
-
-                <TimelineContent onClick={handleOpen(evt)}>
-                  <Typography variant="h5" gutterBottom>
-                    {evt.title}
-                  </Typography>
-                  <Box
-                    component="time"
-                    dateTime={evt.when}
-                    sx={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 1,
-                      color: "primary.main",
-                    }}
-                  >
-                    <CalendarMonthIcon fontSize="small" />
-                    <Typography variant="body2" color="primary.main">
-                      {evt.when}
+                  <TimelineContent onClick={handleOpen(evt)}>
+                    <Typography variant="h5" gutterBottom>
+                      {evt.title}
                     </Typography>
-                  </Box>
-                </TimelineContent>
-              </MotionTimelineItem>
-            ))}
-          </Timeline>
-        </Paper>
-      </motion.div>
+                    <Box
+                      component="time"
+                      dateTime={evt.when}
+                      sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 1,
+                        color: "primary.main",
+                      }}
+                    >
+                      <CalendarMonthIcon fontSize="small" />
+                      <Typography variant="body2" color="primary.main">
+                        {evt.when}
+                      </Typography>
+                    </Box>
+                  </TimelineContent>
+                </MotionTimelineItem>
+              ))}
+            </Timeline>
+          </motion.div>
+        </TabPanel>
+
+        <TabPanel value={tabIndex} index={1}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.div custom={1} variants={fadeUp}>
+              <Typography
+                variant="h2"
+                gutterBottom
+                sx={{
+                  fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+                  color: colors.textHeading,
+                }}
+              >
+                Full Timeline
+              </Typography>
+            </motion.div>
+
+            <Timeline
+              position={isSmallScreen ? "right" : "alternate"}
+              sx={{
+                "& .MuiTimelineItem-root:before": {
+                  display: isSmallScreen ? "none" : undefined,
+                },
+              }}
+            >
+              {highlightedEvents.map((evt, i) => (
+                <MotionTimelineItem
+                  key={evt.title}
+                  custom={i + 2}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
+                  <TimelineSeparator>
+                    <TimelineDot
+                      sx={{
+                        bgcolor: evt.bgColor,
+                        color: colors.textLight,
+                        border: `2px solid ${colors.accent}`,
+                      }}
+                      variant="outlined"
+                    >
+                      {evt.icon}
+                    </TimelineDot>
+                    {i < highlightedEvents.length - 1 && (
+                      <TimelineConnector sx={{ bgcolor: colors.dividerBg }} />
+                    )}
+                  </TimelineSeparator>
+
+                  <TimelineContent onClick={handleOpen(evt)}>
+                    <Typography variant="h5" gutterBottom>
+                      {evt.title}
+                    </Typography>
+                    <Box
+                      component="time"
+                      dateTime={evt.when}
+                      sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 1,
+                        color: "primary.main",
+                      }}
+                    >
+                      <CalendarMonthIcon fontSize="small" />
+                      <Typography variant="body2" color="primary.main">
+                        {evt.when}
+                      </Typography>
+                    </Box>
+                  </TimelineContent>
+                </MotionTimelineItem>
+              ))}
+            </Timeline>
+          </motion.div>
+        </TabPanel>
+      </Paper>
 
       <Dialog
         fullScreen={fullScreen}
@@ -448,73 +465,6 @@ export function QualificationSection() {
 }
 
 export function SkillsSection() {
-  const categories = [
-    {
-      label: "Frontend",
-      items: [
-        "React",
-        "Next.js",
-        "TypeScript",
-        "GraphQL",
-        "HTML5",
-        "CSS3",
-        "JavaScript",
-      ],
-    },
-    {
-      label: "Backend",
-      items: [
-        "Node.js/Express",
-        "PHP",
-        "PostgreSQL",
-        "MySQL",
-        "MongoDB",
-        "MariaDB",
-        "Redis",
-        "GraphQL",
-      ],
-    },
-    {
-      label: "Tools",
-      items: [
-        "Azure DevOps",
-        "Azure Cloud",
-        "GitHub",
-        "GitLab",
-        "Git",
-        "CI/CD pipelines",
-        "Docker",
-        "Kubernetes",
-        "Asana",
-        "Atlassian",
-        "Jira",
-        "Confluence",
-        "Miro",
-        "MAMP",
-        "XAMPP",
-        "LAMP",
-        "MyphpAdmin",
-        "pgAdmin",
-        "DataGrip",
-        "Postico 2",
-        "DBeaver",
-        "Mongoose",
-        "Postman",
-        "Lucidchart",
-        "Bulma",
-        "MUI",
-        "Tailwind",
-        "Redux",
-        "Recoil",
-        "Jotai",
-        "VS Code",
-        "Vim",
-        "CLI",
-        "Termux",
-      ],
-    },
-  ];
-
   return (
     <motion.div
       initial="hidden"
@@ -534,7 +484,6 @@ export function SkillsSection() {
             Skills &amp; Tools
           </Typography>
         </motion.div>
-
         <Stack spacing={4}>
           {categories.map((cat, idx) => (
             <motion.div key={cat.label} custom={idx + 2} variants={fadeUp}>
