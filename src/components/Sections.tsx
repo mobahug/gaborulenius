@@ -38,8 +38,9 @@ import { useState } from "react";
 import React from "react";
 import { TransitionProps } from "@mui/material/transitions";
 import {
+  allEvents,
   categories,
-  HighlightedEvents,
+  Events,
   highlightedEvents,
   projects,
 } from "../contexts";
@@ -221,12 +222,10 @@ export function QualificationSection() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [open, setOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<HighlightedEvents | null>(
-    null
-  );
+  const [selectedEvent, setSelectedEvent] = useState<Events | null>(null);
   const [tabIndex, setTabIndex] = useState(0);
 
-  const handleOpen = (evt: HighlightedEvents) => () => {
+  const handleOpen = (evt: Events) => () => {
     setSelectedEvent(evt);
     setOpen(true);
   };
@@ -278,7 +277,6 @@ export function QualificationSection() {
                 Professional Highlights
               </Typography>
             </motion.div>
-
             <Timeline
               position={isSmallScreen ? "right" : "alternate"}
               sx={{
@@ -337,7 +335,6 @@ export function QualificationSection() {
             </Timeline>
           </motion.div>
         </TabPanel>
-
         <TabPanel value={tabIndex} index={1}>
           <motion.div
             initial="hidden"
@@ -356,7 +353,6 @@ export function QualificationSection() {
                 Full Timeline
               </Typography>
             </motion.div>
-
             <Timeline
               position={isSmallScreen ? "right" : "alternate"}
               sx={{
@@ -365,7 +361,7 @@ export function QualificationSection() {
                 },
               }}
             >
-              {highlightedEvents.map((evt, i) => (
+              {allEvents.map((evt, i) => (
                 <MotionTimelineItem
                   key={evt.title}
                   custom={i + 2}
@@ -385,11 +381,10 @@ export function QualificationSection() {
                     >
                       {evt.icon}
                     </TimelineDot>
-                    {i < highlightedEvents.length - 1 && (
+                    {i < allEvents.length - 1 && (
                       <TimelineConnector sx={{ bgcolor: colors.dividerBg }} />
                     )}
                   </TimelineSeparator>
-
                   <TimelineContent onClick={handleOpen(evt)}>
                     <Typography variant="h5" gutterBottom>
                       {evt.title}
@@ -416,7 +411,6 @@ export function QualificationSection() {
           </motion.div>
         </TabPanel>
       </Paper>
-
       <Dialog
         fullScreen={fullScreen}
         open={open}
