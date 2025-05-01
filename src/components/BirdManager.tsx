@@ -91,7 +91,7 @@ export default function BirdManager({ sections }: { sections: SectionInfo[] }) {
         left: 0,
         top: 0,
         pointerEvents: "none",
-        zIndex: 9999,
+        zIndex: 199,
       }}
     >
       {mode === "flying" ? <BirdSpriteFlying /> : <BirdSpriteIdle />}

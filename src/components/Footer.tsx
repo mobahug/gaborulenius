@@ -15,11 +15,17 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import colors from "../colors";
 
-export default function Footer() {
+export default function Footer({
+  innerRef,
+}: {
+  innerRef: React.Ref<HTMLDivElement>;
+}) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Box
+      id="footer"
+      ref={innerRef}
       component="footer"
       sx={{
         backgroundColor: colors.navBg,

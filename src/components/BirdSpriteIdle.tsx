@@ -27,7 +27,7 @@ const Sprite = styled("div")(props => {
     position: "absolute",
     bottom: "100%",
     right: theme.spacing(1),
-    marginBottom: "-30px",
+    marginBottom: "-35px",
     pointerEvents: "none",
 
     animation: `

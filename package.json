@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy":   "gh-pages -d dist"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -19,6 +19,7 @@
     "@mui/lab": "^7.0.0-beta.11",
     "@mui/material": "^7.0.2",
     "framer-motion": "^12.9.0",
+    "jotai": "^2.12.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "scrolly-video": "^0.0.24"

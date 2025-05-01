@@ -9,6 +9,8 @@ import {
   SkillsSection,
   ContactSection,
 } from "./Sections";
+import { useBirdEffect } from "../hooks/useBirdEffect";
+import Footer from "./Footer";
 
 export default function Hero() {
   const homeRef = useRef<HTMLDivElement>(null!);
@@ -17,6 +19,7 @@ export default function Hero() {
   const qualificationRef = useRef<HTMLDivElement>(null!);
   const skillsRef = useRef<HTMLDivElement>(null!);
   const contactRef = useRef<HTMLDivElement>(null!);
+  const footRef = useRef<HTMLDivElement>(null!);
 
   const sections: SectionInfo[] = [
     { id: "home", ref: homeRef },
@@ -25,20 +28,26 @@ export default function Hero() {
     { id: "qualification", ref: qualificationRef },
     { id: "skills", ref: skillsRef },
     { id: "contact", ref: contactRef },
+    { id: "footer", ref: footRef },
   ];
 
-  return (
-    <Container maxWidth="md" sx={{ px: 0, position: "relative" }}>
-      <BirdManager sections={sections} />
+  const { birdEnabled } = useBirdEffect();
 
-      <Stack direction="column" spacing={40}>
-        <HomeSection innerRef={homeRef} />
-        <AboutSection innerRef={aboutRef} />
-        <ProjectsSection innerRef={projectsRef} />
-        <QualificationSection innerRef={qualificationRef} />
-        <SkillsSection innerRef={skillsRef} />
-        <ContactSection innerRef={contactRef} />
-      </Stack>
-    </Container>
+  return (
+    <>
+      <Container maxWidth="md" sx={{ px: 0, position: "relative" }}>
+        {birdEnabled ? <BirdManager sections={sections} /> : null}
+
+        <Stack direction="column" spacing={40}>
+          <HomeSection innerRef={homeRef} />
+          <AboutSection innerRef={aboutRef} />
+          <ProjectsSection innerRef={projectsRef} />
+          <QualificationSection innerRef={qualificationRef} />
+          <SkillsSection innerRef={skillsRef} />
+          <ContactSection innerRef={contactRef} />
+        </Stack>
+      </Container>
+      <Footer innerRef={footRef} />
+    </>
   );
 }

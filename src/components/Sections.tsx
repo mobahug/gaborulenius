@@ -322,6 +322,7 @@ export function QualificationSection({
             <Timeline
               position={isSmallScreen ? "right" : "alternate"}
               sx={{
+                padding: 0,
                 "& .MuiTimelineItem-root:before": {
                   display: isSmallScreen ? "none" : undefined,
                 },
@@ -401,6 +402,7 @@ export function QualificationSection({
             <Timeline
               position={isSmallScreen ? "right" : "alternate"}
               sx={{
+                padding: 0,
                 "& .MuiTimelineItem-root:before": {
                   display: isSmallScreen ? "none" : undefined,
                 },

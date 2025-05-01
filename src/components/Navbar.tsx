@@ -15,6 +15,10 @@ import {
   useTheme,
   useMediaQuery,
   Slide,
+  FormControlLabel,
+  Switch,
+  Typography,
+  Stack,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -23,6 +27,8 @@ import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import colors from "../colors";
+import { useBirdEffect } from "../hooks/useBirdEffect";
+import { useLeavesEffect } from "../hooks/useLeavesEffect";
 
 const COVER_THRESHOLD = 300;
 
@@ -41,6 +47,8 @@ const NavBar: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { birdEnabled, toggleBirdEffects } = useBirdEffect();
+  const { leavesEnabled, toggleLeavesEffects } = useLeavesEffect();
 
   const toggleDrawer = (open: boolean) => () => setDrawerOpen(open);
   const handlePlayPause = () => setIsPlaying(p => !p);
@@ -69,7 +77,7 @@ const NavBar: React.FC = () => {
             disableGutters
             sx={{
               minHeight: "72px",
-              px: 2,
+              px: 3.5,
               justifyContent: isMobile ? "space-between" : "center",
             }}
           >
@@ -176,7 +184,6 @@ const NavBar: React.FC = () => {
           },
         }}
       >
-        {/* Close icon top-right */}
         <Box sx={{ display: "flex", justifyContent: "flex-start", mb: 3 }}>
           <IconButton onClick={toggleDrawer(false)}>
             <CloseIcon sx={{ color: colors.textLight, fontSize: 32 }} />
@@ -202,7 +209,6 @@ const NavBar: React.FC = () => {
           ))}
         </List>
         <Divider sx={{ bgcolor: colors.dividerBg, my: 2 }} />
-        {/* Social icons */}
         <Box
           sx={{ display: "flex", justifyContent: "flex-start", gap: 2, p: 2 }}
         >
@@ -225,6 +231,32 @@ const NavBar: React.FC = () => {
             <GitHubIcon />
           </IconButton>
         </Box>
+        <Divider sx={{ bgcolor: colors.dividerBg, my: 2 }} />
+        <Box sx={{ display: "flex", justifyContent: "flex-start", p: 3 }}>
+          <Typography variant="h4">Settings</Typography>
+        </Box>
+        <Stack pl={3}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={birdEnabled}
+                onChange={toggleBirdEffects}
+                color="primary"
+              />
+            }
+            label="Bird"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={leavesEnabled}
+                onChange={toggleLeavesEffects}
+                color="primary"
+              />
+            }
+            label="Leaves"
+          />
+        </Stack>
       </SwipeableDrawer>
     </>
   );
