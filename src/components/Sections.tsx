@@ -48,14 +48,22 @@ import {
   projects,
 } from "../contexts";
 
-export function HomeSection() {
+export function HomeSection({
+  innerRef,
+}: {
+  innerRef: React.Ref<HTMLDivElement>;
+}) {
+  const theme = useTheme();
+
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="home">
+      <Paper id="home" ref={innerRef}>
         <motion.div custom={1} variants={fadeUp}>
           <Typography
             variant="h3"
@@ -78,7 +86,11 @@ export function HomeSection() {
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
-          <Stack direction="row" spacing={4} justifyContent="center">
+          <Stack
+            direction={isSmallScreen ? "column" : "row"}
+            spacing={4}
+            justifyContent="center"
+          >
             <Button
               variant="contained"
               href="#projects"
@@ -102,14 +114,18 @@ export function HomeSection() {
   );
 }
 
-export function AboutSection() {
+export function AboutSection({
+  innerRef,
+}: {
+  innerRef: React.Ref<HTMLDivElement>;
+}) {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="about">
+      <Paper id="about" ref={innerRef}>
         <motion.div custom={1} variants={fadeUp}>
           <Typography
             variant="h2"
@@ -151,14 +167,18 @@ export function AboutSection() {
   );
 }
 
-export function ProjectsSection() {
+export function ProjectsSection({
+  innerRef,
+}: {
+  innerRef: React.Ref<HTMLDivElement>;
+}) {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="projects">
+      <Paper id="projects" ref={innerRef}>
         <motion.div custom={1} variants={fadeUp}>
           <Typography
             variant="h2"
@@ -233,7 +253,11 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-export function QualificationSection() {
+export function QualificationSection({
+  innerRef,
+}: {
+  innerRef: React.Ref<HTMLDivElement>;
+}) {
   const theme = useTheme();
 
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -255,7 +279,7 @@ export function QualificationSection() {
   };
   return (
     <>
-      <Paper id="qualification" sx={{ pt: 0 }}>
+      <Paper id="qualification" ref={innerRef} sx={{ pt: 0 }}>
         <Tabs
           value={tabIndex}
           onChange={handleTabChange}
@@ -482,14 +506,18 @@ export function QualificationSection() {
   );
 }
 
-export function SkillsSection() {
+export function SkillsSection({
+  innerRef,
+}: {
+  innerRef: React.Ref<HTMLDivElement>;
+}) {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="skills-tools">
+      <Paper id="skills-tools" ref={innerRef}>
         <motion.div custom={1} variants={fadeUp}>
           <Typography
             variant="h2"
@@ -543,14 +571,18 @@ export function SkillsSection() {
   );
 }
 
-export function ContactSection() {
+export function ContactSection({
+  innerRef,
+}: {
+  innerRef: React.Ref<HTMLDivElement>;
+}) {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="contact">
+      <Paper id="contact" ref={innerRef}>
         <motion.div custom={1} variants={fadeUp}>
           <Typography
             variant="h2"

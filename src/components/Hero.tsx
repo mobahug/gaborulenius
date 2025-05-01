@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { Container, Stack } from "@mui/material";
-import SectionWithPaper from "./SectionWithPaper";
 import BirdManager, { SectionInfo } from "./BirdManager";
 import {
   HomeSection,
@@ -33,40 +32,13 @@ export default function Hero() {
       <BirdManager sections={sections} />
 
       <Stack direction="column" spacing={40}>
-        <SectionWithPaper id="home" innerRef={homeRef}>
-          <HomeSection />
-        </SectionWithPaper>
-        <SectionWithPaper id="about" innerRef={aboutRef}>
-          <AboutSection />
-        </SectionWithPaper>
-        <SectionWithPaper id="projects" innerRef={projectsRef}>
-          <ProjectsSection />
-        </SectionWithPaper>
-        <SectionWithPaper id="qualification" innerRef={qualificationRef}>
-          <QualificationSection />
-        </SectionWithPaper>
-        <SectionWithPaper id="skills" innerRef={skillsRef}>
-          <SkillsSection />
-        </SectionWithPaper>
-        <SectionWithPaper id="contact" innerRef={contactRef}>
-          <ContactSection />
-        </SectionWithPaper>
+        <HomeSection innerRef={homeRef} />
+        <AboutSection innerRef={aboutRef} />
+        <ProjectsSection innerRef={projectsRef} />
+        <QualificationSection innerRef={qualificationRef} />
+        <SkillsSection innerRef={skillsRef} />
+        <ContactSection innerRef={contactRef} />
       </Stack>
     </Container>
   );
 }
-
-// export default function Hero() {
-//   return (
-//     <Container maxWidth="md" sx={{ px: 0 }}>
-//       <Stack direction="column" spacing={40}>
-//         <HomeSection />
-//         <AboutSection />
-//         <ProjectsSection />
-//         <QualificationSection />
-//         <SkillsSection />
-//         <ContactSection />
-//       </Stack>
-//     </Container>
-//   );
-// }
