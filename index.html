@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScrollyVideo React + Vite Demo</title>
+    <style>
+      body,
+      html,
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .scrolly-video {
+        z-index: 0;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-BIohlu4u.js"></script>
+  </head>
+  <body>
+    <div id="scrolly-container">
+      <div id="scrolly-video"></div>
+      <div id="root"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/scrolly-video@latest/dist/scrolly-video.js"></script>
+    <script>
+      new ScrollyVideo({
+        scrollyVideoContainer: "scrolly-video",
+        src: "jungle.mp4",
+      });
+    </script>
+  </body>
+</html>
