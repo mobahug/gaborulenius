@@ -32,6 +32,9 @@ import {
 } from "@mui/lab";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import SearchIcon from "@mui/icons-material/Search";
 import { motion } from "framer-motion";
 import colors from "../colors";
 import { useState } from "react";
@@ -75,9 +78,26 @@ export function HomeSection() {
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
-          <Button variant="contained" href="#projects">
-            Explore My Work
-          </Button>
+          <Stack direction="row" spacing={4} justifyContent="center">
+            <Button
+              variant="contained"
+              href="#projects"
+              startIcon={<SearchIcon />}
+            >
+              Explore My Work
+            </Button>
+
+            {/* Download button pointing to a file in public/ */}
+            <Button
+              variant="contained"
+              component="a"
+              href="/GaborCV.pdf" // <-- path in public/
+              download // <-- tells browser to download
+              startIcon={<FileDownloadIcon />}
+            >
+              Download my CV
+            </Button>
+          </Stack>
         </motion.div>
       </Paper>
     </motion.div>
@@ -310,9 +330,12 @@ export function QualificationSection() {
                     )}
                   </TimelineSeparator>
 
-                  <TimelineContent onClick={handleOpen(evt)}>
+                  <TimelineContent
+                    onClick={handleOpen(evt)}
+                    sx={{ cursor: "pointer" }}
+                  >
                     <Typography variant="h5" gutterBottom>
-                      {evt.title}
+                      {evt.title} <OpenInNewIcon sx={{ fontSize: 16 }} />
                     </Typography>
                     <Box
                       component="time"
@@ -385,9 +408,12 @@ export function QualificationSection() {
                       <TimelineConnector sx={{ bgcolor: colors.dividerBg }} />
                     )}
                   </TimelineSeparator>
-                  <TimelineContent onClick={handleOpen(evt)}>
+                  <TimelineContent
+                    onClick={handleOpen(evt)}
+                    sx={{ cursor: "pointer" }}
+                  >
                     <Typography variant="h5" gutterBottom>
-                      {evt.title}
+                      {evt.title} <OpenInNewIcon sx={{ fontSize: 16 }} />
                     </Typography>
                     <Box
                       component="time"
@@ -541,8 +567,8 @@ export function ContactSection() {
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
           <Typography variant="body1">
-            Got a project or want to chat about nature & design? I’d love to
-            hear from you.
+            Got an idea, project, or just want to geek out about nature and
+            design? Let’s talk!
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>

@@ -14,7 +14,8 @@ export type Events = {
 export const projects = [
   {
     title:
-      " Developed an LLM-based AI solution for ICT Days, Finland’s largest healthcare tech event",
+      "Contributing to the HUS DataLake platform for real-time healthcare data access",
+    href: "https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/",
   },
   {
     title:
@@ -23,8 +24,12 @@ export const projects = [
   },
   {
     title:
-      "Contributing to the HUS DataLake platform for real-time healthcare data access",
-    href: "https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/",
+      " Developed an LLM-based AI solution for ICT Days, Finland’s largest healthcare tech event",
+  },
+  {
+    title:
+      "Worked with the 2022 Diili winner to launch a greenfield platform where animal-service providers list offerings and customers book and pay online.",
+    href: "https://app.anyhau.fi/partners",
   },
 ];
 
@@ -32,7 +37,7 @@ export const highlightedEvents: Events[] = [
   {
     icon: <WorkIcon />,
     bgColor: colors.btnBg,
-    title: "Full Stack Developer – Tietoevry",
+    title: "Full Stack Developer – Tietoevry Oyj",
     when: "Espoo, 2023 – Present",
     details: (
       <>
@@ -71,7 +76,7 @@ export const highlightedEvents: Events[] = [
   {
     icon: <WorkIcon />,
     bgColor: colors.btnBg,
-    title: "Full Stack Developer – Anyhau",
+    title: "Full Stack Developer – Anyhau Oy",
     when: "Espoo, 2022 – 2023",
     details: (
       <>
@@ -122,7 +127,7 @@ export const allEvents: Events[] = [
   {
     icon: <WorkIcon />,
     bgColor: colors.btnBg,
-    title: "Full Stack Developer – Tietoevry",
+    title: "Full Stack Developer – Tietoevry Oyj",
     when: "Espoo, 2023 – Present",
     details: (
       <>
@@ -161,7 +166,7 @@ export const allEvents: Events[] = [
   {
     icon: <WorkIcon />,
     bgColor: colors.btnBg,
-    title: "Full Stack Developer – Anyhau",
+    title: "Full Stack Developer – Anyhau Oy",
     when: "Espoo, 2022 – 2023",
     details: (
       <>
