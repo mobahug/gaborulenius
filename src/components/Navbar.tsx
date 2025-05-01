@@ -85,7 +85,7 @@ const NavBar: React.FC = () => {
                 {/* Avatar on left */}
                 <MuiLink href="#home" underline="none">
                   <Avatar
-                    src="/profile.jpg"
+                    src="/parallaxMui/profile.jpg"
                     alt="Profile"
                     sx={{
                       width: 44,
@@ -128,7 +128,7 @@ const NavBar: React.FC = () => {
                 {/* Avatar and play/pause for desktop */}
                 <MuiLink href="#home" underline="none">
                   <Avatar
-                    src="/profile.jpg"
+                    src="/parallaxMui/profile.jpg"
                     alt="Profile"
                     sx={{
                       width: 44,

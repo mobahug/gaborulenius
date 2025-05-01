@@ -15,24 +15,27 @@ const breathe = keyframes`
   50%     { transform: translateY(-1px); }
 `;
 
-const Sprite = styled("div")(({ theme }) => ({
-  width: FRAME_WIDTH,
-  height: FRAME_HEIGHT,
-  backgroundImage: `url("/BirdSpriteBigIdle.png")`,
-  backgroundRepeat: "no-repeat",
-  backgroundSize: `auto 100%`, 
-  willChange: "background-position, transform",
-  position: "absolute",
-  bottom: "100%", 
-  right: theme.spacing(1),
-  marginBottom: "-30px",
-  pointerEvents: "none",
+const Sprite = styled("div")(props => {
+  const { theme } = props;
+  return {
+    width: FRAME_WIDTH,
+    height: FRAME_HEIGHT,
+    backgroundImage: `url("/parallaxMui/BirdSpriteBigIdle.png")`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: `auto 100%`,
+    willChange: "background-position, transform",
+    position: "absolute",
+    bottom: "100%",
+    right: theme.spacing(1),
+    marginBottom: "-30px",
+    pointerEvents: "none",
 
-  animation: `
-    ${flap}    1s   steps(${FRAME_COUNT}) infinite,
-    ${breathe} 2s   ease-in-out           infinite
-  `,
-}));
+    animation: `
+      ${flap}    1s   steps(${FRAME_COUNT}) infinite,
+      ${breathe} 2s   ease-in-out           infinite
+    `,
+  };
+});
 
 const BirdSpriteIdle: React.FC = () => <Sprite />;
 

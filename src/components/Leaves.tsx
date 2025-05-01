@@ -64,7 +64,7 @@ const Leaves: React.FC<LeavesProps> = ({ sx }) => {
         return (
           <LeafImg
             key={i}
-            src="/leaf1.png"
+            src="/parallaxMui/leaf1.png"
             animation={animation}
             left={left}
             size={size}

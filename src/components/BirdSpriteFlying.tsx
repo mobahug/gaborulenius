@@ -4,7 +4,7 @@ import { styled, keyframes } from "@mui/material/styles";
 const FRAME_COUNT = 8;
 const FRAME_W = 32;
 const FRAME_H = 32;
-const SHEET_W = FRAME_COUNT * FRAME_W; 
+const SHEET_W = FRAME_COUNT * FRAME_W;
 const flap = keyframes`
   from { background-position: 0 0; }
   to   { background-position: -${SHEET_W}px 0; }
@@ -15,25 +15,27 @@ const breathe = keyframes`
   50%     { transform: translateY(-2px); }
 `;
 
-const Sprite = styled("div")(({ theme }) => ({
-  width: FRAME_W,
-  height: FRAME_H,
-  position: "absolute",
-  bottom: "100%", 
-  right: theme.spacing(1),
-  marginBottom: "-3px", 
-  pointerEvents: "none",
-  willChange: "background-position, transform",
+const Sprite = styled("div")(({ theme }) => {
+  return {
+    width: FRAME_W,
+    height: FRAME_H,
+    position: "absolute",
+    bottom: "100%",
+    right: theme.spacing(1),
+    marginBottom: "-3px",
+    pointerEvents: "none",
+    willChange: "background-position, transform",
 
-  backgroundImage: `url("/BirdSpriteBigFlying.png")`,
-  backgroundRepeat: "no-repeat",
-  backgroundSize: `${SHEET_W}px ${FRAME_H}px`,
+    backgroundImage: `url("/parallaxMui/BirdSpriteBigFlying.png")`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: `${SHEET_W}px ${FRAME_H}px`,
 
-  animation: `
-    ${flap}    1s steps(${FRAME_COUNT})    infinite normal,
-    ${breathe} 2s   ease-in-out            infinite normal
-  `,
-}));
+    animation: `
+      ${flap}    1s steps(${FRAME_COUNT})    infinite normal,
+      ${breathe} 2s   ease-in-out            infinite normal
+    `,
+  };
+});
 
 const BirdSpriteFlying: React.FC = () => <Sprite />;
 
