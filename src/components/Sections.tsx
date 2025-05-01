@@ -86,13 +86,11 @@ export function HomeSection() {
             >
               Explore My Work
             </Button>
-
-            {/* Download button pointing to a file in public/ */}
             <Button
               variant="contained"
               component="a"
-              href="/GaborCV.pdf" // <-- path in public/
-              download // <-- tells browser to download
+              href="/GaborCV.pdf"
+              download
               startIcon={<FileDownloadIcon />}
             >
               Download my CV
