@@ -291,12 +291,12 @@ export function QualificationSection({
           }}
         >
           <Tab
-            label="Tab One"
+            label="Highlights"
             id="qualification-tab-0"
             aria-controls="qualification-tabpanel-0"
           />
           <Tab
-            label="Tab Two"
+            label="Timeline"
             id="qualification-tab-1"
             aria-controls="qualification-tabpanel-1"
           />
@@ -499,7 +499,11 @@ export function QualificationSection({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} sx={{ color: colors.accent }}>
+          <Button
+            variant="contained"
+            onClick={handleClose}
+            sx={{ color: colors.accent }}
+          >
             Close
           </Button>
         </DialogActions>
