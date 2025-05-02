@@ -198,20 +198,15 @@ export function ProjectsSection({
                 primary={<Typography variant="body1">{proj.title}</Typography>}
                 secondary={
                   proj.href ? (
-                    <Link
+                    <Button
+                      variant="contained"
+                      component="a"
                       href={proj.href}
                       target="_blank"
-                      underline="hover"
-                      sx={{
-                        display: "inline-block",
-                        maxWidth: 300,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
+                      disabled={!proj.href}
                     >
-                      {shorten(proj.href)}
-                    </Link>
+                      {"Read More"}
+                    </Button>
                   ) : (
                     <Typography
                       variant="body2"
@@ -618,7 +613,7 @@ export function ContactSection({
         <motion.div custom={4} variants={fadeUp}>
           <Button
             variant="contained"
-            href="https://linkedin.com/in/yourprofile"
+            href="https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/"
             target="_blank"
           >
             LinkedIn
@@ -647,12 +642,14 @@ export const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const shorten = (url: string) => {
-  try {
-    const u = new URL(url);
-    const path = u.pathname.split("/").filter(Boolean).slice(0, 2).join("/");
-    return path ? `${u.host}/${path}…` : u.host;
-  } catch {
-    return url;
-  }
-};
+// TODO: Uncomments once needed
+
+// const shorten = (url: string) => {
+//   try {
+//     const u = new URL(url);
+//     const path = u.pathname.split("/").filter(Boolean).slice(0, 2).join("/");
+//     return path ? `${u.host}/${path}…` : u.host;
+//   } catch {
+//     return url;
+//   }
+// };

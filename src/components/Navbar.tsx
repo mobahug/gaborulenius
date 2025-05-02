@@ -427,7 +427,7 @@ const NavBar: React.FC = () => {
           </IconButton>
           <IconButton
             component="a"
-            href="https://github.com/yourusername"
+            href="https://github.com/mobahug"
             target="_blank"
             aria-label="GitHub"
             sx={{ color: colors.textLight }}

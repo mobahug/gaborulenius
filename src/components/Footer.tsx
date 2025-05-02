@@ -102,28 +102,28 @@ export default function Footer({
             }}
           >
             <IconButton
-              href="https://linkedin.com/in/yourprofile"
+              href="https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/"
               target="_blank"
               aria-label="LinkedIn"
             >
               <LinkedInIcon fontSize="large" />
             </IconButton>
             <IconButton
-              href="https://github.com/yourusername"
+              href="https://github.com/mobahug"
               target="_blank"
               aria-label="GitHub"
             >
               <GitHubIcon fontSize="large" />
             </IconButton>
             <IconButton
-              href="https://instagram.com/yourhandle"
+              href="https://www.instagram.com/mobahug/"
               target="_blank"
               aria-label="Instagram"
             >
               <InstagramIcon fontSize="large" />
             </IconButton>
             <IconButton
-              href="https://youtube.com/@yourchannel"
+              href="https://www.youtube.com/@mobahug"
               target="_blank"
               aria-label="YouTube"
             >
