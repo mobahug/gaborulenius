@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 
-export const birdEnabledAtom = atom<boolean>(true);
+export const birdEnabledAtom = atom<boolean>(false);
 
 export const useBirdEffect = () => {
   const [birdEnabled, setBirdEnabled] = useAtom(birdEnabledAtom);

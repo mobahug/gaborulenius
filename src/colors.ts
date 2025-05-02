@@ -1,4 +1,3 @@
-// colors.ts
 const colors = {
   bgDark: "#1e2a20",
   textLight: "#f2f3ef",

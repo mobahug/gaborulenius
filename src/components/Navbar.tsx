@@ -19,6 +19,11 @@ import {
   Switch,
   Typography,
   Stack,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,6 +34,8 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import colors from "../colors";
 import { useBirdEffect } from "../hooks/useBirdEffect";
 import { useLeavesEffect } from "../hooks/useLeavesEffect";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { Transition } from "./Sections";
 
 const COVER_THRESHOLD = 300;
 
@@ -42,6 +49,14 @@ const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
+type TabKey = "effects" | "appearance" | "language";
+
+const tabConfig: { key: TabKey; label: string }[] = [
+  { key: "effects", label: "Effects" },
+  { key: "appearance", label: "Appearance" },
+  { key: "language", label: "Language" },
+];
+
 const NavBar: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -49,9 +64,13 @@ const NavBar: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const { birdEnabled, toggleBirdEffects } = useBirdEffect();
   const { leavesEnabled, toggleLeavesEffects } = useLeavesEffect();
-
   const toggleDrawer = (open: boolean) => () => setDrawerOpen(open);
   const handlePlayPause = () => setIsPlaying(p => !p);
+  const [open, setOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabKey>("effects");
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     if (!isMobile && drawerOpen) setDrawerOpen(false);
@@ -90,7 +109,6 @@ const NavBar: React.FC = () => {
                   justifyContent: "space-between",
                 }}
               >
-                {/* Avatar on left */}
                 <MuiLink href="#home" underline="none">
                   <Avatar
                     src="/parallaxMui/profile.jpg"
@@ -102,7 +120,6 @@ const NavBar: React.FC = () => {
                     }}
                   />
                 </MuiLink>
-                {/* Play/Pause center */}
                 <IconButton color="inherit" onClick={handlePlayPause}>
                   {isPlaying ? (
                     <PauseCircleOutlineIcon fontSize="large" />
@@ -133,18 +150,205 @@ const NavBar: React.FC = () => {
                     {label}
                   </MuiLink>
                 ))}
-                {/* Avatar and play/pause for desktop */}
-                <MuiLink href="#home" underline="none">
-                  <Avatar
-                    src="/parallaxMui/profile.jpg"
-                    alt="Profile"
+                <MuiLink underline="none">
+                  <Box
                     sx={{
+                      position: "relative",
                       width: 44,
                       height: 44,
-                      border: `2px solid ${colors.accent}`,
+                      borderRadius: "50%",
+                      overflow: "hidden",
                     }}
-                  />
+                  >
+                    <Avatar
+                      src="/parallaxMui/profile.jpg"
+                      alt="Profile"
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        border: `2px solid ${colors.accent}`,
+                      }}
+                    />
+
+                    {/* Overlay button */}
+                    <IconButton
+                      onClick={handleOpen}
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "50%",
+                        bgcolor: "rgba(0,0,0,0)",
+                        transition: "background-color 0.3s, opacity 0.5s",
+                        opacity: 0,
+                        "&:hover": {
+                          bgcolor: "rgba(0,0,0,0.5)",
+                          opacity: 1,
+                        },
+                      }}
+                    >
+                      <SettingsIcon />
+                    </IconButton>
+                  </Box>
                 </MuiLink>
+                <Dialog
+                  slots={{ transition: Transition }}
+                  slotProps={{
+                    transition: {
+                      timeout: { appear: 600, enter: 600, exit: 600 },
+                    },
+                    paper: {
+                      sx: {
+                        minWidth: 900,
+                      },
+                    },
+                  }}
+                  open={open}
+                  onClose={handleClose}
+                >
+                  <DialogTitle sx={{ py: 4, px: 0 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {/* Title + icon */}
+                      <Stack direction="row" alignItems="center" spacing={3}>
+                        <SettingsIcon sx={{ color: colors.textHeading }} />
+                        <Typography
+                          variant="h3"
+                          fontWeight={600}
+                          sx={{ color: colors.textHeading }}
+                        >
+                          Customize Your Jungle Walk
+                        </Typography>
+                      </Stack>
+
+                      {/* Close button */}
+                      <IconButton
+                        onClick={handleClose}
+                        aria-label="Close settings"
+                        sx={{
+                          color: colors.textLight,
+                          "&:hover": { color: colors.accentHover },
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </Box>
+
+                    {/* thin divider under title */}
+                  </DialogTitle>
+                  <Divider />
+                  <DialogContent dividers sx={{ py: 6 }}>
+                    <Box sx={{ display: "flex", minHeight: 320 }}>
+                      {/* Sidebar */}
+                      <List
+                        disablePadding
+                        sx={{
+                          width: 200,
+                        }}
+                      >
+                        <Divider orientation="vertical" flexItem />
+                        {tabConfig.map(({ key, label }) => (
+                          <ListItemButton
+                            sx={{
+                              borderTopLeftRadius: 10,
+                              borderBottomLeftRadius: 10,
+                            }}
+                            key={key}
+                            selected={activeTab === key}
+                            onClick={() => setActiveTab(key)}
+                          >
+                            <ListItemText primary={label} />
+                          </ListItemButton>
+                        ))}
+                      </List>
+                      <Divider orientation="vertical" flexItem />
+
+                      {/* Content panel */}
+                      <Box sx={{ flex: 1, px: 4, py: 2 }}>
+                        {activeTab === "effects" && (
+                          <Stack spacing={3}>
+                            <Typography variant="subtitle1">
+                              Bring the jungle to life around you—choose which
+                              ambient elements you’d like to accompany your
+                              journey.
+                            </Typography>
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={birdEnabled}
+                                  onChange={toggleBirdEffects}
+                                  color="primary"
+                                />
+                              }
+                              label="Bird Calls"
+                            />
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={leavesEnabled}
+                                  onChange={toggleLeavesEffects}
+                                  color="primary"
+                                />
+                              }
+                              label="Drifting Leaves"
+                            />
+                          </Stack>
+                        )}
+
+                        {activeTab === "appearance" && (
+                          <Stack spacing={3}>
+                            <Typography variant="subtitle1">
+                              Adjust the overall mood—daylight greens or the
+                              mystery of twilight.
+                            </Typography>
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={theme.palette.mode === "dark"}
+                                  onChange={() => {
+                                    /* toggleDarkMode() */
+                                  }}
+                                  color="primary"
+                                />
+                              }
+                              label="Nightfall Mode"
+                            />
+                            Comming soon...
+                          </Stack>
+                        )}
+
+                        {activeTab === "language" && (
+                          <Stack spacing={3}>
+                            <Typography variant="subtitle1">
+                              Select your language to guide you through the
+                              undergrowth.
+                            </Typography>
+                            {/* <LanguageSelect /> */}
+                            Comming soon...
+                          </Stack>
+                        )}
+                      </Box>
+                    </Box>
+                  </DialogContent>
+
+                  <DialogActions sx={{ pt: 6, px: 0, pb: 0 }}>
+                    <Button
+                      variant="contained"
+                      onClick={handleClose}
+                      size="large"
+                    >
+                      Close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+
                 <IconButton color="inherit" onClick={handlePlayPause}>
                   {isPlaying ? (
                     <PauseCircleOutlineIcon fontSize="large" />
