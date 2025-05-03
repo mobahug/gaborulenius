@@ -1,16 +1,14 @@
 import { useRef } from "react";
 import { Container, Stack } from "@mui/material";
 import BirdManager, { SectionInfo } from "./BirdManager";
-import {
-  HomeSection,
-  AboutSection,
-  ProjectsSection,
-  QualificationSection,
-  SkillsSection,
-  ContactSection,
-} from "./Sections";
 import { useBirdEffect } from "../hooks/useBirdEffect";
 import Footer from "./Footer";
+import { HomeSection } from "./sections/HomeSection";
+import { AboutSection } from "./sections/AboutSection";
+import { ProjectsSection } from "./sections/ProjectsSection";
+import { QualificationSection } from "./sections/QualificationSection";
+import { SkillsSection } from "./sections/SkillsSection";
+import { ContactSection } from "./sections/ContactSection";
 
 export default function Hero() {
   const homeRef = useRef<HTMLDivElement>(null!);
@@ -37,7 +35,6 @@ export default function Hero() {
     <>
       <Container maxWidth="md" sx={{ px: 0, position: "relative" }}>
         {birdEnabled ? <BirdManager sections={sections} /> : null}
-
         <Stack direction="column" spacing={40}>
           <HomeSection innerRef={homeRef} />
           <AboutSection innerRef={aboutRef} />
