@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   AppBar,
   Toolbar,
@@ -72,16 +72,37 @@ const NavBar: React.FC = () => {
   const { birdEnabled, toggleBirdEffects } = useBirdEffect();
   const { leavesEnabled, toggleLeavesEffects } = useLeavesEffect();
   const toggleDrawer = (open: boolean) => () => setDrawerOpen(open);
-  const handlePlayPause = () => setIsPlaying((p) => !p);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("effects");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handlePlayPause = () => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio("/parallaxMui/jungle-music.mp3");
+      audioRef.current.loop = true;
+      audioRef.current.preload = "auto";
+    }
+
+    if (audioRef.current.paused) {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => {
+          if (err.name !== "AbortError") console.error(err);
+        });
+    } else {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
 
   useEffect(() => {
     if (!isMobile && drawerOpen) setDrawerOpen(false);
   }, [isMobile, drawerOpen]);
+
+  useEffect(() => () => audioRef.current?.pause(), []);
 
   return (
     <>
