@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { Box, Typography, Avatar, Link } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import colors from "../colors";
+import { FormattedMessage } from "react-intl";
 
 const CoverSection: React.FC = () => {
   const coverRef = useRef<HTMLDivElement>(null);
@@ -70,7 +71,7 @@ const CoverSection: React.FC = () => {
             mb: 2,
           }}
         >
-          Hi, I'm Gabor
+          <FormattedMessage id="coverGreeting" values={{ name: "Gábor" }} />
         </Typography>
         <Link
           href="#home"
@@ -88,7 +89,7 @@ const CoverSection: React.FC = () => {
         >
           <ExpandMoreIcon fontSize="large" />
           <Typography variant="h4" color={colors.accentHover}>
-            Scroll Down
+            <FormattedMessage id="coverScroll" />
           </Typography>
         </Link>
         <style>

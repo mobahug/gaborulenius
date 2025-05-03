@@ -1,4 +1,3 @@
-// Footer MUI version with glassy nav styling
 import {
   Box,
   Container,
@@ -14,12 +13,14 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import colors from "../colors";
+import { FormattedMessage, useIntl } from "react-intl";
 
 export default function Footer({
   innerRef,
 }: {
   innerRef: React.Ref<HTMLDivElement>;
 }) {
+  const intl = useIntl();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -59,7 +60,7 @@ export default function Footer({
                 color: "rgba(242, 243, 239, 0.8)",
               }}
             >
-              Full stack developer
+              <FormattedMessage id="footerJobTitle" />
             </Typography>
           </Grid>
 
@@ -73,7 +74,7 @@ export default function Footer({
               color="inherit"
               variant="body1"
             >
-              About
+              <FormattedMessage id="footerNavAbout" />
             </Link>
             <Link
               href="#projects"
@@ -81,7 +82,7 @@ export default function Footer({
               color="inherit"
               variant="body1"
             >
-              Projects
+              <FormattedMessage id="footerNavProjects" />
             </Link>
             <Link
               href="mailto:you@example.com"
@@ -89,7 +90,7 @@ export default function Footer({
               color="inherit"
               variant="body1"
             >
-              Contact me
+              <FormattedMessage id="footerNavContact" />
             </Link>
           </Grid>
 
@@ -136,7 +137,10 @@ export default function Footer({
           className="footer-bottom"
           sx={{ textAlign: "center", fontSize: "0.9rem", mt: 6 }}
         >
-          © {new Date().getFullYear()} Gabor Ulenius. All rights reserved
+          {intl.formatMessage(
+            { id: "footerCopyright" },
+            { year: new Date().getFullYear() }
+          )}
         </Box>
       </Container>
     </Box>

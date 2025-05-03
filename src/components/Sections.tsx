@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Typography,
-  Link,
   List,
   ListItem,
   ListItemText,
@@ -35,6 +34,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import SearchIcon from "@mui/icons-material/Search";
+import EmailIcon from "@mui/icons-material/Email";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { motion } from "framer-motion";
 import colors from "../colors";
 import { useState } from "react";
@@ -43,10 +44,11 @@ import { TransitionProps } from "@mui/material/transitions";
 import {
   allEvents,
   categories,
-  Events,
+  TimelineEvent,
   highlightedEvents,
   projects,
 } from "../contexts";
+import { FormattedMessage } from "react-intl";
 
 export function HomeSection({
   innerRef,
@@ -73,39 +75,45 @@ export function HomeSection({
               color: colors.textHeading,
             }}
           >
-            Hello, I’m{" "}
-            <Box component="span" sx={{ color: "primary.main" }}>
-              Gábor
-            </Box>
+            <FormattedMessage
+              id="homeGreeting"
+              values={{
+                name: (
+                  <Box component="span" sx={{ color: "primary.main" }}>
+                    Gábor
+                  </Box>
+                ),
+              }}
+            />
           </Typography>
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
           <Typography variant="body1" sx={{ mb: 4 }}>
-            Full Stack Developer at Tietoevry Care, specializing in
-            cloud-native, AI-powered healthcare solutions.
+            <FormattedMessage id="homeSubtitle" />
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
           <Stack
             direction={isSmallScreen ? "column" : "row"}
             spacing={4}
-            justifyContent="center"
+            justifyContent="flex-end"
           >
             <Button
               variant="contained"
               href="#projects"
               startIcon={<SearchIcon />}
             >
-              Explore My Work
+              <FormattedMessage id="homeBtnExplore" />
             </Button>
             <Button
               variant="contained"
               component="a"
               href="/GaborCV.pdf"
+              target="_blank"
               download
               startIcon={<FileDownloadIcon />}
             >
-              Download my CV
+              <FormattedMessage id="homeBtnDownloadCv" />
             </Button>
           </Stack>
         </motion.div>
@@ -132,32 +140,22 @@ export function AboutSection({
             gutterBottom
             sx={{
               fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-
               color: colors.textHeading,
             }}
           >
-            About Me
+            <FormattedMessage id="aboutHeading" />
           </Typography>
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
           <Typography variant="body1">
-            Contributed to Finland’s largest healthcare data platform (HUS
-            DataLake), improving data accessibility. Proficient in React,
-            TypeScript, GraphQL, Node.js, Docker, Kubernetes, Terraform, and
-            Azure Cloud. Worked on LLM-based AI prototypes, including a demo at
-            ICT Days and a diagnostic tool piloted at the New Children’s
-            Hospital for faster symptom-based searches.
+            <FormattedMessage id="aboutBody" />
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
           <List>
-            {[
-              "📍 Finland, Espoo",
-              "🎓 Hive Helsinki Alumni",
-              "💼 2+ years professional work experience",
-            ].map(text => (
-              <ListItem key={text}>
-                <ListItemText primary={text} />
+            {["aboutLocation", "aboutEducation", "aboutExperience"].map(id => (
+              <ListItem key={id}>
+                <ListItemText primary={<FormattedMessage id={id} />} />
               </ListItem>
             ))}
           </List>
@@ -188,32 +186,35 @@ export function ProjectsSection({
               color: colors.textHeading,
             }}
           >
-            Projects
+            <FormattedMessage id="projectHeading" />
           </Typography>
         </motion.div>
-        {projects.map((proj, i) => (
-          <motion.div key={proj.title} custom={i + 2} variants={fadeUp}>
+        {projects.map(({ id, href }, i) => (
+          <motion.div key={id} custom={i + 2} variants={fadeUp}>
             <ListItem disableGutters sx={{ mb: 2 }}>
               <ListItemText
-                primary={<Typography variant="body1">{proj.title}</Typography>}
+                primary={
+                  <Typography variant="body1">
+                    <FormattedMessage id={id} />
+                  </Typography>
+                }
                 secondary={
-                  proj.href ? (
+                  href ? (
                     <Button
                       variant="contained"
                       component="a"
-                      href={proj.href}
+                      href={href}
                       target="_blank"
-                      disabled={!proj.href}
                     >
-                      {"Read More"}
+                      <FormattedMessage id="buttonReadMore" />
                     </Button>
                   ) : (
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ cursor: "default", opacity: 0.7 }}
+                      sx={{ opacity: 0.7 }}
                     >
-                      (no link available)
+                      <FormattedMessage id="noLinkAvailable" />
                     </Typography>
                   )
                 }
@@ -259,10 +260,12 @@ export function QualificationSection({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [open, setOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<Events | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(
+    null
+  );
   const [tabIndex, setTabIndex] = useState(0);
 
-  const handleOpen = (evt: Events) => () => {
+  const handleOpen = (evt: TimelineEvent) => () => {
     setSelectedEvent(evt);
     setOpen(true);
   };
@@ -286,12 +289,12 @@ export function QualificationSection({
           }}
         >
           <Tab
-            label="Highlights"
+            label={<FormattedMessage id="qualificationTabHighlights" />}
             id="qualification-tab-0"
             aria-controls="qualification-tabpanel-0"
           />
           <Tab
-            label="Timeline"
+            label={<FormattedMessage id="qualificationTabTimeline" />}
             id="qualification-tab-1"
             aria-controls="qualification-tabpanel-1"
           />
@@ -311,7 +314,7 @@ export function QualificationSection({
                   color: colors.textHeading,
                 }}
               >
-                Professional Highlights
+                <FormattedMessage id="qualificationHeadingHighlights" />
               </Typography>
             </motion.div>
             <Timeline
@@ -325,7 +328,7 @@ export function QualificationSection({
             >
               {highlightedEvents.map((evt, i) => (
                 <MotionTimelineItem
-                  key={evt.title}
+                  key={evt.titleId}
                   custom={i + 2}
                   variants={fadeUp}
                   initial="hidden"
@@ -353,11 +356,12 @@ export function QualificationSection({
                     sx={{ cursor: "pointer" }}
                   >
                     <Typography variant="h5" gutterBottom>
-                      {evt.title} <OpenInNewIcon sx={{ fontSize: 16 }} />
+                      <FormattedMessage id={evt.titleId} />{" "}
+                      <OpenInNewIcon sx={{ fontSize: 16 }} />
                     </Typography>
                     <Box
                       component="time"
-                      dateTime={evt.when}
+                      dateTime={evt.whenId}
                       sx={{
                         display: "inline-flex",
                         alignItems: "center",
@@ -367,7 +371,7 @@ export function QualificationSection({
                     >
                       <CalendarMonthIcon fontSize="small" />
                       <Typography variant="body2" color="primary.main">
-                        {evt.when}
+                        <FormattedMessage id={evt.whenId} />
                       </Typography>
                     </Box>
                   </TimelineContent>
@@ -391,7 +395,7 @@ export function QualificationSection({
                   color: colors.textHeading,
                 }}
               >
-                Full Timeline
+                <FormattedMessage id="qualificationHeadingTimeline" />
               </Typography>
             </motion.div>
             <Timeline
@@ -405,7 +409,7 @@ export function QualificationSection({
             >
               {allEvents.map((evt, i) => (
                 <MotionTimelineItem
-                  key={evt.title}
+                  key={evt.titleId}
                   custom={i + 2}
                   variants={fadeUp}
                   initial="hidden"
@@ -432,11 +436,12 @@ export function QualificationSection({
                     sx={{ cursor: "pointer" }}
                   >
                     <Typography variant="h5" gutterBottom>
-                      {evt.title} <OpenInNewIcon sx={{ fontSize: 16 }} />
+                      <FormattedMessage id={evt.titleId} />
+                      <OpenInNewIcon sx={{ fontSize: 16 }} />
                     </Typography>
                     <Box
                       component="time"
-                      dateTime={evt.when}
+                      dateTime={evt.whenId}
                       sx={{
                         display: "inline-flex",
                         alignItems: "center",
@@ -446,7 +451,7 @@ export function QualificationSection({
                     >
                       <CalendarMonthIcon fontSize="small" />
                       <Typography variant="body2" color="primary.main">
-                        {evt.when}
+                        <FormattedMessage id={evt.whenId} />
                       </Typography>
                     </Box>
                   </TimelineContent>
@@ -483,7 +488,7 @@ export function QualificationSection({
             color: colors.textHeading,
           }}
         >
-          {selectedEvent?.title}
+          <FormattedMessage id={selectedEvent?.titleId} />
           <IconButton onClick={handleClose} sx={{ color: colors.textLight }}>
             <CloseIcon />
           </IconButton>
@@ -499,7 +504,7 @@ export function QualificationSection({
             onClick={handleClose}
             sx={{ color: colors.accent }}
           >
-            Close
+            <FormattedMessage id="buttonClose" />
           </Button>
         </DialogActions>
       </Dialog>
@@ -528,14 +533,14 @@ export function SkillsSection({
               color: colors.textHeading,
             }}
           >
-            Skills &amp; Tools
+            <FormattedMessage id="skillsToolsHeading" />
           </Typography>
         </motion.div>
         <Stack spacing={4}>
           {categories.map((cat, idx) => (
-            <motion.div key={cat.label} custom={idx + 2} variants={fadeUp}>
+            <motion.div key={cat.id} custom={idx + 2} variants={fadeUp}>
               <Typography variant="h5" sx={{ color: colors.textLight, mb: 2 }}>
-                {cat.label}
+                <FormattedMessage id={cat.id} />
               </Typography>
               <Box
                 component="ul"
@@ -577,6 +582,9 @@ export function ContactSection({
 }: {
   innerRef: React.Ref<HTMLDivElement>;
 }) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <motion.div
       initial="hidden"
@@ -593,31 +601,38 @@ export function ContactSection({
               color: colors.textHeading,
             }}
           >
-            Let’s Connect
+            <FormattedMessage id="contactHeading" />
           </Typography>
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
           <Typography variant="body1">
-            Got an idea, project, or just want to geek out about nature and
-            design? Let’s talk!
-          </Typography>
-        </motion.div>
-        <motion.div custom={3} variants={fadeUp}>
-          <Typography variant="body1">
-            Email:{" "}
-            <Link href="mailto:gaborulenius@gmail.com">
-              gaborulenius@gmail.com
-            </Link>
+            <FormattedMessage id="contactIntro" />
           </Typography>
         </motion.div>
         <motion.div custom={4} variants={fadeUp}>
-          <Button
-            variant="contained"
-            href="https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/"
-            target="_blank"
+          <Stack
+            direction={isSmallScreen ? "column" : "row"}
+            spacing={4}
+            justifyContent="flex-end"
           >
-            LinkedIn
-          </Button>
+            <Button
+              variant="contained"
+              component="a"
+              href="mailto:gaborulenius@gmail.com"
+              startIcon={<EmailIcon />}
+            >
+              <FormattedMessage id="contactBtnEmail" />
+            </Button>
+            <Button
+              variant="contained"
+              component="a"
+              href="https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/"
+              target="_blank"
+              startIcon={<LinkedInIcon />}
+            >
+              <FormattedMessage id="contactBtnLinkedIn" />
+            </Button>
+          </Stack>
         </motion.div>
       </Paper>
     </motion.div>

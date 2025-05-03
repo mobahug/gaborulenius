@@ -24,6 +24,10 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  ButtonGroup,
+  ButtonGroupProps,
+  Theme,
+  SxProps,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -36,25 +40,28 @@ import { useBirdEffect } from "../hooks/useBirdEffect";
 import { useLeavesEffect } from "../hooks/useLeavesEffect";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Transition } from "./Sections";
+import { useAtom } from "jotai";
+import { localeAtom } from "../hooks/localeAtom";
+import { FormattedMessage } from "react-intl";
 
 const COVER_THRESHOLD = 300;
 
 type ShowAfterCoverProps = { children: React.ReactElement };
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills-tools" },
-  { label: "Contact", href: "#contact" },
+  { id: "navHome", href: "#home" },
+  { id: "navAbout", href: "#about" },
+  { id: "navProjects", href: "#projects" },
+  { id: "navSkills", href: "#skills-tools" },
+  { id: "navContact", href: "#contact" },
 ];
 
 type TabKey = "effects" | "appearance" | "language";
 
-const tabConfig: { key: TabKey; label: string }[] = [
-  { key: "effects", label: "Effects" },
-  { key: "appearance", label: "Appearance" },
-  { key: "language", label: "Language" },
+const tabConfig: { key: TabKey; id: string }[] = [
+  { key: "effects", id: "tabsEffects" },
+  { key: "appearance", id: "tabsAppearance" },
+  { key: "language", id: "tabsLanguage" },
 ];
 
 const NavBar: React.FC = () => {
@@ -134,9 +141,10 @@ const NavBar: React.FC = () => {
               </Box>
             ) : (
               <Box sx={{ display: "flex", alignItems: "center", gap: 6 }}>
-                {navLinks.map(({ label, href }) => (
+                <LanguageToggle />
+                {navLinks.map(({ id, href }) => (
                   <MuiLink
-                    key={label}
+                    key={id}
                     href={href}
                     underline="none"
                     sx={{
@@ -147,7 +155,7 @@ const NavBar: React.FC = () => {
                       "&:hover": { color: colors.accentHover },
                     }}
                   >
-                    {label}
+                    <FormattedMessage id={id} />
                   </MuiLink>
                 ))}
                 <MuiLink underline="none">
@@ -224,7 +232,7 @@ const NavBar: React.FC = () => {
                           fontWeight={600}
                           sx={{ color: colors.textHeading }}
                         >
-                          Customize Your Jungle Walk
+                          <FormattedMessage id="settingsTitle" />
                         </Typography>
                       </Stack>
 
@@ -254,7 +262,7 @@ const NavBar: React.FC = () => {
                         }}
                       >
                         <Divider orientation="vertical" flexItem />
-                        {tabConfig.map(({ key, label }) => (
+                        {tabConfig.map(({ key, id }) => (
                           <ListItemButton
                             sx={{
                               borderTopLeftRadius: 10,
@@ -264,7 +272,9 @@ const NavBar: React.FC = () => {
                             selected={activeTab === key}
                             onClick={() => setActiveTab(key)}
                           >
-                            <ListItemText primary={label} />
+                            <ListItemText
+                              primary={<FormattedMessage id={id} />}
+                            />
                           </ListItemButton>
                         ))}
                       </List>
@@ -274,11 +284,7 @@ const NavBar: React.FC = () => {
                       <Box sx={{ flex: 1, px: 4, py: 2 }}>
                         {activeTab === "effects" && (
                           <Stack spacing={3}>
-                            <Typography variant="subtitle1">
-                              Bring the jungle to life around you—choose which
-                              ambient elements you’d like to accompany your
-                              journey.
-                            </Typography>
+                            <FormattedMessage id="effectsSubtitle" />
                             <FormControlLabel
                               control={
                                 <Switch
@@ -287,7 +293,7 @@ const NavBar: React.FC = () => {
                                   color="primary"
                                 />
                               }
-                              label="Bird Calls"
+                              label={<FormattedMessage id="labelBirdCalls" />}
                             />
                             <FormControlLabel
                               control={
@@ -304,10 +310,7 @@ const NavBar: React.FC = () => {
 
                         {activeTab === "appearance" && (
                           <Stack spacing={3}>
-                            <Typography variant="subtitle1">
-                              Adjust the overall mood—daylight greens or the
-                              mystery of twilight.
-                            </Typography>
+                            <FormattedMessage id="appearanceSubtitle" />
                             <FormControlLabel
                               control={
                                 <Switch
@@ -318,20 +321,19 @@ const NavBar: React.FC = () => {
                                   color="primary"
                                 />
                               }
-                              label="Nightfall Mode"
+                              label={
+                                <FormattedMessage id="labelNightfallMode" />
+                              }
                             />
-                            Comming soon...
+                            <FormattedMessage id="comingSoon" />
                           </Stack>
                         )}
 
                         {activeTab === "language" && (
                           <Stack spacing={3}>
-                            <Typography variant="subtitle1">
-                              Select your language to guide you through the
-                              undergrowth.
-                            </Typography>
+                            <FormattedMessage id="languageSubtitle" />
                             {/* <LanguageSelect /> */}
-                            Comming soon...
+                            <LanguageToggle size="large" />
                           </Stack>
                         )}
                       </Box>
@@ -344,7 +346,7 @@ const NavBar: React.FC = () => {
                       onClick={handleClose}
                       size="large"
                     >
-                      Close
+                      <FormattedMessage id="buttonClose" />
                     </Button>
                   </DialogActions>
                 </Dialog>
@@ -394,16 +396,15 @@ const NavBar: React.FC = () => {
           </IconButton>
         </Box>
         <List disablePadding>
-          {navLinks.map(({ label, href }) => (
-            <ListItem key={label} disablePadding>
+          {navLinks.map(({ id, href }) => (
+            <ListItem key={id} disablePadding>
               <ListItemButton
                 component="a"
                 href={href}
                 onClick={toggleDrawer(false)}
-                sx={{ py: 2 }}
               >
                 <ListItemText
-                  primary={label}
+                  primary={<FormattedMessage id={id} />}
                   slotProps={{
                     primary: { fontWeight: "bold", color: colors.textLight },
                   }}
@@ -437,7 +438,9 @@ const NavBar: React.FC = () => {
         </Box>
         <Divider sx={{ bgcolor: colors.dividerBg, my: 2 }} />
         <Box sx={{ display: "flex", justifyContent: "flex-start", p: 3 }}>
-          <Typography variant="h4">Settings</Typography>
+          <Typography variant="h4">
+            <FormattedMessage id="headingSettings" />
+          </Typography>
         </Box>
         <Stack pl={3}>
           <FormControlLabel
@@ -448,7 +451,7 @@ const NavBar: React.FC = () => {
                 color="primary"
               />
             }
-            label="Bird"
+            label={<FormattedMessage id="labelBird" />}
           />
           <FormControlLabel
             control={
@@ -458,8 +461,9 @@ const NavBar: React.FC = () => {
                 color="primary"
               />
             }
-            label="Leaves"
+            label={<FormattedMessage id="labelLeaves" />}
           />
+          <LanguageToggle size="small" />
         </Stack>
       </SwipeableDrawer>
     </>
@@ -485,5 +489,30 @@ function ShowAfterCover({ children }: ShowAfterCoverProps) {
     >
       {children}
     </Slide>
+  );
+}
+
+type LanguageToggleProps = Omit<ButtonGroupProps, "onChange"> & {
+  sx?: SxProps<Theme>;
+};
+
+export function LanguageToggle({ sx, size = "small" }: LanguageToggleProps) {
+  const [locale, setLocale] = useAtom(localeAtom);
+
+  return (
+    <ButtonGroup size={size} aria-label="language switcher" sx={sx}>
+      <Button
+        onClick={() => setLocale("en")}
+        variant={locale === "en" ? "contained" : "outlined"}
+      >
+        EN
+      </Button>
+      <Button
+        onClick={() => setLocale("fi")}
+        variant={locale === "fi" ? "contained" : "outlined"}
+      >
+        FI
+      </Button>
+    </ButtonGroup>
   );
 }
