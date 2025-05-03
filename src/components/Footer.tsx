@@ -139,7 +139,7 @@ export default function Footer({
         >
           {intl.formatMessage(
             { id: "footerCopyright" },
-            { year: new Date().getFullYear() }
+            { year: new Date().getFullYear() },
           )}
         </Box>
       </Container>

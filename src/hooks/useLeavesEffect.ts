@@ -6,7 +6,7 @@ export const useLeavesEffect = () => {
   const [leavesEnabled, setLeavesEnabled] = useAtom(leavesEnabledAtom);
 
   const toggleLeavesEffects = () => {
-    setLeavesEnabled(prev => !prev);
+    setLeavesEnabled((prev) => !prev);
   };
 
   return {

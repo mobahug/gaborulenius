@@ -72,7 +72,7 @@ const NavBar: React.FC = () => {
   const { birdEnabled, toggleBirdEffects } = useBirdEffect();
   const { leavesEnabled, toggleLeavesEffects } = useLeavesEffect();
   const toggleDrawer = (open: boolean) => () => setDrawerOpen(open);
-  const handlePlayPause = () => setIsPlaying(p => !p);
+  const handlePlayPause = () => setIsPlaying((p) => !p);
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("effects");
 

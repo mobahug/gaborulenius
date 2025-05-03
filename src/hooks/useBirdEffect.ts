@@ -6,7 +6,7 @@ export const useBirdEffect = () => {
   const [birdEnabled, setBirdEnabled] = useAtom(birdEnabledAtom);
 
   const toggleBirdEffects = () => {
-    setBirdEnabled(prev => !prev);
+    setBirdEnabled((prev) => !prev);
   };
 
   return {

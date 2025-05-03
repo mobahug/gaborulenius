@@ -153,11 +153,13 @@ export function AboutSection({
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
           <List>
-            {["aboutLocation", "aboutEducation", "aboutExperience"].map(id => (
-              <ListItem key={id}>
-                <ListItemText primary={<FormattedMessage id={id} />} />
-              </ListItem>
-            ))}
+            {["aboutLocation", "aboutEducation", "aboutExperience"].map(
+              (id) => (
+                <ListItem key={id}>
+                  <ListItemText primary={<FormattedMessage id={id} />} />
+                </ListItem>
+              ),
+            )}
           </List>
         </motion.div>
       </Paper>
@@ -227,7 +229,7 @@ export function ProjectsSection({
   );
 }
 
-const MotionTimelineItem = motion(TimelineItem);
+const MotionTimelineItem = motion.create(TimelineItem);
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -261,7 +263,7 @@ export function QualificationSection({
 
   const [open, setOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(
-    null
+    null,
   );
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -552,7 +554,7 @@ export function SkillsSection({
                   gap: 1.5,
                 }}
               >
-                {cat.items.map(skill => (
+                {cat.items.map((skill) => (
                   <Box component="li" key={skill}>
                     <Chip
                       label={skill}
@@ -652,7 +654,7 @@ export const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
   },
-  ref: React.Ref<unknown>
+  ref: React.Ref<unknown>,
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });

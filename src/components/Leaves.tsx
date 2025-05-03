@@ -33,7 +33,7 @@ interface LeafProps {
   delay: number;
 }
 const LeafImg = styled("img", {
-  shouldForwardProp: prop =>
+  shouldForwardProp: (prop) =>
     !["animation", "left", "size", "delay"].includes(prop as string),
 })<LeafProps>(({ animation, left, size, delay }) => ({
   position: "absolute",

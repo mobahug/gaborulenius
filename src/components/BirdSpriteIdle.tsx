@@ -15,7 +15,7 @@ const breathe = keyframes`
   50%     { transform: translateY(-1px); }
 `;
 
-const Sprite = styled("div")(props => {
+const Sprite = styled("div")((props) => {
   const { theme } = props;
   return {
     width: FRAME_WIDTH,
