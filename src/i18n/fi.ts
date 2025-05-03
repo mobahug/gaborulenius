@@ -42,7 +42,7 @@ export default {
   projectMedicalPocTitle:
     "Toteutin tekoäly-PoC:n, joka nopeuttaa lääkäreiden diagnoosia lääketieteellisten asiakirjojen analyysillä",
   projectIctDaysTitle:
-    "Kehitin LLM-pohjaisen tekoälyratkaisun ICT Days -tapahtumaan, Suomen suurimpaan sote-IT-tilaisuuteen",
+    "Kehitin LLM-pohjaisen tekoälyratkaisun ATK-päivät -tapahtumaan, Suomen suurimpaan sote-IT-tilaisuuteen",
   projectAnyhauTitle:
     "Tein yhteistyötä vuoden 2022 Diili-voittajan kanssa uuden alustan lanseeraamiseksi, jossa eläinpalvelujen tarjoajat voivat listata palvelunsa ja asiakkaat varata sekä maksaa verkossa",
   /* ---------- Aputekstit ---------- */
