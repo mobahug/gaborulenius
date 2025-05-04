@@ -116,7 +116,8 @@ const NavBar: React.FC = () => {
             boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
             backdropFilter: "blur(10px)",
             backgroundColor: colors.navBg,
-            height: isMobile ? "72px" : "80px",
+            height: isMobile ? "72px" : "64px",
+            py: 0,
             justifyContent: "center",
           }}
         >
@@ -125,6 +126,7 @@ const NavBar: React.FC = () => {
             sx={{
               minHeight: "72px",
               px: 3.5,
+              py: 0,
               justifyContent: isMobile ? "space-between" : "center",
             }}
           >
@@ -161,7 +163,7 @@ const NavBar: React.FC = () => {
                 </IconButton>
               </Box>
             ) : (
-              <Box sx={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <LanguageToggle />
                 {navLinks.map(({ id, href }) => (
                   <MuiLink
@@ -169,8 +171,8 @@ const NavBar: React.FC = () => {
                     href={href}
                     underline="none"
                     sx={{
-                      fontSize: "1.125rem",
-                      fontWeight: 600,
+                      fontSize: "0.9rem",
+                      fontWeight: 700,
                       color: colors.textLight,
                       position: "relative",
                       "&:hover": { color: colors.accentHover },
@@ -183,8 +185,8 @@ const NavBar: React.FC = () => {
                   <Box
                     sx={{
                       position: "relative",
-                      width: 44,
-                      height: 44,
+                      width: 35,
+                      height: 35,
                       borderRadius: "50%",
                       overflow: "hidden",
                     }}
@@ -193,8 +195,8 @@ const NavBar: React.FC = () => {
                       src="/parallaxMui/profile.jpg"
                       alt="Profile"
                       sx={{
-                        width: "100%",
-                        height: "100%",
+                        width: 35,
+                        height: 35,
                         border: `2px solid ${colors.accent}`,
                       }}
                     />
@@ -230,7 +232,8 @@ const NavBar: React.FC = () => {
                     },
                     paper: {
                       sx: {
-                        minWidth: 900,
+                        minWidth: 750,
+                        py: 1,
                       },
                     },
                   }}
@@ -249,7 +252,7 @@ const NavBar: React.FC = () => {
                       <Stack direction="row" alignItems="center" spacing={3}>
                         <SettingsIcon sx={{ color: colors.textHeading }} />
                         <Typography
-                          variant="h3"
+                          variant="h6"
                           fontWeight={600}
                           sx={{ color: colors.textHeading }}
                         >
@@ -273,13 +276,13 @@ const NavBar: React.FC = () => {
                     {/* thin divider under title */}
                   </DialogTitle>
                   <Divider />
-                  <DialogContent dividers sx={{ py: 6 }}>
-                    <Box sx={{ display: "flex", minHeight: 320 }}>
+                  <DialogContent dividers>
+                    <Box sx={{ display: "flex", minHeight: 220 }}>
                       {/* Sidebar */}
                       <List
                         disablePadding
                         sx={{
-                          width: 200,
+                          width: 150,
                         }}
                       >
                         <Divider orientation="vertical" flexItem />
@@ -354,14 +357,14 @@ const NavBar: React.FC = () => {
                           <Stack spacing={3}>
                             <FormattedMessage id="languageSubtitle" />
                             {/* <LanguageSelect /> */}
-                            <LanguageToggle size="large" />
+                            <LanguageToggle />
                           </Stack>
                         )}
                       </Box>
                     </Box>
                   </DialogContent>
 
-                  <DialogActions sx={{ pt: 6, px: 0, pb: 0 }}>
+                  <DialogActions>
                     <Button
                       variant="contained"
                       onClick={handleClose}
@@ -374,9 +377,9 @@ const NavBar: React.FC = () => {
 
                 <IconButton color="inherit" onClick={handlePlayPause}>
                   {isPlaying ? (
-                    <PauseCircleOutlineIcon fontSize="large" />
+                    <PauseCircleOutlineIcon sx={{ fontSize: 32 }} />
                   ) : (
-                    <PlayCircleOutlineIcon fontSize="large" />
+                    <PlayCircleOutlineIcon sx={{ fontSize: 32 }} />
                   )}
                 </IconButton>
               </Box>
@@ -484,7 +487,7 @@ const NavBar: React.FC = () => {
             }
             label={<FormattedMessage id="labelLeaves" />}
           />
-          <LanguageToggle size="small" />
+          <LanguageToggle />
         </Stack>
       </SwipeableDrawer>
     </>
@@ -521,7 +524,19 @@ export function LanguageToggle({ sx, size = "small" }: LanguageToggleProps) {
   const [locale, setLocale] = useAtom(localeAtom);
 
   return (
-    <ButtonGroup size={size} aria-label="language switcher" sx={sx}>
+    <ButtonGroup
+      size={size}
+      aria-label="language switcher"
+      variant="contained"
+      sx={{
+        "& .MuiButton-root": {
+          px: 1,
+          py: 1,
+          fontSize: "0.9rem",
+        },
+        ...sx,
+      }}
+    >
       <Button
         onClick={() => setLocale("en")}
         variant={locale === "en" ? "contained" : "outlined"}

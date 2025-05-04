@@ -20,20 +20,26 @@ export function ContactSection({
 }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="contact" ref={innerRef}>
+      <Paper
+        id="contact"
+        ref={innerRef}
+        sx={{
+          minWidth: isSmallScreen ? null : 700,
+          width: { xs: "100%", md: "80%" },
+          mx: "auto",
+        }}
+      >
         <motion.div custom={1} variants={fadeUp}>
           <Typography
-            variant="h2"
+            variant="h4"
             gutterBottom
             sx={{
-              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
               color: colors.textHeading,
             }}
           >

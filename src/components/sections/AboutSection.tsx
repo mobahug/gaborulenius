@@ -15,13 +15,16 @@ export const AboutSection = ({
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="about" ref={innerRef}>
+      <Paper
+        id="about"
+        ref={innerRef}
+        sx={{ width: { xs: "100%", md: "80%" }, mx: "auto" }}
+      >
         <motion.div custom={1} variants={fadeUp}>
           <Typography
-            variant="h2"
+            variant="h4"
             gutterBottom
             sx={{
-              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
               color: colors.textHeading,
             }}
           >

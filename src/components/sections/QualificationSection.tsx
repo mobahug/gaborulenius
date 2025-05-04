@@ -82,7 +82,11 @@ export const QualificationSection = ({
   };
   return (
     <>
-      <Paper id="qualification" ref={innerRef} sx={{ pt: 0 }}>
+      <Paper
+        id="qualification"
+        ref={innerRef}
+        sx={{ pt: 0, width: { xs: "100%", md: "80%" }, mx: "auto" }}
+      >
         <Tabs
           value={tabIndex}
           onChange={handleTabChange}
@@ -112,10 +116,9 @@ export const QualificationSection = ({
           >
             <motion.div custom={1} variants={fadeUp}>
               <Typography
-                variant="h2"
+                variant="h4"
                 gutterBottom
                 sx={{
-                  fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
                   color: colors.textHeading,
                 }}
               >
@@ -160,7 +163,11 @@ export const QualificationSection = ({
                     onClick={handleOpen(evt)}
                     sx={{ cursor: "pointer" }}
                   >
-                    <Typography variant="h5" gutterBottom>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ fontWeight: 700 }}
+                      gutterBottom
+                    >
                       <FormattedMessage id={evt.titleId} />{" "}
                       <OpenInNewIcon sx={{ fontSize: 16 }} />
                     </Typography>
@@ -174,10 +181,10 @@ export const QualificationSection = ({
                         color: "primary.main",
                       }}
                     >
-                      <CalendarMonthIcon fontSize="small" />
-                      <Typography variant="body2" color="primary.main">
+                      <CalendarMonthIcon sx={{ fontSize: 18 }} />
+                      <Box component="span" sx={{ fontSize: "0.9rem" }}>
                         <FormattedMessage id={evt.whenId} />
-                      </Typography>
+                      </Box>
                     </Box>
                   </TimelineContent>
                 </MotionTimelineItem>
@@ -193,10 +200,9 @@ export const QualificationSection = ({
           >
             <motion.div custom={1} variants={fadeUp}>
               <Typography
-                variant="h2"
+                variant="h4"
                 gutterBottom
                 sx={{
-                  fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
                   color: colors.textHeading,
                 }}
               >
@@ -240,7 +246,11 @@ export const QualificationSection = ({
                     onClick={handleOpen(evt)}
                     sx={{ cursor: "pointer" }}
                   >
-                    <Typography variant="h5" gutterBottom>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ fontWeight: 700 }}
+                      gutterBottom
+                    >
                       <FormattedMessage id={evt.titleId} />
                       <OpenInNewIcon sx={{ fontSize: 16 }} />
                     </Typography>
@@ -254,10 +264,10 @@ export const QualificationSection = ({
                         color: "primary.main",
                       }}
                     >
-                      <CalendarMonthIcon fontSize="small" />
-                      <Typography variant="body2" color="primary.main">
+                      <CalendarMonthIcon sx={{ fontSize: 18 }} />
+                      <Box component="span" sx={{ fontSize: "0.9rem" }}>
                         <FormattedMessage id={evt.whenId} />
-                      </Typography>
+                      </Box>
                     </Box>
                   </TimelineContent>
                 </MotionTimelineItem>
@@ -277,7 +287,7 @@ export const QualificationSection = ({
           transition: { timeout: { appear: 600, enter: 600, exit: 600 } },
           paper: {
             sx: {
-              maxWidth: "900px",
+              maxWidth: "750px",
             },
           },
         }}

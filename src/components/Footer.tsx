@@ -48,7 +48,7 @@ export default function Footer({
           <Grid size={{ xs: 12, sm: 6, md: 4 }}>
             <Typography
               fontWeight={theme.typography.fontWeightBold}
-              variant="h3"
+              variant="h4"
             >
               Gabor
               <br />
@@ -107,28 +107,28 @@ export default function Footer({
               target="_blank"
               aria-label="LinkedIn"
             >
-              <LinkedInIcon fontSize="large" />
+              <LinkedInIcon sx={{ fontSize: 32 }} />
             </IconButton>
             <IconButton
               href="https://github.com/mobahug"
               target="_blank"
               aria-label="GitHub"
             >
-              <GitHubIcon fontSize="large" />
+              <GitHubIcon sx={{ fontSize: 32 }} />
             </IconButton>
             <IconButton
               href="https://www.instagram.com/mobahug/"
               target="_blank"
               aria-label="Instagram"
             >
-              <InstagramIcon fontSize="large" />
+              <InstagramIcon sx={{ fontSize: 32 }} />
             </IconButton>
             <IconButton
               href="https://www.youtube.com/@mobahug"
               target="_blank"
               aria-label="YouTube"
             >
-              <YouTubeIcon fontSize="large" />
+              <YouTubeIcon sx={{ fontSize: 32 }} />
             </IconButton>
           </Grid>
         </Grid>

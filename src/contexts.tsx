@@ -27,7 +27,7 @@ export const projects = [
 
 export const highlightedEvents: TimelineEvent[] = [
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventTietoevryTitle",
     whenId: "eventTietoevryWhen",
@@ -68,7 +68,7 @@ export const highlightedEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventAnyhauTitle",
     whenId: "eventAnyhauWhen",
@@ -81,7 +81,7 @@ export const highlightedEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <SchoolIcon />,
+    icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventHiveTitle",
     whenId: "eventHiveWhen",
@@ -94,7 +94,7 @@ export const highlightedEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <SchoolIcon />,
+    icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventSataEduTitle",
     whenId: "eventSataEduWhen",
@@ -111,7 +111,7 @@ export const highlightedEvents: TimelineEvent[] = [
 
 export const allEvents: TimelineEvent[] = [
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventTietoevryTitle",
     whenId: "eventTietoevryWhen",
@@ -152,7 +152,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventAnyhauTitle",
     whenId: "eventAnyhauWhen",
@@ -165,7 +165,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <SchoolIcon />,
+    icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventHiveTitle",
     whenId: "eventHiveWhen",
@@ -178,7 +178,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventTekijaRentTitle",
     whenId: "eventTekijaRentWhen",
@@ -191,7 +191,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventKotipalveluTitle",
     whenId: "eventKotipalveluWhen",
@@ -207,7 +207,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventLumundooTitle",
     whenId: "eventLumundooWhen",
@@ -220,7 +220,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventAaltovoimaTitle",
     whenId: "eventAaltovoimaWhen",
@@ -233,7 +233,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventEnersenseTitle",
     whenId: "eventEnersenseWhen",
@@ -246,7 +246,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <WorkIcon />,
+    icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventDeltamarinTitle",
     whenId: "eventDeltamarinWhen",
@@ -259,7 +259,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <SchoolIcon />,
+    icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventSataEduTitle",
     whenId: "eventSataEduWhen",
@@ -273,7 +273,7 @@ export const allEvents: TimelineEvent[] = [
     ),
   },
   {
-    icon: <SchoolIcon />,
+    icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
     bgColor: colors.btnBg,
     titleId: "eventBkszcTitle",
     whenId: "eventBkszcWhen",

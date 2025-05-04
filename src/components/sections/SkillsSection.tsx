@@ -16,13 +16,16 @@ export const SkillsSection = ({
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="skills-tools" ref={innerRef}>
+      <Paper
+        id="skills-tools"
+        ref={innerRef}
+        sx={{ width: { xs: "100%", md: "80%" }, mx: "auto" }}
+      >
         <motion.div custom={1} variants={fadeUp}>
           <Typography
-            variant="h2"
+            variant="h4"
             gutterBottom
             sx={{
-              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
               color: colors.textHeading,
             }}
           >
@@ -32,7 +35,7 @@ export const SkillsSection = ({
         <Stack spacing={4}>
           {categories.map((cat, idx) => (
             <motion.div key={cat.id} custom={idx + 2} variants={fadeUp}>
-              <Typography variant="h5" sx={{ color: colors.textLight, mb: 2 }}>
+              <Typography variant="h6" sx={{ color: colors.textLight, mb: 2 }}>
                 <FormattedMessage id={cat.id} />
               </Typography>
               <Box

@@ -54,8 +54,8 @@ const CoverSection: React.FC = () => {
           alt="Gabor"
           src="/parallaxMui/profile.jpg"
           sx={{
-            width: { xs: 140, sm: 180, md: 200 },
-            height: { xs: 140, sm: 180, md: 200 },
+            width: { xs: 140, sm: 150, md: 160 },
+            height: { xs: 140, sm: 150, md: 160 },
             mb: 5,
             mx: "auto",
             borderRadius: "50%",
@@ -88,7 +88,7 @@ const CoverSection: React.FC = () => {
           }}
         >
           <ExpandMoreIcon fontSize="large" />
-          <Typography variant="h4" color={colors.accentHover}>
+          <Typography variant="h5" color={colors.accentHover}>
             <FormattedMessage id="coverScroll" />
           </Typography>
         </Link>

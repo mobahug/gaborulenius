@@ -35,7 +35,7 @@ export default function Hero() {
     <>
       <Container maxWidth="md" sx={{ px: 0, position: "relative" }}>
         {birdEnabled ? <BirdManager sections={sections} /> : null}
-        <Stack direction="column" spacing={40}>
+        <Stack direction="column" spacing={40} sx={{ alignItems: "center" }}>
           <HomeSection innerRef={homeRef} />
           <AboutSection innerRef={aboutRef} />
           <ProjectsSection innerRef={projectsRef} />

@@ -20,22 +20,23 @@ export const HomeSection = ({
   innerRef: React.Ref<HTMLDivElement>;
 }) => {
   const theme = useTheme();
-
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      <Paper id="home" ref={innerRef}>
+      <Paper
+        id="home"
+        ref={innerRef}
+        sx={{ width: { xs: "100%", md: "80%" }, mx: "auto" }}
+      >
         <motion.div custom={1} variants={fadeUp}>
           <Typography
-            variant="h3"
+            variant="h4"
             gutterBottom
             sx={{
-              fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
               color: colors.textHeading,
             }}
           >
