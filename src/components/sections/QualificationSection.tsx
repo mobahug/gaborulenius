@@ -49,7 +49,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`qualification-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 }

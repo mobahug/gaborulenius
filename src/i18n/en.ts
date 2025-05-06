@@ -31,15 +31,15 @@ export default {
   /* ---------- About titles ---------- */
   aboutHeading: "About Me",
   aboutBody:
-    "Contributed to Finland’s largest healthcare data platform (HUS DataLake), improving data accessibility. Proficient in React, TypeScript, GraphQL, Node.js, Docker, Kubernetes, Terraform, and Azure Cloud. Worked on LLM-based AI prototypes, including a demo at ICT Days and a diagnostic tool piloted at the New Children’s Hospital for faster symptom-based searches.",
-  aboutLocation: "📍 Finland, Espoo",
-  aboutEducation: "🎓 Hive Helsinki Alumni",
-  aboutExperience: "💼 2+ years professional work experience",
+    "Contributed to Finland’s largest healthcare data platform (HUS DataLake), improving data accessibility. Proficient in <b>React</b>, <b>TypeScript</b>, <b>GraphQL</b>, <b>Node.js</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, and <b>Azure Cloud</b>. Worked on LLM-based AI prototypes, including a demo at ICT Days and a diagnostic tool piloted at the New Children’s Hospital for faster symptom-based searches.",
+  aboutLocation: "Finland, Espoo",
+  aboutEducation: "Hive Helsinki Alumni",
+  aboutExperience: "2+ years professional work experience",
   /* ---------- Project titles ---------- */
   projectHusDatalakeTitle:
     "Contributing to the HUS DataLake platform for real-time healthcare data access",
   projectMedicalPocTitle:
-    "Built an AI PoC to assist doctors in faster diagnosis via medical-document analysis",
+    "Built an AI PoC for Helsinki’s New Children’s Hospital, assisting doctors in faster diagnosis through medical-document analysis",
   projectIctDaysTitle:
     "Developed an LLM-based AI solution for ICT Days, Finland’s largest healthcare-tech event",
   projectAnyhauTitle:

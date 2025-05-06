@@ -12,17 +12,33 @@ export type TimelineEvent = {
   details: React.ReactNode;
 };
 
-export const projects = [
+export type Project = {
+  id: string;
+  hrefEN?: string;
+  hrefFI?: string;
+};
+
+export const projects: Project[] = [
   {
     id: "projectHusDatalakeTitle",
-    href: "https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/",
+    hrefEN:
+      "https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/",
+    hrefFI:
+      "https://www.tietoevry.com/fi/asiakkaitamme/2019/HUS-kehittaa-kliinisen-datan-hyodyntamista-tietoallas-ratkaisulla/",
   },
   {
     id: "projectMedicalPocTitle",
-    href: "https://www.tietoevry.com/fi/asiakkaitamme/2024/generatiivinen-tekoaly-auttaa-kliinikoita-paatoksenteossa-uudessa-lastensairaalassa/",
+    hrefEN:
+      "https://www.tietoevry.com/en/success-stories/2024/generative-ai-pilot-assists-clinicians-at-new-childrens-hospital/",
+    hrefFI:
+      "https://www.tietoevry.com/fi/asiakkaitamme/2024/generatiivinen-tekoaly-auttaa-kliinikoita-paatoksenteossa-uudessa-lastensairaalassa/",
   },
   { id: "projectIctDaysTitle" },
-  { id: "projectAnyhauTitle", href: "https://app.anyhau.fi/partners" },
+  {
+    id: "projectAnyhauTitle",
+    hrefEN: "https://app.anyhau.fi/en/partners",
+    hrefFI: "https://app.anyhau.fi/partners",
+  },
 ];
 
 export const highlightedEvents: TimelineEvent[] = [

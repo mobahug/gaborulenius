@@ -1,8 +1,35 @@
-import { Paper, Typography, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Box,
+} from "@mui/material";
+import SchoolIcon from "@mui/icons-material/School";
+import WorkIcon from "@mui/icons-material/Work";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
 import { fadeUp } from "../Sections";
 import colors from "../../colors";
+
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+
+const META_ITEMS = [
+  {
+    id: "aboutExperience",
+    icon: <WorkIcon sx={{ color: colors.accent }} />,
+  },
+  {
+    id: "aboutEducation",
+    icon: <SchoolIcon sx={{ color: colors.accent }} />,
+  },
+  {
+    id: "aboutLocation",
+    icon: <LocationOnIcon sx={{ color: colors.accent }} />,
+  },
+];
 
 export const AboutSection = ({
   innerRef,
@@ -24,27 +51,36 @@ export const AboutSection = ({
           <Typography
             variant="h4"
             gutterBottom
-            sx={{
-              color: colors.textHeading,
-            }}
+            sx={{ color: colors.textHeading }}
           >
             <FormattedMessage id="aboutHeading" />
           </Typography>
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
-          <Typography variant="body1">
-            <FormattedMessage id="aboutBody" />
+          <Typography variant="body1" sx={{ lineHeight: 1.5 }}>
+            <FormattedMessage
+              id="aboutBody"
+              values={{
+                b: (chunks: React.ReactNode) => (
+                  <Box
+                    component="span"
+                    sx={{ fontWeight: 600, color: colors.accent }}
+                  >
+                    {chunks}
+                  </Box>
+                ),
+              }}
+            />
           </Typography>
         </motion.div>
         <motion.div custom={3} variants={fadeUp}>
           <List>
-            {["aboutLocation", "aboutEducation", "aboutExperience"].map(
-              (id) => (
-                <ListItem key={id}>
-                  <ListItemText primary={<FormattedMessage id={id} />} />
-                </ListItem>
-              ),
-            )}
+            {META_ITEMS.map(({ id, icon }) => (
+              <ListItem key={id} disablePadding>
+                <ListItemIcon sx={{ minWidth: 36 }}>{icon}</ListItemIcon>
+                <ListItemText primary={<FormattedMessage id={id} />} />
+              </ListItem>
+            ))}
           </List>
         </motion.div>
       </Paper>

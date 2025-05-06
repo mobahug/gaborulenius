@@ -4,6 +4,8 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/Launch";
 import { motion } from "framer-motion";
@@ -11,12 +13,18 @@ import { FormattedMessage } from "react-intl";
 import { projects } from "../../contexts";
 import { fadeUp } from "../Sections";
 import colors from "../../colors";
+import { useAtomValue } from "jotai";
+import { localeAtom } from "../../hooks/localeAtom";
 
 export const ProjectsSection = ({
   innerRef,
 }: {
   innerRef: React.Ref<HTMLDivElement>;
 }) => {
+  const theme = useTheme();
+  const locale = useAtomValue(localeAtom);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <motion.div
       initial="hidden"
@@ -39,51 +47,57 @@ export const ProjectsSection = ({
             <FormattedMessage id="projectHeading" />
           </Typography>
         </motion.div>
-
         <List disablePadding>
-          {projects.map(({ id, href }, i) => (
-            <motion.div key={id} custom={i + 2} variants={fadeUp}>
-              <ListItemButton
-                component={href ? "a" : "div"}
-                href={href}
-                target="_blank"
-                alignItems="flex-start"
-                sx={{
-                  borderRadius: 1,
-                  transition: "background .25s, box-shadow .25s",
-                  "&:hover": {
-                    backgroundColor: href ? "rgba(255,255,255,.04)" : undefined,
-                    boxShadow: href ? "0 2px 8px rgba(0,0,0,.25)" : undefined,
-                  },
-                }}
-              >
-                <ListItemText
-                  primary={
-                    <Typography variant="body1">
-                      <FormattedMessage id={id} />
-                    </Typography>
-                  }
-                  secondary={
-                    !href && (
-                      <Typography variant="body2" color="text.secondary">
-                        <FormattedMessage id="noLinkAvailable" />
+          {projects.map(({ id, hrefEN, hrefFI }, i) => {
+            const href = locale === "fi" ? hrefFI : hrefEN;
+            return (
+              <motion.div key={id} custom={i + 2} variants={fadeUp}>
+                <ListItemButton
+                  component={href ? "a" : "div"}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  alignItems="flex-start"
+                  sx={{
+                    px: isSmallScreen ? 0 : null,
+                    borderRadius: 1,
+                    transition: "background .25s, box-shadow .25s",
+                    "&:hover": {
+                      backgroundColor: href
+                        ? "rgba(255,255,255,.04)"
+                        : undefined,
+                      boxShadow: href ? "0 2px 8px rgba(0,0,0,.25)" : undefined,
+                    },
+                  }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography variant="body1">
+                        <FormattedMessage id={id} />
                       </Typography>
-                    )
-                  }
-                />
-                {href && (
-                  <OpenInNewIcon
-                    sx={{
-                      ml: 1,
-                      fontSize: 20,
-                      color: colors.accent,
-                      flexShrink: 0,
-                    }}
+                    }
+                    secondary={
+                      !href && (
+                        <Typography variant="body2" color="text.secondary">
+                          <FormattedMessage id="noLinkAvailable" />
+                        </Typography>
+                      )
+                    }
                   />
-                )}
-              </ListItemButton>
-            </motion.div>
-          ))}
+                  {href && (
+                    <OpenInNewIcon
+                      sx={{
+                        ml: 1,
+                        fontSize: 20,
+                        color: colors.accent,
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+                </ListItemButton>
+              </motion.div>
+            );
+          })}
         </List>
       </Paper>
     </motion.div>

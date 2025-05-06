@@ -125,7 +125,7 @@ const NavBar: React.FC = () => {
             disableGutters
             sx={{
               minHeight: "72px",
-              px: 3.5,
+              px: 1.5,
               py: 0,
               justifyContent: isMobile ? "space-between" : "center",
             }}
@@ -529,6 +529,7 @@ export function LanguageToggle({ sx, size = "small" }: LanguageToggleProps) {
       aria-label="language switcher"
       variant="contained"
       sx={{
+        boxShadow: "none",
         "& .MuiButton-root": {
           px: 1,
           py: 1,
