@@ -4,8 +4,6 @@ import {
   List,
   ListItemButton,
   ListItemText,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/Launch";
 import { motion } from "framer-motion";
@@ -21,10 +19,7 @@ export const ProjectsSection = ({
 }: {
   innerRef: React.Ref<HTMLDivElement>;
 }) => {
-  const theme = useTheme();
   const locale = useAtomValue(localeAtom);
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
   return (
     <motion.div
       initial="hidden"
@@ -59,7 +54,6 @@ export const ProjectsSection = ({
                   rel="noopener noreferrer"
                   alignItems="flex-start"
                   sx={{
-                    px: isSmallScreen ? 0 : null,
                     borderRadius: 1,
                     transition: "background .25s, box-shadow .25s",
                     "&:hover": {
