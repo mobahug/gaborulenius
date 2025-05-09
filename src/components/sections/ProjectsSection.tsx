@@ -4,13 +4,15 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  useTheme,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/Launch";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
 import { projects } from "../../contexts";
 import { fadeUp } from "../Sections";
-import colors from "../../colors";
+import { colors as lightColors } from "../../colors";
+import { colors as darkColors } from "../../colorsDark";
 import { useAtomValue } from "jotai";
 import { localeAtom } from "../../hooks/localeAtom";
 
@@ -19,6 +21,7 @@ export const ProjectsSection = ({
 }: {
   innerRef: React.Ref<HTMLDivElement>;
 }) => {
+  const theme = useTheme();
   const locale = useAtomValue(localeAtom);
   return (
     <motion.div
@@ -32,13 +35,7 @@ export const ProjectsSection = ({
         sx={{ width: { xs: "100%", md: "80%" }, mx: "auto" }}
       >
         <motion.div custom={1} variants={fadeUp}>
-          <Typography
-            variant="h4"
-            sx={{
-              color: colors.textHeading,
-            }}
-            gutterBottom
-          >
+          <Typography variant="h4" gutterBottom>
             <FormattedMessage id="projectHeading" />
           </Typography>
         </motion.div>
@@ -83,7 +80,10 @@ export const ProjectsSection = ({
                       sx={{
                         ml: 1,
                         fontSize: 20,
-                        color: colors.accent,
+                        color:
+                          theme.palette.mode === "dark"
+                            ? darkColors.accent
+                            : lightColors.accent,
                         flexShrink: 0,
                       }}
                     />

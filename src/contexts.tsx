@@ -1,12 +1,12 @@
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
 import { Typography, List, ListItem, ListItemText } from "@mui/material";
-import colors from "./colors";
+import { colors as lightColors } from "./colors";
+import { colors as darkColors } from "./colorsDark";
 import { FormattedMessage } from "react-intl";
 
 export type TimelineEvent = {
   icon: React.ReactNode;
-  bgColor: string;
   titleId: string;
   whenId: string;
   details: React.ReactNode;
@@ -44,23 +44,40 @@ export const projects: Project[] = [
 export const highlightedEvents: TimelineEvent[] = [
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventTietoevryTitle",
     whenId: "eventTietoevryWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventTietoevryP1" />
           <FormattedMessage id="eventTietoevryP2" />
         </Typography>
-        <Typography sx={{ color: colors.textLight, fontWeight: 600 }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+            fontWeight: 600,
+          }}
+        >
           <FormattedMessage id="eventTietoevryNotable" />
         </Typography>
         <List
           sx={{
             listStyle: "disc",
             pl: 4,
-            color: colors.textLight,
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
             "& .MuiListItem-root": { display: "list-item", p: 0 },
           }}
         >
@@ -85,12 +102,18 @@ export const highlightedEvents: TimelineEvent[] = [
   },
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventAnyhauTitle",
     whenId: "eventAnyhauWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventAnyhauP1" />
         </Typography>
       </>
@@ -98,12 +121,18 @@ export const highlightedEvents: TimelineEvent[] = [
   },
   {
     icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventHiveTitle",
     whenId: "eventHiveWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventHiveP1" />
         </Typography>
       </>
@@ -111,12 +140,18 @@ export const highlightedEvents: TimelineEvent[] = [
   },
   {
     icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventSataEduTitle",
     whenId: "eventSataEduWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventSataEduP1" />
           <FormattedMessage id="eventSataEduP2" />
         </Typography>
@@ -128,23 +163,40 @@ export const highlightedEvents: TimelineEvent[] = [
 export const allEvents: TimelineEvent[] = [
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventTietoevryTitle",
     whenId: "eventTietoevryWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventTietoevryP1" />
           <FormattedMessage id="eventTietoevryP2" />
         </Typography>
-        <Typography sx={{ color: colors.textLight, fontWeight: 600 }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+            fontWeight: 600,
+          }}
+        >
           <FormattedMessage id="eventTietoevryNotable" />
         </Typography>
         <List
           sx={{
             listStyle: "disc",
             pl: 4,
-            color: colors.textLight,
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
             "& .MuiListItem-root": { display: "list-item", p: 0 },
           }}
         >
@@ -169,12 +221,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventAnyhauTitle",
     whenId: "eventAnyhauWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventAnyhauP1" />
         </Typography>
       </>
@@ -182,12 +240,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventHiveTitle",
     whenId: "eventHiveWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventHiveP1" />
         </Typography>
       </>
@@ -195,12 +259,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventTekijaRentTitle",
     whenId: "eventTekijaRentWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventTekijaRentP1" />
         </Typography>
       </>
@@ -208,12 +278,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventKotipalveluTitle",
     whenId: "eventKotipalveluWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventKotipalveluP1" />
           <FormattedMessage id="eventKotipalveluP2" />
           <FormattedMessage id="eventKotipalveluP3" />
@@ -224,12 +300,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventLumundooTitle",
     whenId: "eventLumundooWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventLumundooP1" />
         </Typography>
       </>
@@ -237,12 +319,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventAaltovoimaTitle",
     whenId: "eventAaltovoimaWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventAaltovoimaP1" />
         </Typography>
       </>
@@ -250,12 +338,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventEnersenseTitle",
     whenId: "eventEnersenseWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventEnersenseP1" />
         </Typography>
       </>
@@ -263,12 +357,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <WorkIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventDeltamarinTitle",
     whenId: "eventDeltamarinWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventDeltamarinP1" />
         </Typography>
       </>
@@ -276,12 +376,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventSataEduTitle",
     whenId: "eventSataEduWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventSataEduP1" />
           <FormattedMessage id="eventSataEduP2" />
         </Typography>
@@ -290,12 +396,18 @@ export const allEvents: TimelineEvent[] = [
   },
   {
     icon: <SchoolIcon sx={{ fontSize: { xs: 28, md: 18 } }} />,
-    bgColor: colors.btnBg,
     titleId: "eventBkszcTitle",
     whenId: "eventBkszcWhen",
     details: (
       <>
-        <Typography sx={{ color: colors.textLight }}>
+        <Typography
+          sx={{
+            color: (theme) =>
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
           <FormattedMessage id="eventBkszcP1" />
           <FormattedMessage id="eventBkszcP2" />
           <FormattedMessage id="eventBkszcP3" />

@@ -1,9 +1,9 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-import colors from "./colors";
+import { colors } from "./colors";
 
 let theme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
     background: {
       default: colors.bgDark,
       paper: colors.bgDark,
@@ -38,7 +38,7 @@ let theme = createTheme({
     },
     h4: {
       fontWeight: 600,
-      color: colors.textLight,
+      color: colors.textHeading,
     },
     h5: {
       fontWeight: 600,
@@ -144,6 +144,7 @@ let theme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
+          color: colors.textLight,
           "&:hover": {
             backgroundColor: `rgba(${colors.textLightRgb}, 0.1)`,
             color: colors.accentHover,
@@ -151,6 +152,27 @@ let theme = createTheme({
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.navBg,
+        },
+      },
+    },
+    MuiIcon: {
+      styleOverrides: {
+        root: {
+          color: colors.accent,
+        },
+      },
+    },
+    MuiDivider:{
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.dividerBg,
+        }
+      }
+    }
   },
 });
 

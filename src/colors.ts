@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
   bgDark: "#1e2a20",
   textLight: "#f2f3ef",
   textLightRgb: "242, 243, 239",
@@ -15,5 +15,3 @@ const colors = {
   btnBg: "#3a5223",
   btnBgHover: "#4c6e36",
 };
-
-export default colors;

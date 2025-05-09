@@ -6,28 +6,30 @@ import {
   ListItemText,
   ListItemIcon,
   Box,
+  useTheme,
 } from "@mui/material";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
 import { fadeUp } from "../Sections";
-import colors from "../../colors";
+import { colors as lightColors } from "../../colors";
+import { colors as darkColors } from "../../colorsDark";
 
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const META_ITEMS = [
   {
     id: "aboutExperience",
-    icon: <WorkIcon sx={{ color: colors.accent }} />,
+    icon: <WorkIcon />,
   },
   {
     id: "aboutEducation",
-    icon: <SchoolIcon sx={{ color: colors.accent }} />,
+    icon: <SchoolIcon />,
   },
   {
     id: "aboutLocation",
-    icon: <LocationOnIcon sx={{ color: colors.accent }} />,
+    icon: <LocationOnIcon />,
   },
 ];
 
@@ -36,6 +38,7 @@ export const AboutSection = ({
 }: {
   innerRef: React.Ref<HTMLDivElement>;
 }) => {
+  const theme = useTheme();
   return (
     <motion.div
       initial="hidden"
@@ -48,11 +51,7 @@ export const AboutSection = ({
         sx={{ width: { xs: "100%", md: "80%" }, mx: "auto" }}
       >
         <motion.div custom={1} variants={fadeUp}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{ color: colors.textHeading }}
-          >
+          <Typography variant="h4" gutterBottom>
             <FormattedMessage id="aboutHeading" />
           </Typography>
         </motion.div>
@@ -64,7 +63,13 @@ export const AboutSection = ({
                 b: (chunks: React.ReactNode) => (
                   <Box
                     component="span"
-                    sx={{ fontWeight: 600, color: colors.accent }}
+                    sx={{
+                      fontWeight: 600,
+                      color:
+                        theme.palette.mode === "dark"
+                          ? darkColors.accent
+                          : lightColors.accent,
+                    }}
                   >
                     {chunks}
                   </Box>

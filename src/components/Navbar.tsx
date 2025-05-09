@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   AppBar,
   Toolbar,
@@ -35,7 +35,8 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import colors from "../colors";
+import { colors as lightColors } from "../colors";
+import { colors as darkColors } from "../colorsDark";
 import { useBirdEffect } from "../hooks/useBirdEffect";
 import { useLeavesEffect } from "../hooks/useLeavesEffect";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -43,6 +44,9 @@ import { Transition } from "./Sections";
 import { useAtom } from "jotai";
 import { localeAtom } from "../hooks/localeAtom";
 import { FormattedMessage } from "react-intl";
+import { useThemeToggle } from "../hooks/useThemeToggle";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 
 const COVER_THRESHOLD = 300;
 
@@ -75,34 +79,67 @@ const NavBar: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("effects");
+  const { selectedTheme, toggleTheme } = useThemeToggle();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handlePlayPause = () => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio("/parallaxMui/jungle-music.mp3");
-      audioRef.current.loop = true;
-      audioRef.current.preload = "auto";
-    }
+  const initializeAudio = useCallback(() => {
+    const newSrc =
+      selectedTheme === "dark"
+        ? "/parallaxMui/jungle-music-night.mp3"
+        : "/parallaxMui/jungle-music.mp3";
 
-    if (audioRef.current.paused) {
-      audioRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = newSrc;
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.play().catch((err) => {
           if (err.name !== "AbortError") console.error(err);
         });
+      }
     } else {
-      audioRef.current.pause();
-      setIsPlaying(false);
+      audioRef.current = new Audio(newSrc);
+      audioRef.current.loop = true;
+      audioRef.current.preload = "auto";
+      if (isPlaying) {
+        audioRef.current.play().catch((err) => {
+          if (err.name !== "AbortError") console.error(err);
+        });
+      }
+    }
+  }, [isPlaying, selectedTheme]);
+
+  useEffect(() => {
+    initializeAudio();
+    return () => {
+      audioRef.current?.pause();
+    };
+  }, [initializeAudio, selectedTheme]);
+
+  const handlePlayPause = () => {
+    if (!audioRef.current) {
+      initializeAudio();
+    }
+
+    if (audioRef.current) {
+      if (audioRef.current.paused) {
+        audioRef.current
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch((err) => {
+            if (err.name !== "AbortError") console.error(err);
+          });
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
     }
   };
 
   useEffect(() => {
     if (!isMobile && drawerOpen) setDrawerOpen(false);
   }, [isMobile, drawerOpen]);
-
-  useEffect(() => () => audioRef.current?.pause(), []);
 
   return (
     <>
@@ -115,7 +152,6 @@ const NavBar: React.FC = () => {
             borderRadius: 0,
             boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
             backdropFilter: "blur(10px)",
-            backgroundColor: colors.navBg,
             height: isMobile ? "72px" : "64px",
             py: 0,
             justifyContent: "center",
@@ -146,7 +182,11 @@ const NavBar: React.FC = () => {
                     sx={{
                       width: 44,
                       height: 44,
-                      border: `2px solid ${colors.accent}`,
+                      border: `2px solid ${
+                        theme.palette.mode === "dark"
+                          ? darkColors.accent
+                          : lightColors.accent
+                      }`,
                     }}
                   />
                 </MuiLink>
@@ -173,14 +213,29 @@ const NavBar: React.FC = () => {
                     sx={{
                       fontSize: "0.9rem",
                       fontWeight: 700,
-                      color: colors.textLight,
+                      color:
+                        theme.palette.mode === "dark"
+                          ? darkColors.textLight
+                          : lightColors.textLight,
                       position: "relative",
-                      "&:hover": { color: colors.accentHover },
+                      "&:hover": {
+                        color:
+                          theme.palette.mode === "dark"
+                            ? darkColors.accentHover
+                            : lightColors.accentHover,
+                      },
                     }}
                   >
                     <FormattedMessage id={id} />
                   </MuiLink>
                 ))}
+                <IconButton color="inherit">
+                  {selectedTheme === "dark" ? (
+                    <LightModeOutlinedIcon onClick={toggleTheme} />
+                  ) : (
+                    <DarkModeOutlinedIcon onClick={toggleTheme} />
+                  )}
+                </IconButton>
                 <MuiLink underline="none">
                   <Box
                     sx={{
@@ -197,11 +252,13 @@ const NavBar: React.FC = () => {
                       sx={{
                         width: 35,
                         height: 35,
-                        border: `2px solid ${colors.accent}`,
+                        border: `2px solid ${
+                          theme.palette.mode === "dark"
+                            ? darkColors.accent
+                            : lightColors.accent
+                        }`,
                       }}
                     />
-
-                    {/* Overlay button */}
                     <IconButton
                       onClick={handleOpen}
                       sx={{
@@ -224,6 +281,13 @@ const NavBar: React.FC = () => {
                     </IconButton>
                   </Box>
                 </MuiLink>
+                <IconButton color="inherit" onClick={handlePlayPause}>
+                  {isPlaying ? (
+                    <PauseCircleOutlineIcon sx={{ fontSize: 32 }} />
+                  ) : (
+                    <PlayCircleOutlineIcon sx={{ fontSize: 32 }} />
+                  )}
+                </IconButton>
                 <Dialog
                   slots={{ transition: Transition }}
                   slotProps={{
@@ -248,13 +312,24 @@ const NavBar: React.FC = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      {/* Title + icon */}
                       <Stack direction="row" alignItems="center" spacing={3}>
-                        <SettingsIcon sx={{ color: colors.textHeading }} />
+                        <SettingsIcon
+                          sx={{
+                            color:
+                              theme.palette.mode === "dark"
+                                ? darkColors.textHeading
+                                : lightColors.textHeading,
+                          }}
+                        />
                         <Typography
                           variant="h6"
                           fontWeight={600}
-                          sx={{ color: colors.textHeading }}
+                          sx={{
+                            color:
+                              theme.palette.mode === "dark"
+                                ? darkColors.textHeading
+                                : lightColors.textHeading,
+                          }}
                         >
                           <FormattedMessage id="settingsTitle" />
                         </Typography>
@@ -265,8 +340,16 @@ const NavBar: React.FC = () => {
                         onClick={handleClose}
                         aria-label="Close settings"
                         sx={{
-                          color: colors.textLight,
-                          "&:hover": { color: colors.accentHover },
+                          color:
+                            theme.palette.mode === "dark"
+                              ? darkColors.textLight
+                              : lightColors.textLight,
+                          "&:hover": {
+                            color:
+                              theme.palette.mode === "dark"
+                                ? darkColors.accentHover
+                                : lightColors.accentHover,
+                          },
                         }}
                       >
                         <CloseIcon />
@@ -339,9 +422,7 @@ const NavBar: React.FC = () => {
                               control={
                                 <Switch
                                   checked={theme.palette.mode === "dark"}
-                                  onChange={() => {
-                                    /* toggleDarkMode() */
-                                  }}
+                                  onChange={toggleTheme}
                                   color="primary"
                                 />
                               }
@@ -374,14 +455,6 @@ const NavBar: React.FC = () => {
                     </Button>
                   </DialogActions>
                 </Dialog>
-
-                <IconButton color="inherit" onClick={handlePlayPause}>
-                  {isPlaying ? (
-                    <PauseCircleOutlineIcon sx={{ fontSize: 32 }} />
-                  ) : (
-                    <PlayCircleOutlineIcon sx={{ fontSize: 32 }} />
-                  )}
-                </IconButton>
               </Box>
             )}
           </Toolbar>
@@ -399,15 +472,28 @@ const NavBar: React.FC = () => {
         swipeAreaWidth={0}
         transitionDuration={{ enter: 300, exit: 300 }}
         ModalProps={{
-          BackdropProps: { style: { backgroundColor: colors.overlayBg } },
+          BackdropProps: {
+            style: {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? darkColors.overlayBg
+                  : lightColors.overlayBg,
+            },
+          },
         }}
         slotProps={{
           paper: {
             sx: {
               p: 3,
               width: 260,
-              bgcolor: colors.drawerBg,
-              color: colors.textLight,
+              bgcolor:
+                theme.palette.mode === "dark"
+                  ? darkColors.drawerBg
+                  : lightColors.drawerBg,
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.textLight
+                  : lightColors.textLight,
               borderRadius: 0,
               transition: "transform 300ms ease-in-out",
             },
@@ -416,7 +502,15 @@ const NavBar: React.FC = () => {
       >
         <Box sx={{ display: "flex", justifyContent: "flex-start", mb: 3 }}>
           <IconButton onClick={toggleDrawer(false)}>
-            <CloseIcon sx={{ color: colors.textLight, fontSize: 32 }} />
+            <CloseIcon
+              sx={{
+                color:
+                  theme.palette.mode === "dark"
+                    ? darkColors.textLight
+                    : lightColors.textLight,
+                fontSize: 32,
+              }}
+            />
           </IconButton>
         </Box>
         <List disablePadding>
@@ -430,14 +524,28 @@ const NavBar: React.FC = () => {
                 <ListItemText
                   primary={<FormattedMessage id={id} />}
                   slotProps={{
-                    primary: { fontWeight: "bold", color: colors.textLight },
+                    primary: {
+                      fontWeight: "bold",
+                      color:
+                        theme.palette.mode === "dark"
+                          ? darkColors.textLight
+                          : lightColors.textLight,
+                    },
                   }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        <Divider sx={{ bgcolor: colors.dividerBg, my: 2 }} />
+        <Divider
+          sx={{
+            bgcolor:
+              theme.palette.mode === "dark"
+                ? darkColors.dividerBg
+                : lightColors.dividerBg,
+            my: 2,
+          }}
+        />
         <Box
           sx={{ display: "flex", justifyContent: "flex-start", gap: 2, p: 2 }}
         >
@@ -446,7 +554,12 @@ const NavBar: React.FC = () => {
             href="https://linkedin.com/in/yourprofile"
             target="_blank"
             aria-label="LinkedIn"
-            sx={{ color: colors.textLight }}
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.textLight
+                  : lightColors.textLight,
+            }}
           >
             <LinkedInIcon />
           </IconButton>
@@ -455,39 +568,87 @@ const NavBar: React.FC = () => {
             href="https://github.com/mobahug"
             target="_blank"
             aria-label="GitHub"
-            sx={{ color: colors.textLight }}
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.textLight
+                  : lightColors.textLight,
+            }}
           >
             <GitHubIcon />
           </IconButton>
         </Box>
-        <Divider sx={{ bgcolor: colors.dividerBg, my: 2 }} />
-        <Box sx={{ display: "flex", justifyContent: "flex-start", p: 3 }}>
-          <Typography variant="h4">
+        <Divider
+          sx={{
+            bgcolor:
+              theme.palette.mode === "dark"
+                ? darkColors.dividerBg
+                : lightColors.dividerBg,
+            my: 2,
+          }}
+        />
+        <Stack spacing={2} sx={{ px: 3, py: 2 }}>
+          {/* Settings Header */}
+          <Typography
+            variant="h5"
+            fontWeight={600}
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.textHeading
+                  : lightColors.textHeading,
+              mb: 2,
+            }}
+          >
             <FormattedMessage id="headingSettings" />
           </Typography>
-        </Box>
-        <Stack pl={3}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={birdEnabled}
-                onChange={toggleBirdEffects}
-                color="primary"
-              />
-            }
-            label={<FormattedMessage id="labelBird" />}
-          />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={leavesEnabled}
-                onChange={toggleLeavesEffects}
-                color="primary"
-              />
-            }
-            label={<FormattedMessage id="labelLeaves" />}
-          />
-          <LanguageToggle />
+
+          {/* Theme & Language Controls */}
+          <Stack direction="row" spacing={5} alignItems="center">
+            <IconButton onClick={toggleTheme} color="inherit">
+              {selectedTheme === "dark" ? (
+                <LightModeOutlinedIcon />
+              ) : (
+                <DarkModeOutlinedIcon />
+              )}
+            </IconButton>
+            <LanguageToggle />
+          </Stack>
+
+          {/* Effects Section (without divider) */}
+          <Typography
+            variant="h6"
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.textHeading
+                  : lightColors.textHeading,
+            }}
+          >
+            <FormattedMessage id="headingEffects" defaultMessage="Effects" />
+          </Typography>
+          <Stack spacing={1}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={birdEnabled}
+                  onChange={toggleBirdEffects}
+                  color="primary"
+                />
+              }
+              label={<FormattedMessage id="labelBird" />}
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={leavesEnabled}
+                  onChange={toggleLeavesEffects}
+                  color="primary"
+                />
+              }
+              label={<FormattedMessage id="labelLeaves" />}
+            />
+          </Stack>
         </Stack>
       </SwipeableDrawer>
     </>

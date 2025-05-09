@@ -1,10 +1,12 @@
 import React, { useRef, useEffect } from "react";
-import { Box, Typography, Avatar, Link } from "@mui/material";
+import { Box, Typography, Avatar, Link, useTheme } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import colors from "../colors";
+import { colors as lightColors } from "../colors";
+import { colors as darkColors } from "../colorsDark";
 import { FormattedMessage } from "react-intl";
 
 const CoverSection: React.FC = () => {
+  const theme = useTheme();
   const coverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,9 +44,15 @@ const CoverSection: React.FC = () => {
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        bgcolor: colors.glassBg,
+        bgcolor:
+          theme.palette.mode === "dark"
+            ? darkColors.glassBg
+            : lightColors.glassBg,
         backdropFilter: "blur(20px)",
-        color: colors.textLight,
+        color:
+          theme.palette.mode === "dark"
+            ? darkColors.textLight
+            : lightColors.textLight,
         px: 2,
         transition: "opacity 0.5s ease-out",
       }}
@@ -59,7 +67,11 @@ const CoverSection: React.FC = () => {
             mb: 5,
             mx: "auto",
             borderRadius: "50%",
-            border: `4px solid ${colors.accent}`,
+            border: `4px solid ${
+              theme.palette.mode === "dark"
+                ? darkColors.accent
+                : lightColors.accent
+            }`,
             boxShadow: "0 6px 20px rgba(0, 0, 0, 0.5)",
           }}
         />
@@ -67,7 +79,10 @@ const CoverSection: React.FC = () => {
           variant="h1"
           sx={{
             fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-            color: colors.textHeading,
+            color:
+              theme.palette.mode === "dark"
+                ? darkColors.textHeading
+                : lightColors.textHeading,
             mb: 2,
           }}
         >
@@ -82,13 +97,23 @@ const CoverSection: React.FC = () => {
             alignItems: "center",
             justifyContent: "center",
             fontSize: "1.5rem",
-            color: colors.accentHover,
+            color:
+              theme.palette.mode === "dark"
+                ? darkColors.accentHover
+                : lightColors.accentHover,
             animation: "bounce 2s infinite",
             textDecoration: "none",
           }}
         >
           <ExpandMoreIcon fontSize="large" />
-          <Typography variant="h5" color={colors.accentHover}>
+          <Typography
+            variant="h5"
+            color={
+              theme.palette.mode === "dark"
+                ? darkColors.accentHover
+                : lightColors.accentHover
+            }
+          >
             <FormattedMessage id="coverScroll" />
           </Typography>
         </Link>

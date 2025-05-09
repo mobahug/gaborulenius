@@ -27,7 +27,8 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { TimelineEvent, highlightedEvents, allEvents } from "../../contexts";
 import { fadeUp, Transition } from "../Sections";
-import colors from "../../colors";
+import { colors as lightColors } from "../../colors";
+import { colors as darkColors } from "../../colorsDark";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -115,13 +116,7 @@ export const QualificationSection = ({
             viewport={{ once: true }}
           >
             <motion.div custom={1} variants={fadeUp}>
-              <Typography
-                variant="h4"
-                gutterBottom
-                sx={{
-                  color: colors.textHeading,
-                }}
-              >
+              <Typography variant="h4" gutterBottom>
                 <FormattedMessage id="qualificationHeadingHighlights" />
               </Typography>
             </motion.div>
@@ -146,16 +141,33 @@ export const QualificationSection = ({
                   <TimelineSeparator>
                     <TimelineDot
                       sx={{
-                        bgcolor: evt.bgColor,
-                        color: colors.textLight,
-                        border: `2px solid ${colors.accent}`,
+                        bgcolor:
+                          theme.palette.mode === "dark"
+                            ? darkColors.btnBg
+                            : lightColors.btnBg,
+                        color:
+                          theme.palette.mode === "dark"
+                            ? darkColors.textLight
+                            : lightColors.textLight,
+                        border: `2px solid ${
+                          theme.palette.mode === "dark"
+                            ? darkColors.accent
+                            : lightColors.accent
+                        }`,
                       }}
                       variant="outlined"
                     >
                       {evt.icon}
                     </TimelineDot>
                     {i < highlightedEvents.length - 1 && (
-                      <TimelineConnector sx={{ bgcolor: colors.dividerBg }} />
+                      <TimelineConnector
+                        sx={{
+                          bgcolor:
+                            theme.palette.mode === "dark"
+                              ? darkColors.dividerBg
+                              : lightColors.dividerBg,
+                        }}
+                      />
                     )}
                   </TimelineSeparator>
 
@@ -199,13 +211,7 @@ export const QualificationSection = ({
             viewport={{ once: true }}
           >
             <motion.div custom={1} variants={fadeUp}>
-              <Typography
-                variant="h4"
-                gutterBottom
-                sx={{
-                  color: colors.textHeading,
-                }}
-              >
+              <Typography variant="h4" gutterBottom>
                 <FormattedMessage id="qualificationHeadingTimeline" />
               </Typography>
             </motion.div>
@@ -230,16 +236,33 @@ export const QualificationSection = ({
                   <TimelineSeparator>
                     <TimelineDot
                       sx={{
-                        bgcolor: evt.bgColor,
-                        color: colors.textLight,
-                        border: `2px solid ${colors.accent}`,
+                        bgcolor:
+                          theme.palette.mode === "dark"
+                            ? darkColors.btnBg
+                            : lightColors.btnBg,
+                        color:
+                          theme.palette.mode === "dark"
+                            ? darkColors.textLight
+                            : lightColors.textLight,
+                        border: `2px solid ${
+                          theme.palette.mode === "dark"
+                            ? darkColors.accent
+                            : lightColors.accent
+                        }`,
                       }}
                       variant="outlined"
                     >
                       {evt.icon}
                     </TimelineDot>
                     {i < allEvents.length - 1 && (
-                      <TimelineConnector sx={{ bgcolor: colors.dividerBg }} />
+                      <TimelineConnector
+                        sx={{
+                          bgcolor:
+                            theme.palette.mode === "dark"
+                              ? darkColors.dividerBg
+                              : lightColors.dividerBg,
+                        }}
+                      />
                     )}
                   </TimelineSeparator>
                   <TimelineContent
@@ -300,16 +323,35 @@ export const QualificationSection = ({
             alignItems: "center",
             justifyContent: "space-between",
             p: 0,
-            color: colors.textHeading,
+            color:
+              theme.palette.mode === "dark"
+                ? darkColors.textHeading
+                : lightColors.textHeading,
           }}
         >
           <FormattedMessage id={selectedEvent?.titleId} />
-          <IconButton onClick={handleClose} sx={{ color: colors.textLight }}>
+          <IconButton
+            onClick={handleClose}
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.textLight
+                  : lightColors.textLight,
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent sx={{ p: 1 }}>
-          <DialogContentText component="div" sx={{ color: colors.textLight }}>
+          <DialogContentText
+            component="div"
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.textLight
+                  : lightColors.textLight,
+            }}
+          >
             {selectedEvent?.details}
           </DialogContentText>
         </DialogContent>
@@ -317,7 +359,12 @@ export const QualificationSection = ({
           <Button
             variant="contained"
             onClick={handleClose}
-            sx={{ color: colors.accent }}
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.accent
+                  : lightColors.accent,
+            }}
           >
             <FormattedMessage id="buttonClose" />
           </Button>

@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
-import colors from "../../colors";
 import { fadeUp } from "../Sections";
 import EmailIcon from "@mui/icons-material/Email";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -36,13 +35,7 @@ export function ContactSection({
         }}
       >
         <motion.div custom={1} variants={fadeUp}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{
-              color: colors.textHeading,
-            }}
-          >
+          <Typography variant="h4" gutterBottom>
             <FormattedMessage id="contactHeading" />
           </Typography>
         </motion.div>

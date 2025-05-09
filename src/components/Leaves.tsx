@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { styled, keyframes } from "@mui/system";
 import { SxProps, Theme } from "@mui/material";
+import { useThemeToggle } from "../hooks/useThemeToggle";
 
 const fall1 = keyframes`
   0%   { transform: translate3d(300px, 0, 0)   rotate(0deg);   opacity: 0.7; }
@@ -50,6 +51,7 @@ export interface LeavesProps {
   sx?: SxProps<Theme>;
 }
 const Leaves: React.FC<LeavesProps> = ({ sx }) => {
+  const { selectedTheme } = useThemeToggle();
   const animations = [fall1, fall2, fall3];
   const leafCount = 10;
 
@@ -64,7 +66,11 @@ const Leaves: React.FC<LeavesProps> = ({ sx }) => {
         return (
           <LeafImg
             key={i}
-            src="/parallaxMui/leaf1.png"
+            src={
+              selectedTheme === "dark"
+                ? "/parallaxMui/dark-leaf.png"
+                : "/parallaxMui/light-leaf.png"
+            }
             animation={animation}
             left={left}
             size={size}

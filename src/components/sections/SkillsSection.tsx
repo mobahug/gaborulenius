@@ -1,7 +1,8 @@
-import { Paper, Typography, Stack, Box, Chip } from "@mui/material";
+import { Paper, Typography, Stack, Box, Chip, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
-import colors from "../../colors";
+import { colors as lightColors } from "../../colors";
+import { colors as darkColors } from "../../colorsDark";
 import { categories } from "../../contexts";
 import { fadeUp } from "../Sections";
 
@@ -10,6 +11,7 @@ export const SkillsSection = ({
 }: {
   innerRef: React.Ref<HTMLDivElement>;
 }) => {
+  const theme = useTheme();
   return (
     <motion.div
       initial="hidden"
@@ -22,20 +24,23 @@ export const SkillsSection = ({
         sx={{ width: { xs: "100%", md: "80%" }, mx: "auto" }}
       >
         <motion.div custom={1} variants={fadeUp}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{
-              color: colors.textHeading,
-            }}
-          >
+          <Typography variant="h4" gutterBottom>
             <FormattedMessage id="skillsToolsHeading" />
           </Typography>
         </motion.div>
         <Stack spacing={4}>
           {categories.map((cat, idx) => (
             <motion.div key={cat.id} custom={idx + 2} variants={fadeUp}>
-              <Typography variant="h6" sx={{ color: colors.textLight, mb: 2 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  color:
+                    theme.palette.mode === "dark"
+                      ? darkColors.textLight
+                      : lightColors.textLight,
+                  mb: 2,
+                }}
+              >
                 <FormattedMessage id={cat.id} />
               </Typography>
               <Box
@@ -55,9 +60,16 @@ export const SkillsSection = ({
                       size="medium"
                       clickable
                       sx={{
-                        border: `1px solid ${colors.glassBorder}`,
+                        border: `1px solid ${
+                          theme.palette.mode === "dark"
+                            ? darkColors.glassBorder
+                            : lightColors.glassBorder
+                        }`,
                         bgcolor: "rgba(255,255,255,0.1)",
-                        color: colors.accent,
+                        color:
+                          theme.palette.mode === "dark"
+                            ? darkColors.accent
+                            : lightColors.accent,
                         transition: "background 0.3s",
                         "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
                       }}

@@ -12,7 +12,8 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import colors from "../colors";
+import { colors as lightColors } from "../colors";
+import { colors as darkColors } from "../colorsDark";
 import { FormattedMessage, useIntl } from "react-intl";
 
 export default function Footer({
@@ -29,9 +30,13 @@ export default function Footer({
       ref={innerRef}
       component="footer"
       sx={{
-        backgroundColor: colors.navBg,
+        backgroundColor:
+          theme.palette.mode === "dark" ? darkColors.navBg : lightColors.navBg,
         backdropFilter: "blur(10px)",
-        color: colors.textLight,
+        color:
+          theme.palette.mode === "dark"
+            ? darkColors.textLight
+            : lightColors.textLight,
         width: "100%",
         mt: 12,
         zIndex: 100,
@@ -49,6 +54,12 @@ export default function Footer({
             <Typography
               fontWeight={theme.typography.fontWeightBold}
               variant="h4"
+              sx={{
+                color:
+                  theme.palette.mode === "dark"
+                    ? darkColors.textLight
+                    : lightColors.textLight,
+              }}
             >
               Gabor
               <br />

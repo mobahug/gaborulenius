@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { FormattedMessage } from "react-intl";
-import colors from "../../colors";
 import { fadeUp } from "../Sections";
 import SearchIcon from "@mui/icons-material/Search";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -33,13 +32,7 @@ export const HomeSection = ({
         sx={{ width: { xs: "100%", md: "80%" }, mx: "auto" }}
       >
         <motion.div custom={1} variants={fadeUp}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{
-              color: colors.textHeading,
-            }}
-          >
+          <Typography variant="h4" gutterBottom>
             <FormattedMessage
               id="homeGreeting"
               values={{
