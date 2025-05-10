@@ -79,7 +79,7 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
           }}
         >
           <Avatar
-            src="/parallaxMui/profile.jpg"
+            src="/parallaxMui/profile-small.webp"
             alt="Profile"
             sx={{
               width: 35,

@@ -68,8 +68,8 @@ const Leaves: React.FC<LeavesProps> = ({ sx }) => {
             key={i}
             src={
               selectedTheme === "dark"
-                ? "/parallaxMui/dark-leaf.png"
-                : "/parallaxMui/light-leaf.png"
+                ? "/parallaxMui/dark-leaf.webp"
+                : "/parallaxMui/light-leaf.webp"
             }
             animation={animation}
             left={left}
