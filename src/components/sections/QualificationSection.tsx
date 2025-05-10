@@ -35,11 +35,12 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 const MotionTimelineItem = motion.create(TimelineItem);
 
-interface TabPanelProps {
+type TabPanelProps = {
   children?: React.ReactNode;
   index: number;
   value: number;
-}
+};
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
   return (
@@ -61,10 +62,7 @@ export const QualificationSection = ({
   innerRef: React.Ref<HTMLDivElement>;
 }) => {
   const theme = useTheme();
-
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
   const [open, setOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(
     null,
@@ -299,77 +297,99 @@ export const QualificationSection = ({
           </motion.div>
         </TabPanel>
       </Paper>
-      <Dialog
-        fullScreen={fullScreen}
+      <QualificationDialog
         open={open}
         onClose={handleClose}
-        slots={{
-          transition: Transition,
-        }}
-        slotProps={{
-          transition: { timeout: { appear: 600, enter: 600, exit: 600 } },
-          paper: {
-            sx: {
-              maxWidth: "750px",
-            },
+        event={selectedEvent}
+      />
+    </>
+  );
+};
+
+type QualificationDialogProps = {
+  open: boolean;
+  onClose: () => void;
+  event: TimelineEvent | null;
+};
+
+const QualificationDialog: React.FC<QualificationDialogProps> = ({
+  open,
+  onClose,
+  event,
+}) => {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  return (
+    <Dialog
+      fullScreen={fullScreen}
+      open={open}
+      onClose={onClose}
+      slots={{
+        transition: Transition,
+      }}
+      slotProps={{
+        transition: { timeout: { appear: 600, enter: 600, exit: 600 } },
+        paper: {
+          sx: {
+            maxWidth: "750px",
           },
+        },
+      }}
+      aria-labelledby="qualification-dialog-title"
+    >
+      <DialogTitle
+        id="qualification-dialog-title"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          p: 0,
+          color:
+            theme.palette.mode === "dark"
+              ? darkColors.textHeading
+              : lightColors.textHeading,
         }}
-        aria-labelledby="qualification-dialog-title"
       >
-        <DialogTitle
-          id="qualification-dialog-title"
+        <FormattedMessage id={event?.titleId} />
+        <IconButton
+          onClick={onClose}
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            p: 0,
             color:
               theme.palette.mode === "dark"
-                ? darkColors.textHeading
-                : lightColors.textHeading,
+                ? darkColors.textLight
+                : lightColors.textLight,
           }}
         >
-          <FormattedMessage id={selectedEvent?.titleId} />
-          <IconButton
-            onClick={handleClose}
-            sx={{
-              color:
-                theme.palette.mode === "dark"
-                  ? darkColors.textLight
-                  : lightColors.textLight,
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent sx={{ p: 1 }}>
-          <DialogContentText
-            component="div"
-            sx={{
-              color:
-                theme.palette.mode === "dark"
-                  ? darkColors.textLight
-                  : lightColors.textLight,
-            }}
-          >
-            {selectedEvent?.details}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            onClick={handleClose}
-            sx={{
-              color:
-                theme.palette.mode === "dark"
-                  ? darkColors.accent
-                  : lightColors.accent,
-            }}
-          >
-            <FormattedMessage id="buttonClose" />
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent sx={{ p: 1 }}>
+        <DialogContentText
+          component="div"
+          sx={{
+            color:
+              theme.palette.mode === "dark"
+                ? darkColors.textLight
+                : lightColors.textLight,
+          }}
+        >
+          {event?.details}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant="contained"
+          onClick={onClose}
+          sx={{
+            color:
+              theme.palette.mode === "dark"
+                ? darkColors.accent
+                : lightColors.accent,
+          }}
+        >
+          <FormattedMessage id="buttonClose" />
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

@@ -3,10 +3,10 @@ import { motion, useAnimation } from "framer-motion";
 import BirdSpriteFlying from "./BirdSpriteFlying";
 import BirdSpriteIdle from "./BirdSpriteIdle";
 
-export interface SectionInfo {
+export type SectionInfo = {
   id: string;
   ref: React.RefObject<HTMLDivElement>;
-}
+};
 
 const FLY_DURATION = 1.5;
 const IDLE_DELAY = 1000;

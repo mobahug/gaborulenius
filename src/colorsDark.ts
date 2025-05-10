@@ -30,6 +30,6 @@ export const colors = {
   dividerBg: "rgba(255, 255, 255, 0.20)",
 
   /* ---------- interactive ---------- */
-  btnBg: "#1c3a54",       // deep ocean blue
-  btnBgHover: "#2a5e8e",  // brighter blue on hover
+  btnBg: "#1c3a54", // deep ocean blue
+  btnBgHover: "#2a5e8e", // brighter blue on hover
 };

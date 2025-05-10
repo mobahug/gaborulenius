@@ -166,13 +166,13 @@ let theme = createTheme({
         },
       },
     },
-    MuiDivider:{
+    MuiDivider: {
       styleOverrides: {
         root: {
           backgroundColor: colors.dividerBg,
-        }
-      }
-    }
+        },
+      },
+    },
   },
 });
 

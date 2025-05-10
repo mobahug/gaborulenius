@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import CoverSection from "./components/CoverSection";
 import Hero from "./components/Hero";
 import Leaves from "./components/Leaves";
-import NavBar from "./components/Navbar";
 import { useLeavesEffect } from "./hooks/useLeavesEffect";
+import NavBar from "./components/navbar/NavBar";
 
 const App: React.FC = () => {
   const { leavesEnabled } = useLeavesEffect();

@@ -27,12 +27,12 @@ const LeavesContainer = styled(Box)(() => ({
   overflow: "hidden",
 }));
 
-interface LeafProps {
+type LeafProps = {
   animation: ReturnType<typeof keyframes>;
   left: number;
   size: number;
   delay: number;
-}
+};
 const LeafImg = styled("img", {
   shouldForwardProp: (prop) =>
     !["animation", "left", "size", "delay"].includes(prop as string),
@@ -47,9 +47,9 @@ const LeafImg = styled("img", {
   animationDelay: `${delay}s`,
 }));
 
-export interface LeavesProps {
+export type LeavesProps = {
   sx?: SxProps<Theme>;
-}
+};
 const Leaves: React.FC<LeavesProps> = ({ sx }) => {
   const { selectedTheme } = useThemeToggle();
   const animations = [fall1, fall2, fall3];
