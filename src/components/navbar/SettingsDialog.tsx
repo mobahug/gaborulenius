@@ -92,6 +92,7 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
               <FormattedMessage id="settingsTitle" />
             </Typography>
           </Stack>
+          {/* Close button */}
           <IconButton
             onClick={onClose}
             aria-label="Close settings"
@@ -111,15 +112,25 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
             <CloseIcon />
           </IconButton>
         </Box>
+        {/* thin divider under title */}
       </DialogTitle>
       <Divider />
       <DialogContent dividers>
         <Box sx={{ display: "flex", minHeight: 220 }}>
-          <List disablePadding sx={{ width: 150 }}>
+          {/* Sidebar */}
+          <List
+            disablePadding
+            sx={{
+              width: 150,
+            }}
+          >
             <Divider orientation="vertical" flexItem />
             {tabConfig.map(({ key, id }) => (
               <ListItemButton
-                sx={{ borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }}
+                sx={{
+                  borderTopLeftRadius: 10,
+                  borderBottomLeftRadius: 10,
+                }}
                 key={key}
                 selected={activeTab === key}
                 onClick={() => setActiveTab(key)}
@@ -129,6 +140,7 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
             ))}
           </List>
           <Divider orientation="vertical" flexItem />
+          {/* Content panel */}
           <Box sx={{ flex: 1, px: 4, py: 2 }}>
             {activeTab === "effects" && (
               <Stack spacing={3}>
@@ -174,6 +186,7 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
             {activeTab === "language" && (
               <Stack spacing={3}>
                 <FormattedMessage id="languageSubtitle" />
+                {/* <LanguageSelect /> */}
                 <LanguageToggle />
               </Stack>
             )}

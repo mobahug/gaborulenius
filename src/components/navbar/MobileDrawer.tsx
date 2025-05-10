@@ -164,6 +164,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         }}
       />
       <Stack spacing={2} sx={{ px: 3, py: 2 }}>
+        {/* Settings Header */}
         <Typography
           variant="h5"
           fontWeight={600}
@@ -177,6 +178,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         >
           <FormattedMessage id="headingSettings" />
         </Typography>
+        {/* Theme & Language Controls */}
         <Stack direction="row" spacing={5} alignItems="center">
           <IconButton onClick={toggleTheme} color="inherit">
             {selectedTheme === "dark" ? (
@@ -187,6 +189,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
           </IconButton>
           <LanguageToggle />
         </Stack>
+        {/* Effects Section (without divider) */}
         <Typography
           variant="h6"
           sx={{
