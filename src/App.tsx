@@ -11,22 +11,8 @@ const App: React.FC = () => {
   return (
     <Box id="scrolly-container" sx={{ position: "relative" }}>
       <NavBar />
-      <div id="scrolly-video" />
-      {leavesEnabled ? (
-        <Leaves
-          sx={{
-            zIndex: 1,
-          }}
-        />
-      ) : null}
-      <Box
-        id="root"
-        component="div"
-        sx={{
-          position: "relative",
-          zIndex: 2,
-        }}
-      >
+      {leavesEnabled && <Leaves sx={{ zIndex: 1 }} />}
+      <Box sx={{ position: "relative", zIndex: 2 }}>
         <CoverSection />
         <Hero />
       </Box>

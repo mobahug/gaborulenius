@@ -171,4 +171,5 @@ export default {
   footerNavProjects: "Projects",
   footerNavContact: "Contact me",
   footerCopyright: "© {year} Gabor Ulenius. All rights reserved",
+  headingEffects: "Effects",
 } as const;

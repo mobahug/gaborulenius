@@ -173,4 +173,5 @@ export default {
   footerNavProjects: "Projektit",
   footerNavContact: "Ota yhteyttä",
   footerCopyright: "© {year} Gabor Ulenius. Kaikki oikeudet pidätetään",
+  headingEffects: "Efektit",
 } as const;
