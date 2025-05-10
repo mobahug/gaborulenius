@@ -173,6 +173,13 @@ let theme = createTheme({
         },
       },
     },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: colors.textLight,
+        },
+      },
+    },
   },
 });
 

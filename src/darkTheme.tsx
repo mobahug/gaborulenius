@@ -144,6 +144,7 @@ let darkTheme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
+          color: colors.textLight,
           "&:hover": {
             backgroundColor: `rgba(${colors.textLightRgb}, 0.1)`,
             color: colors.accentHover,
@@ -169,6 +170,13 @@ let darkTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: colors.dividerBg,
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: colors.textLight,
         },
       },
     },
