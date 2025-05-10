@@ -12,11 +12,11 @@ import { fadeUp } from "../Sections";
 import EmailIcon from "@mui/icons-material/Email";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
-export function ContactSection({
+const ContactSection = ({
   innerRef,
 }: {
   innerRef: React.Ref<HTMLDivElement>;
-}) {
+}) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -72,4 +72,6 @@ export function ContactSection({
       </Paper>
     </motion.div>
   );
-}
+};
+
+export default ContactSection;

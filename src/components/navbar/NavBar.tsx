@@ -13,12 +13,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import { useThemeToggle } from "../../hooks/useThemeToggle";
-import { ShowAfterCover } from "./ShowAfterCover";
-import { SettingsDialog } from "./SettingsDialog";
-import { MobileDrawer } from "./MobileDrawer";
-import { DesktopNavItems } from "./DesktopNavItems";
 import { colors as lightColors } from "../../colors";
 import { colors as darkColors } from "../../colorsDark";
+
+const ShowAfterCover = React.lazy(() => import("./ShowAfterCover"));
+const SettingsDialog = React.lazy(() => import("./SettingsDialog"));
+const MobileDrawer = React.lazy(() => import("./MobileDrawer"));
+const DesktopNavItems = React.lazy(() => import("./DesktopNavItems"));
 
 export const NavBar: React.FC = () => {
   const theme = useTheme();

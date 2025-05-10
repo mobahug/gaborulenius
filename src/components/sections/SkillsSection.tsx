@@ -6,7 +6,7 @@ import { colors as darkColors } from "../../colorsDark";
 import { categories } from "../../contexts";
 import { fadeUp } from "../Sections";
 
-export const SkillsSection = ({
+const SkillsSection = ({
   innerRef,
 }: {
   innerRef: React.Ref<HTMLDivElement>;
@@ -84,3 +84,5 @@ export const SkillsSection = ({
     </motion.div>
   );
 };
+
+export default SkillsSection;

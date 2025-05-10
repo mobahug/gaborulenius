@@ -34,10 +34,7 @@ type SettingsDialogProps = {
   onClose: () => void;
 };
 
-export const SettingsDialog: React.FC<SettingsDialogProps> = ({
-  open,
-  onClose,
-}) => {
+const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState<TabKey>("effects");
   const { birdEnabled, toggleBirdEffects } = useBirdEffect();
@@ -201,3 +198,5 @@ export const SettingsDialog: React.FC<SettingsDialogProps> = ({
     </Dialog>
   );
 };
+
+export default SettingsDialog;

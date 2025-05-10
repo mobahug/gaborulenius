@@ -13,11 +13,7 @@ import { fadeUp } from "../Sections";
 import SearchIcon from "@mui/icons-material/Search";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
-export const HomeSection = ({
-  innerRef,
-}: {
-  innerRef: React.Ref<HTMLDivElement>;
-}) => {
+const HomeSection = ({ innerRef }: { innerRef: React.Ref<HTMLDivElement> }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -79,3 +75,5 @@ export const HomeSection = ({
     </motion.div>
   );
 };
+
+export default HomeSection;

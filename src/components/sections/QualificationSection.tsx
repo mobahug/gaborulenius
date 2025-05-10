@@ -56,7 +56,7 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-export const QualificationSection = ({
+const QualificationSection = ({
   innerRef,
 }: {
   innerRef: React.Ref<HTMLDivElement>;
@@ -393,3 +393,5 @@ const QualificationDialog: React.FC<QualificationDialogProps> = ({
     </Dialog>
   );
 };
+
+export default QualificationSection;

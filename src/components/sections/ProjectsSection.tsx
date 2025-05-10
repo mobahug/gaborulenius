@@ -16,7 +16,7 @@ import { colors as darkColors } from "../../colorsDark";
 import { useAtomValue } from "jotai";
 import { localeAtom } from "../../hooks/localeAtom";
 
-export const ProjectsSection = ({
+const ProjectsSection = ({
   innerRef,
 }: {
   innerRef: React.Ref<HTMLDivElement>;
@@ -97,3 +97,5 @@ export const ProjectsSection = ({
     </motion.div>
   );
 };
+
+export default ProjectsSection;

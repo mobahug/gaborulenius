@@ -2,13 +2,17 @@ import { useRef } from "react";
 import { Container, Stack } from "@mui/material";
 import BirdManager, { SectionInfo } from "./BirdManager";
 import { useBirdEffect } from "../hooks/useBirdEffect";
-import Footer from "./Footer";
-import { HomeSection } from "./sections/HomeSection";
-import { AboutSection } from "./sections/AboutSection";
-import { ProjectsSection } from "./sections/ProjectsSection";
-import { QualificationSection } from "./sections/QualificationSection";
-import { SkillsSection } from "./sections/SkillsSection";
-import { ContactSection } from "./sections/ContactSection";
+import React from "react";
+
+const HomeSection = React.lazy(() => import("./sections/HomeSection"));
+const AboutSection = React.lazy(() => import("./sections/AboutSection"));
+const ProjectsSection = React.lazy(() => import("./sections/ProjectsSection"));
+const QualificationSection = React.lazy(
+  () => import("./sections/QualificationSection"),
+);
+const SkillsSection = React.lazy(() => import("./sections/SkillsSection"));
+const ContactSection = React.lazy(() => import("./sections/ContactSection"));
+const Footer = React.lazy(() => import("./Footer"));
 
 export default function Hero() {
   const homeRef = useRef<HTMLDivElement>(null!);

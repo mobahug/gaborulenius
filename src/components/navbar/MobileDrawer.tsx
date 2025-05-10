@@ -34,7 +34,7 @@ type MobileDrawerProps = {
   onOpen: () => void;
 };
 
-export const MobileDrawer: React.FC<MobileDrawerProps> = ({
+const MobileDrawer: React.FC<MobileDrawerProps> = ({
   open,
   onClose,
   onOpen,
@@ -227,3 +227,5 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
     </SwipeableDrawer>
   );
 };
+
+export default MobileDrawer;

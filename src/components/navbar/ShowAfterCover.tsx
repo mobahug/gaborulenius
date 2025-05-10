@@ -4,7 +4,7 @@ import { COVER_THRESHOLD } from "./navConstants";
 
 type ShowAfterCoverProps = { children: ReactElement };
 
-export const ShowAfterCover: React.FC<ShowAfterCoverProps> = ({ children }) => {
+const ShowAfterCover: React.FC<ShowAfterCoverProps> = ({ children }) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -25,3 +25,5 @@ export const ShowAfterCover: React.FC<ShowAfterCoverProps> = ({ children }) => {
     </Slide>
   );
 };
+
+export default ShowAfterCover;

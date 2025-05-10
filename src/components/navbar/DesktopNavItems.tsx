@@ -25,7 +25,7 @@ type DesktopNavItemsProps = {
   onToggleAudio: () => void;
 };
 
-export const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
+const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
   selectedThemeVariant,
   onToggleTheme,
   onOpenSettings,
@@ -116,3 +116,5 @@ export const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
     </Box>
   );
 };
+
+export default DesktopNavItems;

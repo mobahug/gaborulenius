@@ -33,7 +33,7 @@ const META_ITEMS = [
   },
 ];
 
-export const AboutSection = ({
+const AboutSection = ({
   innerRef,
 }: {
   innerRef: React.Ref<HTMLDivElement>;
@@ -92,3 +92,5 @@ export const AboutSection = ({
     </motion.div>
   );
 };
+
+export default AboutSection;

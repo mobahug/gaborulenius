@@ -16,11 +16,7 @@ import { colors as lightColors } from "../colors";
 import { colors as darkColors } from "../colorsDark";
 import { FormattedMessage, useIntl } from "react-intl";
 
-export default function Footer({
-  innerRef,
-}: {
-  innerRef: React.Ref<HTMLDivElement>;
-}) {
+const Footer = ({ innerRef }: { innerRef: React.Ref<HTMLDivElement> }) => {
   const intl = useIntl();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -156,4 +152,6 @@ export default function Footer({
       </Container>
     </Box>
   );
-}
+};
+
+export default Footer;
