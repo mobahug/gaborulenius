@@ -33,11 +33,11 @@
     />
     <title>Gabor Ulenius – Portfolio</title>
     <style>
-      body,
-      html,
-      * {
-        margin: 0;
-        padding: 0;
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
       }
       .scrolly-video {
         z-index: 0;
@@ -59,7 +59,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script src="https://cdn.jsdelivr.net/npm/scrolly-video@latest/dist/scrolly-video.js"></script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

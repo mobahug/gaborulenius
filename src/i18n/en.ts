@@ -2,6 +2,7 @@ export default {
   navHome: "Home",
   navAbout: "About",
   navProjects: "Projects",
+  navExperience: "Experience",
   navSkills: "Skills & Tools",
   navContact: "Contact",
   tabsEffects: "Effects",

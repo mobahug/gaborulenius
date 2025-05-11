@@ -18,7 +18,7 @@ export default function Hero() {
   const homeRef = useRef<HTMLDivElement>(null!);
   const aboutRef = useRef<HTMLDivElement>(null!);
   const projectsRef = useRef<HTMLDivElement>(null!);
-  const qualificationRef = useRef<HTMLDivElement>(null!);
+  const experienceRef = useRef<HTMLDivElement>(null!);
   const skillsRef = useRef<HTMLDivElement>(null!);
   const contactRef = useRef<HTMLDivElement>(null!);
   const footRef = useRef<HTMLDivElement>(null!);
@@ -27,7 +27,7 @@ export default function Hero() {
     { id: "home", ref: homeRef },
     { id: "about", ref: aboutRef },
     { id: "projects", ref: projectsRef },
-    { id: "qualification", ref: qualificationRef },
+    { id: "experience", ref: experienceRef },
     { id: "skills", ref: skillsRef },
     { id: "contact", ref: contactRef },
     { id: "footer", ref: footRef },
@@ -43,7 +43,7 @@ export default function Hero() {
           <HomeSection innerRef={homeRef} />
           <AboutSection innerRef={aboutRef} />
           <ProjectsSection innerRef={projectsRef} />
-          <QualificationSection innerRef={qualificationRef} />
+          <QualificationSection innerRef={experienceRef} />
           <SkillsSection innerRef={skillsRef} />
           <ContactSection innerRef={contactRef} />
         </Stack>

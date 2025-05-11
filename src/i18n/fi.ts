@@ -2,6 +2,7 @@ export default {
   navHome: "Etusivu",
   navAbout: "Tietoa",
   navProjects: "Projektit",
+  navExperience: "Työkokemus",
   navbar_projects: "Projektit",
   navSkills: "Taidot & Työkalut",
   navContact: "Yhteys",

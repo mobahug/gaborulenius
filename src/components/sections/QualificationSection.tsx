@@ -21,6 +21,7 @@ import {
   DialogActions,
   Button,
   useTheme,
+  alpha,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -82,7 +83,7 @@ const QualificationSection = ({
   return (
     <>
       <Paper
-        id="qualification"
+        id="experience"
         ref={innerRef}
         sx={{ pt: 0, width: { xs: "100%", md: "80%" }, mx: "auto" }}
       >
@@ -139,6 +140,7 @@ const QualificationSection = ({
                   <TimelineSeparator>
                     <TimelineDot
                       sx={{
+                        boxShadow: `0 0 8px ${alpha(theme.palette.mode === "dark" ? darkColors.accent : lightColors.accent, 0.5)}`,
                         bgcolor:
                           theme.palette.mode === "dark"
                             ? darkColors.btnBg
