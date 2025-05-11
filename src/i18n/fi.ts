@@ -17,7 +17,7 @@ export default {
   appearanceSubtitle:
     "Säädä tunnelmaa – kirkas päivänvalo tai hämärän mystiikka.",
   labelNightfallMode: "Yötila",
-  comingSoon: "Tulossa pian…",
+  labelDaylightMode: "Päivätila",
   languageSubtitle:
     "Valitse kieli, joka johdattaa sinut aluskasvillisuuden läpi.",
   buttonClose: "Sulje",

@@ -175,9 +175,16 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
                       color="primary"
                     />
                   }
-                  label={<FormattedMessage id="labelNightfallMode" />}
+                  label={
+                    <FormattedMessage
+                      id={
+                        theme.palette.mode === "dark"
+                          ? "labelNightfallMode"
+                          : "labelDaylightMode"
+                      }
+                    />
+                  }
                 />
-                <FormattedMessage id="comingSoon" />
               </Stack>
             )}
             {activeTab === "language" && (

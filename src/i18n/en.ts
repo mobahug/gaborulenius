@@ -16,7 +16,7 @@ export default {
   appearanceSubtitle:
     "Adjust the overall mood—daylight greens or the mystery of twilight.",
   labelNightfallMode: "Nightfall Mode",
-  comingSoon: "Coming soon…",
+  labelDaylightMode: "Daylight Mode",
   languageSubtitle:
     "Select your language to guide you through the undergrowth.",
   buttonClose: "Close",
