@@ -161,6 +161,8 @@ export const NavBar: React.FC = () => {
         open={mobileDrawerOpen}
         onClose={toggleMobileDrawer(false)}
         onOpen={toggleMobileDrawer(true)}
+        isPlayingAudio={isPlaying}
+        onToggleAudio={handlePlayPause}
       />
       <SettingsDialog open={settingsDialogOpen} onClose={handleCloseSettings} />
     </>

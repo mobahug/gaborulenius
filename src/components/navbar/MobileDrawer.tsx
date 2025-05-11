@@ -20,6 +20,8 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { FormattedMessage } from "react-intl";
 import { navLinks } from "./navConstants";
@@ -34,12 +36,16 @@ type MobileDrawerProps = {
   open: boolean;
   onClose: () => void;
   onOpen: () => void;
+  isPlayingAudio: boolean;
+  onToggleAudio: () => void;
 };
 
 const MobileDrawer: React.FC<MobileDrawerProps> = ({
   open,
   onClose,
   onOpen,
+  isPlayingAudio,
+  onToggleAudio,
 }) => {
   const theme = useTheme();
   const { selectedTheme, toggleTheme } = useThemeToggle();
@@ -228,6 +234,13 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
               )}
             </IconButton>
           </Stack>
+          <IconButton color="inherit" onClick={onToggleAudio}>
+            {isPlayingAudio ? (
+              <PauseCircleOutlineIcon sx={{ fontSize: 32 }} />
+            ) : (
+              <PlayCircleOutlineIcon sx={{ fontSize: 32 }} />
+            )}
+          </IconButton>
           <LanguageToggle size="small" />
         </Stack>
         {/* Effects Section */}
