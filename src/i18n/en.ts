@@ -23,6 +23,7 @@ export default {
   headingSettings: "Settings",
   labelBird: "Bird",
   labelLeaves: "Leaves",
+  labelFireflies: "Fireflies",
   /* ---------- Home titles ---------- */
   homeGreeting: "Hello, I’m {name}",
   homeSubtitle:

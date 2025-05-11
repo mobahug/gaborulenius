@@ -31,6 +31,7 @@ import { useLeavesEffect } from "../../hooks/useLeavesEffect";
 import { LanguageToggle } from "./LanguageToggle";
 import { colors as lightColors } from "../../colors";
 import { colors as darkColors } from "../../colorsDark";
+import { useFireflyEffect } from "../../hooks/useFireflyEffect";
 
 type MobileDrawerProps = {
   open: boolean;
@@ -48,9 +49,10 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
   onToggleAudio,
 }) => {
   const theme = useTheme();
-  const { selectedTheme, toggleTheme } = useThemeToggle();
+  const { toggleTheme } = useThemeToggle();
   const { birdEnabled, toggleBirdEffects } = useBirdEffect();
   const { leavesEnabled, toggleLeavesEffects } = useLeavesEffect();
+  const { firefliesEnabled, toggleFireflyEffects } = useFireflyEffect();
 
   const isDark = theme.palette.mode === "dark";
   const drawerBackgroundColor = isDark
@@ -113,7 +115,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
       </Box>
 
       {/* Navigation List */}
-      <List disablePadding sx={{ px: 1.5, mb: 1.5 }}>
+      <List disablePadding sx={{ px: 1.5 }}>
         {navLinks.map(({ id, href }) => (
           <ListItem key={id} disablePadding sx={{ mb: 0.5 }}>
             <ListItemButton
@@ -227,7 +229,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
               aria-label="Toggle theme"
               sx={{ "&:hover": { color: accentColor } }}
             >
-              {selectedTheme === "dark" ? (
+              {theme.palette.mode === "dark" ? (
                 <LightModeOutlinedIcon />
               ) : (
                 <DarkModeOutlinedIcon />
@@ -254,11 +256,19 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 labelId: "labelBird",
                 checked: birdEnabled,
                 onChange: toggleBirdEffects,
+                disabled: false,
               },
               {
                 labelId: "labelLeaves",
                 checked: leavesEnabled,
                 onChange: toggleLeavesEffects,
+                disabled: false,
+              },
+              {
+                labelId: "labelFireflies",
+                checked: firefliesEnabled,
+                onChange: toggleFireflyEffects,
+                disabled: theme.palette.mode === "light",
               },
             ].map((effect) => (
               <FormControlLabel
@@ -267,6 +277,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   <Switch
                     checked={effect.checked}
                     onChange={effect.onChange}
+                    disabled={effect.disabled}
                     color="primary"
                   />
                 }

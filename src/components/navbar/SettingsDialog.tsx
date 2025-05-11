@@ -28,6 +28,7 @@ import { TabKey, tabConfig } from "./navConstants";
 import { LanguageToggle } from "./LanguageToggle";
 import { colors as lightColors } from "../../colors";
 import { colors as darkColors } from "../../colorsDark";
+import { useFireflyEffect } from "../../hooks/useFireflyEffect";
 
 type SettingsDialogProps = {
   open: boolean;
@@ -39,6 +40,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
   const [activeTab, setActiveTab] = useState<TabKey>("effects");
   const { birdEnabled, toggleBirdEffects } = useBirdEffect();
   const { leavesEnabled, toggleLeavesEffects } = useLeavesEffect();
+  const { firefliesEnabled, toggleFireflyEffects } = useFireflyEffect();
   const { toggleTheme } = useThemeToggle();
 
   return (
@@ -89,7 +91,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
               <FormattedMessage id="settingsTitle" />
             </Typography>
           </Stack>
-          {/* Close button */}
           <IconButton
             onClick={onClose}
             aria-label="Close settings"
@@ -109,7 +110,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
             <CloseIcon />
           </IconButton>
         </Box>
-        {/* thin divider under title */}
       </DialogTitle>
       <Divider />
       <DialogContent dividers>
@@ -140,28 +140,44 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
           {/* Content panel */}
           <Box sx={{ flex: 1, px: 4, py: 2 }}>
             {activeTab === "effects" && (
-              <Stack spacing={3}>
+              <Stack spacing={1}>
                 <FormattedMessage id="effectsSubtitle" />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={birdEnabled}
-                      onChange={toggleBirdEffects}
-                      color="primary"
-                    />
-                  }
-                  label={<FormattedMessage id="labelBirdCalls" />}
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={leavesEnabled}
-                      onChange={toggleLeavesEffects}
-                      color="primary"
-                    />
-                  }
-                  label="Drifting Leaves"
-                />
+                {[
+                  {
+                    labelId: "labelBird",
+                    checked: birdEnabled,
+                    onChange: toggleBirdEffects,
+                    disabled: false,
+                  },
+                  {
+                    labelId: "labelLeaves",
+                    checked: leavesEnabled,
+                    onChange: toggleLeavesEffects,
+                    disabled: false,
+                  },
+                  {
+                    labelId: "labelFireflies",
+                    checked: firefliesEnabled,
+                    onChange: toggleFireflyEffects,
+                    disabled: theme.palette.mode === "light",
+                  },
+                ].map((effect) => (
+                  <FormControlLabel
+                    key={effect.labelId}
+                    control={
+                      <Switch
+                        checked={effect.checked}
+                        onChange={effect.onChange}
+                        disabled={effect.disabled}
+                        sx={{
+                          cursor: effect.disabled ? "not-allowed" : "pointer",
+                        }}
+                        color="primary"
+                      />
+                    }
+                    label={<FormattedMessage id={effect.labelId} />}
+                  />
+                ))}
               </Stack>
             )}
             {activeTab === "appearance" && (
@@ -190,7 +206,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ open, onClose }) => {
             {activeTab === "language" && (
               <Stack spacing={3}>
                 <FormattedMessage id="languageSubtitle" />
-                {/* <LanguageSelect /> */}
                 <LanguageToggle />
               </Stack>
             )}

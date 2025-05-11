@@ -24,6 +24,7 @@ export default {
   headingSettings: "Asetukset",
   labelBird: "Lintu",
   labelLeaves: "Lehdet",
+  labelFireflies: "Tulikärpäset",
   /* ---------- Etu otsikot ---------- */
   homeGreeting: "Hei, olen {name}",
   homeSubtitle:
