@@ -236,6 +236,7 @@ const QualificationSection = ({
                   <TimelineSeparator>
                     <TimelineDot
                       sx={{
+                        boxShadow: `0 0 8px ${alpha(theme.palette.mode === "dark" ? darkColors.accent : lightColors.accent, 0.5)}`,
                         bgcolor:
                           theme.palette.mode === "dark"
                             ? darkColors.btnBg
