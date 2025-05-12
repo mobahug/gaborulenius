@@ -1,9 +1,10 @@
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
-import { Typography, List, ListItem, ListItemText } from "@mui/material";
+import { Typography, List, ListItem, ListItemText, Grid } from "@mui/material";
 import { colors as lightColors } from "./colors";
 import { colors as darkColors } from "./colorsDark";
 import { FormattedMessage } from "react-intl";
+import LinkThumbnail from "./components/LinkThumbnail";
 
 export type TimelineEvent = {
   icon: React.ReactNode;
@@ -97,6 +98,26 @@ export const highlightedEvents: TimelineEvent[] = [
             />
           </ListItem>
         </List>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <LinkThumbnail
+              id="linkThumbnailTitleTietoevryHus"
+              descriptionId="linkThumbnailDescriptionTietoevryHus"
+              image="https://www.tietoevry.com/siteassets/images--videos/04-industries/healthcare-and-welfare/main/19--web-2560x1440-2.jpg?quality=80&width=1920&format=webp"
+              urlEN="https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/"
+              urlFI="https://www.tietoevry.com/fi/asiakkaitamme/2019/HUS-kehittaa-kliinisen-datan-hyodyntamista-tietoallas-ratkaisulla/"
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <LinkThumbnail
+              id="linkThumbnailTitleTietoevryPoc"
+              descriptionId="linkThumbnailDescriptionTietoevryPoc"
+              image="https://www.tietoevry.com/siteassets/images--videos/05-businesses/tietoevry-care/success-stories/hus-children-and-adolescents-hospital/lanu_11.jpg?quality=80&width=1920&format=webp"
+              urlEN="https://www.tietoevry.com/en/success-stories/2024/generative-ai-pilot-assists-clinicians-at-new-childrens-hospital/"
+              urlFI="https://www.tietoevry.com/fi/asiakkaitamme/2024/generatiivinen-tekoaly-auttaa-kliinikoita-paatoksenteossa-uudessa-lastensairaalassa/"
+            />
+          </Grid>
+        </Grid>
       </>
     ),
   },
@@ -116,6 +137,17 @@ export const highlightedEvents: TimelineEvent[] = [
         >
           <FormattedMessage id="eventAnyhauP1" />
         </Typography>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <LinkThumbnail
+              id="linkThumbnailTitleAnyhau"
+              descriptionId="linkThumbnailDescriptionAnyhau"
+              image="https://media.licdn.com/dms/image/v2/D4D22AQFlzDgjNTZslw/feedshare-shrink_1280/feedshare-shrink_1280/0/1715771172681?e=1749686400&v=beta&t=c0hOwzz7ZQtny4-_SC4l_jPePsFTL8ai-N6kSVcT6XA"
+              urlEN="https://app.anyhau.fi/en/partners"
+              urlFI="https://app.anyhau.fi/partners"
+            />
+          </Grid>
+        </Grid>
       </>
     ),
   },
@@ -135,6 +167,43 @@ export const highlightedEvents: TimelineEvent[] = [
         >
           <FormattedMessage id="eventHiveP1" />
         </Typography>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <LinkThumbnail
+              id="linkThumbnailTitleHive"
+              descriptionId="linkThumbnailDescriptionHive"
+              image="https://images.ctfassets.net/7oor54l3o0n4/656J6ndTUsw2c8AG4GuAoK/f4f14c0cb50fb260303cc9867bd2ad07/about-hive-logo.jpg?w=2560&h=1008&q=50"
+              urlEN="https://www.hive.fi/en/"
+              urlFI="https://www.hive.fi/en/"
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <div
+              style={{
+                position: "relative",
+                paddingBottom: "56.25%",
+                height: 0,
+                overflow: "hidden",
+                borderRadius: "8px",
+                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              <iframe
+                src="https://www.youtube.com/watch?v=Ma0Bp2rP48s&ab_channel=HiveHelsinki"
+                title="Hive Helsinki"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                }}
+              ></iframe>
+            </div>
+          </Grid>
+        </Grid>
       </>
     ),
   },
@@ -216,6 +285,26 @@ export const allEvents: TimelineEvent[] = [
             />
           </ListItem>
         </List>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <LinkThumbnail
+              id="linkThumbnailTitleTietoevryHus"
+              descriptionId="linkThumbnailDescriptionTietoevryHus"
+              image="https://www.tietoevry.com/siteassets/images--videos/04-industries/healthcare-and-welfare/main/19--web-2560x1440-2.jpg?quality=80&width=1920&format=webp"
+              urlEN="https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/"
+              urlFI="https://www.tietoevry.com/fi/asiakkaitamme/2019/HUS-kehittaa-kliinisen-datan-hyodyntamista-tietoallas-ratkaisulla/"
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <LinkThumbnail
+              id="linkThumbnailTitleTietoevryPoc"
+              descriptionId="linkThumbnailDescriptionTietoevryPoc"
+              image="https://www.tietoevry.com/siteassets/images--videos/05-businesses/tietoevry-care/success-stories/hus-children-and-adolescents-hospital/lanu_11.jpg?quality=80&width=1920&format=webp"
+              urlEN="https://www.tietoevry.com/en/success-stories/2024/generative-ai-pilot-assists-clinicians-at-new-childrens-hospital/"
+              urlFI="https://www.tietoevry.com/fi/asiakkaitamme/2024/generatiivinen-tekoaly-auttaa-kliinikoita-paatoksenteossa-uudessa-lastensairaalassa/"
+            />
+          </Grid>
+        </Grid>
       </>
     ),
   },
@@ -235,6 +324,17 @@ export const allEvents: TimelineEvent[] = [
         >
           <FormattedMessage id="eventAnyhauP1" />
         </Typography>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <LinkThumbnail
+              id="linkThumbnailTitleAnyhau"
+              descriptionId="linkThumbnailDescriptionAnyhau"
+              image="https://media.licdn.com/dms/image/v2/D4D22AQFlzDgjNTZslw/feedshare-shrink_1280/feedshare-shrink_1280/0/1715771172681?e=1749686400&v=beta&t=c0hOwzz7ZQtny4-_SC4l_jPePsFTL8ai-N6kSVcT6XA"
+              urlEN="https://app.anyhau.fi/en/partners"
+              urlFI="https://app.anyhau.fi/partners"
+            />
+          </Grid>
+        </Grid>
       </>
     ),
   },
@@ -254,6 +354,43 @@ export const allEvents: TimelineEvent[] = [
         >
           <FormattedMessage id="eventHiveP1" />
         </Typography>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <LinkThumbnail
+              id="linkThumbnailTitleHive"
+              descriptionId="linkThumbnailDescriptionHive"
+              image="https://images.ctfassets.net/7oor54l3o0n4/656J6ndTUsw2c8AG4GuAoK/f4f14c0cb50fb260303cc9867bd2ad07/about-hive-logo.jpg?w=2560&h=1008&q=50"
+              urlEN="https://www.hive.fi/en/"
+              urlFI="https://www.hive.fi/en/"
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <div
+              style={{
+                position: "relative",
+                paddingBottom: "56.25%",
+                height: 0,
+                overflow: "hidden",
+                borderRadius: "8px",
+                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              <iframe
+                src="https://www.youtube.com/watch?v=Ma0Bp2rP48s&ab_channel=HiveHelsinki"
+                title="Hive Helsinki"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                }}
+              ></iframe>
+            </div>
+          </Grid>
+        </Grid>
       </>
     ),
   },

@@ -174,4 +174,19 @@ export default {
   footerNavContact: "Contact me",
   footerCopyright: "© {year} Gabor Ulenius. All rights reserved",
   headingEffects: "Effects",
+
+  /*Links */
+  linkThumbnailTitleTietoevryHus:
+    "An agile and cost-effective way to combine patient data from different systems? It already exists and this is how it works",
+  linkThumbnailDescriptionTietoevryHus:
+    "Finnish healthcare and the healthcare information systems suffer from the same basic problem: fragmentation.",
+  linkThumbnailTitleTietoevryPoc:
+    "Generative AI pilot assists clinicians at New Children’s Hospital",
+  linkThumbnailDescriptionTietoevryPoc:
+    "Learn how a GenAI pilot developed by Tietoevry is helping clinicians from New Children’s Hospital find the information faster in the HUS databank",
+  linkThumbnailTitleAnyhau: "Anyhau",
+  linkThumbnailDescriptionAnyhau: "Find the best services for your pet",
+  linkThumbnailTitleHive: "Hive Helsinki",
+  linkThumbnailDescriptionHive:
+    "Hive Helsinki is a new kind of coding school that preps you to launch your future-proof career through collaborative, project-based learning. No previous coding experience is required. Tuition is free!",
 } as const;

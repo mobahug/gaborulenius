@@ -176,4 +176,18 @@ export default {
   footerNavContact: "Ota yhteyttä",
   footerCopyright: "© {year} Gabor Ulenius. Kaikki oikeudet pidätetään",
   headingEffects: "Efektit",
+
+  /* Linkit */
+  linkThumbnailTitleTietoevryHus: "HUS kehittää kliinisen datan hyödyntämistä",
+  linkThumbnailDescriptionTietoevryHus:
+    "Ratkaisu mahdollistaa suurten tietomassojen analysoinnin terveydenhuoltoa koskevien ennusteiden ja merkittävien innovaatioiden luomiseksi.",
+  linkThumbnailTitleTietoevryPoc:
+    "Generatiivinen tekoäly auttaa kliinikoita päätöksenteossa",
+  linkThumbnailDescriptionTietoevryPoc:
+    "Generatiiviseen tekoälyyn pohjautuva sovellus vähentää tiedonhakuun kuluvaa aikaa ja kokoaa jatkossa ohjeet eri lähteistä yhteen.",
+  linkThumbnailTitleAnyhau: "Anyhau",
+  linkThumbnailDescriptionAnyhau: "Löydä parhaat palvelut lemmikillesi",
+  linkThumbnailTitleHive: "Hive Helsinki",
+  linkThumbnailDescriptionHive:
+    "Hive Helsinki on uudenlainen koodauskoulu, joka valmistaa sinua tulevaisuudenkestävään uraan yhteistyöhön perustuvan, projektipohjaisen oppimisen avulla. Aiempaa koodauskokemusta ei vaadita. Lukukausimaksu on ilmainen!",
 } as const;

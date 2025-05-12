@@ -334,7 +334,11 @@ const QualificationDialog: React.FC<QualificationDialogProps> = ({
         transition: { timeout: { appear: 600, enter: 600, exit: 600 } },
         paper: {
           sx: {
+            pt: 2,
+            pb: 0,
             maxWidth: "750px",
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
           },
         },
       }}
@@ -346,7 +350,9 @@ const QualificationDialog: React.FC<QualificationDialogProps> = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          position: "relative",
           p: 0,
+          pb: 5,
           color:
             theme.palette.mode === "dark"
               ? darkColors.textHeading
@@ -357,6 +363,8 @@ const QualificationDialog: React.FC<QualificationDialogProps> = ({
         <IconButton
           onClick={onClose}
           sx={{
+            top: 2,
+            right: -5,
             color:
               theme.palette.mode === "dark"
                 ? darkColors.textLight
@@ -366,7 +374,7 @@ const QualificationDialog: React.FC<QualificationDialogProps> = ({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ p: 1 }}>
+      <DialogContent sx={{ px: 0 }}>
         <DialogContentText
           component="div"
           sx={{
@@ -379,17 +387,8 @@ const QualificationDialog: React.FC<QualificationDialogProps> = ({
           {event?.details}
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
-        <Button
-          variant="contained"
-          onClick={onClose}
-          sx={{
-            color:
-              theme.palette.mode === "dark"
-                ? darkColors.accent
-                : lightColors.accent,
-          }}
-        >
+      <DialogActions sx={{ py: 4 }}>
+        <Button variant="contained" onClick={onClose}>
           <FormattedMessage id="buttonClose" />
         </Button>
       </DialogActions>
