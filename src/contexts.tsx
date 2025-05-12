@@ -1,6 +1,13 @@
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
-import { Typography, List, ListItem, ListItemText, Grid } from "@mui/material";
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Grid,
+  Box,
+} from "@mui/material";
 import { colors as lightColors } from "./colors";
 import { colors as darkColors } from "./colorsDark";
 import { FormattedMessage } from "react-intl";
@@ -178,30 +185,31 @@ export const highlightedEvents: TimelineEvent[] = [
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <div
-              style={{
+            <Box
+              sx={{
                 position: "relative",
-                paddingBottom: "56.25%",
-                height: 0,
                 overflow: "hidden",
-                borderRadius: "8px",
-                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+                borderRadius: 1,
+                width: "100%",
+                pt: "56.25%",
+                "& iframe": { border: 0 },
               }}
             >
-              <iframe
-                src="https://www.youtube.com/watch?v=Ma0Bp2rP48s&ab_channel=HiveHelsinki"
-                title="Hive Helsinki"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              <Box
+                component="iframe"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                style={{
+                src="https://www.youtube.com/embed/Ma0Bp2rP48s"
+                title="Hive Helsinki"
+                sx={{
                   position: "absolute",
-                  top: 0,
-                  left: 0,
+                  inset: 0,
                   width: "100%",
                   height: "100%",
                 }}
-              ></iframe>
-            </div>
+              />
+            </Box>
           </Grid>
         </Grid>
       </>
@@ -365,30 +373,31 @@ export const allEvents: TimelineEvent[] = [
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <div
-              style={{
+            <Box
+              sx={{
                 position: "relative",
-                paddingBottom: "56.25%",
-                height: 0,
                 overflow: "hidden",
-                borderRadius: "8px",
-                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+                borderRadius: 1,
+                width: "100%",
+                pt: "56.25%",
+                "& iframe": { border: 0 },
               }}
             >
-              <iframe
-                src="https://www.youtube.com/watch?v=Ma0Bp2rP48s&ab_channel=HiveHelsinki"
-                title="Hive Helsinki"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              <Box
+                component="iframe"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                style={{
+                src="https://www.youtube.com/embed/Ma0Bp2rP48s"
+                title="Hive Helsinki"
+                sx={{
                   position: "absolute",
-                  top: 0,
-                  left: 0,
+                  inset: 0,
                   width: "100%",
                   height: "100%",
                 }}
-              ></iframe>
-            </div>
+              />
+            </Box>
           </Grid>
         </Grid>
       </>
