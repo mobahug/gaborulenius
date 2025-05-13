@@ -62,7 +62,7 @@ const HomeSection = ({ innerRef }: { innerRef: React.Ref<HTMLDivElement> }) => {
             <Button
               variant="contained"
               component="a"
-              href="/GaborCV.pdf"
+              href="/gaborulenius/Gabor_Ulenius_CV_2025.pdf"
               target="_blank"
               download
               startIcon={<FileDownloadIcon />}
