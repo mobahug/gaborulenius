@@ -26,7 +26,7 @@ const Sprite = styled("div")(({ theme }) => {
     pointerEvents: "none",
     willChange: "background-position, transform",
 
-    backgroundImage: `url("/parallaxMui/BirdSpriteBigFlying.png")`,
+    backgroundImage: `url("/gaborulenius/BirdSpriteBigFlying.png")`,
     backgroundRepeat: "no-repeat",
     backgroundSize: `${SHEET_W}px ${FRAME_H}px`,
 

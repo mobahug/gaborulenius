@@ -38,8 +38,8 @@ export const NavBar: React.FC = () => {
   const initializeAudio = useCallback(() => {
     const newSrc =
       selectedTheme === "dark"
-        ? "/parallaxMui/jungle-music-night.mp3"
-        : "/parallaxMui/jungle-music.mp3";
+        ? "/gaborulenius/jungle-music-night.mp3"
+        : "/gaborulenius/jungle-music.mp3";
 
     if (audioRef.current) {
       audioRef.current.pause();
@@ -125,7 +125,7 @@ export const NavBar: React.FC = () => {
               >
                 <MuiLink href="#home" underline="none">
                   <Avatar
-                    src="/parallaxMui/profile-small.webp"
+                    src="/gaborulenius/profile-small.webp"
                     alt="Profile"
                     sx={{
                       width: 44,

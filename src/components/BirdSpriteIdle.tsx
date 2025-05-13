@@ -20,7 +20,7 @@ const Sprite = styled("div")((props) => {
   return {
     width: FRAME_WIDTH,
     height: FRAME_HEIGHT,
-    backgroundImage: `url("/parallaxMui/BirdSpriteBigIdle.png")`,
+    backgroundImage: `url("/gaborulenius/BirdSpriteBigIdle.png")`,
     backgroundRepeat: "no-repeat",
     backgroundSize: `auto 100%`,
     willChange: "background-position, transform",

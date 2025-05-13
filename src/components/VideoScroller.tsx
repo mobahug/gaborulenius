@@ -7,8 +7,8 @@ export const VideoScroller = () => {
 
   const src =
     selectedTheme === "dark"
-      ? "/parallaxMui/gemini-jungle-dark.mp4"
-      : "/parallaxMui/gemini-jungle-light.mp4";
+      ? "/gaborulenius/gemini-jungle-dark.mp4"
+      : "/gaborulenius/gemini-jungle-light.mp4";
 
   return <ScrollyVideo src={src} />;
 };

@@ -60,7 +60,7 @@ const CoverSection: React.FC = () => {
       <Box sx={{ maxWidth: 600 }}>
         <Avatar
           alt="Gabor"
-          src="/parallaxMui/profile-small.webp"
+          src="/gaborulenius/profile-small.webp"
           sx={{
             width: { xs: 140, sm: 150, md: 160 },
             height: { xs: 140, sm: 150, md: 160 },
