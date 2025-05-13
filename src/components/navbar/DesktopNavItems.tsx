@@ -16,6 +16,7 @@ import { navLinks } from "./navConstants";
 import { LanguageToggle } from "./LanguageToggle";
 import { colors as lightColors } from "../../colors";
 import { colors as darkColors } from "../../colorsDark";
+import { useActiveNavLink } from "../../hooks/useActiveNavLink";
 
 type DesktopNavItemsProps = {
   selectedThemeVariant: "light" | "dark";
@@ -33,34 +34,58 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
   onToggleAudio,
 }) => {
   const theme = useTheme();
+  const { currentActiveSectionId, setActiveSectionId } = useActiveNavLink();
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
       <LanguageToggle />
-      {navLinks.map(({ id, href }) => (
-        <MuiLink
-          key={id}
-          href={href}
-          underline="none"
-          sx={{
-            fontSize: "0.9rem",
-            fontWeight: 700,
-            color:
-              theme.palette.mode === "dark"
-                ? darkColors.textLight
-                : lightColors.textLight,
-            position: "relative",
-            "&:hover": {
-              color:
-                theme.palette.mode === "dark"
-                  ? darkColors.accentHover
-                  : lightColors.accentHover,
-            },
-          }}
-        >
-          <FormattedMessage id={id} />
-        </MuiLink>
-      ))}
+      {navLinks.map(({ id, href }) => {
+        const isActive = currentActiveSectionId === href;
+        return (
+          <MuiLink
+            key={id}
+            href={href}
+            underline="none"
+            onClick={() => {
+              setActiveSectionId(href);
+            }}
+            sx={{
+              fontSize: "0.9rem",
+              fontWeight: 700,
+              color: isActive
+                ? theme.palette.mode === "dark"
+                  ? darkColors.accent
+                  : lightColors.accent
+                : theme.palette.mode === "dark"
+                  ? darkColors.textLight
+                  : lightColors.textLight,
+              position: "relative",
+              "&:hover": {
+                color:
+                  theme.palette.mode === "dark"
+                    ? darkColors.accentHover
+                    : lightColors.accentHover,
+              },
+              "&::after": isActive
+                ? {
+                    content: '""',
+                    position: "absolute",
+                    bottom: -4,
+                    left: 0,
+                    width: "100%",
+                    height: 2,
+                    backgroundColor:
+                      theme.palette.mode === "dark"
+                        ? darkColors.accent
+                        : lightColors.accent,
+                  }
+                : undefined,
+            }}
+          >
+            <FormattedMessage id={id} />
+          </MuiLink>
+        );
+      })}
       <IconButton color="inherit" onClick={onToggleTheme}>
         {selectedThemeVariant === "dark" ? (
           <LightModeOutlinedIcon />

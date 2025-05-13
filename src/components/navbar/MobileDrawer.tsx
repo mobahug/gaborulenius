@@ -32,6 +32,7 @@ import { LanguageToggle } from "./LanguageToggle";
 import { colors as lightColors } from "../../colors";
 import { colors as darkColors } from "../../colorsDark";
 import { useFireflyEffect } from "../../hooks/useFireflyEffect";
+import { useActiveNavLink } from "../../hooks/useActiveNavLink";
 
 type MobileDrawerProps = {
   open: boolean;
@@ -53,6 +54,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
   const { birdEnabled, toggleBirdEffects } = useBirdEffect();
   const { leavesEnabled, toggleLeavesEffects } = useLeavesEffect();
   const { firefliesEnabled, toggleFireflyEffects } = useFireflyEffect();
+  const { currentActiveSectionId, setActiveSectionId } = useActiveNavLink();
 
   const isDark = theme.palette.mode === "dark";
   const drawerBackgroundColor = isDark
@@ -116,41 +118,47 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
       {/* Navigation List */}
       <List disablePadding sx={{ px: 1.5 }}>
-        {navLinks.map(({ id, href }) => (
-          <ListItem key={id} disablePadding sx={{ mb: 0.5 }}>
-            <ListItemButton
-              component="a"
-              href={href}
-              onClick={onClose}
-              sx={{
-                py: 1.25,
-                px: 2,
-                borderRadius: 0.5,
-                transition:
-                  "background-color 0.2s ease-in-out, color 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor: alpha(accentColor, 0.12),
-                  color: accentColor,
-                },
-                "&.Mui-focusVisible": {
-                  backgroundColor: alpha(accentColor, 0.2),
-                  boxShadow: `0 0 0 2px ${alpha(accentColor, 0.5)} inset`,
-                },
-              }}
-            >
-              <ListItemText
-                primary={<FormattedMessage id={id} />}
-                slotProps={{
-                  primary: {
-                    fontWeight: 500,
-                    fontSize: "1rem",
-                    color: "inherit",
+        {navLinks.map(({ id, href }) => {
+          return (
+            <ListItem key={id} disablePadding sx={{ mb: 0.5 }}>
+              <ListItemButton
+                component="a"
+                href={href}
+                selected={currentActiveSectionId === href}
+                onClick={() => {
+                  setActiveSectionId(href);
+                  onClose();
+                }}
+                sx={{
+                  py: 1.25,
+                  px: 2,
+                  borderRadius: 0.5,
+                  transition:
+                    "background-color 0.2s ease-in-out, color 0.2s ease-in-out",
+                  "&:hover": {
+                    backgroundColor: alpha(accentColor, 0.12),
+                    color: accentColor,
+                  },
+                  "&.Mui-focusVisible": {
+                    backgroundColor: alpha(accentColor, 0.2),
+                    boxShadow: `0 0 0 2px ${alpha(accentColor, 0.5)} inset`,
                   },
                 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+              >
+                <ListItemText
+                  primary={<FormattedMessage id={id} />}
+                  slotProps={{
+                    primary: {
+                      fontWeight: 500,
+                      fontSize: "1rem",
+                      color: "inherit",
+                    },
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
 
       <Divider sx={{ bgcolor: dividerColor, mx: 2.5, my: 2 }} />
