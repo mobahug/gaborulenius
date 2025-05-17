@@ -41,7 +41,7 @@ export default {
   projectHusDatalakeTitle:
     "Contributing to the HUS DataLake platform for real-time healthcare data access",
   projectMedicalPocTitle:
-    "I played a key role/central role in the implementation of an AI PoC at Helsinki's New Children's Hospital. This PoC speeds up doctors' diagnoses by analyzing medical documents.",
+    "I played a key role in the implementation of an AI PoC at Helsinki's New Children's Hospital. This PoC speeds up doctors' diagnoses by analyzing medical documents.",
   projectIctDaysTitle:
     "As part of the team, I contributed significantly to the development of an LLM-based AI solution for the ATK-päivät event, which is Finland's largest healthcare IT event.",
   projectAnyhauTitle:
