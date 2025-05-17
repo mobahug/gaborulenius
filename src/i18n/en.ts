@@ -188,5 +188,9 @@ export default {
   linkThumbnailDescriptionAnyhau: "Find the best services for your pet",
   linkThumbnailTitleHive: "Hive Helsinki",
   linkThumbnailDescriptionHive:
-    "Hive Helsinki is a new kind of coding school that preps you to launch your future-proof career through collaborative, project-based learning. No previous coding experience is required. Tuition is free!",
+    "Hive Helsinki is a new kind of coding school that preps you to launch your future-proof career through collaborative, project-based learning.",
+  linkThumbnailTitleGabor: "Far from the A4 way into a programming career",
+  linkThumbnailDescriptionGabor:
+    "Gàbor is living proof that there is more than one way into programming. His curiosity and ambition to learn has taken him on an interesting career path.",
+  linkThumbnailReadingTime: "{minutes} min read",
 } as const;

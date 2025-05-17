@@ -189,5 +189,9 @@ export default {
   linkThumbnailDescriptionAnyhau: "Löydä parhaat palvelut lemmikillesi",
   linkThumbnailTitleHive: "Hive Helsinki",
   linkThumbnailDescriptionHive:
-    "Hive Helsinki on uudenlainen koodauskoulu, joka valmistaa sinua tulevaisuudenkestävään uraan yhteistyöhön perustuvan, projektipohjaisen oppimisen avulla. Aiempaa koodauskokemusta ei vaadita. Lukukausimaksu on ilmainen!",
+    "Hive Helsinki on uudenlainen koodauskoulu, joka valmistaa sinua tulevaisuudenkestävään uraan yhteistyöhön perustuvan, projektipohjaisen oppimisen avulla.",
+  linkThumbnailTitleGabor: "Kauas A4-urasta ohjelmointiin",
+  linkThumbnailDescriptionGabor:
+    "Gàbor on elävä todiste siitä, että ohjelmointiin on monta tietä. Hänen uteliaisuutensa ja oppimisen halunsa ovat johdattaneet hänet mielenkiintoiselle urapolulle.",
+  linkThumbnailReadingTime: "lukuaika {minutes} min ",
 } as const;

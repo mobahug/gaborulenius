@@ -105,7 +105,7 @@ export const highlightedEvents: TimelineEvent[] = [
             />
           </ListItem>
         </List>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid container spacing={5} sx={{ pt: 8 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <LinkThumbnail
               id="linkThumbnailTitleTietoevryHus"
@@ -113,6 +113,9 @@ export const highlightedEvents: TimelineEvent[] = [
               image="https://www.tietoevry.com/siteassets/images--videos/04-industries/healthcare-and-welfare/main/19--web-2560x1440-2.jpg?quality=80&width=1920&format=webp"
               urlEN="https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/"
               urlFI="https://www.tietoevry.com/fi/asiakkaitamme/2019/HUS-kehittaa-kliinisen-datan-hyodyntamista-tietoallas-ratkaisulla/"
+              readingMinutes={7}
+              isArticle={true}
+              date="01.2021"
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -122,6 +125,9 @@ export const highlightedEvents: TimelineEvent[] = [
               image="https://www.tietoevry.com/siteassets/images--videos/05-businesses/tietoevry-care/success-stories/hus-children-and-adolescents-hospital/lanu_11.jpg?quality=80&width=1920&format=webp"
               urlEN="https://www.tietoevry.com/en/success-stories/2024/generative-ai-pilot-assists-clinicians-at-new-childrens-hospital/"
               urlFI="https://www.tietoevry.com/fi/asiakkaitamme/2024/generatiivinen-tekoaly-auttaa-kliinikoita-paatoksenteossa-uudessa-lastensairaalassa/"
+              readingMinutes={4}
+              isArticle={true}
+              date="03.2024"
             />
           </Grid>
         </Grid>
@@ -144,7 +150,7 @@ export const highlightedEvents: TimelineEvent[] = [
         >
           <FormattedMessage id="eventAnyhauP1" />
         </Typography>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid container spacing={5} sx={{ pt: 8 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <LinkThumbnail
               id="linkThumbnailTitleAnyhau"
@@ -174,7 +180,7 @@ export const highlightedEvents: TimelineEvent[] = [
         >
           <FormattedMessage id="eventHiveP1" />
         </Typography>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid container spacing={5} sx={{ pt: 8 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <LinkThumbnail
               id="linkThumbnailTitleHive"
@@ -293,7 +299,7 @@ export const allEvents: TimelineEvent[] = [
             />
           </ListItem>
         </List>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid container spacing={5} sx={{ pt: 8 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <LinkThumbnail
               id="linkThumbnailTitleTietoevryHus"
@@ -301,6 +307,9 @@ export const allEvents: TimelineEvent[] = [
               image="https://www.tietoevry.com/siteassets/images--videos/04-industries/healthcare-and-welfare/main/19--web-2560x1440-2.jpg?quality=80&width=1920&format=webp"
               urlEN="https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/"
               urlFI="https://www.tietoevry.com/fi/asiakkaitamme/2019/HUS-kehittaa-kliinisen-datan-hyodyntamista-tietoallas-ratkaisulla/"
+              readingMinutes={7}
+              isArticle={true}
+              date="01.2021"
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -310,6 +319,9 @@ export const allEvents: TimelineEvent[] = [
               image="https://www.tietoevry.com/siteassets/images--videos/05-businesses/tietoevry-care/success-stories/hus-children-and-adolescents-hospital/lanu_11.jpg?quality=80&width=1920&format=webp"
               urlEN="https://www.tietoevry.com/en/success-stories/2024/generative-ai-pilot-assists-clinicians-at-new-childrens-hospital/"
               urlFI="https://www.tietoevry.com/fi/asiakkaitamme/2024/generatiivinen-tekoaly-auttaa-kliinikoita-paatoksenteossa-uudessa-lastensairaalassa/"
+              readingMinutes={4}
+              isArticle={true}
+              date="03.2024"
             />
           </Grid>
         </Grid>
@@ -332,7 +344,7 @@ export const allEvents: TimelineEvent[] = [
         >
           <FormattedMessage id="eventAnyhauP1" />
         </Typography>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid container spacing={5} sx={{ pt: 8 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <LinkThumbnail
               id="linkThumbnailTitleAnyhau"
@@ -362,7 +374,7 @@ export const allEvents: TimelineEvent[] = [
         >
           <FormattedMessage id="eventHiveP1" />
         </Typography>
-        <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid container spacing={5} sx={{ pt: 8 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <LinkThumbnail
               id="linkThumbnailTitleHive"
