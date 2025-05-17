@@ -40,7 +40,7 @@ const ContactSection = ({
           </Typography>
         </motion.div>
         <motion.div custom={2} variants={fadeUp}>
-          <Typography variant="body1">
+          <Typography variant="body1" pb={4}>
             <FormattedMessage id="contactIntro" />
           </Typography>
         </motion.div>

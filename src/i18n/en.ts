@@ -27,7 +27,7 @@ export default {
   /* ---------- Home titles ---------- */
   homeGreeting: "Hello, I’m {name}",
   homeSubtitle:
-    "Full-Stack Developer at Tietoevry Care, specializing in cloud-native, AI-powered healthcare solutions.",
+    "Full-Stack Developer at Tietoevry Care, specializing in cloud-native and AI-based healthcare solutions.",
   homeBtnExplore: "Explore My Work",
   homeBtnDownloadCv: "Download My CV",
   /* ---------- About titles ---------- */
@@ -41,9 +41,9 @@ export default {
   projectHusDatalakeTitle:
     "Contributing to the HUS DataLake platform for real-time healthcare data access",
   projectMedicalPocTitle:
-    "Built an AI PoC for Helsinki’s New Children’s Hospital, assisting doctors in faster diagnosis through medical-document analysis",
+    "I played a key role/central role in the implementation of an AI PoC at Helsinki's New Children's Hospital. This PoC speeds up doctors' diagnoses by analyzing medical documents.",
   projectIctDaysTitle:
-    "Developed an LLM-based AI solution for ICT Days, Finland’s largest healthcare-tech event",
+    "As part of the team, I contributed significantly to the development of an LLM-based AI solution for the ATK-päivät event, which is Finland's largest healthcare IT event.",
   projectAnyhauTitle:
     "Worked with the 2022 “Diili” winner to launch a green-field platform for online animal-service bookings",
   /* ---------- Helpers ---------- */
@@ -159,7 +159,7 @@ export default {
   /* Contact section */
   contactHeading: "Let’s Connect",
   contactIntro:
-    "Got an idea, project, or just want to geek out about nature and design? Let’s talk!",
+    "Navigating the digital jungle for your next project or a new team member? Whether it's a groundbreaking idea, a collaborative adventure, or an exciting opportunity, I'm ready to explore. Let's connect and create something wild!",
   contactBtnEmail: "Email Me",
   contactBtnLinkedIn: "LinkedIn",
 

@@ -4,8 +4,8 @@ export default {
   navProjects: "Projektit",
   navExperience: "Työkokemus",
   navbar_projects: "Projektit",
-  navSkills: "Taidot & Työkalut",
-  navContact: "Yhteys",
+  navSkills: "Taidot",
+  navContact: "Ota yhteyttä",
   tabsEffects: "Tehosteet",
   tabsAppearance: "Ulkoasu",
   tabsLanguage: "Kieli",
@@ -28,7 +28,7 @@ export default {
   /* ---------- Etu otsikot ---------- */
   homeGreeting: "Hei, olen {name}",
   homeSubtitle:
-    "Full-Stack -kehittäjä Tietoevry Carella, erikoistunut pilvinatiiveihin, tekoälypohjaisiin terveydenhuollon ratkaisuihin.",
+    "Full-Stack -kehittäjä Tietoevry Carella, olen erikoistunut pilvinatiiveihin ja tekoälypohjaisiin terveydenhuollon ratkaisuihin",
   homeBtnExplore: "Tutustu töihini",
   homeBtnDownloadCv: "Lataa CV:ni",
   /* ---------- Minusta otsikot ---------- */
@@ -42,9 +42,9 @@ export default {
   projectHusDatalakeTitle:
     "Osallistuminen HUS DataLake -alustan kehittämiseen reaaliaikaisen terveydenhuollon datan saatavuuden mahdollistamiseksi",
   projectMedicalPocTitle:
-    "Toteutin tekoäly-PoC:n Helsingin Uudessa lastensairaalassa, joka nopeuttaa lääkäreiden diagnoosia lääketieteellisten asiakirjojen analyysillä",
+    "Toimin avainroolissa tekoäly-PoC:n toteutuksessa Helsingin Uudessa lastensairaalassa. Tämä PoC nopeuttaa lääkäreiden diagnoosia lääketieteellisten asiakirjojen analyysillä.",
   projectIctDaysTitle:
-    "Kehitin LLM-pohjaisen tekoälyratkaisun ATK-päivät -tapahtumaan, Suomen suurimpaan sote-IT-tilaisuuteen",
+    "Osana tiimiä vaikutin merkittävästi LLM-pohjaisen tekoälyratkaisun kehitykseen ATK-päivät -tapahtumaa varten, joka on Suomen suurin sote-IT-tilaisuus.",
   projectAnyhauTitle:
     "Tein yhteistyötä vuoden 2022 Diili-voittajan kanssa uuden alustan lanseeraamiseksi, jossa eläinpalvelujen tarjoajat voivat listata palvelunsa ja asiakkaat varata sekä maksaa verkossa",
   /* ---------- Aputekstit ---------- */
@@ -161,7 +161,7 @@ export default {
   /* Yhteydenotto-osio */
   contactHeading: "Ota yhteyttä",
   contactIntro:
-    "Onko sinulla idea, projekti tai haluatko nörtteillä luonnosta ja designista? Jutellaan!",
+    "Etsimässä opasta digitaalisen viidakon halki seuraavaan projektiisi tai uutta tiiminjäsentä? Olipa kyseessä mullistava idea, yhteinen seikkailu tai kutkuttava mahdollisuus, olen valmis tutkimaan. Otetaan yhteyttä ja luodaan yhdessä jotain villiä!",
   contactBtnEmail: "Lähetä sähköpostia",
   contactBtnLinkedIn: "LinkedIn",
 

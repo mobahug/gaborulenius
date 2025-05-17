@@ -173,7 +173,14 @@ const QualificationSection = ({
 
                   <TimelineContent
                     onClick={handleOpen(evt)}
-                    sx={{ cursor: "pointer" }}
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": {
+                        backgroundColor: "rgba(255,255,255,.04)",
+                        borderRadius: 0.5,
+                        boxShadow: "0 2px 8px rgba(0,0,0,.25)",
+                      },
+                    }}
                   >
                     <Typography
                       variant="subtitle2"
@@ -268,7 +275,14 @@ const QualificationSection = ({
                   </TimelineSeparator>
                   <TimelineContent
                     onClick={handleOpen(evt)}
-                    sx={{ cursor: "pointer" }}
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": {
+                        backgroundColor: "rgba(255,255,255,.04)",
+                        borderRadius: 0.5,
+                        boxShadow: "0 2px 8px rgba(0,0,0,.25)",
+                      },
+                    }}
                   >
                     <Typography
                       variant="subtitle2"

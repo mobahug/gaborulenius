@@ -105,7 +105,15 @@ const CoverSection: React.FC = () => {
             textDecoration: "none",
           }}
         >
-          <ExpandMoreIcon fontSize="large" />
+          <ExpandMoreIcon
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? darkColors.accentHover
+                  : lightColors.accentHover,
+            }}
+            fontSize="large"
+          />
           <Typography
             variant="h5"
             color={
