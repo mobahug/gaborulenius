@@ -1,18 +1,9 @@
 import {
-  TimelineItem,
-  Timeline,
-  TimelineSeparator,
-  TimelineDot,
-  TimelineConnector,
-  TimelineContent,
-} from "@mui/lab";
-import {
   Box,
   useMediaQuery,
   Paper,
   Tabs,
   Tab,
-  Typography,
   Dialog,
   DialogTitle,
   IconButton,
@@ -21,20 +12,15 @@ import {
   DialogActions,
   Button,
   useTheme,
-  alpha,
 } from "@mui/material";
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { TimelineEvent, highlightedEvents, allEvents } from "../../contexts";
-import { fadeUp, Transition } from "../Sections";
+import { Transition } from "../Sections";
 import { colors as lightColors } from "../../colors";
 import { colors as darkColors } from "../../colorsDark";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import CloseIcon from "@mui/icons-material/Close";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-
-const MotionTimelineItem = motion.create(TimelineItem);
+import { TimelineBlock } from "./TimelineBlock";
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -70,16 +56,19 @@ const QualificationSection = ({
   );
   const [tabIndex, setTabIndex] = useState(0);
 
-  const handleOpen = (evt: TimelineEvent) => () => {
+  const handleOpen = (evt: TimelineEvent) => {
     setSelectedEvent(evt);
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleTabChange = (_event: React.SyntheticEvent, newIndex: number) => {
     setTabIndex(newIndex);
   };
+
   return (
     <>
       <Paper
@@ -109,209 +98,20 @@ const QualificationSection = ({
           />
         </Tabs>
         <TabPanel value={tabIndex} index={0}>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.div custom={1} variants={fadeUp}>
-              <Typography variant="h4" gutterBottom>
-                <FormattedMessage id="qualificationHeadingHighlights" />
-              </Typography>
-            </motion.div>
-            <Timeline
-              position={isSmallScreen ? "right" : "alternate"}
-              sx={{
-                padding: 0,
-                "& .MuiTimelineItem-root:before": {
-                  display: isSmallScreen ? "none" : undefined,
-                },
-              }}
-            >
-              {highlightedEvents.map((evt, i) => (
-                <MotionTimelineItem
-                  key={evt.titleId}
-                  custom={i + 2}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <TimelineSeparator>
-                    <TimelineDot
-                      sx={{
-                        boxShadow: `0 0 8px ${alpha(theme.palette.mode === "dark" ? darkColors.accent : lightColors.accent, 0.5)}`,
-                        bgcolor:
-                          theme.palette.mode === "dark"
-                            ? darkColors.btnBg
-                            : lightColors.btnBg,
-                        color:
-                          theme.palette.mode === "dark"
-                            ? darkColors.textLight
-                            : lightColors.textLight,
-                        border: `2px solid ${
-                          theme.palette.mode === "dark"
-                            ? darkColors.accent
-                            : lightColors.accent
-                        }`,
-                      }}
-                      variant="outlined"
-                    >
-                      {evt.icon}
-                    </TimelineDot>
-                    {i < highlightedEvents.length - 1 && (
-                      <TimelineConnector
-                        sx={{
-                          bgcolor:
-                            theme.palette.mode === "dark"
-                              ? darkColors.dividerBg
-                              : lightColors.dividerBg,
-                        }}
-                      />
-                    )}
-                  </TimelineSeparator>
-
-                  <TimelineContent
-                    onClick={handleOpen(evt)}
-                    sx={{
-                      cursor: "pointer",
-                      "&:hover": {
-                        backgroundColor: "rgba(255,255,255,.04)",
-                        borderRadius: 0.5,
-                        boxShadow: "0 2px 8px rgba(0,0,0,.25)",
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant="subtitle2"
-                      sx={{ fontWeight: 700 }}
-                      gutterBottom
-                    >
-                      <FormattedMessage id={evt.titleId} />{" "}
-                      <OpenInNewIcon sx={{ fontSize: 16 }} />
-                    </Typography>
-                    <Box
-                      component="time"
-                      dateTime={evt.whenId}
-                      sx={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 1,
-                        color: "primary.main",
-                      }}
-                    >
-                      <CalendarMonthIcon sx={{ fontSize: 18 }} />
-                      <Box component="span" sx={{ fontSize: "0.9rem" }}>
-                        <FormattedMessage id={evt.whenId} />
-                      </Box>
-                    </Box>
-                  </TimelineContent>
-                </MotionTimelineItem>
-              ))}
-            </Timeline>
-          </motion.div>
+          <TimelineBlock
+            titleId="qualificationHeadingHighlights"
+            events={highlightedEvents}
+            onClick={handleOpen}
+            isSmallScreen={isSmallScreen}
+          />
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.div custom={1} variants={fadeUp}>
-              <Typography variant="h4" gutterBottom>
-                <FormattedMessage id="qualificationHeadingTimeline" />
-              </Typography>
-            </motion.div>
-            <Timeline
-              position={isSmallScreen ? "right" : "alternate"}
-              sx={{
-                padding: 0,
-                "& .MuiTimelineItem-root:before": {
-                  display: isSmallScreen ? "none" : undefined,
-                },
-              }}
-            >
-              {allEvents.map((evt, i) => (
-                <MotionTimelineItem
-                  key={evt.titleId}
-                  custom={i + 2}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <TimelineSeparator>
-                    <TimelineDot
-                      sx={{
-                        boxShadow: `0 0 8px ${alpha(theme.palette.mode === "dark" ? darkColors.accent : lightColors.accent, 0.5)}`,
-                        bgcolor:
-                          theme.palette.mode === "dark"
-                            ? darkColors.btnBg
-                            : lightColors.btnBg,
-                        color:
-                          theme.palette.mode === "dark"
-                            ? darkColors.textLight
-                            : lightColors.textLight,
-                        border: `2px solid ${
-                          theme.palette.mode === "dark"
-                            ? darkColors.accent
-                            : lightColors.accent
-                        }`,
-                      }}
-                      variant="outlined"
-                    >
-                      {evt.icon}
-                    </TimelineDot>
-                    {i < allEvents.length - 1 && (
-                      <TimelineConnector
-                        sx={{
-                          bgcolor:
-                            theme.palette.mode === "dark"
-                              ? darkColors.dividerBg
-                              : lightColors.dividerBg,
-                        }}
-                      />
-                    )}
-                  </TimelineSeparator>
-                  <TimelineContent
-                    onClick={handleOpen(evt)}
-                    sx={{
-                      cursor: "pointer",
-                      "&:hover": {
-                        backgroundColor: "rgba(255,255,255,.04)",
-                        borderRadius: 0.5,
-                        boxShadow: "0 2px 8px rgba(0,0,0,.25)",
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant="subtitle2"
-                      sx={{ fontWeight: 700 }}
-                      gutterBottom
-                    >
-                      <FormattedMessage id={evt.titleId} />
-                      <OpenInNewIcon sx={{ fontSize: 16 }} />
-                    </Typography>
-                    <Box
-                      component="time"
-                      dateTime={evt.whenId}
-                      sx={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 1,
-                        color: "primary.main",
-                      }}
-                    >
-                      <CalendarMonthIcon sx={{ fontSize: 18 }} />
-                      <Box component="span" sx={{ fontSize: "0.9rem" }}>
-                        <FormattedMessage id={evt.whenId} />
-                      </Box>
-                    </Box>
-                  </TimelineContent>
-                </MotionTimelineItem>
-              ))}
-            </Timeline>
-          </motion.div>
+          <TimelineBlock
+            titleId="qualificationHeadingTimeline"
+            events={allEvents}
+            onClick={handleOpen}
+            isSmallScreen={isSmallScreen}
+          />
         </TabPanel>
       </Paper>
       <QualificationDialog
