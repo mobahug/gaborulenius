@@ -607,6 +607,7 @@ export const categories = [
     items: [
       "Azure DevOps",
       "Azure Cloud",
+      "Terraform",
       "GitHub",
       "GitLab",
       "Git",
