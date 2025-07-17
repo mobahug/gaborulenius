@@ -155,7 +155,7 @@ export const highlightedEvents: TimelineEvent[] = [
             <LinkThumbnail
               id="linkThumbnailTitleAnyhau"
               descriptionId="linkThumbnailDescriptionAnyhau"
-              image="https://media.licdn.com/dms/image/v2/D4D22AQFlzDgjNTZslw/feedshare-shrink_1280/feedshare-shrink_1280/0/1715771172681?e=1749686400&v=beta&t=c0hOwzz7ZQtny4-_SC4l_jPePsFTL8ai-N6kSVcT6XA"
+              image="/gaborulenius/anyhau.webp"
               urlEN="https://app.anyhau.fi/en/partners"
               urlFI="https://app.anyhau.fi/partners"
             />
@@ -349,7 +349,7 @@ export const allEvents: TimelineEvent[] = [
             <LinkThumbnail
               id="linkThumbnailTitleAnyhau"
               descriptionId="linkThumbnailDescriptionAnyhau"
-              image="https://media.licdn.com/dms/image/v2/D4D22AQFlzDgjNTZslw/feedshare-shrink_1280/feedshare-shrink_1280/0/1715771172681?e=1749686400&v=beta&t=c0hOwzz7ZQtny4-_SC4l_jPePsFTL8ai-N6kSVcT6XA"
+              image="/gaborulenius/anyhau.webp"
               urlEN="https://app.anyhau.fi/en/partners"
               urlFI="https://app.anyhau.fi/partners"
             />
