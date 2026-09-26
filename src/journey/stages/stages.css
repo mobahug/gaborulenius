@@ -17,21 +17,6 @@
    The Explorer
    ------------------------------------------------------------------ */
 
-.stage-capabilities {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 26px;
-}
-
-.stage-capabilities li {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: 16px;
-  align-items: start;
-}
-
 .stage-capability-icon {
   display: inline-flex;
   width: 34px;
@@ -47,22 +32,207 @@
   font-size: 18px;
 }
 
-.stage-capability-title {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 1.12rem;
-  letter-spacing: -0.01em;
-}
-
-.stage-capability-body {
-  display: block;
-  font-weight: 450;
-  line-height: 1.6;
-  color: rgba(246, 241, 228, 0.94);
-}
-
 .stage-stack-tight {
   margin-top: 6px;
+}
+
+/* A capability beside its app screen: the words at the block's edge, the
+   phone toward the middle of the screen. */
+.explorer-feature {
+  display: flex;
+  align-items: center;
+  gap: clamp(32px, 4.5vw, 72px);
+}
+
+.film-cue--end .explorer-feature {
+  flex-direction: row-reverse;
+}
+
+.explorer-feature-copy {
+  max-width: 28rem;
+}
+
+.explorer-feature-title {
+  margin: 16px 0 0;
+  font-size: clamp(1.45rem, 2.2vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.explorer-feature-body {
+  margin-top: 12px;
+}
+
+.explorer-feature-screen {
+  flex: none;
+}
+
+/* A phone: the app's screen in a dark bezel with a gold hairline. */
+.explorer-shot {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.explorer-device {
+  box-sizing: border-box;
+  height: clamp(360px, 60vh, 540px);
+  aspect-ratio: 397 / 844;
+  padding: 6px;
+  border-radius: 34px;
+  background: linear-gradient(160deg, #2c362d, #0a0f0b 45%);
+  border: 1px solid rgba(233, 220, 179, 0.3);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+.explorer-device img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 28px;
+  background: #0f1a13;
+}
+
+.explorer-shot figcaption {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  text-align: center;
+  color: #d9c89a;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 14px rgba(0, 0, 0, 0.5);
+}
+
+/* How it is built: the three groups side by side. */
+.explorer-details {
+  max-width: 64rem;
+}
+
+.explorer-details-title {
+  margin: 0 0 28px;
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.explorer-detail-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 40px;
+}
+
+.explorer-detail-group .film-list li {
+  font-size: 0.97rem;
+}
+
+.explorer-details .explorer-stack-title {
+  margin-top: 34px;
+}
+
+/* The rest of the app's screens, in a strip. */
+.explorer-strip-block {
+  width: 100%;
+  max-width: 1240px;
+  text-align: center;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 18px rgba(0, 0, 0, 0.45);
+}
+
+.explorer-strip {
+  margin: 0;
+  padding: 6px 0 12px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.explorer-strip:focus-visible {
+  outline: 2px solid #e9dcb3;
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.explorer-shot--small .explorer-device {
+  width: 100%;
+  height: auto;
+  padding: 4px;
+  border-radius: 20px;
+}
+
+.explorer-shot--small .explorer-device img {
+  border-radius: 16px;
+}
+
+.explorer-shot--small figcaption {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+/* Too narrow for eight phones side by side: the strip scrolls sideways. */
+@media (max-width: 1099.95px) {
+  .explorer-strip {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .explorer-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .explorer-strip > li {
+    flex: none;
+    width: clamp(140px, 40vw, 190px);
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 899.95px) {
+  .explorer-feature,
+  .film-cue--end .explorer-feature {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 30px;
+  }
+
+  .explorer-feature-copy {
+    max-width: none;
+  }
+
+  .explorer-feature-screen {
+    align-self: center;
+  }
+
+  .explorer-device {
+    height: auto;
+    width: min(52vw, 240px);
+  }
+
+  .explorer-detail-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Edge to edge, so the next phone peeks in from the side. */
+  .explorer-strip {
+    margin: 0 -20px;
+    padding: 6px 20px 12px;
+    scroll-padding: 0 20px;
+  }
 }
 
 /* ------------------------------------------------------------------

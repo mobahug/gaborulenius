@@ -255,3 +255,12 @@ upscaled, so their timing and framing changed and were measured again:
   language: behind the words the film goes out of focus and a little
   darker, feathered into the picture (see "Content over the films" in
   `scrollcraft-journey.md`).
+
+## 10. The Explorer in the field (September 2026)
+
+The Explorer's screens, its fuller description and its stack were behind a
+"View details" dialog. They are now part of its film: each capability
+beside the app screen that does it, then how it is built, then the rest of
+the app's screens in a strip, timed to the channel, the mokoro, the water
+and the fish (see "Content over the films" in `scrollcraft-journey.md`).
+The dialog, its carousel and its capability grid were removed.

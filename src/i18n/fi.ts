@@ -43,11 +43,8 @@ export default {
   projectExplorerTitle: "The Explorer",
   projectExplorerSummary:
     "Mobiilisovellus syrjäisiin luonnonsuojelun kenttäretkiin: GPS-reitit, ekologiset alueet, media ja rakenteiset ympäristöhavainnot tallentuvat luotettavasti offline-tilassa myöhempää synkronointia ja tarkastelua varten.",
-  projectExplorerButtonDetails: "Näytä tiedot",
+  projectExplorerGalleryHeading: "Lisää sovelluksesta",
   projectExplorerGalleryLabel: "Explorer-mobiilisovelluksen kuvakaappaukset",
-  projectExplorerGalleryPrevious: "Edellinen kuvakaappaus",
-  projectExplorerGalleryNext: "Seuraava kuvakaappaus",
-  projectExplorerGalleryGoTo: "Näytä {title}",
   projectExplorerCapabilityTopoTitle: "Offline-topografiset kartat",
   projectExplorerCapabilityTopoBody:
     "MapLibre + Protomaps/PMTiles mahdollistavat offline-topografiset kartat, ja Cloudflare R2/Workers toimittaa karttatiilet sekä aluekohtaiset lataukset kenttäkäyttöön.",
@@ -62,8 +59,6 @@ export default {
     "Data pysyy käytettävissä offline-tilassa; yhteyden palatessa Supabase, Auth0 ja EAS-buildit tukevat synkronointia, turvallista pääsyä ja myöhempää tarkastelua.",
   projectExplorerWhyHeading:
     "Rakennettu syrjäiseen luonnonsuojelun kenttätyöhön",
-  projectExplorerDialogIntro:
-    "The Explorer on React Native- ja Expo-pohjainen kenttätyökalu ympäristöretkille, joissa yhteys voi kadota. Sovellus pitää paikallisen datan ensisijaisesti luotettavana, tallentaa GPS-reittejä etu- ja taustatilassa, kerää rakenteisia luonnonsuojeluhavaintoja median ja ekologisten alueiden kanssa sekä synkronoi Supabasen ja Auth0:n kautta, kun yhteys on taas käytettävissä.",
   projectExplorerDetailMobileHeading: "Syrjäinen kenttätallennus",
   projectExplorerDetailMobileItemOffline:
     "Local-first-tallennus pitää aktiiviset ja arkistoidut retket, lokit, alueet, reittipisteet ja median käytettävissä myös ilman verkkoyhteyttä.",

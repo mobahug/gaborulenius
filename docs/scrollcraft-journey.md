@@ -119,9 +119,19 @@ Blocks sit where their shot leaves room for them: for every film the left
 and right halves were measured every 0.3 s for brightness and busyness, and
 each block is timed to a moment and placed on the calmer side — the Neural
 Decompiler's case study on the right while the axon's glowing tip fills the
-left, the Explorer's capabilities beside the mokoro and then over the calm
-water, the experience timeline over the dark espresso, "Let's Connect" on
-the left beside the macaw on its branch, with the morpho below it.
+left, the Explorer's capabilities alternating sides along the channel and
+under the water (the mokoro's poler kept clear), the experience timeline
+over the dark espresso, "Let's Connect" on the left beside the macaw on its
+branch, with the morpho below it.
+
+The Explorer is shown in the field rather than behind a dialog: each of its
+four capabilities sits beside the app screen that does it, in a phone with
+a dark bezel and a gold hairline — the words at the edge of the screen like
+every other block, the phone toward the film (on a phone: the words, then
+the screen below them). How it is built (the three groups of the former
+dialog) and its stack follow, then a strip of the app's other eight screens
+(side by side on a wide screen, swiped sideways on a phone). Every phone
+arrives like any other part of a block.
 
 The question in the pupil (`PortalTitle`) is not there while the pupil is
 still a circle. It comes in once the pupil covers the whole screen — the
@@ -134,13 +144,13 @@ the films, so it never has to follow the page's scrolling and undo it: it
 cannot lag or shake. Its anchor above it carries the `#projects` id for
 links and the scroll spy.
 
-| Stage    | Content (all existing copy and links)                                                                              |
-| -------- | ------------------------------------------------------------------------------------------------------------------ |
-| Chase    | Greeting (cover), introduction and About over the path, the morpho and the macaw crossing behind them.             |
-| Neural   | The research question (inside the pupil, then full size), title and summary, case study, method, stack, repo link. |
-| Explorer | Title and summary, four capabilities, stack, "View details" (screens and full description in the existing dialog). |
-| Work     | Experience timeline (tabs and detail dialogs), the four work projects with their links, the full skills list.      |
-| Ending   | "Let's Connect" with email, LinkedIn and GitHub, fading in like every other block; the footer follows.             |
+| Stage    | Content (all existing copy and links)                                                                                                     |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Chase    | Greeting (cover), introduction and About over the path, the morpho and the macaw crossing behind them.                                    |
+| Neural   | The research question (inside the pupil, then full size), title and summary, case study, method, stack, repo link.                        |
+| Explorer | Title and summary; the four capabilities, each beside its app screen; how it is built, and the stack; the other eight screens in a strip. |
+| Work     | Experience timeline (tabs and detail dialogs), the four work projects with their links, the full skills list.                             |
+| Ending   | "Let's Connect" with email, LinkedIn and GitHub, fading in like every other block; the footer follows.                                    |
 
 ## Interface
 
@@ -264,5 +274,18 @@ question is an ordinary block, spaces shrink to 12vh, and the page is about
 - Reload in the eye, in the Explorer and in the work section returns to the
   same scroll position and film time; `#skills` from a fresh load lands on
   Skills.
+- Phone playback, in Chrome's phone emulation (Pixel 7: Android user agent,
+  touch, the light encodes) from a cold load over a throttled 4G connection
+  (9 Mb/s, 60 ms), steady scrolls through the first scene, the eye, the
+  Explorer and the office: at 4× and 6× CPU slowdown the page keeps 60 fps
+  (p95 frame 18.5 ms; at 6× one or two frames over 25 ms per run); the film
+  on screen trails the scroll's target by about 3 of its frames (p50; p95
+  4–5 at reading speed, about 11 when flicking at 2 viewport heights per
+  second) and shows 30–50 distinct film frames per second. On that
+  connection the first film is on screen about 5 s after the page starts
+  loading (the cover and the film's still before that), and all five light
+  encodes (12.4 MB) have arrived after about 32 s. (On battery, Chrome
+  itself caps rendering at 30 fps; these runs use Chrome for Testing's
+  headless shell, which does not.)
 - Not verified here: a real phone browser. The films' behaviour on iOS
   Safari (seeking, memory) can only be judged on a device.

@@ -14,6 +14,8 @@ export type ExplorerCapability = {
   icon: ReactNode;
   titleId: string;
   bodyId: string;
+  /** The app screen shown beside it (one of `explorerScreenshots`). */
+  screen: string;
 };
 
 export const explorerScreenshots: ExplorerScreenshot[] = [
@@ -84,21 +86,25 @@ export const explorerCapabilities: ExplorerCapability[] = [
     icon: <TerrainIcon />,
     titleId: "projectExplorerCapabilityTopoTitle",
     bodyId: "projectExplorerCapabilityTopoBody",
+    screen: "explorer/map-tracking.webp",
   },
   {
     icon: <StraightenIcon />,
     titleId: "projectExplorerCapabilityPrecisionTitle",
     bodyId: "projectExplorerCapabilityPrecisionBody",
+    screen: "explorer/measure-distance.webp",
   },
   {
     icon: <AssignmentTurnedInIcon />,
     titleId: "projectExplorerCapabilityCaptureTitle",
     bodyId: "projectExplorerCapabilityCaptureBody",
+    screen: "explorer/log-type-picker.webp",
   },
   {
     icon: <CloudSyncIcon />,
     titleId: "projectExplorerCapabilityCloudTitle",
     bodyId: "projectExplorerCapabilityCloudBody",
+    screen: "explorer/home-active-expedition.webp",
   },
 ];
 

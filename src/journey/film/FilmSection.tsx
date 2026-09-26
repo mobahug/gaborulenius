@@ -100,9 +100,9 @@ type FilmSectionProps = {
  */
 const PART_SELECTOR = [
   ".film-part",
-  ".film-copy > :not(.film-parts, .film-list, .stage-capabilities, .stage-work-list, .stage-skills, .film-actions)",
+  ".film-copy > :not(.film-parts, .film-list, .stage-work-list, .stage-skills, .film-actions)",
   ".film-list > li",
-  ".stage-capabilities > li",
+  ".explorer-strip > li",
   ".stage-work-list > li",
   ".stage-skills > *",
   ".film-actions > *",
@@ -278,7 +278,7 @@ const FilmSection = ({
           vh * 0.74,
           partTop + part.delay * vh,
         );
-        const depart = smoothstep(vh * 0.06, vh * 0.3, partTop + part.height);
+        const depart = smoothstep(vh * 0.04, vh * 0.22, partTop + part.height);
         const opacity = Math.round(Math.min(arrive, depart) * 100) / 100;
         const rise = Math.round((1 - arrive) * PART_RISE * 10) / 10;
         if (opacity === part.opacity && rise === part.rise) return;

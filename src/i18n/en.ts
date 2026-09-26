@@ -42,11 +42,8 @@ export default {
   projectExplorerTitle: "The Explorer",
   projectExplorerSummary:
     "A mobile fieldwork app for remote conservation expeditions, built to capture reliable offline GPS trails, ecological zones, media, and structured environmental observations for later sync and review.",
-  projectExplorerButtonDetails: "View details",
+  projectExplorerGalleryHeading: "More of the app",
   projectExplorerGalleryLabel: "Explorer mobile app screenshots",
-  projectExplorerGalleryPrevious: "Previous screenshot",
-  projectExplorerGalleryNext: "Next screenshot",
-  projectExplorerGalleryGoTo: "Show {title}",
   projectExplorerCapabilityTopoTitle: "Offline topographic maps",
   projectExplorerCapabilityTopoBody:
     "MapLibre + Protomaps/PMTiles power offline topographic maps, with Cloudflare R2/Workers serving tiles and country downloads for remote field use.",
@@ -60,8 +57,6 @@ export default {
   projectExplorerCapabilityCloudBody:
     "Local data remains usable offline; when connectivity returns, Supabase, Auth0, and EAS-backed builds support sync, secure access, and later review workflows.",
   projectExplorerWhyHeading: "Built for remote conservation fieldwork",
-  projectExplorerDialogIntro:
-    "The Explorer is a React Native and Expo field tool for environmental expeditions where connectivity can disappear. It keeps local data reliable first, records GPS trails across foreground and background sessions, captures structured conservation observations with media and ecological zones, and syncs through Supabase/Auth0 when the team has connectivity again.",
   projectExplorerDetailMobileHeading: "Remote field capture",
   projectExplorerDetailMobileItemOffline:
     "Local-first storage keeps active and archived expeditions, logs, zones, trail points, and media usable in remote areas without network access.",
