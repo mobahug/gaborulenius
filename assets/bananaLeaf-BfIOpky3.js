@@ -1,4 +1,4 @@
-import{i as xt}from"./index-6yUF5zxh.js";import"./vendor-react-CptINutj.js";const Ct=`#version 300 es
+import{i as xt}from"./index-H2YbnhEC.js";import"./vendor-react-CptINutj.js";const Ct=`#version 300 es
 in vec2 aPosition;
 in float aS;
 in float aY;
