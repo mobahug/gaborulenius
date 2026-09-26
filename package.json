@@ -1,0 +1,53 @@
+{
+  "homepage": "http://mobahug.github.io/gaborulenius",
+  "name": "gaborulenius",
+  "private": true,
+  "license": "UNLICENSED",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lighthouse:mobile": "npx -y lighthouse@13.0.2 http://127.0.0.1:4173/gaborulenius/ --form-factor=mobile --screenEmulation.mobile --throttling-method=simulate --output=json --output-path=.lighthouse/mobile.json --chrome-flags=\"--headless --disable-extensions\" && node scripts/assert-lighthouse.mjs .lighthouse/mobile.json",
+    "lighthouse:assert": "node scripts/assert-lighthouse.mjs .lighthouse/mobile.json",
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,md}'",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/lab": "^7.0.0-beta.11",
+    "@mui/material": "^7.0.2",
+    "framer-motion": "^12.9.0",
+    "jotai": "^2.12.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-intl": "^7.1.11"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "gh-pages": "^6.3.0",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.3.1"
+  }
+}

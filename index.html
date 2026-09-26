@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Resolve the locale before any paint so the cover greets in the
+      // user's stored language instantly (no FOUC).
+      (function () {
+        var root = document.documentElement;
+        try {
+          var storedLocale = localStorage.getItem("locale");
+          var locale = storedLocale ? storedLocale.replace(/^"|"$/g, "") : null;
+          if (locale !== "en" && locale !== "fi") locale = "en";
+          root.dataset.locale = locale;
+        } catch (e) {
+          root.dataset.locale = "en";
+        }
+      })();
+    </script>
+    <!-- prettier-ignore -->
+    <title>Gábor Ulenius | Full-Stack Developer in Finland | Healthcare Data & AI</title>
+    <meta
+      name="description"
+      content="Portfolio of Gábor Ulenius, Full-Stack Developer in Espoo, Finland specializing in healthcare data platforms, cloud delivery, web applications and AI solutions."
+    />
+    <meta name="author" content="Gábor Ulenius" />
+    <meta
+      name="keywords"
+      content="Gábor Ulenius, Gábor Horváth-Ulenius, Full-Stack Developer Finland, web application developer, cloud delivery developer, healthcare software developer, AI developer, Tieto Caretech, Espoo"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://mobahug.github.io/gaborulenius/" />
+    <link
+      rel="preload"
+      href="%BASE_URL%profile-320.webp"
+      as="image"
+      type="image/webp"
+      imagesrcset="%BASE_URL%profile-160.webp 160w, %BASE_URL%profile-320.webp 320w"
+      imagesizes="(max-width: 600px) 140px, (max-width: 900px) 150px, 160px"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      href="%BASE_URL%fonts/inter-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" type="image/png" href="%BASE_URL%favicon-32.png" />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
+    <meta
+      name="msapplication-TileImage"
+      content="%BASE_URL%apple-touch-icon.png"
+    />
+    <meta name="msapplication-TileColor" content="#2c6e49" />
+    <meta name="theme-color" content="#2c6e49" />
+    <meta name="color-scheme" content="light" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gábor Ulenius Portfolio" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="fi_FI" />
+    <meta property="og:url" content="https://mobahug.github.io/gaborulenius/" />
+    <meta
+      property="og:title"
+      content="Gábor Ulenius | Full-Stack Developer in Finland | Healthcare Data & AI"
+    />
+    <meta
+      property="og:description"
+      content="Full-Stack Developer at Tieto Caretech building healthcare data platforms, cloud delivery, web applications and AI solutions."
+    />
+    <meta
+      property="og:image"
+      content="https://mobahug.github.io/gaborulenius/jungle.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="Gábor Ulenius full-stack developer portfolio"
+    />
+    <meta property="og:image:width" content="1025" />
+    <meta property="og:image:height" content="612" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Gábor Ulenius | Full-Stack Developer in Finland | Healthcare Data & AI"
+    />
+    <meta
+      name="twitter:description"
+      content="Full-Stack Developer at Tieto Caretech building healthcare data platforms, cloud delivery, web applications and AI solutions."
+    />
+    <meta
+      name="twitter:image"
+      content="https://mobahug.github.io/gaborulenius/jungle.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Gábor Ulenius full-stack developer portfolio"
+    />
+    <script type="application/ld+json" id="portfolio-structured-data">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "ProfilePage",
+            "@id": "https://mobahug.github.io/gaborulenius/#profile-page",
+            "url": "https://mobahug.github.io/gaborulenius/",
+            "name": "Gábor Ulenius | Full-Stack Developer Portfolio",
+            "description": "Portfolio of Gábor Ulenius, Full-Stack Developer in Espoo, Finland specializing in healthcare data platforms, cloud delivery, web applications and AI solutions.",
+            "inLanguage": ["en", "fi"],
+            "about": {
+              "@id": "https://mobahug.github.io/gaborulenius/#person"
+            },
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "url": "https://mobahug.github.io/gaborulenius/profile2-small.webp",
+              "width": 860,
+              "height": 860
+            }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://mobahug.github.io/gaborulenius/#person",
+            "name": "Gábor Ulenius",
+            "alternateName": "Gábor Horváth-Ulenius",
+            "jobTitle": "Full-Stack Developer",
+            "description": "Espoo-based Full-Stack Developer at Tieto Caretech working on cloud-native healthcare data platforms, AI prototypes and reliable cloud delivery for major Nordic healthcare environments.",
+            "url": "https://mobahug.github.io/gaborulenius/",
+            "image": "https://mobahug.github.io/gaborulenius/profile2-small.webp",
+            "email": "mailto:gaborulenius@gmail.com",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Espoo",
+              "addressCountry": "FI"
+            },
+            "alumniOf": {
+              "@type": "EducationalOrganization",
+              "name": "Hive Helsinki"
+            },
+            "worksFor": {
+              "@type": "Organization",
+              "name": "Tieto Caretech"
+            },
+            "knowsAbout": [
+              "Web application development",
+              "Backend services",
+              "Cloud delivery",
+              "Release automation",
+              "Observability",
+              "Healthcare software",
+              "Healthcare data platforms",
+              "Generative AI"
+            ],
+            "sameAs": [
+              "https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/",
+              "https://github.com/mobahug",
+              "https://careers.tieto.com/career-story/2025-5/gabor-horvath-ulenius-a-non-traditional-journey-into-coding"
+            ]
+          }
+        ]
+      }
+    </script>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 400 800;
+        font-display: swap;
+        src: url("fonts/inter-latin-var.woff2") format("woff2");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        background-color: #1e2a20;
+      }
+
+      /* The cover is part of the document flow; keep it still when the
+         app's CSS baseline arrives. */
+      body {
+        margin: 0;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <main>
+        <h1>Gábor Ulenius - Full-Stack Developer in Finland</h1>
+        <p>
+          Espoo-based Full-Stack Developer at Tieto Caretech specializing in
+          healthcare data platforms, cloud delivery, web applications, and
+          AI-based healthcare solutions.
+        </p>
+        <p>
+          Recruiters, HR teams, and hiring managers can contact Gábor at
+          <a href="mailto:gaborulenius@gmail.com">gaborulenius@gmail.com</a>
+          or review the CV at
+          <a href="%BASE_URL%Gabor_Ulenius_-_Full_Stack_Developer.pdf">
+            Gábor Ulenius - Full Stack Developer CV
+          </a>
+          .
+        </p>
+      </main>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

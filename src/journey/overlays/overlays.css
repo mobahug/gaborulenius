@@ -1,0 +1,22 @@
+/* Full-screen canvases drawn over the films (see Overlays.tsx). */
+.overlay-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Right above the films, under the content. */
+.overlay-canvas--film {
+  z-index: 3;
+}
+
+/* Above the content (z-index 2), under the navigation. */
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}

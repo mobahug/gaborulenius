@@ -1,0 +1,97 @@
+/* ------------------------------------------------------------------
+   Stage
+   ------------------------------------------------------------------ */
+
+.journey-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #1e2a20;
+}
+
+/* ------------------------------------------------------------------
+   Shared chapter language
+   ------------------------------------------------------------------ */
+
+.chapter {
+  position: relative;
+  width: 100%;
+  /* Scattered and flying elements must never widen the page. `clip` (unlike
+     `hidden`) creates no scroll container, so sticky scenes keep working. */
+  overflow-x: clip;
+  --chapter-gutter: clamp(16px, 5vw, 80px);
+}
+
+.chapter-scene {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.chapter-title {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+  color: #f4efdf;
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  text-wrap: balance;
+}
+
+.chapter-lead {
+  font-size: clamp(1.05rem, 1.35vw, 1.2rem);
+  line-height: 1.65;
+  color: rgba(244, 239, 223, 0.92);
+  max-width: 60ch;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* A soft, local shadow behind text on top of busy worlds. */
+.text-scrim {
+  position: relative;
+  isolation: isolate;
+}
+
+.text-scrim::before {
+  content: "";
+  position: absolute;
+  inset: -12% -18% -12% -30%;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at 40% 50%,
+    rgba(3, 8, 5, 0.62) 0%,
+    rgba(3, 8, 5, 0.38) 45%,
+    rgba(3, 8, 5, 0) 72%
+  );
+  pointer-events: none;
+}
+
+/* Scroll-revealed content is always fully visible for keyboard users. */
+.reveal-guard:focus-within .reveal-item {
+  --reveal: 1 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  clip-path: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+}

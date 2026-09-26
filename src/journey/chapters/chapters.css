@@ -1,0 +1,216 @@
+/* ------------------------------------------------------------------
+   The Sentence (#home)
+   ------------------------------------------------------------------ */
+
+.chapter-intro {
+  height: 175vh;
+}
+
+.intro-scene {
+  display: flex;
+  align-items: center;
+}
+
+.intro-copy {
+  margin-left: var(--chapter-gutter);
+  margin-right: var(--chapter-gutter);
+  max-width: min(1080px, 88vw);
+  padding-top: 48px;
+}
+
+.intro-sentence {
+  margin: 0 0 28px;
+  font-size: clamp(2.6rem, 6.6vw, 6.4rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  color: #f4efdf;
+  text-shadow: 0 2px 32px rgba(6, 12, 8, 0.45);
+  text-wrap: balance;
+}
+
+.intro-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+.intro-subtitle {
+  margin: 0 0 36px;
+  max-width: 46ch;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  line-height: 1.55;
+  color: rgba(244, 239, 223, 0.92);
+}
+
+.intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.intro-actions .MuiButton-root {
+  min-height: 48px;
+  padding: 10px 22px;
+}
+
+@media (max-width: 899.95px) {
+  .chapter-intro {
+    height: 150vh;
+  }
+  .intro-copy {
+    padding-top: 72px;
+  }
+  .intro-actions .MuiButton-root {
+    flex: 1 1 100%;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Clearing of self (#about)
+   ------------------------------------------------------------------ */
+
+.chapter-about {
+  padding: 18vh var(--chapter-gutter) 14vh;
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(32px, 6vw, 110px);
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.about-copy {
+  will-change: transform;
+}
+
+.about-body {
+  margin: 28px 0 24px;
+}
+
+.about-meta {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  color: rgba(244, 239, 223, 0.9);
+  font-size: 1rem;
+}
+
+.about-meta li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.about-meta-icon {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(192, 204, 156, 0.14);
+}
+
+.about-meta-icon .MuiSvgIcon-root {
+  font-size: 20px;
+}
+
+.about-story {
+  position: relative;
+}
+
+.about-card {
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+}
+
+.about-card .MuiCard-root {
+  background: rgba(10, 18, 12, 0.78);
+  backdrop-filter: none;
+  border-radius: 14px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+}
+
+/* On large screens About holds in place over the chase while the
+   butterfly and the macaw go by (the chase's marks time the film to it). */
+@media (min-width: 900px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  .chapter-about {
+    height: 250vh;
+    padding: 0 var(--chapter-gutter);
+  }
+  .about-scene {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+  }
+  .about-scene > .about-layout {
+    width: 100%;
+    padding-top: 48px;
+  }
+}
+
+@media (max-width: 899.95px) {
+  .about-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ------------------------------------------------------------------
+   The Trail (#experience)
+   ------------------------------------------------------------------ */
+
+.trail-panel {
+  position: relative;
+}
+
+.trail-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  background: linear-gradient(180deg, #f4d58d, #c8e59f);
+  box-shadow: 0 0 12px rgba(244, 213, 141, 0.7);
+}
+
+.trail-dot {
+  transition:
+    box-shadow 420ms ease,
+    background-color 420ms ease,
+    border-color 420ms ease;
+}
+
+.trail-dot--reached {
+  background-color: #6a7b2e !important;
+  border-color: #f4d58d !important;
+  box-shadow:
+    0 0 0 4px rgba(244, 213, 141, 0.18),
+    0 0 18px rgba(244, 213, 141, 0.55) !important;
+}
+
+/* ------------------------------------------------------------------
+   Reduced motion: every chapter keeps its world but nothing is pinned.
+   ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-intro {
+    height: auto;
+  }
+  .chapter-intro .chapter-scene {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+  .trail-dot {
+    transition: none;
+  }
+}

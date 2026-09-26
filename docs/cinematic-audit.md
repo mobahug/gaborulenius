@@ -1,0 +1,209 @@
+# Cinematic journey — repository and video audit (pass A)
+
+Audit of the five delivered films and of the code that plays them, done
+before changing anything. It records what the footage actually contains,
+where it can be joined invisibly, and how each act should be driven. The
+implementation that follows it is described in `scrollcraft-journey.md`.
+
+## 1. Repository as found
+
+The working tree already replaced the procedural world of commit `7b1baa7`
+with five scrubbed films:
+
+| Concern                                  | Where                                          |
+| ---------------------------------------- | ---------------------------------------------- |
+| Scroll clock, eased `smoothY`, one rAF   | `src/journey/scrollTimeline.ts`, `useScene.ts` |
+| Film data (sources, seams, focus)        | `src/journey/film/films.ts`                    |
+| Scroll → film time, opacity, transforms  | `src/journey/film/filmTimeline.ts` (pure)      |
+| Scrubbing one paused `<video>`           | `src/journey/film/scrubVideo.ts`               |
+| Stack of five films, loading, the portal | `src/journey/film/FilmLayer.tsx`               |
+| Stage sections with timed content        | `src/journey/film/FilmSection.tsx`, `stages/*` |
+| Content moving in depth                  | `src/journey/film/ZoomBlocks.tsx`              |
+| Plain-DOM cover and its leaves           | `src/components/CoverSection.tsx`, `foliage/*` |
+
+What is sound and kept: scroll is the only clock (a pure function of the
+eased scroll position), seeks are coalesced, every film has a still, films
+load around the viewer, portrait screens follow each film's subject, reduced
+motion shows stills, and all portfolio content is semantic DOM.
+
+What the directive asks for and the tree lacks:
+
+- No single director: `FilmLayer` computes the timeline and the portal
+  geometry privately, other systems re-derive what they need. There is no
+  journey/chapter/transition progress, direction, velocity or device tier in
+  one place.
+- Every act is scrubbed the same way; nothing plays, holds or bridges.
+- Seams C–E are plain cross-fades of ±0.05–0.15 viewport heights, and seam B
+  is a masked window. Nothing rendered by the browser carries a seam; nothing
+  crosses between the film and the page.
+- The scrub encodes still carry B-frames and a 1.25 s keyframe interval.
+
+## 2. Source films
+
+All five were delivered as `~/Downloads/<name>.mp4` (the neural file is
+spelled `neural_decomplier.mp4`). They are identical in format:
+
+| Property       | Value (all five)                                                                                  |
+| -------------- | ------------------------------------------------------------------------------------------------- |
+| Duration       | 8.042 s (193 frames)                                                                              |
+| Frame rate     | 24 fps, constant                                                                                  |
+| Dimensions     | 864 × 496 (16:9.2), no audio track                                                                |
+| Codec          | H.264 High, level 3.1, CABAC; no colour tags                                                      |
+| Keyframes      | chase 1, 64 · neural 1, 186 · explorer 1, 113, 192 · work 1 · ending 1                            |
+| B-frames       | 116–149 of 193 samples reordered                                                                  |
+| `moov`         | at the end of the file (not fast-start)                                                           |
+| Bitrate / size | chase 7.9 Mb/s 7.9 MB · neural 5.4 / 5.4 · explorer 9.2 / 9.3 · work 5.6 / 5.7 · ending 5.4 / 5.4 |
+
+The originals cannot be scrubbed: in Chromium a seek into the chase original
+kept presenting the same frame (measured: eight seeks across the clip, one
+identical frame), and every seek has to decode from frame 1.
+
+### Shot breakdown
+
+Motion figures come from a global pan/zoom estimate between consecutive
+frames (`zoom` is the forward push per frame).
+
+**jungle_chase** — warm jungle, low sun through haze, deep depth.
+
+| Time      | Picture                                                                | Camera                      |
+| --------- | ---------------------------------------------------------------------- | --------------------------- |
+| 0–1.5 s   | Path into the jungle, light shafts, a small blue butterfly appears     | Slow dolly forward (≈2 %/f) |
+| 1.5–2.5 s | Camera leaves the path after the butterfly                             | Pan right, speeding up      |
+| 2.5–4.4 s | Through foliage; a dark trunk wipes across at 3.3–3.7 s                | Fast lateral travel         |
+| 4.5–5.8 s | A scarlet macaw appears far away and flies at the camera               | Forward, macaw growing      |
+| 5.8–6.5 s | Wings spread, the macaw fills the frame                                | Forward, fastest (≈14 %/f)  |
+| 6.5–7.0 s | Head, then the eye                                                     | Push toward the eye         |
+| 7.0–7.9 s | Iris (radial amber fibres) and pupil grow until the pupil is the frame | Dolly into the pupil        |
+| 8.0 s     | Black                                                                  | —                           |
+
+**neural_decomplier** — black void, blue nebula, amber light.
+
+| Time      | Picture                                                                      | Camera                     |
+| --------- | ---------------------------------------------------------------------------- | -------------------------- |
+| 0–0.6 s   | Void with a faint nebula; one spark at the exact frame centre (0.498, 0.498) | Static                     |
+| 0.6–2.5 s | The spark grows amber dendrites with bright tips — a neuron                  | Near static, slow approach |
+| 2.5–3.5 s | The network widens                                                           | Slow push                  |
+| 3.5–5.7 s | Flight along an axon toward a bright node                                    | Fast lateral travel        |
+| 5.7–7.2 s | Turn; a ringed node ahead                                                    | Forward                    |
+| 7.2–7.8 s | The node becomes a tunnel of concentric, segmented rings                     | Fast push                  |
+| 7.9–8.0 s | Neutral white (252, 252, 250)                                                | —                          |
+
+**the_explorer** — Okavango Delta, golden hour.
+
+| Time      | Picture                                                       | Camera                 |
+| --------- | ------------------------------------------------------------- | ---------------------- |
+| 0–0.3 s   | Cream white (255, 240, 213) opening onto the delta from above | —                      |
+| 0.3–2.3 s | Aerial: channels and grass islands, map-like                  | Forward and down       |
+| 2.3–3.8 s | Skimming a channel, passing a mokoro and its poler            | Fast forward (≈11 %/f) |
+| 4.2–4.5 s | Plunge into the water (splash)                                | Down                   |
+| 4.6–6.8 s | Underwater among reeds, sun rays, a fish in the distance      | Slow forward           |
+| 6.8–7.8 s | The fish swims at the camera, mouth open, and swallows it     | Forward                |
+| 7.9–8.0 s | Black                                                         | —                      |
+
+**work_history** — modern office over a city, soft daylight.
+
+| Time      | Picture                                                         | Camera               |
+| --------- | --------------------------------------------------------------- | -------------------- |
+| 0–0.4 s   | Black                                                           | —                    |
+| 0.4–1.8 s | A drop's ripple on dark espresso, one specular highlight        | Macro, slow          |
+| 1.8–3.3 s | Pull back: cup, saucer, desk, laptop                            | Dolly out and up     |
+| 3.3–5.7 s | Arc across the desk: laptop with code, city windows, a monstera | Lateral arc          |
+| 5.7–7.0 s | Toward the plant by the pillar                                  | Truck and push       |
+| 7.0–8.0 s | Into one monstera leaf until it fills the frame (69, 77, 42)    | Push (up to ≈14 %/f) |
+
+**ending** — the jungle again, warm backlight.
+
+| Time       | Picture                                                                                                  | Camera                    |
+| ---------- | -------------------------------------------------------------------------------------------------------- | ------------------------- |
+| 0–0.9 s    | The same monstera leaf (72, 75, 44), pushing along the midrib into blur; dark band along the bottom edge | Push                      |
+| 0.92–1.0 s | Built-in two-frame dissolve from the blur to a sharp jungle shot                                         | — (a cut inside the file) |
+| 1.0–3.3 s  | Through dense monstera leaves                                                                            | Fast push                 |
+| 3.3–4.2 s  | Out into a clearing with light shafts and a branch                                                       | Decelerating              |
+| 4.2–6.0 s  | A macaw flies in and lands; an orange butterfly arrives                                                  | Static                    |
+| 6.0–8.0 s  | The macaw perched, the butterfly settling on a leaf                                                      | Static                    |
+
+## 3. Scrub encoding
+
+Chromium, 864×496, each figure the time from setting `currentTime` to a
+decoded frame being drawable (seek + `drawImage`), 190 forward single-frame
+steps, 190 backward, 80 random, 30 long jumps:
+
+| File                                   | Size   | Forward p50/p90     | Backward p50/p90 | Random p50/p90 |
+| -------------------------------------- | ------ | ------------------- | ---------------- | -------------- |
+| Original                               | 7.9 MB | frame never changes | —                | —              |
+| Current `avconvert`, GOP ≈30, B-frames | 3.5 MB | 13.0 / 17.0 ms      | 13.0 / 17.1 ms   | 13.2 / 18.6 ms |
+| GOP 12, no B-frames, 2.5 Mb/s          | 2.5 MB | 7.0 / 10.6 ms       | 7.4 / 10.9 ms    | 7.4 / 11.2 ms  |
+| **GOP 8, no B-frames, 2.5 Mb/s**       | 2.5 MB | 6.5 / 8.9 ms        | 6.3 / 8.1 ms     | 6.5 / 8.5 ms   |
+| GOP 6, no B-frames, 2.5 Mb/s           | 2.5 MB | 6.2 / 7.4 ms        | 6.2 / 7.4 ms     | 6.6 / 7.4 ms   |
+
+Chosen: keyframe every 8 frames (⅓ s), no frame reordering, fast-start,
+BT.709 tags, per-film bitrate (chase 2.6, neural 2.5, explorer 3.3, work 2.5,
+ending 3.0 Mb/s) — together about 14 MB instead of 17.5 MB. Luma PSNR against
+the originals: 42.9–47.8 dB mean; dark gradients (the neural void at 5×
+gain) and the fastest motion (explorer 3.9 s) show no visible difference
+from the current encodes. All-intra was not needed: below a GOP of 8 the
+seek time stops improving while the size grows.
+
+FFmpeg is not installed on this machine; the encodes are made with
+AVFoundation/VideoToolbox (`AVAssetWriter`, `AVVideoMaxKeyFrameIntervalKey`,
+`AVVideoAllowFrameReorderingKey = false`, `shouldOptimizeForNetworkUse`).
+The originals are not modified or shipped.
+
+## 4. Transition score
+
+| From → To             | Exit visual                                                                        | Entry visual                                                                    | Camera continuity                                                                       | Concealment opportunity                                                   | Browser bridge                                                                                                                                                                              |
+| --------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Jungle chase → Neural | Dolly into the macaw's eye; amber radial iris fibres around a growing pupil; black | Black void, blue nebula, one spark at the centre growing amber radial dendrites | Forward push ends fast; neural opens static — the depth of the window carries the speed | The pupil itself (black = void), the macaw filling the frame at 5.8–6.9 s | Keyed macaw flies in front of the page; iris fibres fire signals inward, which cross the pupil into the void, converge on the spark and hand over to the film's dendrites                   |
+| Neural → Explorer     | Ring tunnel, concentric segmented rings, white-out (cool white)                    | Cream white (warmer by ~17/255), then the delta from above                      | Both forward; white hides the change of scale                                           | 0.1 s of pure white on each side                                          | The rings keep expanding as topographic contour lines on the cream, a GPS trail and waypoints draw across them, the map tilts onto the ground plane and dissolves into the delta's channels |
+| Explorer → Work       | Fish swallows the camera; black                                                    | Black, then a drop's ripple on espresso                                         | Forward into black, then static macro                                                   | 0.1 s + 0.4 s of pure black                                               | In the dark, one warm drop falls; where it lands ripple rings open, and the espresso's own ripple takes over — water becomes coffee                                                         |
+| Work → Ending         | Push into a monstera leaf in the office                                            | The same leaf, closer and lower, pushing on                                     | Same direction and speed, same leaf                                                     | Nearly identical frames (mean difference 12 → 5.6 after alignment)        | Keep the alignment; hide the file's own dissolve at 0.92 s with a rack focus and a dark leaf crossing the lens                                                                              |
+
+## 5. Playback per act
+
+| Act                                          | Strategy                                                           | Why                                                                                    |
+| -------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| Cover + introduction (chase 0–1.1 s)         | Eased scrub, slow (0.35 s per viewport)                            | A walk forward under the greeting; the cover's own layers carry the motion             |
+| About (chase 1.1–6.0 s)                      | Eased scrub                                                        | The butterfly, the camera following it and the macaw's arrival are beats to read along |
+| The eye (chase 6.0–8.0 s + neural 0.4–1.3 s) | Scrub with a portal and a procedural bridge                        | The signature move; must reverse exactly                                               |
+| Neural 1.3–7.6 s                             | Eased scrub                                                        | Flight through the network under the research content                                  |
+| Neural → Explorer                            | Hold + bridge (outgoing held on white, incoming on cream)          | White is a hold, not a motion; the bridge draws the map                                |
+| Explorer 0–7.8 s                             | Eased scrub                                                        | Continuous flight; the splash is an event to scrub through                             |
+| Explorer → Work                              | Hold + bridge (black)                                              | Black is a hold; the drop is drawn by the browser                                      |
+| Work 0.4–8.0 s                               | Eased scrub (the black first 0.4 s is skipped)                     | The pull-back and arc follow the experience content                                    |
+| Ending 0–6.3 s                               | Eased scrub, bridge inside 0.8–1.2 s                               | Continues the leaf push, through the jungle to the clearing                            |
+| Ending 6.3–8.0 s                             | Plays at authored speed once reached, scrubs again on the way back | Static camera: the butterfly settling is life, not a camera move; the page ends here   |
+
+## 6. Browser constraints and risks
+
+- 864×496 is the ceiling: on a 1440p screen the films are upscaled ~2.9×.
+  Nothing should draw attention to texture detail; the procedural layers
+  are drawn at screen resolution and carry the fine detail instead.
+- A portrait phone shows the middle ~30 % of a frame; every bridge must map
+  frame coordinates through the same cover crop and focus as the video.
+- Mobile Safari decodes each `<video>` separately: at most three films are
+  loaded at once, the previous one kept for reversals, the one after next
+  never.
+- Full-screen Canvas 2D and WebGL layers cost fill rate on phones: they run
+  only inside their bridge windows, capped at DPR 1.5 (1 on low tier), and
+  are cleared and hidden outside them.
+- CSS `filter: blur()` on a full-screen video is expensive; used only for the
+  ending's short rack focus.
+- The keyed macaw needs the chase video as a WebGL texture: same-origin
+  files, uploaded only when a new frame has been presented.
+- Hidden panes and background tabs suspend video decoding; the director
+  must never wait on a video to advance its own state.
+
+## 7. Revision after review
+
+The browser bridges in the transition score (the iris's light running into
+the neuron, the contour map with the GPS trail, the falling drop, the dark
+leaf passing the lens with a rack focus) and the velocity-driven camera
+push were built, reviewed, and removed: the films join well enough on their
+own shared frames, and the extra layers competed with them. The seams are
+back to the footage's own joins — the pupil as a window, white into cream,
+black into black, leaf onto leaf — as described in `scrollcraft-journey.md`.
+The ending no longer plays its last seconds at authored speed; like every
+other act it follows the scroll, and "Let's Connect" fades in with the page
+instead of zooming toward the camera. What stays from the browser: the
+macaw keyed out of the chase and flying in front of About, and the probe
+that reads the neural film's neurons under the pointer.
