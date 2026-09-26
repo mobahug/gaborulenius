@@ -3,7 +3,7 @@ import { FRAME_ASPECT, type Film, type Portal } from "../film/films";
 
 /*
  * Where a film's frame lies on screen. Every layer that has to line up with
- * the footage (the portal's mask, the keyed macaw, the neural probe) maps
+ * the footage (the portal's mask, the question, the neural probe) maps
  * frame coordinates through these, with the same cover crop and focus as
  * the video element itself.
  */
@@ -99,18 +99,15 @@ export type WindowGeometry = {
   scale: number;
   x: number;
   y: number;
-  /** Scale and centre for content living inside it (the title). */
-  content: { scale: number; x: number; y: number };
 };
 
 /**
  * Where a window into a film sits on screen: the circle its portal follows
  * in the outer film's frame (at the time that film is actually showing),
- * mapped through that film's cover crop and focus. Content in the window
- * (the title) grows with the window and reaches full size as the window
- * covers the screen; the film seen through it is further away — tiny at
- * first, it comes closer faster (`depth`) and fills the screen at the same
- * moment. Both drift from the window's centre to the screen's centre.
+ * mapped through that film's cover crop and focus. The film seen through it
+ * is far away at first — tiny — and comes closer faster than the window
+ * grows (`depth`), filling the screen just as the window covers it,
+ * drifting from the window's centre to the screen's centre.
  */
 export const windowGeometry = (
   outer: Film,
@@ -135,7 +132,6 @@ export const windowGeometry = (
   );
   const near = Math.min(1, radius / far);
   const scale = Math.max(0.004, Math.pow(near, portal.depth));
-  const content = Math.max(0.01, near);
   return {
     cx,
     cy,
@@ -144,10 +140,33 @@ export const windowGeometry = (
     scale,
     x: cx + (vw / 2 - cx) * scale,
     y: cy + (vh / 2 - cy) * scale,
-    content: {
-      scale: content,
-      x: cx + (vw / 2 - cx) * content,
-      y: cy + (vh / 2 - cy) * content,
-    },
   };
+};
+
+/**
+ * The first moment (in the outer film's time) at which the pupil covers the
+ * whole screen — its rim beyond every corner — on the measured track and on
+ * the smoothed one alike. From then on all there is to see is the pupil's
+ * black and the film behind it. Depends on the screen's size and shape: a
+ * portrait phone is covered well before a wide desktop.
+ */
+export const pupilCoverTime = (
+  outer: Film,
+  portal: Portal,
+  vw: number,
+  vh: number,
+) => {
+  const covers = (time: number) =>
+    windowGeometry(outer, portal, time, vw, vh).near >= 1 &&
+    windowGeometry(outer, portal, time, vw, vh, true).near >= 1;
+  let early = portal.opens;
+  let late = outer.duration;
+  if (covers(early)) return early;
+  if (!covers(late)) return late;
+  for (let step = 0; step < 24; step += 1) {
+    const middle = (early + late) / 2;
+    if (covers(middle)) late = middle;
+    else early = middle;
+  }
+  return late;
 };

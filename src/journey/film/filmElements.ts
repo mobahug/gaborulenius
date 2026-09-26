@@ -1,7 +1,7 @@
 /**
  * The film layer's <video> elements, for overlays that read the footage
- * themselves (the keyed macaw, the neural probe). Registered once the film
- * layer has mounted.
+ * themselves (the neural probe). Registered once the film layer has
+ * mounted.
  */
 const videos: Array<HTMLVideoElement | null> = [];
 

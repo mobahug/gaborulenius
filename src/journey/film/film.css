@@ -196,11 +196,13 @@
   inset: -22% -26% -22% -30%;
   z-index: -1;
   /* closest-side: the shade is gone before it reaches the box's edges. */
-  /* Deeper over bright pictures (--film-shade, see filmLight.ts). */
+  /* Deeper over bright pictures (--film-shade, see filmLight.ts), and
+     broad enough to reach the words at the block's edges. */
   background: radial-gradient(
     closest-side at 45% 50%,
     rgba(2, 5, 4, calc(0.58 * var(--film-shade, 1))) 0%,
-    rgba(2, 5, 4, calc(0.32 * var(--film-shade, 1))) 60%,
+    rgba(2, 5, 4, calc(0.44 * var(--film-shade, 1))) 55%,
+    rgba(2, 5, 4, calc(0.2 * var(--film-shade, 1))) 82%,
     rgba(2, 5, 4, 0) 100%
   );
   pointer-events: none;
@@ -208,6 +210,11 @@
 
 .film-copy--wide {
   max-width: 46rem;
+}
+
+/* Kept clear of a bright subject beside it. */
+.film-copy--narrow {
+  max-width: 21rem;
 }
 
 .film-kicker {

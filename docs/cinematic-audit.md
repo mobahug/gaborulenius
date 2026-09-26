@@ -213,13 +213,13 @@ that reads the neural film's neurons under the pointer.
 The five films were delivered again at full HD and re-generated rather than
 upscaled, so their timing and framing changed and were measured again:
 
-| Film     | File                            | Format                                    |
-| -------- | ------------------------------- | ----------------------------------------- |
-| Chase    | `jungle_chase_seedance_2.5.mp4` | 1920×1080 HEVC, 24 fps, 193 frames, audio |
-| Neural   | `neural_decomplier_full_hd.mp4` | 1880×1080 H.264, 30 fps, 240 frames       |
-| Explorer | `the_explorer_full_hd.mp4`      | 1880×1080 H.264, 30 fps, 240 frames       |
-| Work     | `work_history_full_hd.mp4`      | 1880×1080 H.264, 30 fps, 239 frames       |
-| Ending   | `ending_full_hd.mp4`            | 1880×1080 H.264, 30 fps, 240 frames       |
+| Film     | File                              | Format                                    |
+| -------- | --------------------------------- | ----------------------------------------- |
+| Chase    | `jungle_chase_seedance_2.5.mp4`   | 1920×1080 HEVC, 24 fps, 193 frames, audio |
+| Neural   | `neural_decomplier_full_hd.mp4`   | 1880×1080 H.264, 30 fps, 240 frames       |
+| Explorer | `the_explorer_full_hd.mp4`        | 1880×1080 H.264, 30 fps, 240 frames       |
+| Work     | `work_history_full_hd.mp4`        | 1880×1080 H.264, 30 fps, 239 frames       |
+| Ending   | `ending_seedance_2.5_full_hd.mp4` | 1922×1080 H.264, 30 fps, 239 frames       |
 
 - The chase is a new take: a morpho flies at the camera (1.5–1.7 s) and
   away down the path, the macaw crosses the clearing from 3.7 s, turns to
@@ -230,5 +230,13 @@ upscaled, so their timing and framing changed and were measured again:
 - The other four keep their beats and seams (white node → cream sky, fish
   mouth → black → espresso, office leaf → jungle leaf); their cue times
   still land on the same moments.
+- The ending is a new take too (it replaced `ending_full_hd.mp4`): the same
+  monstera leaf, 1.306 times closer than the office film's last frame,
+  pushes along the midrib into jungle foliage, a clearing opens, the macaw
+  flies in and lands on a branch on the right (3.9–5.8 s) and a morpho
+  settles on a leaf beside it (5.8–7 s). The leaf join was fitted again.
 - Each film now has a full-HD and a light scrub encode, stills at 1128×648,
   and a new brightness curve.
+- The macaw no longer flies in front of the page: every overlay drawing the
+  footage over the content was removed, and content always stays in front
+  of the films.

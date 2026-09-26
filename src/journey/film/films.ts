@@ -16,7 +16,10 @@ import { assetUrl } from "../../utils/assets";
 
 export type FilmId = "chase" | "neural" | "explorer" | "work" | "ending";
 
-/** Scale around the centre, then a shift in fractions of the screen. */
+/**
+ * Scale around the centre of the screen, then a shift in fractions of the
+ * film's frame as displayed.
+ */
 export type Transform = { scale: number; x: number; y: number };
 
 export type Portal = {
@@ -235,40 +238,41 @@ export const FILMS: readonly Film[] = [
   {
     id: "ending",
     src: sources("ending"),
-    // 240 frames at 30 fps.
-    duration: 8,
-    // The office leaf and the jungle's first leaf are nearly the same frame
-    // (the jungle one a touch closer and lower). The camera keeps pushing
-    // into the office leaf until its veins and holes lie on the jungle
-    // leaf's, then the jungle leaf dissolves in. Both are slightly enlarged,
-    // so no edge ever shows, and the jungle leaf is anchored low enough to
-    // keep the dark edge along the bottom of its first second off screen;
-    // it eases back once its shot has changed.
+    // 239 frames at 30 fps.
+    duration: 239 / 30,
+    // The office film ends pushing into a monstera leaf; the ending opens on
+    // the same leaf, 1.306 times closer and 1.6 % to the right (measured
+    // between the last and the first frame). The office leaf is pushed in by
+    // that much more (on top of the jungle leaf's own framing) until its
+    // veins and holes lie on the jungle leaf's, then the jungle leaf
+    // dissolves in. The jungle leaf opens enlarged and lowered, keeping the
+    // dark band along the bottom of its first second off screen, and eases
+    // back once its shot has turned into the jungle.
     seam: {
       blend: 0.15,
-      outgoing: { scale: 1.09, x: 0, y: 0.043 },
+      outgoing: { scale: 1.567, x: -0.0244, y: 0.0834 },
       approach: 0.3,
-      incoming: { scale: 1.11, x: 0, y: 0.03, settle: [1.0, 1.8] },
+      incoming: { scale: 1.2, x: 0, y: 0.08, settle: [1.15, 1.9] },
     },
-    // Portrait screens follow the macaw in, stay with it on its branch,
-    // then go with the butterfly down to its leaf.
+    // Portrait screens follow the macaw in and onto its branch, then go
+    // with the morpho to where it settles.
     focus: [
       [0, 50],
-      [2.8, 50],
-      [3.5, 64],
-      [4.2, 62],
-      [4.9, 46],
-      [5.6, 22],
-      [6.4, 18],
-      [7.2, 78],
-      [7.8, 86],
+      [3.0, 50],
+      [3.9, 64],
+      [4.3, 78],
+      [4.8, 75],
+      [5.8, 73],
+      [6.4, 48],
+      [7.0, 50],
     ],
+    // The macaw on its branch, the morpho beside it.
     still: 7.8,
     poster: assetUrl("film/ending-still.webp"),
     light: [
-      0.28, 0.26, 0.23, 0.23, 0.18, 0.22, 0.24, 0.17, 0.18, 0.21, 0.26, 0.25,
-      0.2, 0.23, 0.25, 0.27, 0.29, 0.3, 0.3, 0.3, 0.32, 0.32, 0.32, 0.33, 0.33,
-      0.34, 0.34, 0.34, 0.34, 0.34, 0.34, 0.34, 0.34,
+      0.31, 0.3, 0.29, 0.28, 0.24, 0.18, 0.15, 0.14, 0.16, 0.22, 0.17, 0.16,
+      0.2, 0.22, 0.24, 0.26, 0.24, 0.24, 0.24, 0.24, 0.26, 0.28, 0.29, 0.3,
+      0.29, 0.29, 0.28, 0.28, 0.28, 0.28, 0.28, 0.28, 0.28,
     ],
   },
 ];

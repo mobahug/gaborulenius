@@ -53,10 +53,10 @@ const ExplorerStage = () => {
       film="explorer"
       id="explorer-project"
       labelledBy="explorer-heading"
-      lead={{ vh: 160, narrow: 146 }}
-      tail={{ vh: 54, narrow: 39 }}
+      lead={{ vh: 108, narrow: 98 }}
+      tail={{ vh: 70, narrow: 60 }}
     >
-      <Cue at={2.1} id="explorer">
+      <Cue at={1.2} id="explorer">
         <div className="film-copy">
           <p className="film-kicker">
             <FormattedMessage id="projectExplorerTag" />
@@ -69,24 +69,24 @@ const ExplorerStage = () => {
           </p>
         </div>
       </Cue>
-      <Space vh={46} narrow={33} />
-      <Cue at={3.5}>
+      <Space vh={80} narrow={70} />
+      <Cue at={3.3} align="end">
         <div className="film-copy">
           <ul className="stage-capabilities">
             {[first, second].map(capability)}
           </ul>
         </div>
       </Cue>
-      <Space vh={44} narrow={28} />
-      <Cue at={4.8} align="end">
+      <Space vh={62} narrow={54} />
+      <Cue at={5.0}>
         <div className="film-copy">
           <ul className="stage-capabilities">
             {[third, fourth].map(capability)}
           </ul>
         </div>
       </Cue>
-      <Space vh={43} narrow={32} />
-      <Cue at={6.0}>
+      <Space vh={48} narrow={42} />
+      <Cue at={6.4} align="end">
         <div className="film-copy">
           <h4 className="film-subheading">
             <FormattedMessage id="projectExplorerStackHeading" />

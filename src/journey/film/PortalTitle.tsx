@@ -6,9 +6,18 @@ import {
   type Ref,
 } from "react";
 import { onDirectorFrame } from "../director/director";
-import { smoothstep } from "../math";
-import type { FilmId } from "./films";
+import { pupilCoverTime } from "../director/frameMapping";
+import { easeOutCubic, range, smoothstep } from "../math";
+import { FILMS, type FilmId } from "./films";
 import { getFilmSection } from "./filmTimeline";
+
+/**
+ * The fade-in: this share of it happens over the outer film's last moments,
+ * once the pupil already covers the screen; the rest over this many seconds
+ * of the title's own film.
+ */
+const REVEAL_SHARE = 0.3;
+const REVEAL_SECONDS = 0.4;
 
 type PortalTitleProps = {
   children: ReactNode;
@@ -21,19 +30,18 @@ type PortalTitleProps = {
   /** Film times: how long it holds at full size, and when it has passed. */
   hold: readonly [number, number];
   /**
-   * How far below the centre of the window it sits at full size (viewport
-   * heights), leaving the film's first spark in view above it.
+   * How far below the centre of the screen it sits (viewport heights),
+   * leaving the film's first spark in view above it.
    */
   below?: number;
 };
 
 /**
- * A title that lives inside a window into its film: while the window opens
- * (the pupil, as the camera moves into the eye) it sits just below the
- * centre of the film and grows with it; when the window fills the screen it
- * is at full size, holds for a moment, and then passes the camera as the
- * film goes on. Its distance from the centre scales with it, as it would in
- * depth.
+ * A title that waits in the dark behind a window into its film: while the
+ * window opens (the pupil, as the camera moves into the eye) it is not there
+ * at all; once the pupil's black covers the whole screen it fades in out of
+ * it, coming forward a little, holds for a moment, and then passes the
+ * camera as the film goes on.
  *
  * It stays in the document where it belongs (reading order, search), but is
  * drawn fixed to the screen, like the films: it never has to follow the
@@ -53,6 +61,7 @@ const PortalTitle = ({
 }: PortalTitleProps) => {
   const placeRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  const heightRef = useRef(0);
 
   // The place in the flow is as tall as the title.
   useLayoutEffect(() => {
@@ -60,7 +69,8 @@ const PortalTitle = ({
     const title = titleRef.current;
     if (!place || !title) return;
     const measure = () => {
-      place.style.height = `${title.offsetHeight}px`;
+      heightRef.current = title.offsetHeight;
+      place.style.height = `${heightRef.current}px`;
     };
     measure();
     const observer = new ResizeObserver(measure);
@@ -77,8 +87,14 @@ const PortalTitle = ({
       shown = false;
       title.style.visibility = "hidden";
     };
-    return onDirectorFrame(({ viewport, timeline, reduced, stage }) => {
-      const frame = timeline.films.find((entry) => entry?.film.id === film);
+    // When the pupil first covers the screen, for the current screen size.
+    let coverSize = "";
+    let cover = 0;
+    return onDirectorFrame(({ viewport, timeline, reduced }) => {
+      const index = timeline.films.findIndex(
+        (entry) => entry?.film.id === film,
+      );
+      const frame = timeline.films[index];
       const section = getFilmSection(film);
       if (reduced) {
         title.style.visibility = "";
@@ -91,40 +107,46 @@ const PortalTitle = ({
         hide();
         return;
       }
-      const open = stage.window?.content ?? null;
       const { smoothY: y, vw, vh } = viewport;
-      let scale = 1;
-      let opacity = 0;
-      let x = vw / 2;
-      let centre = vh / 2;
-      if (frame.window && open) {
-        scale = open.scale;
-        x = open.x;
-        centre = open.y;
-        opacity = smoothstep(0.05, 0.2, scale);
+      const portal = frame.film.seam.portal;
+      const outer = FILMS[index - 1];
+      const from = frame.film.from ?? 0;
+      let reveal = 0;
+      if (frame.window && portal && outer) {
+        const size = `${vw}x${vh}`;
+        if (size !== coverSize) {
+          coverSize = size;
+          cover = pupilCoverTime(outer, portal, vw, vh);
+        }
+        reveal =
+          REVEAL_SHARE * range(frame.window.outerTime, cover, outer.duration);
       } else if (y >= section.top) {
-        const [holdEnd, gone] = hold;
-        const from = frame.film.from ?? 0;
-        const pass = smoothstep(holdEnd, gone, frame.time);
-        scale =
-          1 + 0.05 * smoothstep(from, holdEnd, frame.time) + 1.8 * pass * pass;
-        // Gone before the next block comes up under it.
-        opacity = 1 - smoothstep(0.05, 0.6, pass);
+        reveal =
+          REVEAL_SHARE +
+          (1 - REVEAL_SHARE) * range(frame.time, from, from + REVEAL_SECONDS);
       }
+      const [holdEnd, gone] = hold;
+      const pass = smoothstep(holdEnd, gone, frame.time);
+      // Gone before the next block comes up under it.
+      const opacity =
+        smoothstep(0, 1, reveal) * (1 - smoothstep(0.05, 0.6, pass));
       if (opacity <= 0.001) {
         hide();
         return;
       }
+      const scale =
+        (0.94 + 0.06 * easeOutCubic(reveal)) *
+          (1 + 0.05 * smoothstep(from, holdEnd, frame.time)) +
+        1.8 * pass * pass;
       // The title is fixed at the top of the screen, full width: move its
-      // centre to where it belongs.
-      const dx = x - vw / 2;
-      const dy = centre + below * vh * scale - title.offsetHeight / 2;
+      // centre to just below the middle of the screen.
+      const dy = vh / 2 + below * vh * scale - heightRef.current / 2;
       if (!shown) {
         shown = true;
         title.style.visibility = "";
       }
       title.style.opacity = opacity >= 0.999 ? "" : opacity.toFixed(3);
-      title.style.transform = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`;
+      title.style.transform = `translate3d(0, ${dy.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`;
     });
   }, [film, hold, below]);
 

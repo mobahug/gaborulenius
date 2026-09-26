@@ -14,25 +14,25 @@ type EndingStageProps = {
 
 /**
  * Through the office plant's leaf and out into the jungle again: the macaw
- * lands on a branch on one side, the butterfly settles on the other, and
- * the light stays. The journey ends with an open invitation, which fades in
- * like every other block as the butterfly comes to rest.
+ * lands on its branch on the right, the morpho settles on a leaf beside it,
+ * and the light stays. The journey ends with an open invitation, on the calm
+ * left, resting in the upper half of the screen as the film ends.
  */
 const EndingStage = ({ contactRef }: EndingStageProps) => (
   <FilmSection
     film="ending"
     id="connect"
     labelledBy="contact-heading"
-    lead={{ vh: 145, narrow: 135 }}
-    tail={{ vh: 12, narrow: 10 }}
+    lead={{ vh: 105, narrow: 95 }}
+    tail={{ vh: 45, narrow: 40 }}
   >
     <Mark at={1.5} />
-    <Space vh={105} narrow={90} />
+    <Space vh={88} narrow={76} />
     <Mark at={3.6} />
-    <Space vh={100} narrow={85} />
+    <Space vh={88} narrow={76} />
     <Mark at={5.7} />
-    <Space vh={100} narrow={70} />
-    <Cue align="center" id="contact" ref={contactRef} className="stage-contact">
+    <Space vh={62} narrow={54} />
+    <Cue id="contact" ref={contactRef} className="stage-contact">
       <div className="film-copy stage-contact-copy">
         <h2 id="contact-heading" className="film-title">
           <FormattedMessage id="contactHeading" />
@@ -40,7 +40,7 @@ const EndingStage = ({ contactRef }: EndingStageProps) => (
         <p className="film-lead">
           <FormattedMessage id="contactIntro" />
         </p>
-        <div className="film-actions stage-contact-actions">
+        <div className="film-actions">
           <Button
             variant="contained"
             component="a"

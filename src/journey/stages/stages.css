@@ -184,10 +184,6 @@
   max-width: 40rem;
 }
 
-.stage-contact-actions {
-  justify-content: center;
-}
-
 @media (max-width: 899.95px) {
   .stage-work-list {
     grid-template-columns: minmax(0, 1fr);

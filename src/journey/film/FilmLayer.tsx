@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { onDirectorFrame } from "../director/director";
-import { focusAt, windowGeometry } from "../director/frameMapping";
+import { filmRect, focusAt, windowGeometry } from "../director/frameMapping";
 import { getQualityTier, hasFinePointer } from "../device";
 import { canPrefetchHeavyAsset } from "../../utils/connection";
 import { smoothstep } from "../math";
@@ -42,8 +42,8 @@ const fadeAt = (from: number, now: number) =>
  *
  * It is the director's first subscriber: it puts the films on screen and
  * records in the frame what it has actually shown (each film's presented
- * time and the open portal), so the overlays drawn after it line up with the
- * picture rather than with where the scroll will take it.
+ * time), so the overlays drawn after it line up with the picture rather than
+ * with where the scroll will take it.
  *
  * Loading: the current film first (the first film as soon as the page has
  * painted), then its neighbours, and nothing that is only passed on the way
@@ -268,19 +268,27 @@ const FilmLayer = () => {
 
         film.style.visibility = opacity > 0 ? "visible" : "hidden";
         film.style.opacity = opacity >= 1 ? "" : format(opacity);
+        // The shift is in fractions of the film's frame as displayed, so a
+        // seam lines up on any screen shape.
         const { scale, x, y } = entry.transform;
+        const frameRect = filmRect(
+          entry.film,
+          entry.time,
+          viewport.vw,
+          viewport.vh,
+        );
         film.style.transform =
           scale === 1 && x === 0 && y === 0
             ? ""
-            : `translate3d(${format(x * 100)}%, ${format(y * 100)}%, 0) scale(${format(scale)})`;
+            : `translate3d(${format(x * frameRect.width)}px, ${format(y * frameRect.height)}px, 0) scale(${format(scale)})`;
         let mask = "";
         const portal = entry.film.seam.portal;
         if (entry.window && portal && opacity > 0) {
           const { vw, vh } = viewport;
-          // What moves inside the pupil (this film, the title) follows the
-          // scroll's own time and the pupil's path with its wobble averaged
-          // out, so it glides; the cut follows the frame the outer film is
-          // actually showing, so it stays on the pupil's rim.
+          // The film seen through the pupil follows the scroll's own time
+          // and the pupil's path with its wobble averaged out, so it glides;
+          // the cut follows the frame the outer film is actually showing, so
+          // it stays on the pupil's rim.
           const motion = windowGeometry(
             entry.window.outer,
             portal,
@@ -310,7 +318,6 @@ const FilmLayer = () => {
           mask =
             `radial-gradient(circle ${disc.toFixed(1)}px at 50% 50%, #000 ${(disc * 0.5).toFixed(1)}px, transparent ${disc.toFixed(1)}px), ` +
             `radial-gradient(circle ${radius.toFixed(1)}px at ${cx.toFixed(1)}px ${cy.toFixed(1)}px, #000 ${(radius * 0.9).toFixed(1)}px, transparent ${radius.toFixed(1)}px)`;
-          frame.stage.window = motion;
         }
         if (masks[index] !== mask) {
           masks[index] = mask;

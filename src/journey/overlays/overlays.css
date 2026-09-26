@@ -11,12 +11,3 @@
 .overlay-canvas--film {
   z-index: 3;
 }
-
-/* Above the content (z-index 2), under the navigation. */
-.page-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  overflow: hidden;
-  pointer-events: none;
-}

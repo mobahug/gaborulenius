@@ -15,7 +15,6 @@ import {
   getFilmSection,
   type TimelineFrame,
 } from "../film/filmTimeline";
-import type { WindowGeometry } from "./frameMapping";
 
 /**
  * The scene director: once per animation frame, after the scroll clock has
@@ -63,8 +62,6 @@ export type DirectorFrame = {
   stage: {
     /** Time of the frame each film is showing (null: nothing shown yet). */
     presented: Array<number | null>;
-    /** The open portal (the pupil) on screen, if any. */
-    window: WindowGeometry | null;
   };
 };
 
@@ -147,7 +144,7 @@ const tick = (viewport: Viewport) => {
     scrollDirection: velocity > 0.02 ? 1 : velocity < -0.02 ? -1 : 0,
     scrollVelocity: reduced ? 0 : velocity,
     timeline,
-    stage: { presented: FILMS.map(() => null), window: null },
+    stage: { presented: FILMS.map(() => null) },
   };
   subscribers.forEach((subscriber) => subscriber.callback(frame));
   if (import.meta.env.DEV) {

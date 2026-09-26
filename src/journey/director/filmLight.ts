@@ -28,7 +28,7 @@ export const useFilmLight = () => {
       const light = lightAt(entry.film, time);
       // In steps of 0.05: a custom property on the root restyles the whole
       // page whenever it changes, so it changes only a few times a stage.
-      const exact = 1 + Math.min(0.6, Math.max(0, (light - 0.18) * 1.5));
+      const exact = 1 + Math.min(0.6, Math.max(0, (light - 0.15) * 1.8));
       const shade = Math.round(exact * 20) / 20;
       if (shade === applied) return;
       applied = shade;

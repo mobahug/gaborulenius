@@ -4,7 +4,7 @@ import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { categories, projects } from "../../contexts";
 import { localeAtom } from "../../hooks/localeAtom";
-import FilmSection, { Cue, Mark, Space } from "../film/FilmSection";
+import FilmSection, { Cue, Space } from "../film/FilmSection";
 import "./stages.css";
 
 const QualificationSection = React.lazy(
@@ -37,13 +37,11 @@ const WorkStage = ({ experienceRef, skillsRef }: WorkStageProps) => {
       film="work"
       id="work-history"
       label={intl.formatMessage({ id: "navExperience" })}
-      lead={{ vh: 130, narrow: 125 }}
-      tail={{ vh: 26, narrow: 16 }}
+      lead={{ vh: 112, narrow: 104 }}
+      tail={{ vh: 62, narrow: 54 }}
     >
-      <Mark at={1.4} />
-      <Space vh={103} narrow={86} />
       <Cue
-        at={3.9}
+        at={1.6}
         id="experience"
         className="stage-experience"
         ref={experienceRef}
@@ -54,8 +52,8 @@ const WorkStage = ({ experienceRef, skillsRef }: WorkStageProps) => {
           </React.Suspense>
         </div>
       </Cue>
-      <Space vh={27} narrow={23} />
-      <Cue at={5.1} align="end" id="work">
+      <Space vh={58} narrow={50} />
+      <Cue at={3.8} id="work">
         <div className="film-copy film-copy--wide">
           <h2 className="film-title stage-section-title">
             <FormattedMessage id="projectWorkHeading" />
@@ -92,8 +90,8 @@ const WorkStage = ({ experienceRef, skillsRef }: WorkStageProps) => {
           </ol>
         </div>
       </Cue>
-      <Space vh={25} narrow={20} />
-      <Cue at={6.2} id="skills" ref={skillsRef}>
+      <Space vh={76} narrow={66} />
+      <Cue at={6.3} id="skills" ref={skillsRef}>
         <div className="film-copy film-copy--wide">
           <h2 className="film-title stage-section-title">
             <FormattedMessage id="skillsToolsHeading" />
