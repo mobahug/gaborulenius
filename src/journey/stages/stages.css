@@ -53,7 +53,7 @@
 }
 
 .explorer-feature-title {
-  margin: 16px 0 0;
+  margin: 0;
   font-size: clamp(1.45rem, 2.2vw, 2rem);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -67,6 +67,164 @@
 
 .explorer-feature-screen {
   flex: none;
+}
+
+/* The expedition route (see ExplorerRoute.tsx): under every block, over an
+   almost transparent topographic map that comes in toward the right. */
+.explorer-route {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  --route-red: #e4572e;
+}
+
+.explorer-route::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--route-map) right top / 1100px auto repeat-y;
+  opacity: 0.13;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 10%, #000 70%),
+    linear-gradient(transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 10%, #000 70%),
+    linear-gradient(transparent, #000 8%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+
+.explorer-route-plan,
+.explorer-route-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+/* The planned route: dotted, ahead of the walker. */
+.explorer-route-plan path {
+  fill: none;
+  stroke: rgba(233, 220, 179, 0.45);
+  stroke-width: 1.6;
+  stroke-dasharray: 1 7;
+  stroke-linecap: round;
+}
+
+/* The trailhead and the end of the route. */
+.explorer-route-plan circle {
+  fill: rgba(9, 13, 10, 0.65);
+  stroke: #e9dcb3;
+  stroke-width: 2;
+}
+
+/* The recorded track, uncovered down to the walker. */
+.explorer-route-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform: translate3d(0, -100%, 0);
+  will-change: transform;
+}
+
+/* Its glow is a wide faint stroke under it, drawn once with the track. */
+.explorer-route-track {
+  will-change: transform;
+}
+
+.explorer-route-track .explorer-route-glow {
+  stroke: rgba(228, 87, 46, 0.22);
+  stroke-width: 9;
+}
+
+.explorer-route-track path {
+  fill: none;
+  stroke: var(--route-red);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The walker. */
+.explorer-route-head {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--route-red);
+  box-shadow:
+    0 0 0 3px rgba(246, 241, 228, 0.92),
+    0 0 18px rgba(228, 87, 46, 0.85);
+  opacity: 0;
+  will-change: transform;
+}
+
+.explorer-route-head::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--route-red);
+  animation: route-pulse 1.8s ease-out infinite;
+}
+
+@keyframes route-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+/* Each description hangs from its waypoint: the icon in a column of its
+   own, left of the words, where the route runs down. */
+.explorer-feature-copy,
+.explorer-details {
+  --route-column: 54px;
+  padding-left: var(--route-column);
+}
+
+.explorer-details {
+  --route-icon-top: 4px;
+}
+
+.explorer-feature-copy > .stage-capability-icon,
+.explorer-details > .stage-capability-icon {
+  position: absolute;
+  left: 0;
+  top: var(--route-icon-top, 0px);
+  background: rgba(9, 13, 10, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition:
+    border-color 0.4s ease,
+    color 0.4s ease,
+    background-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.stage-capability-icon.route-reached {
+  border-color: #e4572e;
+  color: #fff4ec;
+  background: rgba(228, 87, 46, 0.32);
+  box-shadow:
+    0 0 0 4px rgba(228, 87, 46, 0.16),
+    0 0 20px rgba(228, 87, 46, 0.55);
+}
+
+/* The veil leaves the route's column clear, so the route is not blurred. */
+.film-copy.explorer-feature-copy::before,
+.film-copy.explorer-details::before {
+  left: calc(var(--route-column) - 18px);
 }
 
 /* A phone: the app's screen in a dark bezel with a gold hairline. */
@@ -203,6 +361,24 @@
 }
 
 @media (max-width: 899.95px) {
+  .explorer-route::before {
+    background-size: 700px auto;
+  }
+
+  .film-copy.explorer-feature-copy,
+  .film-copy.explorer-details {
+    --route-column: 46px;
+    --veil-feather-x: 24px;
+  }
+
+  .explorer-feature-copy {
+    --route-icon-top: -4px;
+  }
+
+  .explorer-details {
+    --route-icon-top: -2px;
+  }
+
   .explorer-feature,
   .film-cue--end .explorer-feature {
     flex-direction: column;
@@ -340,5 +516,11 @@
 @media (max-width: 899.95px) {
   .stage-work-list {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explorer-route-head::after {
+    animation: none;
   }
 }

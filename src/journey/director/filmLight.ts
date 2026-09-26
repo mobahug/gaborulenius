@@ -11,32 +11,44 @@ export const lightAt = (film: Film, time: number) => {
   return samples[index] + (samples[next] - samples[index]) * (position - index);
 };
 
+/** The elements whose veil (see film.css) reads `--film-shade`. */
+const SHADED = ".film-copy, .trail-panel--overlay";
+
 /**
- * Content over the films stays dominant: the soft shade behind every
- * block deepens when the picture behind it is bright (the office in
- * daylight, the splash on the Okavango) and relaxes in the dark jungle
- * and the neural void. Published as `--film-shade` (1 = the base shade).
+ * Content over the films stays dominant: the veil behind every block
+ * deepens when the picture behind it is bright (the office in daylight,
+ * the splash on the Okavango) and relaxes in the dark jungle and the neural
+ * void. Published as `--film-shade` (1 = the base shade) on the blocks
+ * themselves: it is not inherited (film.css), so a change restyles only
+ * the veils, not the page.
  */
 export const useFilmLight = () => {
   useEffect(() => {
-    const root = document.documentElement;
     let applied = -1;
+    let chapter = -1;
     const stop = onDirectorFrame((frame) => {
       const entry = frame.timeline.films[frame.chapterIndex];
       if (!entry) return;
       const time = frame.stage.presented[frame.chapterIndex] ?? entry.time;
       const light = lightAt(entry.film, time);
-      // In steps of 0.05: a custom property on the root restyles the whole
-      // page whenever it changes, so it changes only a few times a stage.
+      // In steps of 0.05, so it changes only a few times a stage.
       const exact = 1 + Math.min(0.6, Math.max(0, (light - 0.15) * 1.8));
       const shade = Math.round(exact * 20) / 20;
-      if (shade === applied) return;
+      // Blocks that mounted since (loaded late) get it with the next
+      // chapter at the latest.
+      if (shade === applied && frame.chapterIndex === chapter) return;
       applied = shade;
-      root.style.setProperty("--film-shade", shade.toFixed(2));
+      chapter = frame.chapterIndex;
+      const value = shade.toFixed(2);
+      document
+        .querySelectorAll<HTMLElement>(SHADED)
+        .forEach((element) => element.style.setProperty("--film-shade", value));
     }, 15);
     return () => {
       stop();
-      root.style.removeProperty("--film-shade");
+      document
+        .querySelectorAll<HTMLElement>(SHADED)
+        .forEach((element) => element.style.removeProperty("--film-shade"));
     };
   }, []);
 };

@@ -120,8 +120,17 @@ span.film-part {
     0 0 18px rgba(0, 0, 0, 0.3);
 }
 
+/* Set on each block by filmLight.ts and not inherited, so that a change
+   restyles only the veils; each veil takes its block's value. */
+@property --film-shade {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
 .film-copy::before,
 .trail-panel--overlay::before {
+  --film-shade: inherit;
   content: "";
   position: absolute;
   inset: calc(-1 * var(--veil-y)) calc(-1 * var(--veil-x));

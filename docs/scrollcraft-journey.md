@@ -98,9 +98,11 @@ the camera had racked focus onto the text: the veil (`.film-copy::before`,
 and the experience timeline's panel). It is a backdrop blur with a forest
 shade, feathered into the picture at its edges so it has no outline; it
 comes in with its block and goes as the block leaves (`--veil`, set by
-`FilmSection`), and its shade deepens over bright footage (`--film-shade`,
-from each film's measured brightness curve, in steps of 0.05 so the page is
-restyled only a few times per stage). The neural filaments, the Okavango's
+`FilmSection` in steps of 2 %), and its shade deepens over bright footage
+(`--film-shade`, from each film's measured brightness curve, in steps of
+0.05). The shade is set on the blocks themselves and is not inherited (a
+registered property), so a change restyles only the veils — on the root it
+restyled the whole page, some 840 elements, a few times per stage. The neural filaments, the Okavango's
 reflections and the office window all turn into soft light behind the
 words. On a narrow screen the veil spans the screen's width. Without
 backdrop filters it is a deeper shade, and with `prefers-reduced-transparency`
@@ -132,6 +134,21 @@ the screen below them). How it is built (the three groups of the former
 dialog) and its stack follow, then a strip of the app's other eight screens
 (side by side on a wide screen, swiped sideways on a phone). Every phone
 arrives like any other part of a block.
+
+Through it all runs the expedition's route (`ExplorerRoute.tsx`): a dotted
+planned route over an almost transparent topographic map — a generated
+contour tile that repeats down the page and comes in toward the right
+(`public/explorer/topography.svg`, 8 KB compressed) — and the recorded track
+in red, wandering a little around it like a GPS track, walked down to the
+reading line as the page scrolls, with the walker's position pulsing at its
+head. It starts under the title, hangs every description from its waypoint
+(the capability's icon, in a column of its own left of the words, which
+lights up once the walker reaches it), runs down beside the words, crosses
+the screen past the app screen to the next waypoint, and ends at the foot of
+how the app is built. Only transforms change while scrolling: the track is
+drawn once and uncovered by a clip that moves down with the walker (and the
+track inside it back up by as much), so no frame repaints it; the veils
+leave the route's column clear so the route is never blurred.
 
 The question in the pupil (`PortalTitle`) is not there while the pupil is
 still a circle. It comes in once the pupil covers the whole screen — the
@@ -275,16 +292,19 @@ question is an ordinary block, spaces shrink to 12vh, and the page is about
   same scroll position and film time; `#skills` from a fresh load lands on
   Skills.
 - Phone playback, in Chrome's phone emulation (Pixel 7: Android user agent,
-  touch, the light encodes) from a cold load over a throttled 4G connection
-  (9 Mb/s, 60 ms), steady scrolls through the first scene, the eye, the
-  Explorer and the office: at 4× and 6× CPU slowdown the page keeps 60 fps
-  (p95 frame 18.5 ms; at 6× one or two frames over 25 ms per run); the film
-  on screen trails the scroll's target by about 3 of its frames (p50; p95
-  4–5 at reading speed, about 11 when flicking at 2 viewport heights per
-  second) and shows 30–50 distinct film frames per second. On that
-  connection the live site shows the first film's still 1.7 s after the
-  page starts loading, and the film itself — its whole light encode, 2.4 MB
-  — about 6 s after. (On battery, Chrome itself caps rendering at 30 fps;
-  these runs use Chrome for Testing's headless shell, which does not.)
+  touch, the light encodes) with GPU compositing (Chrome for Testing's
+  headless shell on ANGLE/Metal: on battery Chrome itself caps rendering at
+  30 fps, and without a GPU the software compositor dominates), from a cold
+  load over a throttled 4G connection (9 Mb/s, 60 ms), steady scrolls
+  through the first scene, the eye, the Explorer and the office: at 4× CPU
+  slowdown no frame over 25 ms in any range, at 6× one per run at most
+  (p95 17.6 ms); the film on screen trails the scroll's target by about 3
+  of its frames (p50; p95 4–5 at reading speed, about 12 when flicking at 2
+  viewport heights per second) and shows 30–60 distinct film frames per
+  second. The Explorer's route costs no main-thread time measurably (3354
+  against 3347 ms over the same 4 s at 6×) and about 1 ms of GPU per frame.
+  On that connection the live site shows the first film's still 1.7 s after
+  the page starts loading, and the film itself — its whole light encode,
+  2.4 MB — about 6 s after.
 - Not verified here: a real phone browser. The films' behaviour on iOS
   Safari (seeking, memory) can only be judged on a device.

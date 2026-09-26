@@ -264,3 +264,14 @@ beside the app screen that does it, then how it is built, then the rest of
 the app's screens in a strip, timed to the channel, the mokoro, the water
 and the fish (see "Content over the films" in `scrollcraft-journey.md`).
 The dialog, its carousel and its capability grid were removed.
+
+Along the Explorer runs its expedition route: a planned route over a faint
+topographic map and the recorded track in red, walked as the page scrolls,
+through a waypoint at every capability — the same idea as the experience
+timeline's trail, in the Explorer's own language (its app draws GPS trails
+on topographic maps).
+
+Measuring on a phone profile with GPU compositing showed the page restyling
+all of its ~840 elements whenever the veils' shade changed, a few times per
+stage (4–5 ms each on a mid-range phone): the shade is now set on the
+blocks and not inherited.

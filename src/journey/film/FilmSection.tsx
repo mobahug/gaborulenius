@@ -251,7 +251,8 @@ const FilmSection = ({
       const blockBottom = blockTop + height;
       const enter = smoothstep(vh * 1.0, vh * 0.5, blockTop);
       const leave = smoothstep(vh * 0.0, vh * 0.34, blockBottom);
-      const veil = Math.round(Math.min(enter, leave) * 1000) / 1000;
+      // In steps of 2 %: every change restyles the whole block.
+      const veil = Math.round(Math.min(enter, leave) * 50) / 50;
       if (veil !== block.veil) {
         block.veil = veil;
         element.style.setProperty("--veil", String(veil));

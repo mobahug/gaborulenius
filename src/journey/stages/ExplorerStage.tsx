@@ -1,3 +1,4 @@
+import FlagIcon from "@mui/icons-material/OutlinedFlag";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
   explorerCapabilities,
@@ -9,6 +10,7 @@ import {
 } from "../../components/projects/explorerProjectData";
 import { assetUrl } from "../../utils/assets";
 import FilmSection, { Cue, Space } from "../film/FilmSection";
+import ExplorerRoute from "./ExplorerRoute";
 import "./stages.css";
 
 /** Each screen of the strip arrives this much after the one before it. */
@@ -52,12 +54,18 @@ const Screen = ({
 
 /**
  * A capability of the app beside the screen that shows it: the words at the
- * edge of the screen like every other block, the phone toward the film.
+ * edge of the screen like every other block, the phone toward the film. Its
+ * icon is a waypoint of the expedition route (see ExplorerRoute), which
+ * runs down beside the words.
  */
 const Feature = ({ titleId, bodyId, icon, screen }: ExplorerCapability) => (
   <div className="explorer-feature">
-    <div className="film-copy explorer-feature-copy">
-      <span className="stage-capability-icon" aria-hidden="true">
+    <div className="film-copy explorer-feature-copy" data-route-rail>
+      <span
+        className="stage-capability-icon"
+        aria-hidden="true"
+        data-route-point
+      >
         {icon}
       </span>
       <h4 className="explorer-feature-title">
@@ -79,7 +87,8 @@ const Feature = ({ titleId, bodyId, icon, screen }: ExplorerCapability) => (
  * and meets a fish that swallows the light. The Explorer — the mobile
  * fieldwork app built for places like this — is shown on the way, in the
  * field rather than behind a dialog: each capability beside the app screen
- * that does it, then how it is built, and the rest of the app's screens.
+ * that does it, then how it is built, and the rest of the app's screens —
+ * along an expedition route that is walked as the page scrolls.
  */
 const ExplorerStage = () => {
   const intl = useIntl();
@@ -93,8 +102,9 @@ const ExplorerStage = () => {
       lead={{ vh: 108, narrow: 98 }}
       tail={{ vh: 60, narrow: 50 }}
     >
+      <ExplorerRoute />
       <Cue at={1.2} id="explorer">
-        <div className="film-copy">
+        <div className="film-copy" data-route-start>
           <p className="film-kicker">
             <FormattedMessage id="projectExplorerTag" />
           </p>
@@ -128,7 +138,17 @@ const ExplorerStage = () => {
       <Space vh={30} narrow={24} />
       {/* The fish comes out of the green. */}
       <Cue at={6.6}>
-        <div className="film-copy film-copy--wide explorer-details">
+        <div
+          className="film-copy film-copy--wide explorer-details"
+          data-route-rail
+        >
+          <span
+            className="stage-capability-icon"
+            aria-hidden="true"
+            data-route-point
+          >
+            <FlagIcon />
+          </span>
           <h4 className="explorer-details-title">
             <FormattedMessage id="projectExplorerWhyHeading" />
           </h4>
