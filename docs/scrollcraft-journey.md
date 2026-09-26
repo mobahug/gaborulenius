@@ -8,8 +8,8 @@ leaf. What the footage contains, and why each seam is where it is, is
 recorded in `cinematic-audit.md`.
 
 ```
-JUNGLE CHASE        the path (cover, #home) → a butterfly, the camera follows → a scarlet
-                    macaw flies at the camera — in front of About — → its eye → the pupil
+JUNGLE CHASE        the path (cover, #home) → a morpho butterfly, the camera follows → a
+                    scarlet macaw crosses the clearing — in front of About — → its eye → the pupil
   ↓ the pupil is a window into the next film, until it fills the screen
 NEURAL DECOMPILER   a spark → one neuron → a network flight → a ringed node → white   (#projects)
   ↓ white node = white sky
@@ -66,7 +66,7 @@ picture rather than with where the scroll is taking it.
 
 | Seam              | Frames                      | Handling                                                                                                                                                                                                                                                  |
 | ----------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Chase → Neural    | pupil → void (portal)       | From 6.96 s of the chase the pupil (measured in every frame, `portal.track`) is a window: the neural film shows through it from its first spark, far away at first, and fills the screen as the pupil does. The question grows inside it (see below).     |
+| Chase → Neural    | pupil → void (portal)       | From 6.92 s of the chase the pupil (measured in every frame, `portal.track`) is a window: the neural film shows through it from its first spark, far away at first, and fills the screen as the pupil does. The question grows inside it (see below).     |
 | Neural → Explorer | white node → warm white sky | ±0.1 viewport heights. White → cream, no black. Mean difference 17/255 (colour temperature only).                                                                                                                                                         |
 | Explorer → Work   | fish mouth → reflection     | ±0.05. Both black; practically a cut inside black.                                                                                                                                                                                                        |
 | Work → Ending     | office leaf → jungle leaf   | ±0.15. The office leaf is pushed in (1.09×, 4.3 % down, starting 0.3vh early) until its veins and holes lie on the jungle leaf (1.11×, 3 % down), which eases back once its shot has changed (it hides a dark band along the bottom of its first second). |
@@ -74,7 +74,7 @@ picture rather than with where the scroll is taking it.
 The pupil is cut where the chase actually is (the presented frame), but what
 moves inside it — the neural film and the question — follows the scroll's
 own time and a path with the measured track's frame-to-frame wobble averaged
-out (±0.15 s), so it glides instead of stepping with the 24 fps footage.
+out (±0.15 s), so it glides instead of stepping with the footage's frames.
 
 ## Content over the films
 
@@ -103,10 +103,12 @@ scroll spy.
 ## Overlays
 
 - **The macaw in front of the page** (`overlays/macawKey.ts`). While the
-  macaw comes at the camera (4.95–6.85 s of the chase) the chase video is
+  macaw crosses the clearing (3.65–5.45 s of the chase) the chase video is
   drawn a second time above the content through a key that keeps only the
-  bird: its scarlet and blue are the only saturated reds and blues in the
-  jungle (quarter-resolution key, dilated, WebGL2). It flies across About.
+  bird: its scarlet, yellow and blue feathers are the only saturated colours
+  of those hues in the jungle (a hue/saturation key at quarter resolution,
+  closed — dilated, then eroded — to fill the gaps between feathers without
+  growing the outline; WebGL2). It flies across About.
 - **The neural probe** (`overlays/neuralProbe.ts`, fine pointers only).
   Inside the Neural Decompiler the film's picture is read back at 128×74,
   its brightest local maxima (the neurons) are found, and the pointer
@@ -118,14 +120,19 @@ compiled while the page is idle.
 
 ## Films
 
-The delivered files (864×496, 24 fps, 193 frames, 1–3 keyframes each,
-B-frames, metadata at the end) cannot be scrubbed. `public/film/*.mp4` are
-scrub encodes made with AVFoundation/VideoToolbox (FFmpeg is not installed
-here): a keyframe every 8 frames, no frame reordering, fast-start, BT.709
-tags, 2.5–3.3 Mb/s — about 14 MB for all five. In Chromium a seek plus a
-drawable frame takes 6.5 ms (p50) / 8.9 ms (p90), against 13 / 17 ms for the
-previous GOP-30 encodes with B-frames. Each film also has a still (WebP) for
-reduced motion and loading.
+The delivered full-HD files (the chase: 1920×1080 HEVC, 24 fps, 193 frames,
+with an audio track; the others: 1880×1080 H.264, 30 fps, 239–240 frames;
+B-frames and few keyframes throughout) cannot be scrubbed. `public/film/hd/`
+and `public/film/sd/` hold scrub encodes made with AVFoundation/VideoToolbox
+(FFmpeg is not installed here): 1880×1080 (the chase cut by 20 px a side to
+the same 47:27 frame) and 1128×648, a keyframe every 8 frames, no frame
+reordering, fast-start, BT.709 tags, no audio. Full HD is 5–7.5 Mb/s (about
+31 MB for all five), the light set 2–3 Mb/s (about 12.5 MB). Large screens
+get full HD; low-tier devices and saved or slow connections get the light
+set. A seek plus a drawable frame costs about three times as much at full HD
+as at 864×496 (software decoding in headless Chrome: 21 ms against 7 ms at
+the median; hardware decoders are far faster). Each film also has a still
+(WebP, 1128×648) for reduced motion and loading.
 
 `ScrubVideo` eases the shown time toward the target (35 ms), never has more
 than one seek in flight, jumps over gaps above 1.2 s, and reports the
@@ -155,9 +162,10 @@ where that is missing).
 
 The same story, about 10 % less scroll per stage. A 16:9 frame on a portrait
 screen shows about its middle third, so each film has focus keyframes
-(`focus`, object-position over film time), and the portal and the keyed
-macaw map frame coordinates through the same crop. Low-tier devices draw the
-macaw at device-pixel ratio 1.
+(`focus`, object-position over film time) — the chase's follow the morpho,
+the macaw and its eye, measured in every frame — and the portal and the
+keyed macaw map frame coordinates through the same crop. Low-tier devices
+get the light encodes and draw the macaw at device-pixel ratio 1.
 
 ## Reduced motion
 

@@ -5,11 +5,13 @@ import { assetUrl } from "../../utils/assets";
  * to the one before it. See `docs/cinematic-audit.md` for what the footage
  * contains and why each seam is handled the way it is.
  *
- * The files in `public/film/` are scrub encodes of the delivered videos:
- * the same 193 frames at 24 fps, a keyframe every 8 frames, no frame
- * reordering (no B-frames), metadata first, BT.709 tags — made with
- * AVFoundation (`AVAssetWriter`). Each has a still frame (WebP) taken from
- * the delivered file at the film's `still` time.
+ * `public/film/hd/` and `public/film/sd/` hold scrub encodes of the
+ * delivered full-HD videos: 1880×1080 for large screens and 1128×648 for
+ * phones and light connections (the chase, delivered at 1920×1080, is cut to
+ * the same 47:27 frame), a keyframe every 8 frames, no frame reordering (no
+ * B-frames), metadata first, BT.709 tags — made with AVFoundation
+ * (`AVAssetWriter`). Each film also has a still frame (WebP) at its `still`
+ * time.
  */
 
 export type FilmId = "chase" | "neural" | "explorer" | "work" | "ending";
@@ -55,7 +57,8 @@ export type Seam = {
 
 export type Film = {
   id: FilmId;
-  src: string;
+  /** The film at full HD, and lighter for phones and slow connections. */
+  src: { hd: string; sd: string };
   /** Duration of the file in seconds. */
   duration: number;
   /** How this film joins the one before it. */
@@ -78,64 +81,98 @@ export type Film = {
   light: readonly number[];
 };
 
-/** 193 frames at 24 fps. */
-export const FILM_DURATION = 193 / 24;
-/** Frame proportions of every film (864×496). */
-export const FRAME_ASPECT = 864 / 496;
+/** Frame proportions of every film (1880×1080 and 1128×648). */
+export const FRAME_ASPECT = 1880 / 1080;
+
+const sources = (id: FilmId) => ({
+  hd: assetUrl(`film/hd/${id}.mp4`),
+  sd: assetUrl(`film/sd/${id}.mp4`),
+});
 
 export const FILMS: readonly Film[] = [
   {
     id: "chase",
-    src: assetUrl("film/chase.mp4"),
-    duration: FILM_DURATION,
+    src: sources("chase"),
+    // 193 frames at 24 fps.
+    duration: 193 / 24,
     // The first film starts at the top of the page; nothing comes before it.
     seam: { blend: 0 },
-    // Portrait screens follow the macaw's eye into the close-up.
+    // Portrait screens follow the morpho across the path, the macaw across
+    // the clearing (measured in every frame), then its eye into the
+    // close-up.
     focus: [
       [0, 50],
-      [2.8, 52],
-      [4.9, 56],
-      [6.3, 50],
-      [6.55, 30],
-      [6.75, 46],
-      [7.0, 49],
+      [1.4, 50],
+      [1.55, 72],
+      [1.75, 62],
+      [1.95, 48],
+      [2.25, 38],
+      [2.55, 40],
+      [2.9, 58],
+      [3.15, 57],
+      [3.5, 46],
+      [3.8, 42],
+      [4.1, 32],
+      [4.6, 22],
+      [4.9, 24],
+      [5.2, 30],
+      [5.5, 40],
+      [5.9, 47],
+      [6.3, 49.5],
+      [6.9, 51],
+      [7.6, 51.3],
     ],
     // The path under the greeting, as on the cover.
     still: 0,
     poster: assetUrl("film/jungle_chase-still.webp"),
     light: [
-      0.16, 0.16, 0.16, 0.17, 0.16, 0.15, 0.16, 0.16, 0.16, 0.16, 0.11, 0.07,
-      0.09, 0.1, 0.09, 0.12, 0.15, 0.15, 0.15, 0.15, 0.19, 0.19, 0.18, 0.16,
-      0.14, 0.14, 0.19, 0.3, 0.31, 0.26, 0.18, 0.08, 0,
+      0.19, 0.19, 0.2, 0.19, 0.18, 0.18, 0.24, 0.29, 0.24, 0.15, 0.16, 0.18,
+      0.2, 0.2, 0.23, 0.29, 0.35, 0.19, 0.19, 0.22, 0.28, 0.26, 0.37, 0.26,
+      0.28, 0.35, 0.35, 0.34, 0.34, 0.36, 0.31, 0.11, 0.01,
     ],
   },
   {
     id: "neural",
-    src: assetUrl("film/neural.mp4"),
-    duration: FILM_DURATION,
+    src: sources("neural"),
+    // 240 frames at 30 fps.
+    duration: 8,
     // The pupil is the window: the first spark of the network is a tiny
     // point inside it while the camera moves into the eye (the pupil
-    // measured in every frame of the chase from 6.96 s), comes closer as the
-    // pupil grows and fills the screen as the pupil does.
+    // measured in every frame of the chase from 6.92 s, then followed past
+    // the edges of the frame), comes closer as the pupil grows and fills the
+    // screen as the pupil does.
     seam: {
       blend: 0,
       portal: {
-        opens: 6.96,
+        opens: 6.917,
         depth: 1.3,
         track: [
-          [6.96, 0.491, 0.397, 0.07],
-          [7.0, 0.494, 0.405, 0.096],
-          [7.1, 0.493, 0.403, 0.135],
-          [7.2, 0.491, 0.399, 0.18],
-          [7.3, 0.49, 0.404, 0.23],
-          [7.4, 0.489, 0.405, 0.276],
-          [7.5, 0.487, 0.404, 0.306],
-          [7.6, 0.487, 0.405, 0.345],
-          [7.7, 0.485, 0.408, 0.41],
-          [7.8, 0.481, 0.4, 0.52],
-          [7.875, 0.476, 0.395, 0.68],
-          [7.92, 0.478, 0.4, 0.81],
-          [8.0, 0.49, 0.42, 1.6],
+          [6.917, 0.51, 0.5, 0.077],
+          [6.958, 0.509, 0.497, 0.082],
+          [7.0, 0.508, 0.496, 0.088],
+          [7.042, 0.507, 0.491, 0.094],
+          [7.083, 0.505, 0.49, 0.101],
+          [7.125, 0.503, 0.487, 0.109],
+          [7.167, 0.504, 0.489, 0.117],
+          [7.208, 0.509, 0.487, 0.128],
+          [7.25, 0.513, 0.493, 0.139],
+          [7.292, 0.513, 0.5, 0.151],
+          [7.333, 0.513, 0.507, 0.165],
+          [7.375, 0.513, 0.507, 0.181],
+          [7.417, 0.512, 0.507, 0.2],
+          [7.458, 0.513, 0.51, 0.222],
+          [7.5, 0.513, 0.516, 0.246],
+          [7.542, 0.513, 0.515, 0.275],
+          [7.583, 0.513, 0.517, 0.311],
+          [7.625, 0.513, 0.521, 0.354],
+          [7.667, 0.512, 0.533, 0.421],
+          [7.708, 0.516, 0.534, 0.505],
+          [7.75, 0.517, 0.546, 0.589],
+          [7.792, 0.519, 0.569, 0.683],
+          [7.833, 0.522, 0.604, 0.79],
+          [7.875, 0.524, 0.62, 0.92],
+          [7.917, 0.526, 0.63, 1.08],
+          [8.042, 0.53, 0.64, 1.7],
         ],
       },
     },
@@ -144,15 +181,16 @@ export const FILMS: readonly Film[] = [
     still: 3.5,
     poster: assetUrl("film/neural_decomplier-still.webp"),
     light: [
-      0.01, 0.01, 0.02, 0.02, 0.02, 0.03, 0.03, 0.03, 0.04, 0.04, 0.05, 0.05,
-      0.07, 0.08, 0.11, 0.13, 0.15, 0.14, 0.13, 0.12, 0.13, 0.14, 0.17, 0.2,
-      0.22, 0.23, 0.21, 0.22, 0.27, 0.37, 0.64, 0.91, 0.99,
+      0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.03, 0.03, 0.04, 0.04, 0.05, 0.05,
+      0.06, 0.08, 0.11, 0.13, 0.15, 0.14, 0.13, 0.12, 0.13, 0.14, 0.17, 0.2,
+      0.22, 0.22, 0.21, 0.22, 0.27, 0.38, 0.65, 0.93, 0.99,
     ],
   },
   {
     id: "explorer",
-    src: assetUrl("film/explorer.mp4"),
-    duration: FILM_DURATION,
+    src: sources("explorer"),
+    // 240 frames at 30 fps.
+    duration: 8,
     // The bright node's white → the sky's warm white; no black in between.
     seam: { blend: 0.1 },
     focus: [
@@ -165,15 +203,16 @@ export const FILMS: readonly Film[] = [
     still: 1.6,
     poster: assetUrl("film/the_explorer-still.webp"),
     light: [
-      0.81, 0.42, 0.39, 0.38, 0.38, 0.4, 0.43, 0.44, 0.43, 0.45, 0.38, 0.39,
-      0.44, 0.45, 0.44, 0.5, 0.47, 0.55, 0.34, 0.27, 0.27, 0.28, 0.28, 0.28,
-      0.28, 0.29, 0.3, 0.32, 0.33, 0.34, 0.32, 0.1, 0,
+      0.77, 0.4, 0.38, 0.37, 0.38, 0.39, 0.43, 0.44, 0.42, 0.45, 0.37, 0.39,
+      0.43, 0.44, 0.43, 0.5, 0.46, 0.54, 0.31, 0.26, 0.26, 0.27, 0.28, 0.27,
+      0.28, 0.29, 0.3, 0.32, 0.32, 0.33, 0.3, 0.06, 0,
     ],
   },
   {
     id: "work",
-    src: assetUrl("film/work.mp4"),
-    duration: FILM_DURATION,
+    src: sources("work"),
+    // 239 frames at 30 fps.
+    duration: 239 / 30,
     // The fish's mouth closes to black; the espresso surfaces from black.
     seam: { blend: 0.05 },
     focus: [
@@ -188,15 +227,16 @@ export const FILMS: readonly Film[] = [
     still: 4.9,
     poster: assetUrl("film/work_history-still.webp"),
     light: [
-      0, 0, 0.03, 0.07, 0.08, 0.09, 0.08, 0.14, 0.39, 0.44, 0.44, 0.48, 0.46,
-      0.44, 0.45, 0.47, 0.47, 0.48, 0.5, 0.52, 0.52, 0.52, 0.51, 0.5, 0.5, 0.5,
-      0.55, 0.55, 0.5, 0.43, 0.36, 0.31, 0.29,
+      0, 0, 0.03, 0.06, 0.08, 0.08, 0.07, 0.16, 0.4, 0.43, 0.44, 0.48, 0.45,
+      0.43, 0.45, 0.46, 0.46, 0.48, 0.5, 0.51, 0.52, 0.51, 0.5, 0.5, 0.5, 0.49,
+      0.55, 0.53, 0.48, 0.41, 0.34, 0.3, 0.3,
     ],
   },
   {
     id: "ending",
-    src: assetUrl("film/ending.mp4"),
-    duration: FILM_DURATION,
+    src: sources("ending"),
+    // 240 frames at 30 fps.
+    duration: 8,
     // The office leaf and the jungle's first leaf are nearly the same frame
     // (the jungle one a touch closer and lower). The camera keeps pushing
     // into the office leaf until its veins and holes lie on the jungle
@@ -226,8 +266,8 @@ export const FILMS: readonly Film[] = [
     still: 7.8,
     poster: assetUrl("film/ending-still.webp"),
     light: [
-      0.28, 0.27, 0.24, 0.25, 0.18, 0.22, 0.26, 0.18, 0.18, 0.21, 0.26, 0.26,
-      0.2, 0.24, 0.26, 0.27, 0.3, 0.3, 0.31, 0.31, 0.32, 0.33, 0.33, 0.33, 0.34,
+      0.28, 0.26, 0.23, 0.23, 0.18, 0.22, 0.24, 0.17, 0.18, 0.21, 0.26, 0.25,
+      0.2, 0.23, 0.25, 0.27, 0.29, 0.3, 0.3, 0.3, 0.32, 0.32, 0.32, 0.33, 0.33,
       0.34, 0.34, 0.34, 0.34, 0.34, 0.34, 0.34, 0.34,
     ],
   },

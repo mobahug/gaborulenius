@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { onDirectorFrame } from "../director/director";
 import { focusAt, windowGeometry } from "../director/frameMapping";
-import { hasFinePointer } from "../device";
+import { getQualityTier, hasFinePointer } from "../device";
+import { canPrefetchHeavyAsset } from "../../utils/connection";
 import { smoothstep } from "../math";
 import { requestSceneFrame } from "../scrollTimeline";
 import { registerFilmVideo } from "./filmElements";
@@ -85,6 +86,10 @@ const FilmLayer = () => {
     const opacities = FILMS.map(() => 0);
     const masks = FILMS.map(() => "");
     const unloadFar = !hasFinePointer();
+    // Full HD for large screens; phones, weak devices and saved or slow
+    // connections get the lighter encodes.
+    const rendition =
+      getQualityTier() === "low" || !canPrefetchHeavyAsset() ? "sd" : "hd";
     const root = document.documentElement;
     let lastY: number | null = null;
     let settleTimer = 0;
@@ -128,7 +133,7 @@ const FilmLayer = () => {
       if (!video || loadedAt[index] !== null) return;
       loadedAt[index] = performance.now();
       video.preload = "auto";
-      video.src = FILMS[index].src;
+      video.src = FILMS[index].src[rendition];
       video.load();
       window.setTimeout(requestSceneFrame, NEIGHBOUR_DELAY + 50);
     };

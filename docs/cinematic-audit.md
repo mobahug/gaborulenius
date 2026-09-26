@@ -207,3 +207,28 @@ other act it follows the scroll, and "Let's Connect" fades in with the page
 instead of zooming toward the camera. What stays from the browser: the
 macaw keyed out of the chase and flying in front of About, and the probe
 that reads the neural film's neurons under the pointer.
+
+## 8. Full-HD footage (September 2026)
+
+The five films were delivered again at full HD and re-generated rather than
+upscaled, so their timing and framing changed and were measured again:
+
+| Film     | File                            | Format                                    |
+| -------- | ------------------------------- | ----------------------------------------- |
+| Chase    | `jungle_chase_seedance_2.5.mp4` | 1920×1080 HEVC, 24 fps, 193 frames, audio |
+| Neural   | `neural_decomplier_full_hd.mp4` | 1880×1080 H.264, 30 fps, 240 frames       |
+| Explorer | `the_explorer_full_hd.mp4`      | 1880×1080 H.264, 30 fps, 240 frames       |
+| Work     | `work_history_full_hd.mp4`      | 1880×1080 H.264, 30 fps, 239 frames       |
+| Ending   | `ending_full_hd.mp4`            | 1880×1080 H.264, 30 fps, 240 frames       |
+
+- The chase is a new take: a morpho flies at the camera (1.5–1.7 s) and
+  away down the path, the macaw crosses the clearing from 3.7 s, turns to
+  the camera at 5.6 s and the camera dives into its eye from 6.2 s. Its
+  pupil was tracked again in every frame (circle fit to the dark disc) and
+  followed past the frame's edges as it overflows (7.7–8 s). Cut to 47:27
+  so every film shares one frame shape.
+- The other four keep their beats and seams (white node → cream sky, fish
+  mouth → black → espresso, office leaf → jungle leaf); their cue times
+  still land on the same moments.
+- Each film now has a full-HD and a light scrub encode, stills at 1128×648,
+  and a new brightness curve.
