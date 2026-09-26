@@ -282,10 +282,9 @@ question is an ordinary block, spaces shrink to 12vh, and the page is about
   on screen trails the scroll's target by about 3 of its frames (p50; p95
   4–5 at reading speed, about 11 when flicking at 2 viewport heights per
   second) and shows 30–50 distinct film frames per second. On that
-  connection the first film is on screen about 5 s after the page starts
-  loading (the cover and the film's still before that), and all five light
-  encodes (12.4 MB) have arrived after about 32 s. (On battery, Chrome
-  itself caps rendering at 30 fps; these runs use Chrome for Testing's
-  headless shell, which does not.)
+  connection the live site shows the first film's still 1.7 s after the
+  page starts loading, and the film itself — its whole light encode, 2.4 MB
+  — about 6 s after. (On battery, Chrome itself caps rendering at 30 fps;
+  these runs use Chrome for Testing's headless shell, which does not.)
 - Not verified here: a real phone browser. The films' behaviour on iOS
   Safari (seeking, memory) can only be judged on a device.
