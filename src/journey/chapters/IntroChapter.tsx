@@ -13,13 +13,10 @@ type IntroChapterProps = {
   ref?: Ref<HTMLDivElement>;
 };
 
-/** Each word of the sentence arrives this much after the one before. */
-const WORD_DELAY = 0.035;
-
 /**
  * "The Sentence": the cover's greeting continues on the path. The words
- * arrive one by one as the sentence rises into view, then the subtitle and
- * the actions, all following the scroll like the film behind them.
+ * fade in one by one where the sentence stands, then the subtitle and the
+ * actions, while the film goes on behind them.
  */
 const IntroChapter = ({ at, ref }: IntroChapterProps) => {
   const intl = useIntl();
@@ -34,12 +31,7 @@ const IntroChapter = ({ at, ref }: IntroChapterProps) => {
         <h2 id="home-heading" className="intro-sentence film-parts">
           {words.map((word, index) => (
             <span key={`${word}-${index}`}>
-              <span
-                className="intro-word film-part"
-                data-delay={(index * WORD_DELAY).toFixed(3)}
-              >
-                {word}
-              </span>
+              <span className="intro-word film-part">{word}</span>
               {index < words.length - 1 ? " " : ""}
             </span>
           ))}

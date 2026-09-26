@@ -31,8 +31,8 @@ const EndingStage = ({ contactRef }: EndingStageProps) => (
     <Mark at={3.6} />
     <Space vh={88} narrow={76} />
     <Mark at={5.7} />
-    <Space vh={62} narrow={54} />
-    <Cue id="contact" ref={contactRef} className="stage-contact">
+    <Space vh={50} narrow={44} />
+    <Cue at={7.2} id="contact" ref={contactRef} className="stage-contact">
       <div className="film-copy stage-contact-copy">
         <h2 id="contact-heading" className="film-title">
           <FormattedMessage id="contactHeading" />

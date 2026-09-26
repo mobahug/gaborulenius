@@ -80,18 +80,31 @@ glides instead of stepping with the footage's frames.
 
 ## Content over the films
 
-`FilmSection` is a tall section in normal document flow. Its blocks (`Cue`)
-and time anchors (`Mark`) carry a film time — "this block's centre crosses
-the middle of the screen when the film is at 4.3 s" — and the film follows
-the reading between them. Every part of a block (a heading, a line, a list
-item, a button, the words of the introduction's sentence, anything marked
-`film-part`) arrives as it rises from the bottom edge of the screen to about
-a quarter of the way up, measured per part, so a tall block on a phone
-arrives piece by piece as it is read rather than all at once off screen,
-and leaves the same way, line by line, as it passes under the navigation.
-Only opacity and a small rise are animated, written only when they change.
-Content always stays in front of the films. With reduced motion everything
-simply stays visible.
+`FilmSection` is a tall section in document order. Its blocks (`Cue`) and
+time anchors (`Mark`) carry a film time — "the film is at 4.3 s in the
+middle of this block's time on screen" — and the film follows the reading
+between them.
+
+A block does not scroll past like a credit roll. It stands still on the
+screen for its stretch of the scroll (its hold, `hold` viewport heights,
+90 by default) while the film plays behind it: it is sticky, centred a
+little high below the navigation, out of sight while it slides into place
+and away again. Its parts (a heading, a line, a list item, a button, the
+words of the introduction's sentence, anything marked `film-part`) fade in
+one after another at the start of the hold, stay, and fade out together at
+its end; only their opacity changes, written only when it does. Each hold
+takes only the scroll it is held for — the block's own height is given back
+below it, where the next block is still out of sight — so the `Space`
+between two blocks is the film on its own. The film's cue time lands in the
+middle of the hold, and so does a link to the block (`.film-anchor`, which
+also carries the ids and the navigation's refs, so the scroll spy, deep
+links and reload never measure a sticky element). Content is cut into
+beats that fit a phone's screen — About's words and its story, two work
+projects at a time, the skills and then the tools, how the Explorer is
+built one group at a time; a block that is still too tall for the screen
+(a very short phone) scrolls with the page instead, fading in and out at
+the edges. Content always stays in front of the films. With reduced motion
+nothing is held: everything simply stays visible, in the page's flow.
 
 Behind every block the film goes out of focus and a little darker, as if
 the camera had racked focus onto the text: the veil (`.film-copy::before`,
@@ -127,28 +140,20 @@ over the dark espresso, "Let's Connect" on the left beside the macaw on its
 branch, with the morpho below it.
 
 The Explorer is shown in the field rather than behind a dialog: each of its
-four capabilities sits beside the app screen that does it, in a phone with
-a dark bezel and a gold hairline — the words at the edge of the screen like
-every other block, the phone toward the film (on a phone: the words, then
-the screen below them). How it is built (the three groups of the former
-dialog) and its stack follow, then a strip of the app's other eight screens
-(side by side on a wide screen, swiped sideways on a phone). Every phone
-arrives like any other part of a block.
+four capabilities stands beside two of the app's screens in phones with a
+dark bezel and a gold hairline — the one that does it in front, another
+one behind it in shade — the words at the edge of the screen like every
+other block, the phones toward the film (on a phone: the words, then the
+screens below them). How it is built (the three groups of the former
+dialog) and its stack follow, one group at a time.
 
-Through it all runs the expedition's route (`ExplorerRoute.tsx`): a dotted
-planned route over an almost transparent topographic map — a generated
-contour tile that repeats down the page and comes in toward the right
-(`public/explorer/topography.svg`, 8 KB compressed) — and the recorded track
-in red, wandering a little around it like a GPS track, walked down to the
-reading line as the page scrolls, with the walker's position pulsing at its
-head. It starts under the title, hangs every description from its waypoint
-(the capability's icon, in a column of its own left of the words, which
-lights up once the walker reaches it), runs down beside the words, crosses
-the screen past the app screen to the next waypoint, and ends at the foot of
-how the app is built. Only transforms change while scrolling: the track is
-drawn once and uncovered by a clip that moves down with the walker (and the
-track inside it back up by as much), so no frame repaints it; the veils
-leave the route's column clear so the route is never blurred.
+While its film plays, a small map in the corner walks the expedition
+(`ExplorerMap.tsx`, wide screens only): an almost transparent topographic
+map (a generated contour tile, `public/explorer/topography.svg`, 8 KB
+compressed), the planned route dotted, the walked track in red with the
+walker pulsing at its head, and a waypoint for every capability that lights
+up once passed. The walk follows the film's time, so it moves with the
+scroll and back.
 
 The question in the pupil (`PortalTitle`) is not there while the pupil is
 still a circle. It comes in once the pupil covers the whole screen — the
@@ -161,13 +166,13 @@ the films, so it never has to follow the page's scrolling and undo it: it
 cannot lag or shake. Its anchor above it carries the `#projects` id for
 links and the scroll spy.
 
-| Stage    | Content (all existing copy and links)                                                                                                     |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Chase    | Greeting (cover), introduction and About over the path, the morpho and the macaw crossing behind them.                                    |
-| Neural   | The research question (inside the pupil, then full size), title and summary, case study, method, stack, repo link.                        |
-| Explorer | Title and summary; the four capabilities, each beside its app screen; how it is built, and the stack; the other eight screens in a strip. |
-| Work     | Experience timeline (tabs and detail dialogs), the four work projects with their links, the full skills list.                             |
-| Ending   | "Let's Connect" with email, LinkedIn and GitHub, fading in like every other block; the footer follows.                                    |
+| Stage    | Content (all existing copy and links)                                                                                                              |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chase    | Greeting (cover), introduction and About over the path, the morpho and the macaw crossing behind them.                                             |
+| Neural   | The research question (inside the pupil, then full size), title and summary, case study, method, stack, repo link.                                 |
+| Explorer | Title and summary; the four capabilities, each beside two app screens; how it is built, one group at a time, and the stack; the map in the corner. |
+| Work     | Experience timeline (tabs and detail dialogs), the four work projects with their links, the full skills list.                                      |
+| Ending   | "Let's Connect" with email, LinkedIn and GitHub, fading in like every other block; the footer follows.                                             |
 
 ## Interface
 
@@ -291,20 +296,25 @@ question is an ordinary block, spaces shrink to 12vh, and the page is about
 - Reload in the eye, in the Explorer and in the work section returns to the
   same scroll position and film time; `#skills` from a fresh load lands on
   Skills.
+- Every block held (none too tall for the screen) at 1440×900, 1280×720
+  and 390×844, in English and in Finnish; at 360×640 About's words, the
+  first group of how the Explorer is built and the experience timeline
+  scroll instead. Every navigation link lands mid-hold, with its block in
+  place and fully visible.
 - Phone playback, in Chrome's phone emulation (Pixel 7: Android user agent,
   touch, the light encodes) with GPU compositing (Chrome for Testing's
   headless shell on ANGLE/Metal: on battery Chrome itself caps rendering at
   30 fps, and without a GPU the software compositor dominates), from a cold
   load over a throttled 4G connection (9 Mb/s, 60 ms), steady scrolls
-  through the first scene, the eye, the Explorer and the office: at 4× CPU
-  slowdown no frame over 25 ms in any range, at 6× one per run at most
-  (p95 17.6 ms); the film on screen trails the scroll's target by about 3
-  of its frames (p50; p95 4–5 at reading speed, about 12 when flicking at 2
-  viewport heights per second) and shows 30–60 distinct film frames per
-  second. The Explorer's route costs no main-thread time measurably (3354
-  against 3347 ms over the same 4 s at 6×) and about 1 ms of GPU per frame.
-  On that connection the live site shows the first film's still 1.7 s after
-  the page starts loading, and the film itself — its whole light encode,
-  2.4 MB — about 6 s after.
+  through the first scene, the eye, the Explorer and the office: at 4× and
+  6× CPU slowdown p95 frame 18.5 ms, no frame over 25 ms in most ranges;
+  one run showed a single long frame (0.57 s at 4×) as the Explorer's film
+  arrived mid-scroll, which a traced run of the same moment did not
+  reproduce. The film on screen trails the scroll's target by about 3 of its
+  frames (p50; p95 4–5 at reading speed, about 12 when flicking at 2
+  viewport heights per second) and shows 26–57 distinct film frames per
+  second. On that connection the live site shows the first film's still
+  1.7 s after the page starts loading, and the film itself — its whole light
+  encode, 2.4 MB — about 6 s after.
 - Not verified here: a real phone browser. The films' behaviour on iOS
   Safari (seeking, memory) can only be judged on a device.

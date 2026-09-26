@@ -14,8 +14,11 @@ export type ExplorerCapability = {
   icon: ReactNode;
   titleId: string;
   bodyId: string;
-  /** The app screen shown beside it (one of `explorerScreenshots`). */
-  screen: string;
+  /**
+   * The app screens shown beside it (from `explorerScreenshots`): the one
+   * that does it, in front, and another behind it.
+   */
+  screens: readonly [front: string, back: string];
 };
 
 export const explorerScreenshots: ExplorerScreenshot[] = [
@@ -86,25 +89,34 @@ export const explorerCapabilities: ExplorerCapability[] = [
     icon: <TerrainIcon />,
     titleId: "projectExplorerCapabilityTopoTitle",
     bodyId: "projectExplorerCapabilityTopoBody",
-    screen: "explorer/map-tracking.webp",
+    screens: ["explorer/map-tracking.webp", "explorer/map-stopped.webp"],
   },
   {
     icon: <StraightenIcon />,
     titleId: "projectExplorerCapabilityPrecisionTitle",
     bodyId: "projectExplorerCapabilityPrecisionBody",
-    screen: "explorer/measure-distance.webp",
+    screens: [
+      "explorer/measure-distance.webp",
+      "explorer/profile-summary.webp",
+    ],
   },
   {
     icon: <AssignmentTurnedInIcon />,
     titleId: "projectExplorerCapabilityCaptureTitle",
     bodyId: "projectExplorerCapabilityCaptureBody",
-    screen: "explorer/log-type-picker.webp",
+    screens: [
+      "explorer/log-type-picker.webp",
+      "explorer/log-details-weather.webp",
+    ],
   },
   {
     icon: <CloudSyncIcon />,
     titleId: "projectExplorerCapabilityCloudTitle",
     bodyId: "projectExplorerCapabilityCloudBody",
-    screen: "explorer/home-active-expedition.webp",
+    screens: [
+      "explorer/home-active-expedition.webp",
+      "explorer/expeditions-list.webp",
+    ],
   },
 ];
 

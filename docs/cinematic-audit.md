@@ -275,3 +275,14 @@ Measuring on a phone profile with GPU compositing showed the page restyling
 all of its ~840 elements whenever the veils' shade changed, a few times per
 stage (4–5 ms each on a mid-range phone): the shade is now set on the
 blocks and not inherited.
+
+## 11. Content that holds still (September 2026)
+
+With the content scrolling over the films, every block crossed the screen
+like a credit roll while the film moved behind it: two motions at once. Now
+every block stands still where it appears — it fades in, holds while the
+film plays, and fades out — so the film is the only thing that moves. The
+content was cut into beats that fit a phone's screen. The Explorer's route
+through the page could not follow content that stands still; it became a
+small map in the corner, and the strip of small screens became a second
+screen behind each capability's first.

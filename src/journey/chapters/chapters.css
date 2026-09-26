@@ -26,17 +26,12 @@
    Clearing of self (#about)
    ------------------------------------------------------------------ */
 
-.about-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: clamp(32px, 6vw, 110px);
-  align-items: center;
-  width: 100%;
-  max-width: 1280px;
+.about-copy {
+  max-width: 44rem;
 }
 
-.about-copy {
-  max-width: none;
+.about-card {
+  width: min(440px, 100%);
 }
 
 .about-title {
@@ -85,13 +80,6 @@
 
 .about-card {
   position: relative;
-}
-
-@media (max-width: 899.95px) {
-  .about-layout {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
-  }
 }
 
 /* ------------------------------------------------------------------

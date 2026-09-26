@@ -58,6 +58,37 @@
   }
 }
 
+/* A block's place in the page: the block, then the scroll it stays in
+   place for (see Cue in FilmSection.tsx). A held block is sticky, so it
+   stands still on the screen while the page scrolls under it. */
+.film-hold {
+  position: relative;
+}
+
+.film-hold-space {
+  height: var(--hold);
+}
+
+@media (max-width: 899.95px) {
+  .film-hold-space {
+    height: var(--hold-narrow);
+  }
+}
+
+/* Too tall for the screen: it scrolls with the page instead. */
+.film-hold--flow .film-hold-space {
+  display: none;
+}
+
+.film-cue.film-cue--held {
+  position: sticky;
+}
+
+.film-hold > .film-anchor {
+  position: absolute;
+  left: 0;
+}
+
 /* A block is never faded or moved as a whole — its parts are, and its veil
    — so nothing between the films and a veil (or a glass button) hides the
    films from its backdrop blur. */
@@ -67,12 +98,6 @@
   width: 100%;
   padding: 0 var(--film-gutter);
   display: flex;
-}
-
-/* Navigation lands with a block a little above the middle of the screen,
-   where its place in the film is. */
-.film-cue[id] {
-  scroll-margin-top: 28vh;
 }
 
 .film-cue--start {
@@ -88,12 +113,8 @@
   justify-content: flex-end;
 }
 
-/* Within a block, its parts (see PART_SELECTOR in FilmSection.tsx) arrive
-   one after another as they rise into view: the script sets their opacity
-   and a small rise. Inline parts (words) need a box to move. */
-span.film-part {
-  display: inline-block;
-}
+/* Within a block, its parts (see PART_SELECTOR in FilmSection.tsx) fade in
+   one after another: the script sets their opacity. */
 
 /* Readable over any picture, in the films' own language: behind the words
    the film goes out of focus and a little darker, as if the camera had
@@ -335,14 +356,11 @@ span.film-part {
   .film-section {
     padding: 18vh 0;
   }
-
-  .film-cue + .film-space + .film-cue {
-    margin-top: 0;
-  }
 }
 
-/* Anchors of blocks that move on their own: never transformed, so links
-   land where the block really is. */
+/* Where links land: a little above the middle of a block's hold (see
+   FilmSection.tsx), or above a block that moves on its own. Never
+   transformed, so links land where the block really is. */
 .film-anchor {
   height: 0;
   scroll-margin-top: 28vh;

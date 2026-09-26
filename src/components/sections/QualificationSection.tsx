@@ -11,7 +11,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { TimelineEvent, highlightedEvents, allEvents } from "../../contexts";
 import { Transition } from "../Sections";
@@ -19,7 +19,9 @@ import { colors as lightColors } from "../../colors";
 import CloseIcon from "@mui/icons-material/Close";
 import { TimelineBlock } from "./TimelineBlock";
 import { prefersReducedMotion } from "../../journey/device";
-import { clamp } from "../../journey/math";
+import { holdProgress } from "../../journey/film/holdProgress";
+import { clamp, smoothstep } from "../../journey/math";
+import { requestSceneFrame } from "../../journey/scrollTimeline";
 import { useScene } from "../../journey/useScene";
 
 type TabPanelProps = {
@@ -57,37 +59,37 @@ const QualificationSection = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const trailRef = useRef<HTMLElement>(null);
 
-  // "The Trail": the path between waypoints lights up to the middle of the
-  // screen, and each waypoint glows once the walker has reached it.
+  // "The Trail": while the timeline is on screen the walker goes from its
+  // first waypoint to its last; the path behind lights up and each
+  // waypoint glows once reached. It follows the block's time on screen
+  // (see FilmSection), not positions, so it reads no layout.
+  const walkedRef = useRef(-1);
   useScene(trailRef, (frame) => {
     const section = trailRef.current;
-    // Measuring the waypoints costs a layout read; only do it nearby.
     if (!section || !frame.near) return;
-    const reduced = prefersReducedMotion();
-    const line = frame.viewport.vh * 0.58;
-    const fills = Array.from(
-      section.querySelectorAll<HTMLElement>(".trail-fill"),
+    const block = section.closest<HTMLElement>(".film-cue");
+    const progress = block ? (holdProgress.get(block) ?? 0) : 1;
+    const dots = section.querySelectorAll<HTMLElement>(".trail-dot");
+    const stops = Math.max(1, dots.length - 1);
+    const walked = prefersReducedMotion()
+      ? stops
+      : Math.round(smoothstep(0.1, 0.75, progress) * stops * 1000) / 1000;
+    if (walked === walkedRef.current) return;
+    walkedRef.current = walked;
+    section
+      .querySelectorAll<HTMLElement>(".trail-fill")
+      .forEach((fill, index) => {
+        fill.style.transform = `scaleY(${clamp(walked - index).toFixed(3)})`;
+      });
+    dots.forEach((dot, index) =>
+      dot.classList.toggle("trail-dot--reached", walked >= index - 0.001),
     );
-    const dots = Array.from(
-      section.querySelectorAll<HTMLElement>(".trail-dot"),
-    );
-    const fillRects = fills.map((fill) =>
-      fill.parentElement!.getBoundingClientRect(),
-    );
-    const dotRects = dots.map((dot) => dot.getBoundingClientRect());
-    fills.forEach((fill, index) => {
-      const rect = fillRects[index];
-      const amount = reduced
-        ? 1
-        : clamp((line - rect.top) / Math.max(1, rect.height));
-      fill.style.transform = `scaleY(${amount.toFixed(3)})`;
-    });
-    dots.forEach((dot, index) => {
-      const rect = dotRects[index];
-      const reached = reduced || rect.top + rect.height / 2 < line;
-      dot.classList.toggle("trail-dot--reached", reached);
-    });
   });
+  // The other tab has its own waypoints: draw its trail at once.
+  useEffect(() => {
+    walkedRef.current = -1;
+    requestSceneFrame();
+  }, [tabIndex]);
 
   const handleOpen = (evt: TimelineEvent) => {
     setSelectedEvent(evt);
