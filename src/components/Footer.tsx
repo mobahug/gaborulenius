@@ -21,13 +21,13 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
-        backgroundColor: lightColors.navBg,
-        backdropFilter: "blur(10px)",
+        backgroundColor: lightColors.glassBgStrong,
+        backdropFilter: "blur(18px) saturate(1.15)",
+        borderTop: `1px solid ${lightColors.glassBorder}`,
         color: lightColors.textLight,
         width: "100%",
         mt: 12,
         zIndex: 100,
-        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
       }}
     >
       <Container sx={{ py: 10, px: isMobile ? 8 : 4 }}>
@@ -53,7 +53,7 @@ const Footer = () => {
             <Typography
               variant="body1"
               sx={{
-                color: "rgba(242, 243, 239, 0.8)",
+                color: lightColors.textMuted,
               }}
             >
               <FormattedMessage id="footerJobTitle" />
@@ -135,7 +135,14 @@ const Footer = () => {
 
         <Box
           className="footer-bottom"
-          sx={{ textAlign: "center", fontSize: "0.9rem", mt: 6 }}
+          sx={{
+            textAlign: "center",
+            fontSize: "0.85rem",
+            mt: 6,
+            pt: 6,
+            color: lightColors.textMuted,
+            borderTop: `1px solid ${lightColors.glassBorder}`,
+          }}
         >
           {intl.formatMessage(
             { id: "footerCopyright" },

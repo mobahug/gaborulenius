@@ -2,16 +2,12 @@ import React, { useMemo, useRef, type RefObject } from "react";
 import { FormattedMessage } from "react-intl";
 import { useActiveNavScrollSpy } from "../hooks/useActiveNavLink";
 import { DeferredSection } from "./DeferredSection";
-import IntroChapter from "../journey/chapters/IntroChapter";
 import ChaseStage from "../journey/stages/ChaseStage";
 import EndingStage from "../journey/stages/EndingStage";
 import ExplorerStage from "../journey/stages/ExplorerStage";
 import NeuralStage from "../journey/stages/NeuralStage";
 import WorkStage from "../journey/stages/WorkStage";
 
-const AboutChapter = React.lazy(
-  () => import("../journey/chapters/AboutChapter"),
-);
 const Footer = React.lazy(() => import("./Footer"));
 
 /**
@@ -28,11 +24,8 @@ const NavScrollSpy = ({
   return null;
 };
 
-// Placeholder heights while a chapter's code has not loaded yet.
-const DEFERRED_SECTION_HEIGHTS = {
-  about: { mobile: 1100, tablet: 900, desktop: 820 },
-  footer: { mobile: 520, tablet: 380, desktop: 320 },
-} as const;
+// Placeholder heights while the footer's code has not loaded yet.
+const FOOTER_HEIGHTS = { mobile: 520, tablet: 380, desktop: 320 } as const;
 
 /**
  * The page as one journey: five films directed by the scroll. The first
@@ -43,7 +36,7 @@ const DEFERRED_SECTION_HEIGHTS = {
  * the jungle (contact).
  */
 export default function Hero() {
-  const homeRef = useRef<HTMLElement>(null!);
+  const homeRef = useRef<HTMLDivElement>(null!);
   const aboutRef = useRef<HTMLDivElement>(null!);
   const projectsRef = useRef<HTMLDivElement>(null!);
   const experienceRef = useRef<HTMLDivElement>(null!);
@@ -52,7 +45,7 @@ export default function Hero() {
 
   const navSectionRefs = useMemo(
     () => [
-      homeRef,
+      homeRef as React.RefObject<HTMLElement>,
       aboutRef as React.RefObject<HTMLElement>,
       projectsRef as React.RefObject<HTMLElement>,
       experienceRef as React.RefObject<HTMLElement>,
@@ -65,18 +58,7 @@ export default function Hero() {
   return (
     <>
       <NavScrollSpy sections={navSectionRefs} />
-      <ChaseStage
-        intro={<IntroChapter innerRef={homeRef} />}
-        about={
-          <DeferredSection
-            id="about"
-            innerRef={aboutRef}
-            minHeights={DEFERRED_SECTION_HEIGHTS.about}
-          >
-            <AboutChapter />
-          </DeferredSection>
-        }
-      />
+      <ChaseStage homeRef={homeRef} aboutRef={aboutRef} />
       <section className="journey-projects" aria-labelledby="projects-heading">
         <h2 id="projects-heading" className="sr-only">
           <FormattedMessage id="projectHeading" />
@@ -86,7 +68,7 @@ export default function Hero() {
       </section>
       <WorkStage experienceRef={experienceRef} skillsRef={skillsRef} />
       <EndingStage contactRef={contactRef} />
-      <DeferredSection id="footer" minHeights={DEFERRED_SECTION_HEIGHTS.footer}>
+      <DeferredSection id="footer" minHeights={FOOTER_HEIGHTS}>
         <Footer />
       </DeferredSection>
     </>

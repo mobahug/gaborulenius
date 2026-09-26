@@ -137,9 +137,7 @@ export const NavBar: React.FC = () => {
             sx={{
               px: 2,
               borderRadius: 0,
-              boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-              backdropFilter: "blur(10px)",
-              height: isMobile ? "72px" : "64px",
+              height: isMobile ? "64px" : "60px",
               py: 0,
               justifyContent: "center",
             }}
@@ -147,7 +145,7 @@ export const NavBar: React.FC = () => {
             <Toolbar
               disableGutters
               sx={{
-                minHeight: "72px",
+                minHeight: isMobile ? "64px" : "60px",
                 px: 1.5,
                 py: 0,
                 justifyContent: isMobile ? "space-between" : "center",
@@ -167,9 +165,9 @@ export const NavBar: React.FC = () => {
                       src={assetUrl("profile-160.webp")}
                       alt="Profile"
                       sx={{
-                        width: 44,
-                        height: 44,
-                        border: `2px solid ${lightColors.accent}`,
+                        width: 40,
+                        height: 40,
+                        border: `1.5px solid ${lightColors.accent}`,
                       }}
                     />
                   </MuiLink>

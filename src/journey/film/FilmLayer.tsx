@@ -78,13 +78,17 @@ const FilmLayer = () => {
     );
     const loadedAt: Array<number | null> = FILMS.map(() => null);
     const farSince: Array<number | null> = FILMS.map(() => null);
+    // The still a film shows while its video is not ready: the poster
+    // nearest before the time the scroll asks for (see `posters`).
     const stills: Array<"none" | "loading" | "ready"> = FILMS.map(() => "none");
+    const stillUrls: Array<string | null> = FILMS.map(() => null);
     const waiting = FILMS.map(() => false);
     const filmFade = FILMS.map(() => 0);
     const videoShown = FILMS.map(() => false);
     const videoFade = FILMS.map(() => 0);
     const opacities = FILMS.map(() => 0);
     const masks = FILMS.map(() => "");
+    const blends = FILMS.map(() => "");
     const unloadFar = !hasFinePointer();
     // Full HD for large screens; phones, weak devices and saved or slow
     // connections get the lighter encodes.
@@ -112,30 +116,83 @@ const FilmLayer = () => {
     };
     document.addEventListener("click", onNavigate, true);
 
-    const loadStill = (index: number) => {
+    const posterAt = (index: number, time: number, reduced: boolean) => {
+      const film = FILMS[index];
+      if (reduced || !film.posters) return film.poster;
+      let url = film.poster;
+      film.posters.forEach(([from, poster]) => {
+        if (time >= from) url = poster;
+      });
+      return url;
+    };
+
+    const loadStill = (index: number, url: string) => {
       const still = layers[index]?.still;
-      if (!still || stills[index] !== "none") return;
+      if (!still || stillUrls[index] === url) return;
+      stillUrls[index] = url;
       stills[index] = "loading";
       const image = new Image();
       image.onload = () => {
-        still.style.backgroundImage = `url("${FILMS[index].poster}")`;
+        if (stillUrls[index] !== url) return;
+        still.style.backgroundImage = `url("${url}")`;
         stills[index] = "ready";
         requestSceneFrame();
       };
       image.onerror = () => {
+        if (stillUrls[index] !== url) return;
+        stillUrls[index] = null;
         stills[index] = "none";
       };
-      image.src = FILMS[index].poster;
+      image.src = url;
     };
+
+    // Each film is downloaded whole before the video element gets it (as a
+    // blob URL), so every seek lands on frames already in memory. Streamed
+    // with range requests instead, a phone browser fetches the bytes of a
+    // seek only when it is asked for them, and the picture stalls while the
+    // visitor scrolls.
+    const downloads = FILMS.map(() => ({
+      url: null as string | null,
+      abort: null as AbortController | null,
+    }));
 
     const load = (index: number) => {
       const video = layers[index]?.video;
       if (!video || loadedAt[index] !== null) return;
       loadedAt[index] = performance.now();
-      video.preload = "auto";
-      video.src = FILMS[index].src[rendition];
-      video.load();
+      const source = FILMS[index].src[rendition];
+      const controller = new AbortController();
+      downloads[index].abort = controller;
+      const attach = (src: string) => {
+        video.preload = "auto";
+        video.src = src;
+        video.load();
+        requestSceneFrame();
+      };
+      fetch(source, { signal: controller.signal })
+        .then((response) => {
+          if (!response.ok) throw new Error(`${response.status}`);
+          return response.blob();
+        })
+        .then((blob) => {
+          if (loadedAt[index] === null || controller.signal.aborted) return;
+          const url = URL.createObjectURL(blob);
+          downloads[index].url = url;
+          attach(url);
+        })
+        .catch(() => {
+          // Without the whole file, stream it after all.
+          if (loadedAt[index] === null || controller.signal.aborted) return;
+          attach(source);
+        });
       window.setTimeout(requestSceneFrame, NEIGHBOUR_DELAY + 50);
+    };
+
+    const release = (index: number) => {
+      const download = downloads[index];
+      download.abort?.abort();
+      if (download.url) URL.revokeObjectURL(download.url);
+      downloads[index] = { url: null, abort: null };
     };
 
     const unload = (index: number) => {
@@ -145,6 +202,7 @@ const FilmLayer = () => {
       video.pause();
       video.removeAttribute("src");
       video.load();
+      release(index);
     };
 
     const isReady = (index: number) => controllers[index]?.ready ?? false;
@@ -183,7 +241,7 @@ const FilmLayer = () => {
         if (distance <= 1) farSince[index] = null;
         if (distance === 0 || (distance === 1 && neighboursToo)) {
           if (inTransit) return;
-          loadStill(index);
+          loadStill(index, posterAt(index, films[index]?.time ?? 0, reduced));
           if (!reduced) load(index);
         } else if (distance > 1 && unloadFar) {
           farSince[index] ??= now;
@@ -319,6 +377,16 @@ const FilmLayer = () => {
             `radial-gradient(circle ${disc.toFixed(1)}px at 50% 50%, #000 ${(disc * 0.5).toFixed(1)}px, transparent ${disc.toFixed(1)}px), ` +
             `radial-gradient(circle ${radius.toFixed(1)}px at ${cx.toFixed(1)}px ${cy.toFixed(1)}px, #000 ${(radius * 0.9).toFixed(1)}px, transparent ${radius.toFixed(1)}px)`;
         }
+        // Seen through the pupil, the neural film adds its light to the
+        // chase instead of covering it: its black void leaves the pupil's
+        // own dark reflections as they are, so there is no edge between
+        // the two films, only the spark and the nebula glowing inside the
+        // eye. The chase ends on black, where this is the same as covering.
+        const blend = mask ? "screen" : "";
+        if (blends[index] !== blend) {
+          blends[index] = blend;
+          film.style.mixBlendMode = blend;
+        }
         if (masks[index] !== mask) {
           masks[index] = mask;
           film.style.maskImage = mask;
@@ -354,6 +422,7 @@ const FilmLayer = () => {
       document.removeEventListener("click", onNavigate, true);
       controllers.forEach((controller) => controller?.dispose());
       layers.forEach((_, index) => registerFilmVideo(index, null));
+      downloads.forEach((_, index) => release(index));
     };
   }, []);
 

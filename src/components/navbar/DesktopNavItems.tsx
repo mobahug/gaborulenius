@@ -24,9 +24,10 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
 }) => {
   const intl = useIntl();
   const { currentActiveSectionId, requestActiveSection } = useActiveNavLink();
-  const activeColor = lightColors.accent;
+  const activeColor = lightColors.textLight;
   const activeHoverColor = lightColors.accentHover;
-  const inactiveColor = lightColors.textLight;
+  const inactiveColor = lightColors.textMuted;
+  const underlineColor = lightColors.accent;
 
   return (
     <Box
@@ -45,19 +46,16 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
               requestActiveSection(href);
             }}
             sx={{
-              fontSize: "0.9rem",
-              fontWeight: 700,
+              fontSize: "0.88rem",
+              fontWeight: 600,
+              letterSpacing: "0.01em",
               whiteSpace: "nowrap",
               color: isActive ? activeColor : inactiveColor,
               position: "relative",
               transition: "color 0.18s ease, background-color 0.18s ease",
               "&:hover": {
                 color: activeHoverColor,
-                backgroundColor: alpha(activeColor, 0.08),
-              },
-              "&:focus-visible": {
-                outline: `2px solid ${alpha(activeColor, 0.55)}`,
-                outlineOffset: 3,
+                backgroundColor: alpha(underlineColor, 0.08),
               },
               "&::after": {
                 content: '""',
@@ -65,9 +63,9 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
                 bottom: 4,
                 left: 12,
                 width: "calc(100% - 24px)",
-                height: 2,
+                height: 1.5,
                 borderRadius: 1,
-                backgroundColor: activeColor,
+                backgroundColor: underlineColor,
                 transform: isActive ? "scaleX(1)" : "scaleX(0)",
                 transformOrigin: "center",
                 transition: "transform 0.18s ease",
@@ -87,9 +85,9 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
           src={assetUrl("profile-160.webp")}
           alt=""
           sx={{
-            width: 35,
-            height: 35,
-            border: `2px solid ${lightColors.accent}`,
+            width: 34,
+            height: 34,
+            border: `1.5px solid ${lightColors.accent}`,
           }}
         />
       </MuiLink>
@@ -101,9 +99,9 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
         })}
       >
         {isPlayingAudio ? (
-          <PauseCircleOutlineIcon sx={{ fontSize: 32 }} />
+          <PauseCircleOutlineIcon sx={{ fontSize: 28 }} />
         ) : (
-          <PlayCircleOutlineIcon sx={{ fontSize: 32 }} />
+          <PlayCircleOutlineIcon sx={{ fontSize: 28 }} />
         )}
       </IconButton>
     </Box>

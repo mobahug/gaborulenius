@@ -12,6 +12,12 @@ import { clamp } from "./math";
 
 export type Viewport = {
   y: number;
+  /*
+   * `vh` is the large viewport height (CSS `100lvh`): on phones it does not
+   * change while the browser's toolbars slide in and out during scrolling,
+   * so nothing timed by the scroll jumps when they do. The fixed stage is
+   * exactly this tall.
+   */
   /**
    * The scroll position eased toward `y`, for everything the scroll times
    * (films, reveals, zooms): wheels and trackpads that scroll in steps still
@@ -64,16 +70,40 @@ let lastFlush = 0;
 const resolveTarget = (target: SceneTarget) =>
   typeof target === "function" ? target() : target;
 
+/** An invisible fixed element as tall as the large viewport (100lvh). */
+let heightProbe: HTMLElement | null = null;
+let stableHeight = 0;
+
+const measureStableHeight = () => {
+  if (!heightProbe) {
+    heightProbe = document.createElement("div");
+    heightProbe.setAttribute("aria-hidden", "true");
+    heightProbe.style.cssText =
+      "position:fixed;top:0;left:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none;";
+    document.body.appendChild(heightProbe);
+  }
+  stableHeight = heightProbe.offsetHeight || window.innerHeight;
+};
+
 export const readViewport = (): Viewport => {
-  const vh = window.innerHeight;
+  if (!stableHeight) measureStableHeight();
   const y = window.scrollY;
   return {
     y,
     smoothY: smoothY ?? y,
     vw: document.documentElement.clientWidth || window.innerWidth,
-    vh,
-    maxY: Math.max(0, document.documentElement.scrollHeight - vh),
+    vh: stableHeight,
+    maxY: Math.max(
+      0,
+      document.documentElement.scrollHeight - window.innerHeight,
+    ),
   };
+};
+
+/** The large viewport only changes with the window (or a rotation). */
+const onResize = () => {
+  measureStableHeight();
+  requestSceneFrame();
 };
 
 /**
@@ -153,8 +183,8 @@ const startListening = () => {
   if (listening || typeof window === "undefined") return;
   listening = true;
   window.addEventListener("scroll", requestSceneFrame, { passive: true });
-  window.addEventListener("resize", requestSceneFrame);
-  window.addEventListener("orientationchange", requestSceneFrame);
+  window.addEventListener("resize", onResize);
+  window.addEventListener("orientationchange", onResize);
   window.addEventListener("load", requestSceneFrame);
   // Lazy sections change the document height; re-run so progress stays exact.
   if ("ResizeObserver" in window) {

@@ -1,17 +1,34 @@
+/**
+ * The journey's palette, shared by the films' content and every interface
+ * element over them: warm cream text, gold accents and hairlines, and dark,
+ * slightly translucent forest-shade surfaces (glass) that let the films show
+ * through.
+ */
 export const colors = {
-  bgDark: "#1e2a20",
-  textLight: "#f2f3ef",
-  textLightRgb: "242, 243, 239",
-  textHeading: "#d8d8b4",
-  accent: "#c0cc9c",
-  accentHover: "#c8e59f",
-  glassBg: "rgba(255, 255, 255, 0.05)",
-  glassBorder: "rgba(255, 255, 255, 0.08)",
-  glassBgMobile: "rgba(255, 255, 255, 0.75)",
-  navBg: "rgba(30, 42, 32, 0.9)",
-  drawerBg: "rgba(30, 42, 32, 0.98)",
-  overlayBg: "rgba(0, 0, 0, 0.4)",
-  dividerBg: "rgba(255, 255, 255, 0.2)",
-  btnBg: "#3a5223",
-  btnBgHover: "#4c6e36",
+  /** Deepest surface: under the films, behind dialogs. */
+  bgDark: "#0b110d",
+  /** Body text: the cream of every block over the films. */
+  textLight: "#f6f1e4",
+  textLightRgb: "246, 241, 228",
+  /** Secondary text. */
+  textMuted: "rgba(246, 241, 228, 0.74)",
+  /** Headings inside panels, kickers. */
+  textHeading: "#e9dcb3",
+  /** Accent: gold. */
+  accent: "#d9c89a",
+  accentHover: "#e9dcb3",
+  accentRgb: "217, 200, 154",
+  /** Glass surfaces: cards, the navigation, the footer … */
+  glassBg: "rgba(10, 16, 12, 0.6)",
+  /** … and those that must hold text over anything: dialogs, the menu. */
+  glassBgStrong: "rgba(9, 13, 10, 0.9)",
+  glassBorder: "rgba(233, 220, 179, 0.16)",
+  navBg: "rgba(7, 11, 8, 0.55)",
+  drawerBg: "rgba(9, 13, 10, 0.94)",
+  overlayBg: "rgba(3, 6, 4, 0.55)",
+  dividerBg: "rgba(233, 220, 179, 0.16)",
+  /** Buttons: glass with a gold hairline; gold tint on hover. */
+  btnBg: "rgba(10, 16, 12, 0.5)",
+  btnBgHover: "rgba(217, 200, 154, 0.16)",
+  btnBorder: "rgba(217, 200, 154, 0.42)",
 };

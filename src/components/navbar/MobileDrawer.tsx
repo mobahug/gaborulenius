@@ -58,22 +58,20 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
       transitionDuration={{ enter: 220, exit: 180 }}
       ModalProps={{
         keepMounted: true,
-        BackdropProps: {
-          sx: {
-            backgroundColor: alpha(lightColors.overlayBg, 0.6),
-            backdropFilter: "blur(4px)",
-          },
-        },
       }}
       slotProps={{
         paper: {
           sx: {
-            width: 280,
-            bgcolor: drawerBackgroundColor,
+            width: 288,
+            background: drawerBackgroundColor,
+            backdropFilter: "blur(18px) saturate(1.15)",
             color: textColor,
-            borderTopLeftRadius: theme.spacing(2.5),
-            borderBottomLeftRadius: theme.spacing(2.5),
-            boxShadow: `0 8px 32px 0 ${alpha(theme.palette.common.black, 0.37)}`,
+            border: "none",
+            borderLeft: `1px solid ${lightColors.glassBorder}`,
+            borderRadius: 0,
+            borderTopLeftRadius: theme.spacing(5),
+            borderBottomLeftRadius: theme.spacing(5),
+            boxShadow: `0 8px 40px 0 ${alpha(theme.palette.common.black, 0.45)}`,
             p: theme.spacing(2, 0),
             willChange: "transform",
           },
@@ -111,7 +109,8 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 sx={{
                   py: 1.25,
                   px: 2,
-                  borderRadius: 0.5,
+                  borderRadius: 3,
+                  color: isActive ? textColor : lightColors.textMuted,
                   transition:
                     "background-color 0.2s ease-in-out, color 0.2s ease-in-out",
                   "&:hover": {
@@ -119,9 +118,9 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
                     color: accentColor,
                   },
                   "&.Mui-selected": {
-                    backgroundColor: alpha(accentColor, 0.16),
-                    boxShadow: `inset 3px 0 0 ${accentColor}`,
-                    color: accentColor,
+                    backgroundColor: alpha(accentColor, 0.12),
+                    boxShadow: `inset 2px 0 0 ${accentColor}`,
+                    color: textColor,
                   },
                   "&.Mui-selected:hover": {
                     backgroundColor: alpha(accentColor, 0.2),
@@ -202,7 +201,10 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
       {/* Settings Section */}
       <Stack spacing={2} sx={{ px: 3.5 }}>
-        <Typography variant="h6" sx={{ color: headingColor }}>
+        <Typography
+          variant="overline"
+          sx={{ color: headingColor, letterSpacing: "0.14em", fontWeight: 700 }}
+        >
           <FormattedMessage id="headingSettings" />
         </Typography>
 

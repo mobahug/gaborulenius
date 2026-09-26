@@ -41,6 +41,8 @@ lands in the same state slow scrolling would reach.
 | The question inside the pupil                            | `src/journey/film/PortalTitle.tsx`                      |
 | The neural probe                                         | `src/journey/overlays/*`                                |
 | Cover (plain DOM, LCP) and its leaves                    | `src/components/CoverSection.tsx`, `journey/foliage/*`  |
+| Introduction and About (film blocks of the chase)        | `src/journey/chapters/*`                                |
+| Palette and interface (navigation, dialogs, cards …)     | `src/colors.ts`, `src/theme.tsx`                        |
 
 ### The director
 
@@ -66,7 +68,7 @@ picture rather than with where the scroll is taking it.
 
 | Seam              | Frames                      | Handling                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ----------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Chase → Neural    | pupil → void (portal)       | From 6.92 s of the chase the pupil (measured in every frame, `portal.track`) is a window: the neural film shows through it from its first spark, far away at first, and fills the screen as the pupil does. The question waits until then (see below).                                                                                                                                                                                                                                                                                                          |
+| Chase → Neural    | pupil → void (portal)       | From 6.92 s of the chase the pupil (measured in every frame, `portal.track`) is a window: the neural film shows through it from its first spark, far away at first, and fills the screen as the pupil does. It is screen-blended over the chase, so its black void leaves the pupil's own dark reflections as they are — no edge between the two films, only the spark and the nebula glowing inside the eye — and the chase ends on black, where blending and covering are the same. The question waits until the pupil fills the screen (see below).          |
 | Neural → Explorer | white node → warm white sky | ±0.1 viewport heights. White → cream, no black. Mean difference 17/255 (colour temperature only).                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | Explorer → Work   | fish mouth → reflection     | ±0.05. Both black; practically a cut inside black.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | Work → Ending     | office leaf → jungle leaf   | ±0.15. The jungle leaf is the office leaf 1.306× closer, 1.6 % to the right (fitted between the last and the first frame). It opens at 1.2×, 8 % down — hiding a dark band along the bottom of its first second — and the office leaf is pushed in to 1.567× (1.306 × 1.2), 8.3 % down and 2.4 % left, starting 0.3vh early, so their veins and holes lie on each other as they dissolve; the jungle leaf eases back once its shot has turned into the jungle (1.15–1.9 s). Shifts are fractions of the displayed frame, so the join holds on any screen shape. |
@@ -81,11 +83,24 @@ glides instead of stepping with the footage's frames.
 `FilmSection` is a tall section in normal document flow. Its blocks (`Cue`)
 and time anchors (`Mark`) carry a film time — "this block's centre crosses
 the middle of the screen when the film is at 4.3 s" — and the film follows
-the reading between them. Blocks fade and rise in as they enter; the shade
-behind them deepens over bright footage (`--film-shade`, from each film's
-measured brightness curve, in steps of 0.05 so the page is restyled only a
-few times per stage). Content always stays in front of the films. With
-reduced motion blocks simply stay visible.
+the reading between them. Every part of a block (a heading, a line, a list
+item, a button, the words of the introduction's sentence, anything marked
+`film-part`) arrives as it rises from the bottom edge of the screen to about
+a quarter of the way up, measured per part, so a tall block on a phone
+arrives piece by piece as it is read rather than all at once off screen;
+the block fades as it leaves at the top. Only opacity and a small rise are
+animated, written only when they change. The shade behind the words deepens
+over bright footage (`--film-shade`, from each film's measured brightness
+curve, in steps of 0.05 so the page is restyled only a few times per
+stage). Content always stays in front of the films. With reduced motion
+everything simply stays visible.
+
+The first scene works the same way as every other: the cover (the LCP,
+plain DOM) holds for half a viewport while the greeting fades and the
+leaves part, and the introduction and About follow as ordinary blocks —
+nothing else is pinned — while the chase moves from the first scroll, about
+0.8 s of film per viewport height, a little more than one second while the
+macaw crosses the clearing, and slowing for the dive into the eye.
 
 Blocks sit where their shot leaves room for them: for every film the left
 and right halves were measured every 0.3 s for brightness and busyness, and
@@ -96,10 +111,11 @@ water, the experience timeline over the dark espresso, "Let's Connect" on
 the left beside the macaw on its branch, with the morpho below it.
 
 The question in the pupil (`PortalTitle`) is not there while the pupil is
-still a circle. It fades in out of the black once the pupil covers the whole
-screen — the moment is computed for the screen's size and shape
-(`pupilCoverTime`: a portrait phone is covered before a wide desktop) —
-comes forward a little, holds, and passes the camera. It keeps its place in
+still a circle. It comes in once the pupil covers the whole screen — the
+moment is computed for the screen's size and shape (`pupilCoverTime`: a
+portrait phone is covered before a wide desktop) — above the film's first
+spark, sliding down into place as it fades in, holds while the neuron grows
+below it, and passes the camera. It keeps its place in
 the document (reading order, search) but is drawn fixed to the screen like
 the films, so it never has to follow the page's scrolling and undo it: it
 cannot lag or shake. Its anchor above it carries the `#projects` id for
@@ -112,6 +128,18 @@ links and the scroll spy.
 | Explorer | Title and summary, four capabilities, stack, "View details" (screens and full description in the existing dialog). |
 | Work     | Experience timeline (tabs and detail dialogs), the four work projects with their links, the full skills list.      |
 | Ending   | "Let's Connect" with email, LinkedIn and GitHub, fading in like every other block; the footer follows.             |
+
+## Interface
+
+Everything that is not the films speaks the films' language (`colors.ts`,
+`theme.tsx`): cream text (#f6f1e4) and muted cream for secondary text, gold
+accents and hairlines (#d9c89a, #e9dcb3), and dark forest-shade glass
+surfaces — translucent, blurred, with a gold hairline — so the films show
+through the navigation, the cards, the dialogs, the menu and the footer.
+Buttons are glass pills with a gold hairline and gold icons, tinted gold on
+hover; the navigation marks the current section with a thin gold line; the
+language switch is a small segmented pill; focus rings are gold. The
+browser's own chrome follows (`theme-color`, `color-scheme: dark`).
 
 ## The neural probe
 
@@ -140,6 +168,14 @@ as at 864×496 (software decoding in headless Chrome: 21 ms against 7 ms at
 the median; hardware decoders are far faster). Each film also has a still
 (WebP, 1128×648) for reduced motion and loading.
 
+Each film is downloaded whole and given to its video element as a blob URL,
+so every seek lands on frames already in memory; streamed with range
+requests, a phone browser would fetch a seek's bytes only when asked and the
+picture would stall while the visitor scrolls. Until a film is ready its
+still stands in — for the chase, the still nearest before the scroll's time
+(the path, the macaw's head, the eye), so a jump never shows a frame from
+elsewhere in the film.
+
 `ScrubVideo` eases the shown time toward the target (35 ms), never has more
 than one seek in flight, jumps over gaps above 1.2 s, and reports the
 presented frame's time from `requestVideoFrameCallback` (the `seeked` time
@@ -166,7 +202,11 @@ where that is missing).
 
 ## Phones
 
-The same story, about 10 % less scroll per stage. A 16:9 frame on a portrait
+The same story, about 10 % less scroll per stage. The scroll clock's
+viewport height is the large viewport (`100lvh`, measured once per resize)
+and the fixed stage is exactly that tall, so nothing timed by the scroll
+jumps, and the films do not resize, while a phone's toolbars slide in and
+out. A 16:9 frame on a portrait
 screen shows about its middle third, so each film has focus keyframes
 (`focus`, object-position over film time) — the chase's follow the morpho,
 the macaw and its eye, the ending's the macaw onto its branch and the morpho
@@ -183,21 +223,24 @@ question is an ordinary block, spaces shrink to 12vh, and the page is about
 ## Verification (September 2026, headless Chrome with H.264)
 
 - `tsc -b`, `eslint`, `prettier`, `vite build`: clean.
-- Every seam shot at 1440×900 and 390×844, forward and backward; the whole
-  page swept on both and with reduced motion.
+- Every seam and the whole page shot at 1440×900 and 390×844, forward and
+  backward, and with reduced motion; the first scene swept every 0.3
+  viewport heights on both; the navigation, both dialogs and the menu shot
+  on both.
 - The question in the pupil, scrolled through the eye in 0.02 s steps at
   1440×900, 390×844 and 2560×1080: never visible before the pupil covers the
-  screen (7.91, 7.76 and 7.91 s of the chase), fading in from there; while
-  it moves its centre departs from a smooth path by under 0.6 px per frame.
+  screen (7.91, 7.76 and 7.91 s of the chase); while it moves its centre
+  departs from a smooth path by under 0.6 px per frame.
 - Oscillating slowly and quickly across the five film boundaries (pupil
   hand-off, white, black, leaf, the ending's own dissolve): 324 frames each,
   both viewports, no frame in which the films did not fully cover the stage.
-- Cold cache at 4 Mb/s and 150 ms latency, steady scroll through 19 viewports:
-  no uncovered frame; stills stood in for 9 frames at the top only.
 - Scripting per animation frame while scrolling the whole page: desktop p50
-  0.2 ms, p99 0.7 ms, max 2.4 ms; phone emulation at 4× CPU p50 0.6 ms, p99
-  3.5 ms. The navigation's scroll spy and the cover's reveal
-  take their measurements from the scroll clock's read phase, so nothing
-  forces a layout after the journey has written its styles.
+  0.6 ms, p99 0.9 ms, max 1.0 ms; phone emulation at 4× CPU p50 0.1 ms, p99
+  1.0 ms, max 1.3 ms, and 0.9 ms p99 through the first scene (before: 3.5 ms
+  and a 9 ms maximum, with the first scene pinned and its words blurred);
+  no long tasks.
 - Reload in the eye, in the Explorer and in the work section returns to the
-  same moment; `#skills` from a fresh load lands on Skills.
+  same scroll position and film time; `#skills` from a fresh load lands on
+  Skills.
+- Not verified here: a real phone browser. The films' behaviour on iOS
+  Safari (seeking, memory) can only be judged on a device.

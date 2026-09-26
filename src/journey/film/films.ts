@@ -78,6 +78,12 @@ export type Film = {
   still: number;
   poster: string;
   /**
+   * More stills for a long film, from the time each is for: while the video
+   * loads (after a jump), the one nearest before the scroll's time stands
+   * in, instead of a frame from somewhere else in the film.
+   */
+  posters?: ReadonlyArray<readonly [time: number, url: string]>;
+  /**
    * Mean brightness of the picture (0–1) every quarter second, measured
    * from the delivered file; the content's shade follows it.
    */
@@ -128,6 +134,10 @@ export const FILMS: readonly Film[] = [
     // The path under the greeting, as on the cover.
     still: 0,
     poster: assetUrl("film/jungle_chase-still.webp"),
+    posters: [
+      [5.3, assetUrl("film/jungle_chase-still-macaw.webp")],
+      [6.9, assetUrl("film/jungle_chase-still-eye.webp")],
+    ],
     light: [
       0.19, 0.19, 0.2, 0.19, 0.18, 0.18, 0.24, 0.29, 0.24, 0.15, 0.16, 0.18,
       0.2, 0.2, 0.23, 0.29, 0.35, 0.19, 0.19, 0.22, 0.28, 0.26, 0.37, 0.26,

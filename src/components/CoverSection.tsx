@@ -306,10 +306,9 @@ const CoverSection: React.FC = () => {
       if (copy) {
         const fade = reduced ? 0 : range(progress, 0.3, 0.84);
         const lift = reduced ? 0 : progress;
+        // Only transform and opacity: nothing to repaint while scrolling.
         copy.style.transform = `translate3d(${(pointer.x * 10).toFixed(1)}px, ${(pointer.y * 8 - lift * vh * 0.05).toFixed(1)}px, 0) scale(${(1 + 0.3 * walk).toFixed(3)})`;
         copy.style.opacity = (1 - fade).toFixed(3);
-        copy.style.filter =
-          fade > 0.01 ? `blur(${(fade * 6).toFixed(2)}px)` : "";
       }
 
       const mist = mistRef.current;
@@ -689,8 +688,8 @@ const CoverSection: React.FC = () => {
         .cover {
           position: relative;
           z-index: 1;
-          height: 180vh;
-          height: 180svh;
+          height: 150vh;
+          height: 150svh;
         }
         .cover-scene {
           position: sticky;
@@ -747,7 +746,7 @@ const CoverSection: React.FC = () => {
         .cover-layer--leaf-low { left: -6vw; bottom: 0; width: 32vw; height: 92vh; }
         .cover-layer--fern-left { height: 78vh; left: 4vw; top: -62vh; }
         @media (max-width: 899.95px) {
-          .cover { height: 150vh; height: 150svh; }
+          .cover { height: 130vh; height: 130svh; }
           .cover-layer--wide-only { display: none; }
           .cover-layer--leaf-high { right: -8vw; top: 0; width: 64vw; height: 36vh; }
           .cover-layer--leaf-near { right: -12vw; bottom: 0; width: 96vw; height: 50vh; }

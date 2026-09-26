@@ -42,7 +42,7 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
       <PortalTitle
         film="neural"
         hold={QUESTION_HOLD}
-        below={0.15}
+        offset={-0.22}
         id="projects"
         ref={projectsRef}
       >

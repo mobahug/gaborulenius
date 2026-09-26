@@ -86,91 +86,11 @@
   justify-content: flex-end;
 }
 
-/* Within a block, its parts arrive one after another as it comes in —
-   heading, lines, list items, buttons — each rising a little. The block
-   sets --reveal (0–1); at 1 every part is fully there. */
-.film-cue .film-copy > *,
-.film-cue .film-list > li,
-.film-cue .stage-capabilities > li,
-.film-cue .stage-work-list > li,
-.film-cue .stage-skills > *,
-.film-cue .film-actions > * {
-  --part: clamp(0, calc(var(--reveal, 1) * 2 - var(--order, 0) * 0.1), 1);
-  opacity: var(--part);
-  transform: translate3d(0, calc((1 - var(--part)) * 16px), 0);
-}
-
-.film-cue
-  :is(
-    .film-copy,
-    .film-list,
-    .stage-capabilities,
-    .stage-work-list,
-    .stage-skills,
-    .film-actions
-  )
-  > :nth-child(2) {
-  --order: 1;
-}
-.film-cue
-  :is(
-    .film-copy,
-    .film-list,
-    .stage-capabilities,
-    .stage-work-list,
-    .stage-skills,
-    .film-actions
-  )
-  > :nth-child(3) {
-  --order: 2;
-}
-.film-cue
-  :is(
-    .film-copy,
-    .film-list,
-    .stage-capabilities,
-    .stage-work-list,
-    .stage-skills,
-    .film-actions
-  )
-  > :nth-child(4) {
-  --order: 3;
-}
-.film-cue
-  :is(
-    .film-copy,
-    .film-list,
-    .stage-capabilities,
-    .stage-work-list,
-    .stage-skills,
-    .film-actions
-  )
-  > :nth-child(5) {
-  --order: 4;
-}
-.film-cue
-  :is(
-    .film-copy,
-    .film-list,
-    .stage-capabilities,
-    .stage-work-list,
-    .stage-skills,
-    .film-actions
-  )
-  > :nth-child(6) {
-  --order: 5;
-}
-.film-cue
-  :is(
-    .film-copy,
-    .film-list,
-    .stage-capabilities,
-    .stage-work-list,
-    .stage-skills,
-    .film-actions
-  )
-  > :nth-child(n + 7) {
-  --order: 6;
+/* Within a block, its parts (see PART_SELECTOR in FilmSection.tsx) arrive
+   one after another as they rise into view: the script sets their opacity
+   and a small rise. Inline parts (words) need a box to move. */
+span.film-part {
+  display: inline-block;
 }
 
 .film-cue .film-copy::before {

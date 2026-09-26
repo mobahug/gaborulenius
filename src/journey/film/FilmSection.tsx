@@ -94,10 +94,59 @@ type FilmSectionProps = {
 };
 
 /**
+ * The parts of a block that arrive one after another: headings, lines,
+ * list items, buttons, anything marked `film-part`. A container marked
+ * `film-parts` is not a part itself; its `film-part` children are.
+ */
+const PART_SELECTOR = [
+  ".film-part",
+  ".film-copy > :not(.film-parts, .film-list, .stage-capabilities, .stage-work-list, .stage-skills, .film-actions)",
+  ".film-list > li",
+  ".stage-capabilities > li",
+  ".stage-work-list > li",
+  ".stage-skills > *",
+  ".film-actions > *",
+].join(", ");
+
+/** How far a part rises as it arrives (px). */
+const PART_RISE = 22;
+
+type Part = {
+  element: HTMLElement;
+  /** Its top in the section (px), ignoring transforms. */
+  top: number;
+  /** Arrives this much later (viewport heights), e.g. the words of a line. */
+  delay: number;
+  /** Last value written (0–1). */
+  shown: number;
+};
+
+type Block = {
+  element: HTMLElement;
+  mark: boolean;
+  parts: Part[];
+  top: number;
+  height: number;
+};
+
+/** An element's top inside `ancestor`, through the offset parents. */
+const offsetWithin = (element: HTMLElement, ancestor: HTMLElement) => {
+  let top = 0;
+  let node: HTMLElement | null = element;
+  while (node && node !== ancestor) {
+    top += node.offsetTop;
+    node = node.offsetParent as HTMLElement | null;
+  }
+  return top;
+};
+
+/**
  * One stage of the journey: a tall section whose scroll distance drives a
  * film, with its content blocks in normal document flow (readable, focusable
- * and searchable at any pace). Blocks fade in as they enter and out as they
- * leave; with reduced motion they simply stay visible.
+ * and searchable at any pace). Each part of a block arrives as it rises into
+ * the lower part of the screen — word by word, line by line, item by item,
+ * as the film goes on behind it — and the block fades as it leaves at the
+ * top. With reduced motion everything simply stays visible.
  */
 const FilmSection = ({
   film,
@@ -110,16 +159,7 @@ const FilmSection = ({
   tail,
 }: FilmSectionProps) => {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const blocksRef = useRef<
-    Array<{
-      element: HTMLElement;
-      mark: boolean;
-      /** Its parts arrive one after another (see `film.css`). */
-      parts: boolean;
-      top: number;
-      height: number;
-    }>
-  >([]);
+  const blocksRef = useRef<Block[]>([]);
   const nearRef = useRef(true);
 
   // Measure the blocks relative to the section whenever layout changes, so
@@ -136,7 +176,14 @@ const FilmSection = ({
       );
       blocksRef.current = blocks.map((element) => ({
         mark: element.classList.contains("film-mark"),
-        parts: element.querySelector(".film-copy") !== null,
+        parts: Array.from(
+          element.querySelectorAll<HTMLElement>(PART_SELECTOR),
+        ).map((part) => ({
+          element: part,
+          top: offsetWithin(part, section),
+          delay: Number(part.dataset.delay ?? 0),
+          shown: -1,
+        })),
         element,
         top: element.offsetTop,
         height: element.offsetHeight,
@@ -177,6 +224,12 @@ const FilmSection = ({
         element.style.opacity = "";
         element.style.transform = "";
         element.style.removeProperty("--reveal");
+        parts.forEach((part) => {
+          if (part.shown === 1) return;
+          part.shown = 1;
+          part.element.style.opacity = "";
+          part.element.style.transform = "";
+        });
         return;
       }
       // Viewport position of the block's top and bottom edges: it arrives
@@ -185,16 +238,35 @@ const FilmSection = ({
       const blockBottom = blockTop + height;
       const enter = smoothstep(vh * 1.0, vh * 0.5, blockTop);
       const leave = smoothstep(vh * 0.0, vh * 0.34, blockBottom);
-      const visible = parts ? leave : Math.min(enter, leave);
-      element.style.opacity = visible >= 0.999 ? "" : visible.toFixed(3);
       element.style.setProperty(
         "--reveal",
         enter >= 0.999 ? "1" : enter.toFixed(3),
       );
-      element.style.transform =
-        enter >= 0.999
-          ? ""
-          : `translate3d(0, ${((1 - enter) * 40).toFixed(1)}px, 0)`;
+      if (!parts.length) {
+        const visible = Math.min(enter, leave);
+        element.style.opacity = visible >= 0.999 ? "" : visible.toFixed(3);
+        element.style.transform =
+          enter >= 0.999
+            ? ""
+            : `translate3d(0, ${((1 - enter) * 40).toFixed(1)}px, 0)`;
+        return;
+      }
+      element.style.opacity = leave >= 0.999 ? "" : leave.toFixed(3);
+      // Each part arrives as it rises from the bottom edge of the screen to
+      // about a quarter of the way up.
+      parts.forEach((part) => {
+        const partTop = frame.top + part.top - y + part.delay * vh;
+        const shown =
+          Math.round(smoothstep(vh * 0.98, vh * 0.74, partTop) * 100) / 100;
+        if (shown === part.shown) return;
+        part.shown = shown;
+        const style = part.element.style;
+        style.opacity = shown >= 1 ? "" : String(shown);
+        style.transform =
+          shown >= 1
+            ? ""
+            : `translate3d(0, ${((1 - shown) * PART_RISE).toFixed(1)}px, 0)`;
+      });
     });
   });
 

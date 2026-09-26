@@ -30,18 +30,18 @@ type PortalTitleProps = {
   /** Film times: how long it holds at full size, and when it has passed. */
   hold: readonly [number, number];
   /**
-   * How far below the centre of the screen it sits (viewport heights),
-   * leaving the film's first spark in view above it.
+   * Where its centre sits, in viewport heights from the middle of the
+   * screen (negative: above), leaving the film's first spark in view.
    */
-  below?: number;
+  offset?: number;
 };
 
 /**
  * A title that waits in the dark behind a window into its film: while the
  * window opens (the pupil, as the camera moves into the eye) it is not there
- * at all; once the pupil's black covers the whole screen it fades in out of
- * it, coming forward a little, holds for a moment, and then passes the
- * camera as the film goes on.
+ * at all; once the pupil's black covers the whole screen it comes in from
+ * above the film's first spark, settling into place as it fades in, holds
+ * for a moment, and then passes the camera as the film goes on.
  *
  * It stays in the document where it belongs (reading order, search), but is
  * drawn fixed to the screen, like the films: it never has to follow the
@@ -53,7 +53,7 @@ type PortalTitleProps = {
 const PortalTitle = ({
   film,
   hold,
-  below = 0,
+  offset = 0,
   children,
   id,
   className,
@@ -139,8 +139,13 @@ const PortalTitle = ({
           (1 + 0.05 * smoothstep(from, holdEnd, frame.time)) +
         1.8 * pass * pass;
       // The title is fixed at the top of the screen, full width: move its
-      // centre to just below the middle of the screen.
-      const dy = vh / 2 + below * vh * scale - heightRef.current / 2;
+      // centre to its place above the spark, sliding down into it.
+      const arrive = 1 - easeOutCubic(reveal);
+      const dy =
+        vh / 2 +
+        offset * vh * scale -
+        heightRef.current / 2 -
+        arrive * vh * 0.05;
       if (!shown) {
         shown = true;
         title.style.visibility = "";
@@ -148,7 +153,7 @@ const PortalTitle = ({
       title.style.opacity = opacity >= 0.999 ? "" : opacity.toFixed(3);
       title.style.transform = `translate3d(0, ${dy.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`;
     });
-  }, [film, hold, below]);
+  }, [film, hold, offset]);
 
   return (
     <>
