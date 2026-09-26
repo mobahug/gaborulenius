@@ -62,7 +62,7 @@ const AboutChapter = ({ at, ref }: AboutChapterProps) => {
             ))}
           </ul>
         </div>
-        <div className="about-card film-part">
+        <div className="about-card">
           <LinkThumbnail
             id="linkThumbnailTitleGabor"
             descriptionId="linkThumbnailDescriptionGabor"

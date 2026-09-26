@@ -240,3 +240,18 @@ upscaled, so their timing and framing changed and were measured again:
 - The macaw no longer flies in front of the page: every overlay drawing the
   footage over the content was removed, and content always stays in front
   of the films.
+
+## 9. The leaf, and reading over the films (September 2026)
+
+- The two leaves of the work → ending seam are different plants: when the
+  jungle leaf dissolved in over the office leaf, their holes showed double
+  edges and the green shifted. The seam is now softened: the office leaf
+  goes out of focus as the camera closes in, the jungle leaf arrives just
+  as soft, and it only sharpens where its own shot defocuses into the
+  jungle (see `soften` in `films.ts`), so the two melt into one another.
+- Text was hard to read wherever the footage is bright or busy behind it —
+  the neural filaments, the reflections on the Okavango, the office window.
+  The local shade behind each block became a veil in the films' own
+  language: behind the words the film goes out of focus and a little
+  darker, feathered into the picture (see "Content over the films" in
+  `scrollcraft-journey.md`).

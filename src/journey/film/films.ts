@@ -46,6 +46,13 @@ export type Seam = {
    */
   incoming?: Transform & { settle?: readonly [number, number] };
   /**
+   * Both films go out of focus into each other: the outgoing one blurs by
+   * `blur` (a fraction of the frame's height) as it moves to its outgoing
+   * transform, the incoming one arrives just as blurred and comes back into
+   * focus over `clear`, a range of its own time (s).
+   */
+  soften?: { blur: number; clear: readonly [number, number] };
+  /**
    * A window into this film opening inside the previous one: from `opens`
    * (the previous film's time) the film shows through a circle that follows
    * `track` — keyframes of the previous film's time, and the circle's centre
@@ -258,11 +265,18 @@ export const FILMS: readonly Film[] = [
     // dissolves in. The jungle leaf opens enlarged and lowered, keeping the
     // dark band along the bottom of its first second off screen, and eases
     // back once its shot has turned into the jungle.
+    //
+    // The two leaves are not the same plant: their holes and colours differ.
+    // So the office leaf goes out of focus as the camera closes in, the
+    // jungle leaf arrives just as soft, and the two melt into one another;
+    // the jungle leaf only comes back into focus where its own shot starts
+    // to defocus (from about 0.55 s), so it is never sharp until the jungle.
     seam: {
-      blend: 0.15,
+      blend: 0.2,
       outgoing: { scale: 1.567, x: -0.0244, y: 0.0834 },
       approach: 0.3,
       incoming: { scale: 1.2, x: 0, y: 0.08, settle: [1.15, 1.9] },
+      soften: { blur: 0.014, clear: [0.55, 1.1] },
     },
     // Portrait screens follow the macaw in and onto its branch, then go
     // with the morpho to where it settles.

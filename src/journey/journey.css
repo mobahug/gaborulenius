@@ -37,8 +37,8 @@
 .reveal-guard:focus-within .reveal-item,
 .reveal-guard:focus-within
   .reveal-item
-  :is(.film-part, .film-copy > *, li, .film-actions > *) {
-  --reveal: 1 !important;
+  :is(.film-part, .film-copy > *, li, .film-actions > *, .about-card > *) {
+  --veil: 1 !important;
   opacity: 1 !important;
   transform: none !important;
   filter: none !important;

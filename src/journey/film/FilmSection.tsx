@@ -106,6 +106,7 @@ const PART_SELECTOR = [
   ".stage-work-list > li",
   ".stage-skills > *",
   ".film-actions > *",
+  ".about-card > *",
 ].join(", ");
 
 /** How far a part rises as it arrives (px). */
@@ -113,12 +114,14 @@ const PART_RISE = 22;
 
 type Part = {
   element: HTMLElement;
-  /** Its top in the section (px), ignoring transforms. */
+  /** Its top in the section (px), ignoring transforms, and its height. */
   top: number;
+  height: number;
   /** Arrives this much later (viewport heights), e.g. the words of a line. */
   delay: number;
-  /** Last value written (0–1). */
-  shown: number;
+  /** Last values written: opacity (0–1) and rise (px); -1 = none yet. */
+  opacity: number;
+  rise: number;
 };
 
 type Block = {
@@ -127,6 +130,8 @@ type Block = {
   parts: Part[];
   top: number;
   height: number;
+  /** Last veil written (0–1); -1 = none yet. */
+  veil: number;
 };
 
 /** An element's top inside `ancestor`, through the offset parents. */
@@ -145,8 +150,9 @@ const offsetWithin = (element: HTMLElement, ancestor: HTMLElement) => {
  * film, with its content blocks in normal document flow (readable, focusable
  * and searchable at any pace). Each part of a block arrives as it rises into
  * the lower part of the screen — word by word, line by line, item by item,
- * as the film goes on behind it — and the block fades as it leaves at the
- * top. With reduced motion everything simply stays visible.
+ * as the film goes on behind it — and leaves the same way at the top, while
+ * the block's veil (see film.css) softens the film behind it. With reduced
+ * motion everything simply stays visible.
  */
 const FilmSection = ({
   film,
@@ -181,12 +187,15 @@ const FilmSection = ({
         ).map((part) => ({
           element: part,
           top: offsetWithin(part, section),
+          height: part.offsetHeight,
           delay: Number(part.dataset.delay ?? 0),
-          shown: -1,
+          opacity: -1,
+          rise: -1,
         })),
         element,
         top: element.offsetTop,
         height: element.offsetHeight,
+        veil: -1,
       }));
       const cues: TimelineCue[] = blocksRef.current
         .filter(({ element }) => element.dataset.cue !== undefined)
@@ -218,54 +227,70 @@ const FilmSection = ({
     // Where the block is, as the eased scroll position sees it, so wheels
     // that scroll in steps still fade it smoothly.
     const { smoothY: y, vh } = frame.viewport;
-    blocksRef.current.forEach(({ element, mark, parts, top, height }) => {
+    blocksRef.current.forEach((block) => {
+      const { element, mark, parts, top, height } = block;
       if (mark) return;
       if (reduced) {
         element.style.opacity = "";
         element.style.transform = "";
-        element.style.removeProperty("--reveal");
+        element.style.removeProperty("--veil");
+        block.veil = -1;
         parts.forEach((part) => {
-          if (part.shown === 1) return;
-          part.shown = 1;
+          if (part.opacity === 1 && part.rise === 0) return;
+          part.opacity = 1;
+          part.rise = 0;
           part.element.style.opacity = "";
           part.element.style.transform = "";
         });
         return;
       }
-      // Viewport position of the block's top and bottom edges: it arrives
-      // over the lower half of the screen and leaves softly at the top.
+      // Viewport position of the block's top and bottom edges: its veil
+      // (see film.css) comes in over the lower half of the screen and goes
+      // softly at the top.
       const blockTop = frame.top + top - y;
       const blockBottom = blockTop + height;
       const enter = smoothstep(vh * 1.0, vh * 0.5, blockTop);
       const leave = smoothstep(vh * 0.0, vh * 0.34, blockBottom);
-      element.style.setProperty(
-        "--reveal",
-        enter >= 0.999 ? "1" : enter.toFixed(3),
-      );
+      const veil = Math.round(Math.min(enter, leave) * 1000) / 1000;
+      if (veil !== block.veil) {
+        block.veil = veil;
+        element.style.setProperty("--veil", String(veil));
+      }
       if (!parts.length) {
-        const visible = Math.min(enter, leave);
-        element.style.opacity = visible >= 0.999 ? "" : visible.toFixed(3);
+        element.style.opacity = veil >= 1 ? "" : String(veil);
         element.style.transform =
           enter >= 0.999
             ? ""
             : `translate3d(0, ${((1 - enter) * 40).toFixed(1)}px, 0)`;
         return;
       }
-      element.style.opacity = leave >= 0.999 ? "" : leave.toFixed(3);
+      // A block whose content loaded late was measured without parts and
+      // faded as a whole until then.
+      if (element.style.opacity) element.style.opacity = "";
+      if (element.style.transform) element.style.transform = "";
       // Each part arrives as it rises from the bottom edge of the screen to
-      // about a quarter of the way up.
+      // about a quarter of the way up, and leaves as it passes under the
+      // navigation at the top.
       parts.forEach((part) => {
-        const partTop = frame.top + part.top - y + part.delay * vh;
-        const shown =
-          Math.round(smoothstep(vh * 0.98, vh * 0.74, partTop) * 100) / 100;
-        if (shown === part.shown) return;
-        part.shown = shown;
+        const partTop = frame.top + part.top - y;
+        const arrive = smoothstep(
+          vh * 0.98,
+          vh * 0.74,
+          partTop + part.delay * vh,
+        );
+        const depart = smoothstep(vh * 0.06, vh * 0.3, partTop + part.height);
+        const opacity = Math.round(Math.min(arrive, depart) * 100) / 100;
+        const rise = Math.round((1 - arrive) * PART_RISE * 10) / 10;
+        if (opacity === part.opacity && rise === part.rise) return;
         const style = part.element.style;
-        style.opacity = shown >= 1 ? "" : String(shown);
-        style.transform =
-          shown >= 1
-            ? ""
-            : `translate3d(0, ${((1 - shown) * PART_RISE).toFixed(1)}px, 0)`;
+        if (opacity !== part.opacity) {
+          style.opacity = opacity >= 1 ? "" : String(opacity);
+        }
+        if (rise !== part.rise) {
+          style.transform = rise <= 0 ? "" : `translate3d(0, ${rise}px, 0)`;
+        }
+        part.opacity = opacity;
+        part.rise = rise;
       });
     });
   });

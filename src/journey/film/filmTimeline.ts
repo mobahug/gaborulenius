@@ -60,6 +60,8 @@ export type FilmFrame = {
   /** Opacity over everything below it. */
   opacity: number;
   transform: Transform;
+  /** Out of focus by this much (a fraction of the frame's height). */
+  blur: number;
   /** 0 before the section has begun … 1 once it has fully faded in. */
   arrival: number;
   /** Scroll positions (px) where the fade-in starts and the film ends. */
@@ -176,11 +178,17 @@ export const computeTimeline = (
         : arrival;
       transform = mixTransform(incoming, IDENTITY, rest);
     }
+    const soften = film.seam.soften;
+    const blur =
+      soften && !reduced
+        ? soften.blur * (1 - smoothstep(soften.clear[0], soften.clear[1], time))
+        : 0;
     films.push({
       film,
       time,
       opacity,
       transform,
+      blur,
       arrival,
       start: top - blendIn,
       end: keys[keys.length - 1][0],
@@ -188,7 +196,8 @@ export const computeTimeline = (
     });
   });
 
-  // Around a seam, the film below drifts to its outgoing transform.
+  // Around a seam, the film below drifts to its outgoing transform (and
+  // out of focus, if the seam is softened).
   films.forEach((frame, index) => {
     const above = films[index + 1];
     const seam = above?.film.seam;
@@ -202,6 +211,7 @@ export const computeTimeline = (
       : above.arrival;
     if (progress > 0) {
       frame.transform = mixTransform(IDENTITY, seam.outgoing, progress);
+      if (seam.soften) frame.blur = seam.soften.blur * progress;
     }
   });
 

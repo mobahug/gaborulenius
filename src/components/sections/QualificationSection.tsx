@@ -44,8 +44,8 @@ function TabPanel(props: TabPanelProps) {
 }
 
 /**
- * Experience and qualifications over the office film: no panel, only a soft
- * local shade behind the words (see `.trail-panel--overlay`).
+ * Experience and qualifications over the office film: no panel, only the
+ * veil behind the words, like every block over the films (see `film.css`).
  */
 const QualificationSection = () => {
   const theme = useTheme();
@@ -122,6 +122,7 @@ const QualificationSection = () => {
         }}
       >
         <Tabs
+          className="film-part"
           value={tabIndex}
           onChange={handleTabChange}
           aria-label="Qualification Tabs"

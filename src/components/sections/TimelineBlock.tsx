@@ -32,7 +32,7 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
         id={`${titleId}-heading`}
         variant="h4"
         component="h2"
-        gutterBottom
+        className="film-part trail-heading"
       >
         <FormattedMessage id={titleId} />
       </Typography>
@@ -47,7 +47,7 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
         }}
       >
         {events.map((evt, i) => (
-          <TimelineItem key={evt.titleId}>
+          <TimelineItem key={evt.titleId} className="film-part">
             <TimelineSeparator>
               <TimelineDot
                 className="trail-dot"
@@ -101,7 +101,7 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
               <Typography
                 variant="subtitle2"
                 component="h3"
-                sx={{ fontWeight: 700 }}
+                className="trail-event-title"
                 gutterBottom
               >
                 <FormattedMessage id={evt.titleId} />{" "}
@@ -118,7 +118,7 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
                 }}
               >
                 <CalendarMonthIcon sx={{ fontSize: 18 }} />
-                <Box component="span" sx={{ fontSize: "0.9rem" }}>
+                <Box component="span" sx={{ fontSize: "0.92rem" }}>
                   <FormattedMessage id={evt.whenId} />
                 </Box>
               </Box>

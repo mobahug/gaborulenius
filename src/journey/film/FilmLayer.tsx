@@ -89,6 +89,7 @@ const FilmLayer = () => {
     const opacities = FILMS.map(() => 0);
     const masks = FILMS.map(() => "");
     const blends = FILMS.map(() => "");
+    const filters = FILMS.map(() => "");
     const unloadFar = !hasFinePointer();
     // Full HD for large screens; phones, weak devices and saved or slow
     // connections get the lighter encodes.
@@ -339,6 +340,15 @@ const FilmLayer = () => {
           scale === 1 && x === 0 && y === 0
             ? ""
             : `translate3d(${format(x * frameRect.width)}px, ${format(y * frameRect.height)}px, 0) scale(${format(scale)})`;
+        // Out of focus across a softened seam. The blur is drawn before the
+        // film is scaled, so it is divided by the scale to be as soft on
+        // screen as the seam asks.
+        const radius = reduced ? 0 : (entry.blur * frameRect.height) / scale;
+        const filter = radius >= 0.3 ? `blur(${radius.toFixed(1)}px)` : "";
+        if (filters[index] !== filter) {
+          filters[index] = filter;
+          film.style.filter = filter;
+        }
         let mask = "";
         const portal = entry.film.seam.portal;
         if (entry.window && portal && opacity > 0) {

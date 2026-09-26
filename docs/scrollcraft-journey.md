@@ -66,12 +66,12 @@ picture rather than with where the scroll is taking it.
 
 ## Seams
 
-| Seam              | Frames                      | Handling                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| ----------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Chase → Neural    | pupil → void (portal)       | From 6.92 s of the chase the pupil (measured in every frame, `portal.track`) is a window: the neural film shows through it from its first spark, far away at first, and fills the screen as the pupil does. It is screen-blended over the chase, so its black void leaves the pupil's own dark reflections as they are — no edge between the two films, only the spark and the nebula glowing inside the eye — and the chase ends on black, where blending and covering are the same. The question waits until the pupil fills the screen (see below).          |
-| Neural → Explorer | white node → warm white sky | ±0.1 viewport heights. White → cream, no black. Mean difference 17/255 (colour temperature only).                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| Explorer → Work   | fish mouth → reflection     | ±0.05. Both black; practically a cut inside black.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Work → Ending     | office leaf → jungle leaf   | ±0.15. The jungle leaf is the office leaf 1.306× closer, 1.6 % to the right (fitted between the last and the first frame). It opens at 1.2×, 8 % down — hiding a dark band along the bottom of its first second — and the office leaf is pushed in to 1.567× (1.306 × 1.2), 8.3 % down and 2.4 % left, starting 0.3vh early, so their veins and holes lie on each other as they dissolve; the jungle leaf eases back once its shot has turned into the jungle (1.15–1.9 s). Shifts are fractions of the displayed frame, so the join holds on any screen shape. |
+| Seam              | Frames                      | Handling                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Chase → Neural    | pupil → void (portal)       | From 6.92 s of the chase the pupil (measured in every frame, `portal.track`) is a window: the neural film shows through it from its first spark, far away at first, and fills the screen as the pupil does. It is screen-blended over the chase, so its black void leaves the pupil's own dark reflections as they are — no edge between the two films, only the spark and the nebula glowing inside the eye — and the chase ends on black, where blending and covering are the same. The question waits until the pupil fills the screen (see below).                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Neural → Explorer | white node → warm white sky | ±0.1 viewport heights. White → cream, no black. Mean difference 17/255 (colour temperature only).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| Explorer → Work   | fish mouth → reflection     | ±0.05. Both black; practically a cut inside black.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Work → Ending     | office leaf → jungle leaf   | ±0.2. The jungle leaf is the office leaf 1.306× closer, 1.6 % to the right (fitted between the last and the first frame). It opens at 1.2×, 8 % down — hiding a dark band along the bottom of its first second — and the office leaf is pushed in to 1.567× (1.306 × 1.2), 8.3 % down and 2.4 % left, starting 0.3vh early, so their veins lie on each other as they dissolve. The two leaves are not the same plant (holes and colours differ), so the seam is softened (`soften`): the office leaf goes out of focus as the camera closes in (to 1.4 % of the frame's height), the jungle leaf arrives just as soft, and it only comes back into focus (0.55–1.1 s) where its own shot defocuses into the jungle — the leaves melt into one another instead of showing double edges. The jungle leaf eases back once its shot has turned into the jungle (1.15–1.9 s). Shifts are fractions of the displayed frame, so the join holds on any screen shape. |
 
 The pupil is cut where the chase actually is (the presented frame), but the
 neural film seen through it follows the scroll's own time and a path with
@@ -87,13 +87,26 @@ the reading between them. Every part of a block (a heading, a line, a list
 item, a button, the words of the introduction's sentence, anything marked
 `film-part`) arrives as it rises from the bottom edge of the screen to about
 a quarter of the way up, measured per part, so a tall block on a phone
-arrives piece by piece as it is read rather than all at once off screen;
-the block fades as it leaves at the top. Only opacity and a small rise are
-animated, written only when they change. The shade behind the words deepens
-over bright footage (`--film-shade`, from each film's measured brightness
-curve, in steps of 0.05 so the page is restyled only a few times per
-stage). Content always stays in front of the films. With reduced motion
-everything simply stays visible.
+arrives piece by piece as it is read rather than all at once off screen,
+and leaves the same way, line by line, as it passes under the navigation.
+Only opacity and a small rise are animated, written only when they change.
+Content always stays in front of the films. With reduced motion everything
+simply stays visible.
+
+Behind every block the film goes out of focus and a little darker, as if
+the camera had racked focus onto the text: the veil (`.film-copy::before`,
+and the experience timeline's panel). It is a backdrop blur with a forest
+shade, feathered into the picture at its edges so it has no outline; it
+comes in with its block and goes as the block leaves (`--veil`, set by
+`FilmSection`), and its shade deepens over bright footage (`--film-shade`,
+from each film's measured brightness curve, in steps of 0.05 so the page is
+restyled only a few times per stage). The neural filaments, the Okavango's
+reflections and the office window all turn into soft light behind the
+words. On a narrow screen the veil spans the screen's width. Without
+backdrop filters it is a deeper shade, and with `prefers-reduced-transparency`
+an almost opaque one. A block is never faded or moved as a whole (only its
+parts and its veil are), so nothing between the films and a veil — or a
+glass card or button inside a block — hides the films from its blur.
 
 The first scene works the same way as every other: the cover (the LCP,
 plain DOM) holds for half a viewport while the greeting fades and the
@@ -135,7 +148,10 @@ Everything that is not the films speaks the films' language (`colors.ts`,
 `theme.tsx`): cream text (#f6f1e4) and muted cream for secondary text, gold
 accents and hairlines (#d9c89a, #e9dcb3), and dark forest-shade glass
 surfaces — translucent, blurred, with a gold hairline — so the films show
-through the navigation, the cards, the dialogs, the menu and the footer.
+through the navigation, the cards, the dialogs, the menu and the footer —
+and the content's veil is the same glass without its edges. The office
+film's three chapters are headed alike (Professional Highlights, Work
+projects, Skills & Tools), and body copy is set a little heavier (Inter 450) to hold over moving pictures.
 Buttons are glass pills with a gold hairline and gold icons, tinted gold on
 hover; the navigation marks the current section with a thin gold line; the
 language switch is a small segmented pill; focus rings are gold. The
@@ -234,11 +250,17 @@ question is an ordinary block, spaces shrink to 12vh, and the page is about
 - Oscillating slowly and quickly across the five film boundaries (pupil
   hand-off, white, black, leaf, the ending's own dissolve): 324 frames each,
   both viewports, no frame in which the films did not fully cover the stage.
-- Scripting per animation frame while scrolling the whole page: desktop p50
-  0.6 ms, p99 0.9 ms, max 1.0 ms; phone emulation at 4× CPU p50 0.1 ms, p99
-  1.0 ms, max 1.3 ms, and 0.9 ms p99 through the first scene (before: 3.5 ms
-  and a 9 ms maximum, with the first scene pinned and its words blurred);
-  no long tasks.
+- The leaf seam swept at 1440×900 and 390×844: no double edges while the
+  leaves dissolve, and no dark rim from the blur at the screen's edges.
+- Scripting per animation frame while scrolling (including the style and
+  layout that the test's own scrolling forces): desktop p50 0.4–0.9 ms, p99
+  up to 5.2 ms from a few frames at the pupil and the experience timeline —
+  as before this round; phone emulation at 4× CPU p50 up to 0.5 ms, p99 up
+  to 2.9 ms, 1.2 ms through the first scene; no long tasks. Traces of steady
+  scrolls show no dropped frames; on the phone the main thread does about
+  11–16 % more than before the veil, because a leaving block's parts are
+  repainted as they fade instead of the whole block fading on the
+  compositor.
 - Reload in the eye, in the Explorer and in the work section returns to the
   same scroll position and film time; `#skills` from a fresh load lands on
   Skills.

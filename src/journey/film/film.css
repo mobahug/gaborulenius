@@ -58,13 +58,15 @@
   }
 }
 
+/* A block is never faded or moved as a whole — its parts are, and its veil
+   — so nothing between the films and a veil (or a glass button) hides the
+   films from its backdrop blur. */
 .film-cue {
   position: relative;
   box-sizing: border-box;
   width: 100%;
   padding: 0 var(--film-gutter);
   display: flex;
-  will-change: opacity, transform;
 }
 
 /* Navigation lands with a block a little above the middle of the screen,
@@ -93,39 +95,95 @@ span.film-part {
   display: inline-block;
 }
 
-.film-cue .film-copy::before {
-  opacity: var(--reveal, 1);
-}
-
-/* Readable over moving pictures without covering them: a soft local
-   shadow behind the words and a little text shadow, never a panel. */
+/* Readable over any picture, in the films' own language: behind the words
+   the film goes out of focus and a little darker, as if the camera had
+   racked focus onto the text. This veil has no outline — its edges are
+   feathered into the picture — and it comes and goes with its block
+   (--veil, set by FilmSection). It is darker over bright pictures
+   (--film-shade, see filmLight.ts). */
 .film-copy {
-  position: relative;
-  isolation: isolate;
   max-width: 34rem;
   color: #f6f1e4;
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.5),
-    0 0 12px rgba(0, 0, 0, 0.4),
-    0 0 28px rgba(0, 0, 0, 0.3);
 }
 
-.film-copy::before {
+.film-copy,
+.trail-panel--overlay {
+  position: relative;
+  isolation: isolate;
+  --veil-x: 3.5rem;
+  --veil-y: 2.75rem;
+  --veil-feather-x: 3rem;
+  --veil-feather-y: 2.5rem;
+  --veil-blur: 14px;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(0, 0, 0, 0.3);
+}
+
+.film-copy::before,
+.trail-panel--overlay::before {
   content: "";
   position: absolute;
-  inset: -22% -26% -22% -30%;
+  inset: calc(-1 * var(--veil-y)) calc(-1 * var(--veil-x));
   z-index: -1;
-  /* closest-side: the shade is gone before it reaches the box's edges. */
-  /* Deeper over bright pictures (--film-shade, see filmLight.ts), and
-     broad enough to reach the words at the block's edges. */
-  background: radial-gradient(
-    closest-side at 45% 50%,
-    rgba(2, 5, 4, calc(0.58 * var(--film-shade, 1))) 0%,
-    rgba(2, 5, 4, calc(0.44 * var(--film-shade, 1))) 55%,
-    rgba(2, 5, 4, calc(0.2 * var(--film-shade, 1))) 82%,
-    rgba(2, 5, 4, 0) 100%
-  );
+  opacity: var(--veil, 1);
+  background: rgba(4, 8, 6, calc(0.3 * var(--film-shade, 1)));
+  -webkit-backdrop-filter: blur(var(--veil-blur)) saturate(0.85);
+  backdrop-filter: blur(var(--veil-blur)) saturate(0.85);
+  -webkit-mask-image:
+    linear-gradient(
+      90deg,
+      transparent,
+      #000 var(--veil-feather-x),
+      #000 calc(100% - var(--veil-feather-x)),
+      transparent
+    ),
+    linear-gradient(
+      transparent,
+      #000 var(--veil-feather-y),
+      #000 calc(100% - var(--veil-feather-y)),
+      transparent
+    );
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(
+      90deg,
+      transparent,
+      #000 var(--veil-feather-x),
+      #000 calc(100% - var(--veil-feather-x)),
+      transparent
+    ),
+    linear-gradient(
+      transparent,
+      #000 var(--veil-feather-y),
+      #000 calc(100% - var(--veil-feather-y)),
+      transparent
+    );
+  mask-composite: intersect;
   pointer-events: none;
+}
+
+/* Where the picture cannot be blurred, or should not be see-through, the
+   veil is simply a deeper shade. */
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .film-copy::before,
+  .trail-panel--overlay::before {
+    background: rgba(4, 8, 6, calc(0.5 * var(--film-shade, 1)));
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .film-copy::before,
+  .trail-panel--overlay::before {
+    background: rgba(4, 8, 6, 0.82);
+  }
+}
+
+/* The question inside the pupil is over black already. */
+.film-question::before {
+  content: none;
 }
 
 .film-copy--wide {
@@ -167,9 +225,10 @@ span.film-part {
 
 .film-lead {
   margin: 18px 0 0;
-  font-size: clamp(1.02rem, 1.3vw, 1.18rem);
-  line-height: 1.7;
-  color: rgba(246, 241, 228, 0.93);
+  font-size: clamp(1.05rem, 0.95rem + 0.32vw, 1.22rem);
+  font-weight: 450;
+  line-height: 1.65;
+  color: rgba(246, 241, 228, 0.95);
 }
 
 .film-subheading {
@@ -190,8 +249,10 @@ span.film-part {
 .film-list li {
   position: relative;
   padding-left: 22px;
+  font-size: 1.03rem;
+  font-weight: 450;
   line-height: 1.6;
-  color: rgba(246, 241, 228, 0.92);
+  color: rgba(246, 241, 228, 0.94);
 }
 
 .film-list li::before {
@@ -212,9 +273,9 @@ span.film-part {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 0;
-  font-size: 0.95rem;
+  font-size: 0.97rem;
   font-weight: 600;
-  color: rgba(246, 241, 228, 0.86);
+  color: rgba(246, 241, 228, 0.9);
 }
 
 .film-stack li:not(:last-child)::after {
@@ -244,8 +305,14 @@ span.film-part {
     max-width: none;
   }
 
-  .film-copy::before {
-    inset: -14% -12%;
+  /* On a narrow screen the veil spans the screen's width, edge to edge. */
+  .film-copy,
+  .trail-panel--overlay {
+    --veil-x: 20px;
+    --veil-y: 2.25rem;
+    --veil-feather-x: 0px;
+    --veil-feather-y: 2.25rem;
+    --veil-blur: 10px;
   }
 }
 
@@ -258,10 +325,6 @@ span.film-part {
 
   .film-section {
     padding: 18vh 0;
-  }
-
-  .film-cue {
-    will-change: auto;
   }
 
   .film-cue + .film-space + .film-cue {
