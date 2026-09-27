@@ -14,9 +14,9 @@ type IntroChapterProps = {
 };
 
 /**
- * "The Sentence": the cover's greeting continues on the path. The words
- * fade in one by one where the sentence stands, then the subtitle and the
- * actions, while the film goes on behind them.
+ * "The Sentence": the cover's greeting continues on the path, coming in
+ * with the subtitle and the actions the way every block does, while the
+ * film goes on behind them.
  */
 const IntroChapter = ({ at, ref }: IntroChapterProps) => {
   const intl = useIntl();

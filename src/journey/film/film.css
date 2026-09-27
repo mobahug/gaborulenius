@@ -82,6 +82,7 @@
 
 .film-cue.film-cue--held {
   position: sticky;
+  will-change: transform;
 }
 
 .film-hold > .film-anchor {
@@ -113,8 +114,8 @@
   justify-content: flex-end;
 }
 
-/* Within a block, its parts (see PART_SELECTOR in FilmSection.tsx) fade in
-   one after another: the script sets their opacity. */
+/* A block fades through its parts' opacity (see PART_SELECTOR in
+   FilmSection.tsx) and moves as a whole: the script sets both. */
 
 /* Readable over any picture, in the films' own language: behind the words
    the film goes out of focus and a little darker, as if the camera had

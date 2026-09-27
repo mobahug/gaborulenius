@@ -89,10 +89,18 @@ A block does not scroll past like a credit roll. It stands still on the
 screen for its stretch of the scroll (its hold, `hold` viewport heights,
 90 by default) while the film plays behind it: it is sticky, centred a
 little high below the navigation, out of sight while it slides into place
-and away again. Its parts (a heading, a line, a list item, a button, the
-words of the introduction's sentence, anything marked `film-part`) fade in
-one after another at the start of the hold, stay, and fade out together at
-its end; only their opacity changes, written only when it does. Each hold
+and away again. It comes and goes the way the question in the pupil does
+(`PortalTitle`): over the first fifth of its hold it fades in as one,
+settling down into place from a little above (5 % of the screen's height)
+as it grows from 94 % to its size; it stays, perfectly still and at its own
+size; and over the last fifth it passes the camera, growing as it fades —
+to about 110 %, less than the question, because a large block that grows
+much makes the GPU draw it again at the new size in the middle of the
+scroll (a 220 ms frame on a phone profile). The block carries the motion
+(its transform) and its parts and veil carry the opacity: opacity on the
+block itself would cut its veil off from the films. Out of sight it takes
+no clicks, so it never catches one meant for the block on screen.
+Each hold
 takes only the scroll it is held for — the block's own height is given back
 below it, where the next block is still out of sight — so the `Space`
 between two blocks is the film on its own. The film's cue time lands in the

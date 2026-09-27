@@ -7,7 +7,7 @@ import {
   type RefObject,
 } from "react";
 import { isWideLayout, prefersReducedMotion } from "../device";
-import { smoothstep } from "../math";
+import { easeOutCubic, range, smoothstep } from "../math";
 import { readViewport } from "../scrollTimeline";
 import { useScene } from "../useScene";
 import type { FilmId } from "./films";
@@ -73,10 +73,11 @@ type CueProps = {
 
 /**
  * A block of real content tied to a moment in the film. It does not scroll
- * past like a credit roll: it waits out of sight, fades in where it stands
- * on the screen, stays there for `hold` of scrolling while the film goes on
- * behind it, and fades out again. Its place in the page (the hold) keeps
- * the document order, the anchor and the scroll distance.
+ * past like a credit roll: it waits out of sight, comes in where it stands
+ * on the screen the way the question in the pupil does, stays there for
+ * `hold` of scrolling while the film goes on behind it, and passes the
+ * camera. Its place in the page (the hold) keeps the document order, the
+ * anchor and the scroll distance.
  */
 export const Cue = ({
   at,
@@ -128,9 +129,11 @@ type FilmSectionProps = {
 };
 
 /**
- * The parts of a block that fade in one after another: headings, lines,
- * list items, buttons, anything marked `film-part`. A container marked
- * `film-parts` is not a part itself; its `film-part` children are.
+ * The parts of a block, whose opacity carries its fading (the block itself
+ * must not, see film.css): headings, lines, list items, buttons, anything
+ * marked `film-part`. A container marked `film-parts` is not a part itself;
+ * its `film-part` children are. In a block that scrolls with the page, each
+ * part fades in and out on its own, where it is on the screen.
  */
 const PART_SELECTOR = [
   ".film-part",
@@ -147,10 +150,16 @@ const NAV_ROOM = 80;
 /** A held block must leave this much of the screen free (px): room for
  * the navigation and a phone's toolbars. Taller blocks scroll instead. */
 const SCREEN_MARGIN = 100;
-/** Each part starts to fade in this much of the hold after the one before
- * it, at most `MAX_STAGGER` after the first. */
-const STAGGER = 0.022;
-const MAX_STAGGER = 0.18;
+/**
+ * A held block comes and goes like the question in the pupil (see
+ * PortalTitle): over the first `ARRIVE` of its hold it fades in, settling
+ * down into place from a little above as it grows to its size; it stays;
+ * and over the last `PASS` it passes the camera, growing as it fades — less
+ * than the question does: a large block that grows much makes the GPU draw
+ * it again at the new size in the middle of the scroll.
+ */
+const ARRIVE = 0.2;
+const PASS = 0.2;
 
 type Part = {
   element: HTMLElement;
@@ -173,8 +182,11 @@ type Block = {
   holdPx: number;
   /** Where it stands on the screen while held (px from the top). */
   pin: number;
-  /** Last veil written (0–1); -1 = none yet. */
+  /** Last veil and transform written; -1 / "" = none yet. */
   veil: number;
+  transform: string;
+  /** Whether it takes clicks: not while it is out of sight. */
+  touchable: boolean;
 };
 
 /** An element's top inside `ancestor`, through the offset parents. */
@@ -192,8 +204,8 @@ const offsetWithin = (element: HTMLElement, ancestor: HTMLElement) => {
  * One stage of the journey: a tall section whose scroll distance drives a
  * film, with its content blocks in document order (readable, focusable and
  * searchable at any pace). Each block holds still on the screen for its
- * stretch of the scroll while the film plays behind it: its parts fade in
- * one after another, stay, and fade out together, and its veil (see
+ * stretch of the scroll while the film plays behind it: it fades in as one,
+ * settling into place, stays, and passes the camera, and its veil (see
  * film.css) softens the film behind it. A block too tall for the screen
  * scrolls with the page instead, fading in and out at the edges. With
  * reduced motion everything simply stays visible, in the page's flow.
@@ -249,6 +261,8 @@ const FilmSection = ({
             ? Math.max(NAV_ROOM, Math.round((vh - height) / 2 - 10))
             : 0,
           veil: -1,
+          transform: "",
+          touchable: true,
         };
       });
       // Then place them: a held block is sticky at its pin, and its hold
@@ -332,6 +346,10 @@ const FilmSection = ({
       if (reduced) {
         element.style.removeProperty("--veil");
         block.veil = -1;
+        element.style.transform = "";
+        element.style.pointerEvents = "";
+        block.transform = "";
+        block.touchable = true;
         holdProgress.set(element, 1);
         parts.forEach((part) => {
           if (part.opacity === 1) return;
@@ -349,9 +367,16 @@ const FilmSection = ({
         element,
         held ? progress : (vh - blockTop) / (vh + height),
       );
+      // Held: the whole block comes, stays and goes as one (the veil and
+      // every part share its opacity; the block itself carries the motion,
+      // never the opacity, which would cut the veil off from the films).
+      const reveal = range(progress, 0, ARRIVE);
+      const pass = range(progress, 1 - PASS, 1);
+      const settled = easeOutCubic(reveal);
+      const heldOpacity =
+        smoothstep(0, 1, reveal) * (1 - smoothstep(0.05, 0.6, pass));
       const veil = held
-        ? smoothstep(-0.03, 0.12, progress) *
-          (1 - smoothstep(0.86, 1, progress))
+        ? heldOpacity
         : Math.min(
             smoothstep(vh, vh * 0.5, blockTop),
             smoothstep(0, vh * 0.34, blockTop + height),
@@ -362,13 +387,25 @@ const FilmSection = ({
         block.veil = steppedVeil;
         element.style.setProperty("--veil", String(steppedVeil));
       }
-      const out = 1 - smoothstep(0.84, 1, progress);
-      parts.forEach((part, index) => {
+      const transform =
+        held && heldOpacity > 0
+          ? `translate3d(0, ${(-(1 - settled) * vh * 0.05).toFixed(1)}px, 0) scale(${(0.94 + 0.06 * settled + 0.25 * pass * pass).toFixed(4)})`
+          : "";
+      if (transform !== block.transform) {
+        block.transform = transform;
+        element.style.transform = transform;
+      }
+      // Out of sight, it must not catch the clicks meant for the block on
+      // screen (it may lie over it while it slides in or away).
+      const touchable = veil > 0.05;
+      if (touchable !== block.touchable) {
+        block.touchable = touchable;
+        element.style.pointerEvents = touchable ? "" : "none";
+      }
+      parts.forEach((part) => {
         let shown: number;
         if (held) {
-          // One after another in, all together out.
-          const delay = Math.min(index * STAGGER, MAX_STAGGER);
-          shown = smoothstep(delay, delay + 0.14, progress) * out;
+          shown = heldOpacity;
         } else {
           // In over the lower part of the screen, out under the navigation.
           const partTop = frame.top + part.top - y;
