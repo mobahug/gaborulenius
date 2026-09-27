@@ -198,8 +198,252 @@
           scroll-behavior: auto;
         }
       }
+
+      /* The loader: the first thing on screen, while the first film comes.
+         A morpho over the jungle's greens, a gold ring filling as the film
+         arrives; it leaves once the film plays (at most a few seconds). It
+         only fades in after a moment, so a visit from the cache never sees
+         it. */
+      #jungle-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background:
+          radial-gradient(
+            120% 70% at 52% -10%,
+            rgba(222, 226, 150, 0.2),
+            rgba(222, 226, 150, 0) 60%
+          ),
+          radial-gradient(
+            ellipse at 50% 46%,
+            #21401f 0%,
+            #142b19 42%,
+            #0a160d 100%
+          );
+        opacity: 0;
+        animation:
+          jl-in 0.6s ease 0.45s forwards,
+          jl-out 0.9s ease 9s forwards;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* (A name of its own: the same one would carry on the animation begun
+         at load, long finished by now.) */
+      #jungle-loader.is-leaving {
+        opacity: 1;
+        animation: jl-leave 0.9s ease 0.35s forwards;
+        pointer-events: none;
+      }
+
+      .jl-scene {
+        position: relative;
+        display: grid;
+        justify-items: center;
+        gap: 26px;
+      }
+
+      .jl-stage {
+        position: relative;
+        width: 156px;
+        height: 156px;
+        display: grid;
+        place-items: center;
+      }
+
+      .jl-ring {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        rotate: -90deg;
+        transition: opacity 0.4s ease;
+      }
+
+      .jl-ring circle {
+        fill: none;
+      }
+
+      .jl-track {
+        stroke: rgba(233, 220, 179, 0.16);
+        stroke-width: 1;
+      }
+
+      .jl-fill {
+        stroke: #e9dcb3;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-dasharray: 100;
+        stroke-dashoffset: calc(100 - var(--p, 0) * 100);
+        filter: drop-shadow(0 0 3px rgba(233, 220, 179, 0.6));
+        transition: stroke-dashoffset 0.4s ease;
+      }
+
+      .jl-morpho {
+        width: 92px;
+        height: 78px;
+        overflow: visible;
+        filter: drop-shadow(0 0 14px rgba(70, 160, 255, 0.45));
+        animation: jl-drift 3.2s ease-in-out infinite alternate;
+      }
+
+      /* A wing beats around the body (x = 0), never closing to an edge. */
+      .jl-wing {
+        transform-box: view-box;
+        transform-origin: 0 0;
+        animation: jl-flap 0.95s ease-in-out infinite alternate;
+      }
+
+      .jl-name {
+        margin: 0;
+        font:
+          600 0.72rem/1 "Inter",
+          system-ui,
+          sans-serif;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: rgba(233, 220, 179, 0.78);
+      }
+
+      /* Motes of light drifting down through the canopy. */
+      .jl-mote {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: rgba(240, 232, 190, 0.8);
+        box-shadow: 0 0 8px rgba(240, 232, 190, 0.7);
+        opacity: 0;
+        animation: jl-mote 7s linear infinite;
+      }
+
+      .jl-mote:nth-child(1) {
+        left: 22%;
+        top: 18%;
+        animation-delay: -1s;
+      }
+      .jl-mote:nth-child(2) {
+        left: 64%;
+        top: 12%;
+        animation-delay: -3.5s;
+      }
+      .jl-mote:nth-child(3) {
+        left: 78%;
+        top: 38%;
+        animation-delay: -5s;
+      }
+      .jl-mote:nth-child(4) {
+        left: 36%;
+        top: 30%;
+        animation-delay: -2.2s;
+      }
+      .jl-mote:nth-child(5) {
+        left: 12%;
+        top: 52%;
+        animation-delay: -4.4s;
+      }
+      .jl-mote:nth-child(6) {
+        left: 56%;
+        top: 58%;
+        animation-delay: -6s;
+      }
+
+      /* Leaving: the morpho flies up into the light, the jungle opens. */
+      #jungle-loader.is-leaving .jl-morpho {
+        animation: jl-away 1.1s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+      }
+
+      #jungle-loader.is-leaving .jl-ring,
+      #jungle-loader.is-leaving .jl-name {
+        opacity: 0;
+      }
+
+      @keyframes jl-in {
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes jl-out {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      @keyframes jl-leave {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      @keyframes jl-flap {
+        from {
+          transform: scaleX(1);
+        }
+        to {
+          transform: scaleX(0.38);
+        }
+      }
+
+      @keyframes jl-drift {
+        from {
+          translate: 0 3px;
+          rotate: -3deg;
+        }
+        to {
+          translate: 0 -5px;
+          rotate: 3deg;
+        }
+      }
+
+      @keyframes jl-away {
+        to {
+          translate: 18vw -62vh;
+          rotate: 16deg;
+          scale: 0.7;
+        }
+      }
+
+      @keyframes jl-mote {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, -20px, 0);
+        }
+        20%,
+        70% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 0;
+          transform: translate3d(14px, 120px, 0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #jungle-loader {
+          display: none;
+        }
+      }
     </style>
-    <script type="module" crossorigin src="/gaborulenius/assets/index-CB20Epz_.js"></script>
+    <noscript>
+      <style>
+        #jungle-loader {
+          display: none;
+        }
+      </style>
+    </noscript>
+    <script type="module" crossorigin src="/gaborulenius/assets/index-CCIcfjCY.js"></script>
     <link rel="modulepreload" crossorigin href="/gaborulenius/assets/vendor-react-CptINutj.js">
   </head>
   <body>
@@ -222,6 +466,139 @@
         </p>
       </main>
     </noscript>
+    <div id="jungle-loader" aria-hidden="true">
+      <span class="jl-mote"></span>
+      <span class="jl-mote"></span>
+      <span class="jl-mote"></span>
+      <span class="jl-mote"></span>
+      <span class="jl-mote"></span>
+      <span class="jl-mote"></span>
+      <div class="jl-scene">
+        <div class="jl-stage">
+          <svg class="jl-ring" viewBox="0 0 100 100">
+            <circle class="jl-track" cx="50" cy="50" r="47" />
+            <circle class="jl-fill" cx="50" cy="50" r="47" pathLength="100" />
+          </svg>
+          <svg class="jl-morpho" viewBox="-60 -50 120 100">
+            <defs>
+              <radialGradient
+                id="jl-blue"
+                cx="0"
+                cy="0"
+                r="62"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0" stop-color="#0c2a78" />
+                <stop offset="0.35" stop-color="#1f63f2" />
+                <stop offset="0.72" stop-color="#4fc4ff" />
+                <stop offset="1" stop-color="#1a5ad8" />
+              </radialGradient>
+            </defs>
+            <g class="jl-wing">
+              <path
+                d="M2 -3 C9 -28 33 -45 55 -42 C59 -31 53 -13 44 -3 C30 1 14 1 2 -1 Z"
+                fill="url(#jl-blue)"
+                stroke="#070b16"
+                stroke-width="2.4"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M2 1 C19 2 39 6 44 17 C45 32 29 44 15 41 C6 35 2 21 2 5 Z"
+                fill="url(#jl-blue)"
+                stroke="#070b16"
+                stroke-width="2.4"
+                stroke-linejoin="round"
+              />
+              <circle cx="47" cy="-35" r="1.6" fill="#f3f7ff" />
+              <circle cx="51" cy="-27" r="1.4" fill="#f3f7ff" />
+              <circle cx="49" cy="-19" r="1.2" fill="#f3f7ff" />
+            </g>
+            <g transform="scale(-1 1)">
+              <g class="jl-wing">
+                <path
+                  d="M2 -3 C9 -28 33 -45 55 -42 C59 -31 53 -13 44 -3 C30 1 14 1 2 -1 Z"
+                  fill="url(#jl-blue)"
+                  stroke="#070b16"
+                  stroke-width="2.4"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M2 1 C19 2 39 6 44 17 C45 32 29 44 15 41 C6 35 2 21 2 5 Z"
+                  fill="url(#jl-blue)"
+                  stroke="#070b16"
+                  stroke-width="2.4"
+                  stroke-linejoin="round"
+                />
+                <circle cx="47" cy="-35" r="1.6" fill="#f3f7ff" />
+                <circle cx="51" cy="-27" r="1.4" fill="#f3f7ff" />
+                <circle cx="49" cy="-19" r="1.2" fill="#f3f7ff" />
+              </g>
+            </g>
+            <ellipse cx="0" cy="2" rx="2.2" ry="15" fill="#0d0b0a" />
+            <path
+              d="M-1 -12 Q-6 -22 -11 -27 M1 -12 Q6 -22 11 -27"
+              stroke="#0d0b0a"
+              stroke-width="1.2"
+              fill="none"
+            />
+          </svg>
+        </div>
+        <p class="jl-name">Gábor Ulenius</p>
+      </div>
+    </div>
+    <script>
+      // The loader leaves once the film at the scroll's place plays
+      // (data-film-ready, set by FilmLayer), after 5.5 s at the most, or on a
+      // tap, a scroll or a key; its ring shows how much of that film has
+      // arrived.
+      (function () {
+        var loader = document.getElementById("jungle-loader");
+        if (!loader) return;
+        var root = document.documentElement;
+        var reduced =
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) {
+          loader.remove();
+          return;
+        }
+        // Not yet faded in: a visit from the cache never sees it.
+        var visibleFrom = performance.now() + 450;
+        var gone = false;
+        var film = null;
+        var leave = function () {
+          if (gone) return;
+          gone = true;
+          if (performance.now() < visibleFrom) {
+            loader.remove();
+            return;
+          }
+          loader.classList.add("is-leaving");
+          window.setTimeout(function () {
+            loader.remove();
+          }, 1300);
+        };
+        window.addEventListener("filmprogress", function (event) {
+          var detail = event.detail || {};
+          if (film === null) film = detail.index;
+          if (detail.index !== film) return;
+          loader.style.setProperty("--p", String(detail.progress));
+        });
+        if (root.dataset.filmReady === "true") leave();
+        new MutationObserver(function () {
+          if (root.dataset.filmReady === "true") leave();
+        }).observe(root, {
+          attributes: true,
+          attributeFilter: ["data-film-ready"],
+        });
+        loader.addEventListener("click", leave);
+        // A visitor who starts to scroll wants the page.
+        ["wheel", "touchmove", "keydown"].forEach(function (type) {
+          window.addEventListener(type, leave, { once: true, passive: true });
+        });
+        window.setTimeout(leave, 5500);
+      })();
+    </script>
     <div id="root"></div>
   </body>
 </html>
