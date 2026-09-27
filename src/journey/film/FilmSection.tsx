@@ -160,9 +160,18 @@ const SCREEN_MARGIN = 100;
  */
 const ARRIVE = 0.2;
 const PASS = 0.2;
+/**
+ * A block may come in beats (elements marked `film-beat`, e.g. a capability's
+ * words and then its screens): each beat comes this much of the hold after
+ * the one before it, and leaves as much before it — the first to come is the
+ * last to go.
+ */
+const BEAT_DELAY = 0.07;
 
 type Part = {
   element: HTMLElement;
+  /** The beat it belongs to (see BEAT_DELAY). */
+  beat: number;
   /** Its top in the section (px) and its height, for blocks that scroll. */
   top: number;
   height: number;
@@ -182,9 +191,11 @@ type Block = {
   holdPx: number;
   /** Where it stands on the screen while held (px from the top). */
   pin: number;
-  /** Last veil and transform written; -1 / "" = none yet. */
+  /** What moves: its beats, or the block as a whole; with the transform
+   * last written to each. */
+  beats: Array<{ element: HTMLElement; transform: string }>;
+  /** Last veil written; -1 = none yet. */
   veil: number;
-  transform: string;
   /** Whether it takes clicks: not while it is out of sight. */
   touchable: boolean;
 };
@@ -260,8 +271,8 @@ const FilmSection = ({
           pin: held
             ? Math.max(NAV_ROOM, Math.round((vh - height) / 2 - 10))
             : 0,
+          beats: [],
           veil: -1,
-          transform: "",
           touchable: true,
         };
       });
@@ -280,12 +291,21 @@ const FilmSection = ({
       blocks.forEach((block) => {
         const { element, hold, mark } = block;
         block.top = offsetWithin(mark ? element : hold!, section);
+        const beats = mark
+          ? []
+          : Array.from(element.querySelectorAll<HTMLElement>(".film-beat"));
+        if (!mark && !beats.length) beats.push(element);
+        block.beats = beats.map((beat) => ({ element: beat, transform: "" }));
         block.parts = mark
           ? []
           : Array.from(
               element.querySelectorAll<HTMLElement>(PART_SELECTOR),
             ).map((part) => ({
               element: part,
+              beat: Math.max(
+                0,
+                beats.findIndex((beat) => beat.contains(part)),
+              ),
               top: offsetWithin(part, section),
               height: part.offsetHeight,
               opacity: -1,
@@ -346,9 +366,11 @@ const FilmSection = ({
       if (reduced) {
         element.style.removeProperty("--veil");
         block.veil = -1;
-        element.style.transform = "";
+        block.beats.forEach((beat) => {
+          beat.element.style.transform = "";
+          beat.transform = "";
+        });
         element.style.pointerEvents = "";
-        block.transform = "";
         block.touchable = true;
         holdProgress.set(element, 1);
         parts.forEach((part) => {
@@ -367,16 +389,37 @@ const FilmSection = ({
         element,
         held ? progress : (vh - blockTop) / (vh + height),
       );
-      // Held: the whole block comes, stays and goes as one (the veil and
-      // every part share its opacity; the block itself carries the motion,
-      // never the opacity, which would cut the veil off from the films).
-      const reveal = range(progress, 0, ARRIVE);
-      const pass = range(progress, 1 - PASS, 1);
-      const settled = easeOutCubic(reveal);
-      const heldOpacity =
-        smoothstep(0, 1, reveal) * (1 - smoothstep(0.05, 0.6, pass));
+      // Held: each beat of the block (or the block as a whole) comes, stays
+      // and goes as one: the beat carries the motion, its parts and the
+      // veil its opacity, never the block itself, which would cut the veil
+      // off from the films.
+      const beatOpacity = block.beats.map((beat, index) => {
+        const reveal = range(
+          progress,
+          index * BEAT_DELAY,
+          index * BEAT_DELAY + ARRIVE,
+        );
+        const pass = range(
+          progress,
+          1 - PASS - index * BEAT_DELAY,
+          1 - index * BEAT_DELAY,
+        );
+        const settled = easeOutCubic(reveal);
+        const opacity =
+          smoothstep(0, 1, reveal) * (1 - smoothstep(0.05, 0.6, pass));
+        const transform =
+          held && opacity > 0
+            ? `translate3d(0, ${(-(1 - settled) * vh * 0.05).toFixed(1)}px, 0) scale(${(0.94 + 0.06 * settled + 0.25 * pass * pass).toFixed(4)})`
+            : "";
+        if (transform !== beat.transform) {
+          beat.transform = transform;
+          beat.element.style.transform = transform;
+        }
+        return opacity;
+      });
+      // The veil lies behind the first beat, the words.
       const veil = held
-        ? heldOpacity
+        ? (beatOpacity[0] ?? 0)
         : Math.min(
             smoothstep(vh, vh * 0.5, blockTop),
             smoothstep(0, vh * 0.34, blockTop + height),
@@ -387,17 +430,9 @@ const FilmSection = ({
         block.veil = steppedVeil;
         element.style.setProperty("--veil", String(steppedVeil));
       }
-      const transform =
-        held && heldOpacity > 0
-          ? `translate3d(0, ${(-(1 - settled) * vh * 0.05).toFixed(1)}px, 0) scale(${(0.94 + 0.06 * settled + 0.25 * pass * pass).toFixed(4)})`
-          : "";
-      if (transform !== block.transform) {
-        block.transform = transform;
-        element.style.transform = transform;
-      }
       // Out of sight, it must not catch the clicks meant for the block on
       // screen (it may lie over it while it slides in or away).
-      const touchable = veil > 0.05;
+      const touchable = held ? Math.max(...beatOpacity) > 0.05 : veil > 0.05;
       if (touchable !== block.touchable) {
         block.touchable = touchable;
         element.style.pointerEvents = touchable ? "" : "none";
@@ -405,7 +440,7 @@ const FilmSection = ({
       parts.forEach((part) => {
         let shown: number;
         if (held) {
-          shown = heldOpacity;
+          shown = beatOpacity[part.beat] ?? 0;
         } else {
           // In over the lower part of the screen, out under the navigation.
           const partTop = frame.top + part.top - y;
@@ -422,7 +457,7 @@ const FilmSection = ({
     });
   });
 
-  const classes = `film-section film-section--${film} reveal-guard${className ? ` ${className}` : ""}`;
+  const classes = `film-section film-section--${film}${className ? ` ${className}` : ""}`;
   if (!labelledBy && !label) {
     return (
       <div

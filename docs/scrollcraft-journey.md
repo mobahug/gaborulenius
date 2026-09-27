@@ -99,7 +99,13 @@ much makes the GPU draw it again at the new size in the middle of the
 scroll (a 220 ms frame on a phone profile). The block carries the motion
 (its transform) and its parts and veil carry the opacity: opacity on the
 block itself would cut its veil off from the films. Out of sight it takes
-no clicks, so it never catches one meant for the block on screen.
+no clicks, so it never catches one meant for the block on screen. A block
+may come in beats (`film-beat`): an Explorer capability's words come first
+and its phones follow 7 % of the hold later, and on the way out the phones
+leave first, so the words frame each moment. A block holding keyboard
+focus is always fully visible, still and in place — only that block, and
+only for keyboard focus (`:focus-visible`), since a click also focuses a
+button.
 Each hold
 takes only the scroll it is held for — the block's own height is given back
 below it, where the next block is still out of sight — so the `Space`
@@ -152,7 +158,9 @@ four capabilities stands beside two of the app's screens in phones with a
 dark bezel and a gold hairline — the one that does it in front, another
 one behind it in shade — the words at the edge of the screen like every
 other block, the phones toward the film (on a phone: the words, then the
-screens below them). How it is built (the three groups of the former
+screens below them). Either phone can be brought to the front by clicking
+or tapping it (or with the keyboard: they are buttons); the other slides
+back, and the caption names the one in front. How it is built (the three groups of the former
 dialog) and its stack follow, one group at a time.
 
 While its film plays, a small map in the corner walks the expedition

@@ -80,9 +80,13 @@
   display: none;
 }
 
+.film-cue.film-cue--held,
+.film-cue--held .film-beat {
+  will-change: transform;
+}
+
 .film-cue.film-cue--held {
   position: sticky;
-  will-change: transform;
 }
 
 .film-hold > .film-anchor {

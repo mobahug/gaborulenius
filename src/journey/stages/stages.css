@@ -86,31 +86,56 @@
   aspect-ratio: calc(397 / 844 * 1.55);
 }
 
+/* Both phones stand in the same place; the one behind is moved there, a
+   little smaller and in shade, so bringing it forward is a transition of
+   its transform alone. */
 .explorer-device {
   position: absolute;
+  right: 0;
   bottom: 0;
   box-sizing: border-box;
   height: 100%;
   aspect-ratio: 397 / 844;
+  margin: 0;
   padding: 6px;
+  appearance: none;
+  font: inherit;
+  color: inherit;
   border-radius: 34px;
   background: linear-gradient(160deg, #2c362d, #0a0f0b 45%);
   border: 1px solid rgba(233, 220, 179, 0.3);
   box-shadow:
     0 30px 70px rgba(0, 0, 0, 0.5),
     inset 0 0 0 1px rgba(0, 0, 0, 0.45);
+  transform-origin: 0% 100%;
+  transition:
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.65s ease;
 }
 
 .explorer-device--front {
-  right: 0;
+  z-index: 2;
+  cursor: default;
 }
 
 .explorer-device--back {
-  left: 0;
-  bottom: 7%;
-  height: 86%;
-  border-radius: 30px;
+  z-index: 1;
+  cursor: pointer;
+  transform: translate(-55%, -7%) scale(0.86);
   filter: brightness(0.62) saturate(0.85);
+}
+
+/* It can be brought forward: it lifts a little under the pointer. */
+@media (hover: hover) {
+  .explorer-device--back:hover {
+    transform: translate(-55%, -9%) scale(0.87);
+    filter: brightness(0.82) saturate(0.95);
+  }
+}
+
+.explorer-device:focus-visible {
+  outline: 2px solid #e9dcb3;
+  outline-offset: 4px;
 }
 
 .explorer-device img {
@@ -120,10 +145,6 @@
   object-fit: cover;
   border-radius: 28px;
   background: #0f1a13;
-}
-
-.explorer-device--back img {
-  border-radius: 24px;
 }
 
 .explorer-shot figcaption {

@@ -44,6 +44,7 @@ export default {
   projectExplorerSummary:
     "Mobiilisovellus syrjäisiin luonnonsuojelun kenttäretkiin: GPS-reitit, ekologiset alueet, media ja rakenteiset ympäristöhavainnot tallentuvat luotettavasti offline-tilassa myöhempää synkronointia ja tarkastelua varten.",
   projectExplorerGalleryHeading: "Lisää sovelluksesta",
+  projectExplorerBringForward: "Tuo {title} eteen",
   projectExplorerGalleryLabel: "Explorer-mobiilisovelluksen kuvakaappaukset",
   projectExplorerCapabilityTopoTitle: "Offline-topografiset kartat",
   projectExplorerCapabilityTopoBody:

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
   explorerCapabilities,
@@ -16,31 +17,48 @@ const screenshotFor = (src: string) =>
 
 /**
  * Two of the app's screens in phones: the one that does the capability, in
- * front, and another one behind it.
+ * front, and another one behind it. Either can be brought to the front by
+ * clicking it; the caption names the one in front.
  */
 const Screens = ({ screens }: Pick<ExplorerCapability, "screens">) => {
   const intl = useIntl();
-  const [front, back] = screens.map(screenshotFor);
-  const phone = (screenshot: typeof front, place: "front" | "back") => (
-    <div className={`explorer-device explorer-device--${place}`}>
-      <img
-        src={assetUrl(screenshot.src)}
-        alt={intl.formatMessage({ id: screenshot.altId })}
-        width={397}
-        height={844}
-        loading="lazy"
-        decoding="async"
-      />
-    </div>
-  );
+  const shots = screens.map(screenshotFor);
+  const [front, setFront] = useState(0);
   return (
     <figure className="explorer-shot">
       <div className="explorer-pair">
-        {phone(back, "back")}
-        {phone(front, "front")}
+        {shots.map((shot, index) => {
+          const inFront = index === front;
+          return (
+            <button
+              key={shot.src}
+              type="button"
+              className={`explorer-device explorer-device--${inFront ? "front" : "back"}`}
+              aria-pressed={inFront}
+              title={
+                inFront
+                  ? undefined
+                  : intl.formatMessage(
+                      { id: "projectExplorerBringForward" },
+                      { title: intl.formatMessage({ id: shot.titleId }) },
+                    )
+              }
+              onClick={() => setFront(index)}
+            >
+              <img
+                src={assetUrl(shot.src)}
+                alt={intl.formatMessage({ id: shot.altId })}
+                width={397}
+                height={844}
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          );
+        })}
       </div>
-      <figcaption>
-        <FormattedMessage id={front.titleId} />
+      <figcaption aria-live="polite">
+        <FormattedMessage id={shots[front].titleId} />
       </figcaption>
     </figure>
   );
@@ -49,10 +67,12 @@ const Screens = ({ screens }: Pick<ExplorerCapability, "screens">) => {
 /**
  * A capability of the app beside the screens that show it: the words at the
  * edge of the screen like every other block, the phones toward the film.
+ * The words come first and the phones a beat later (see BEAT_DELAY in
+ * FilmSection); the phones leave first.
  */
 const Feature = ({ titleId, bodyId, icon, screens }: ExplorerCapability) => (
   <div className="explorer-feature">
-    <div className="film-copy explorer-feature-copy">
+    <div className="film-copy explorer-feature-copy film-beat">
       <span className="stage-capability-icon" aria-hidden="true">
         {icon}
       </span>
@@ -63,7 +83,7 @@ const Feature = ({ titleId, bodyId, icon, screens }: ExplorerCapability) => (
         <FormattedMessage id={bodyId} />
       </p>
     </div>
-    <div className="explorer-feature-screen film-part">
+    <div className="explorer-feature-screen film-part film-beat">
       <Screens screens={screens} />
     </div>
   </div>

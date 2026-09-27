@@ -33,11 +33,20 @@
   border: 0 !important;
 }
 
-/* Scroll-revealed content is always fully visible for keyboard users. */
-.reveal-guard:focus-within .reveal-item,
-.reveal-guard:focus-within
-  .reveal-item
-  :is(.film-part, .film-copy > *, li, .film-actions > *, .about-card > *) {
+/* A block that holds keyboard focus is always fully visible, still and in
+   place — only that block: the others stay where the scroll has them. A
+   click (which focuses a button, but not visibly) leaves the block to the
+   scroll. */
+.reveal-item:has(:focus-visible),
+.reveal-item:has(:focus-visible)
+  :is(
+    .film-beat,
+    .film-part,
+    .film-copy > *,
+    li,
+    .film-actions > *,
+    .about-card > *
+  ) {
   --veil: 1 !important;
   opacity: 1 !important;
   transform: none !important;

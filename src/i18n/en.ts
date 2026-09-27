@@ -43,6 +43,7 @@ export default {
   projectExplorerSummary:
     "A mobile fieldwork app for remote conservation expeditions, built to capture reliable offline GPS trails, ecological zones, media, and structured environmental observations for later sync and review.",
   projectExplorerGalleryHeading: "More of the app",
+  projectExplorerBringForward: "Bring {title} to the front",
   projectExplorerGalleryLabel: "Explorer mobile app screenshots",
   projectExplorerCapabilityTopoTitle: "Offline topographic maps",
   projectExplorerCapabilityTopoBody:
