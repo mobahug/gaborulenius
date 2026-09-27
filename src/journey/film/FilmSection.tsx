@@ -158,14 +158,14 @@ const SCREEN_MARGIN = 100;
  * than the question does: a large block that grows much makes the GPU draw
  * it again at the new size in the middle of the scroll.
  */
-const ARRIVE = 0.32;
+const ARRIVE = 0.36;
 const PASS = 0.22;
 /**
  * However fast the page is scrolled, a block arrives slowly: how far it has
  * come follows the scroll with this time constant (s). It leaves with the
  * scroll, so it has always gone before it moves away.
  */
-const ARRIVE_SECONDS = 1.1;
+const ARRIVE_SECONDS = 1.5;
 /**
  * A block may come in beats (elements marked `film-beat`, e.g. a capability's
  * words and then its screens): each beat comes this much of the hold after

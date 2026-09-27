@@ -100,8 +100,8 @@ scroll (a 220 ms frame on a phone profile). The block carries the motion
 (its transform) and its parts and veil carry the opacity: opacity on the
 block itself would cut its veil off from the films. However fast the page
 is scrolled, a block arrives slowly: how far it has come follows the scroll
-with a time constant of 1.1 s, so after a jump its words take about a
-second to come in and its phones nearly two; it leaves with the scroll, so
+with a time constant of 1.5 s, so after a jump its words take under two
+seconds to come in and its phones about three; it leaves with the scroll, so
 it has always gone before it moves away. Out of sight it takes no clicks,
 so it never catches one meant for the block on screen. A block
 may come in beats (`film-beat`): an Explorer capability's words come first
