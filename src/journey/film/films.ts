@@ -138,7 +138,9 @@ export const FILMS: readonly Film[] = [
       [6.9, 51],
       [7.6, 51.3],
     ],
-    // The path under the greeting, as on the cover.
+    // The path under the greeting, as on the cover. Graded when encoded
+    // (richer greens: saturation 1.16, contrast 1.12, vibrance 0.2, gamma
+    // 0.94); it still ends on black.
     still: 0,
     poster: assetUrl("film/jungle_chase-still.webp"),
     posters: [
@@ -146,9 +148,9 @@ export const FILMS: readonly Film[] = [
       [6.9, assetUrl("film/jungle_chase-still-eye.webp")],
     ],
     light: [
-      0.19, 0.19, 0.2, 0.19, 0.18, 0.18, 0.24, 0.29, 0.24, 0.15, 0.16, 0.18,
-      0.2, 0.2, 0.23, 0.29, 0.35, 0.19, 0.19, 0.22, 0.28, 0.26, 0.37, 0.26,
-      0.28, 0.35, 0.35, 0.34, 0.34, 0.36, 0.31, 0.11, 0.01,
+      0.18, 0.18, 0.19, 0.19, 0.17, 0.16, 0.18, 0.26, 0.32, 0.13, 0.13, 0.15,
+      0.18, 0.21, 0.19, 0.35, 0.38, 0.17, 0.18, 0.17, 0.31, 0.26, 0.33, 0.3,
+      0.28, 0.33, 0.32, 0.4, 0.33, 0.37, 0.36, 0.18, 0.0,
     ],
   },
   {
