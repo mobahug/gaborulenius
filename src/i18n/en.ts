@@ -5,6 +5,8 @@ export default {
   navExperience: "Experience",
   navSkills: "Skills & Tools",
   navSections: "Sections",
+  navShowParts: "Show the parts of {section}",
+  navHideParts: "Hide the parts of {section}",
   navAboutMe: "About me",
   navAboutStory: "My story",
   navNeural: "Neural Decompiler",

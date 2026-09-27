@@ -168,7 +168,6 @@ export const highlightedEvents: TimelineEvent[] = [
             <LinkThumbnail
               id="linkThumbnailTitleHive"
               descriptionId="linkThumbnailDescriptionHive"
-              image="https://images.ctfassets.net/7oor54l3o0n4/656J6ndTUsw2c8AG4GuAoK/f4f14c0cb50fb260303cc9867bd2ad07/about-hive-logo.jpg?w=2560&h=1008&q=50"
               urlEN="https://www.hive.fi/en/"
               urlFI="https://www.hive.fi/en/"
             />
@@ -344,7 +343,6 @@ export const allEvents: TimelineEvent[] = [
             <LinkThumbnail
               id="linkThumbnailTitleHive"
               descriptionId="linkThumbnailDescriptionHive"
-              image="https://images.ctfassets.net/7oor54l3o0n4/656J6ndTUsw2c8AG4GuAoK/f4f14c0cb50fb260303cc9867bd2ad07/about-hive-logo.jpg?w=2560&h=1008&q=50"
               urlEN="https://www.hive.fi/en/"
               urlFI="https://www.hive.fi/en/"
             />

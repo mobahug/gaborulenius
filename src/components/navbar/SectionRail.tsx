@@ -3,32 +3,27 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { onDirectorFrame } from "../../journey/director/director";
 import { onAfterSceneFrame, registerScene } from "../../journey/scrollTimeline";
 import { useActiveNavLink } from "../../hooks/useActiveNavLink";
-import { navLinks } from "./navConstants";
+import {
+  PART_REACHED,
+  allParts,
+  groupOf,
+  navLinks,
+  placeOf,
+} from "./navConstants";
 import { useAfterCover } from "./useAfterCover";
 import "./sectionRail.css";
-
-/** A part counts as reached once its place in the page is this far up the
- * screen (as the scroll spy does for sections). */
-const REACHED = 0.35;
-
-/** Where a part's place in the page is: the hold of the block its anchor is
- * in (or the anchor itself). */
-const placeOf = (href: string) => {
-  const anchor = document.getElementById(href.slice(1));
-  return anchor?.closest<HTMLElement>(".film-hold") ?? anchor;
-};
-
-const allChildren = navLinks.flatMap((link) => link.children ?? []);
 
 /**
  * The page's sections down the right edge of the screen (wide screens):
  * a dot for each, the current one lit, on a thin gold line that fills as
- * the journey goes on. The current section opens its own parts below it —
- * the Neural Decompiler's case study and method, each capability of the
- * Explorer, the highlights and the work projects … — the one on screen lit,
- * following the scroll. Hovering the rail (or moving into it with the
- * keyboard) shows the names; each one takes you there. It comes in once the
- * cover has gone.
+ * the journey goes on. The current section opens its own parts below it,
+ * grouped by project — the Neural Decompiler (its case study and method),
+ * the Explorer (each capability, how it is built) — the one on screen lit,
+ * with its project, following the scroll. Hovering the dots (or moving into
+ * the rail with the keyboard) shows the names; each one takes you there.
+ * Until then only the dots take the pointer, so the rail never covers what
+ * is beside it (the corner instruments). It comes in once the cover has
+ * gone.
  */
 const SectionRail = () => {
   const intl = useIntl();
@@ -53,7 +48,7 @@ const SectionRail = () => {
   // REACHED — measured by the scroll clock with everything else.
   useEffect(() => {
     const tops = new Map<string, number>();
-    const unregister = allChildren.map(({ href }) =>
+    const unregister = allParts.map(({ href }) =>
       registerScene(
         () => placeOf(href),
         (frame) => tops.set(href, frame.top - frame.viewport.y),
@@ -64,7 +59,7 @@ const SectionRail = () => {
       let reached: string | null = null;
       let best = -Infinity;
       tops.forEach((top, href) => {
-        if (top <= vh * REACHED && top > best) {
+        if (top <= vh * PART_REACHED && top > best) {
           best = top;
           reached = href;
         }
@@ -111,11 +106,23 @@ const SectionRail = () => {
                   <ul inert={!open}>
                     {children.map((child) => {
                       const here = open && activeChild === child.href;
+                      const group = child.group
+                        ? open && groupOf(children, activeChild) === child.href
+                        : false;
+                      const classes = [
+                        here ? "is-active" : "",
+                        group ? "is-current" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ");
                       return (
-                        <li key={child.id}>
+                        <li
+                          key={child.id}
+                          className={child.group ? "is-group" : undefined}
+                        >
                           <a
                             href={child.href}
-                            className={here ? "is-active" : undefined}
+                            className={classes || undefined}
                             aria-current={here ? "location" : undefined}
                             onClick={() => requestActiveSection(href)}
                           >

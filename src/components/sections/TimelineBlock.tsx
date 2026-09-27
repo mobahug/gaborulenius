@@ -102,10 +102,12 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
                   backgroundColor: "rgba(255,255,255,.04)",
                   boxShadow: "0 2px 8px rgba(0,0,0,.25)",
                 },
+                // The chosen one: tinted, with a gold edge on the side of
+                // its story (beside the timeline).
                 ...(selected && {
                   "&, &:hover": {
-                    backgroundColor: alpha(lightColors.accent, 0.1),
-                    boxShadow: `inset 2px 0 0 ${lightColors.accent}`,
+                    backgroundColor: alpha(lightColors.accent, 0.08),
+                    boxShadow: `inset -2px 0 0 ${lightColors.accent}`,
                   },
                   "& .trail-event-title": { color: lightColors.accent },
                 }),

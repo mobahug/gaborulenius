@@ -330,3 +330,21 @@ screen behind each capability's first.
   filmlook.js): their colours moved toward the film's around each, the
   film's haze and glow, depth of field (the near ones softest) and grain.
 - Let's Connect no longer shows the time in Espoo.
+
+## 14. Finding your way, tidied (September 2026)
+
+- The rail groups a section's parts by project (small gold capitals for the
+  Neural Decompiler and the Explorer, their parts under them), with the
+  sections in larger, brighter type; a lit dot's glow is no longer cut at
+  the rail's side. Only the dots take the pointer until the rail opens, so
+  the Explorer map's last waypoint, under the rail's names, can be clicked.
+- The office's dial shows the film's parts like the map (experience, work
+  projects, skills, tools: lit as passed, each a way there, the current one
+  named in the middle); the career's years and roles stay inside it, the
+  role whose story is told lit.
+- The chosen role in the timeline has its gold edge on the side of its
+  story.
+- The phone's menu lists the parts too, grouped the same way, the current
+  section open.
+- A link card whose picture cannot be loaded shows only its words (Hive's
+  picture had gone from its host).

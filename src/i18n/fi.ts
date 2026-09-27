@@ -6,6 +6,8 @@ export default {
   navbar_projects: "Projektit",
   navSkills: "Taidot",
   navSections: "Osiot",
+  navShowParts: "Näytä osion {section} osat",
+  navHideParts: "Piilota osion {section} osat",
   navAboutMe: "Minusta",
   navAboutStory: "Tarinani",
   navNeural: "Neural Decompiler",

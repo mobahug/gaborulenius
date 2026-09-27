@@ -222,7 +222,7 @@ hairlines, a red walker that moves with the film:
 | Chase    | Whenever a block of the jungle scenes comes in — the introduction, About, its story, and the invitation at the end — two or three morphos of different sizes, blue on both sides of the wing like the film's, fade in from the edges of the screen and settle on it: on top of its heading, a button or the story card, or on the side of a button or the card, each time somewhere else, like the old portfolio's pixel bird; never more than five at once. A pointer close by startles one up for a moment, and they fly off when the block goes (`overlays/butterflies.ts`, drawn above the content). |
 | Neural   | The pointer is a probe that reads the film's neurons (`overlays/neuralProbe.ts`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Explorer | The expedition map in the corner (`ExplorerMap.tsx`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Work     | The career dial in the corner (`CareerDial.tsx`): the years from 2016 to today, walked in red as the office film plays, a waypoint lit at each role of the experience highlights (which tells that role's story beside the timeline), and in the middle the year and the role of that moment.                                                                                                                                                                                                                                                                                                            |
+| Work     | The office's dial in the corner (`CareerDial.tsx`), in the map's language: the film's parts round it — the experience, the work projects, the skills and the tools — walked in red as the film plays, each lit once passed and taking you to it, and the one you are in named in the middle. Inside, the career: the years from 2016 to today and a dot for each role of the experience highlights, which tells that role's story beside the timeline (the one told is lit).                                                                                                                             |
 | Ending   | The morphos settle on the invitation and its buttons (see Chase).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
 The corner instruments show on wide screens only (at least 1100 × 680).
@@ -262,16 +262,22 @@ The browser's own chrome follows (`theme-color`, `color-scheme: dark`).
 
 On wide screens the sections are on a rail at the right edge
 (`SectionRail.tsx`): a dot for each, the current one lit, on a thin gold
-line that fills as the journey goes on; hovering it (or tabbing into it)
-shows their names in a glass panel, and each takes you there. The current
-section opens its own parts below its dot — the Neural Decompiler's case
-study and method, each capability of the Explorer and how it is built, the
-highlights and the work projects, the skills and the tools — the one on
-screen lit as the scroll goes on (the last whose block has come up to a
-third of the screen). The bar at
-the top keeps only who this is (the avatar and name, back to the top), the
-language and the sound. On phones the bar keeps its menu. Both come in once
-the cover has gone. The scroll spy reads a block's section from its hold
+line that fills as the journey goes on; hovering the dots (or tabbing into
+the rail) shows their names in a glass panel, and each takes you there.
+Until then only the dots' column takes the pointer, so the rail's names
+never cover what is beside it (the map's last waypoint sits under them).
+The current section opens its own parts below its dot, grouped by project
+— the Neural Decompiler (its case study and method), the Explorer (each
+capability, how it is built) — and the highlights and the work projects,
+the skills and the tools: sections in larger, brighter type, a project's
+name in small gold capitals, its parts under it. The part on screen is lit,
+and its project, as the scroll goes on (the last whose block has come up to
+a third of the screen). The bar at the top keeps only who this is (the
+avatar and name, back to the top), the language and the sound. On phones
+the bar keeps its menu, which lists the same sections and parts: the
+current section open with the part on screen lit, the others opening with
+their arrow, so any part is a tap away. Both come in once the cover has
+gone. The scroll spy reads a block's section from its hold
 (`data-section`), since the id is on the anchor inside it.
 
 ## The neural probe

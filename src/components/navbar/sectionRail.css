@@ -5,9 +5,12 @@
   right: 16px;
   z-index: 1100;
   translate: 24px -50%;
-  padding: 14px 10px 14px 18px;
+  padding: 14px 14px 14px 20px;
   opacity: 0;
   visibility: hidden;
+  /* Only the dots take the pointer (see the links below) until the rail is
+     open, so its names never cover what is beside it. */
+  pointer-events: none;
   transition:
     opacity 0.35s ease,
     translate 0.35s ease,
@@ -45,12 +48,18 @@
   opacity: 1;
 }
 
+/* Open: all of it, so moving between the names keeps it open. */
+.section-rail.is-visible:hover,
+.section-rail.is-visible:focus-within {
+  pointer-events: auto;
+}
+
 /* The line through the dots, and how far the journey has come on it. */
 .section-rail-track {
   position: absolute;
   top: 26px;
   bottom: 26px;
-  right: 14.5px;
+  right: 18.5px;
   width: 1px;
   background: rgba(233, 220, 179, 0.22);
 }
@@ -73,7 +82,9 @@
   gap: 4px;
 }
 
-/* The current section's own parts, opening below it. */
+/* The current section's own parts, opening below it: a project's name in
+   small gold capitals, its parts under it. Cut off only at the top and the
+   bottom while it opens, so a lit dot's glow is never cut at the side. */
 .section-rail-children {
   display: grid;
   grid-template-rows: 0fr;
@@ -86,41 +97,86 @@
 
 .section-rail-children > ul {
   min-height: 0;
-  overflow: hidden;
+  overflow-x: visible;
+  overflow-y: clip;
   gap: 0;
+  padding: 2px 0 4px;
 }
 
 .section-rail-children a {
   min-height: 22px;
   font-size: 0.72rem;
   font-weight: 500;
+  color: rgba(246, 241, 228, 0.6);
 }
 
 .section-rail-children .section-rail-dot {
-  width: 6px;
-  height: 6px;
-  margin-right: 2px;
+  width: 5px;
+  height: 5px;
+  margin-right: 2.5px;
   border-width: 1px;
 }
 
+.section-rail-children li.is-group:not(:first-child) {
+  margin-top: 6px;
+}
+
+.section-rail-children li.is-group a {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(217, 200, 154, 0.78);
+}
+
+.section-rail-children li.is-group .section-rail-dot {
+  width: 7px;
+  height: 7px;
+  margin-right: 1.5px;
+  border-color: #d9c89a;
+}
+
+/* The project of the part on screen. */
+.section-rail-children li.is-group a.is-current {
+  color: #e9dcb3;
+}
+
+.section-rail-children li.is-group a.is-current .section-rail-dot {
+  background: rgba(217, 200, 154, 0.45);
+}
+
 .section-rail-children a.is-active .section-rail-dot {
-  scale: 1.35;
+  scale: 1.5;
   box-shadow: 0 0 8px rgba(233, 220, 179, 0.6);
 }
 
+/* A section: larger and brighter than its parts. */
 .section-rail a {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 14px;
   min-height: 30px;
-  color: rgba(246, 241, 228, 0.72);
+  color: rgba(246, 241, 228, 0.8);
   text-decoration: none;
   border-radius: 8px;
   font:
-    600 0.8rem/1 "Inter",
+    650 0.86rem/1 "Inter",
     sans-serif;
   letter-spacing: 0.01em;
+}
+
+/* The dots' column always takes the pointer (and a click), the width of a
+   finger. */
+.section-rail a::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -10px;
+  width: 38px;
+  pointer-events: auto;
 }
 
 .section-rail a:focus-visible {

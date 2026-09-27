@@ -2,8 +2,8 @@ import { smoothstep } from "../math";
 
 /**
  * The small instruments in the corner of the screen, one for some of the
- * films (the Explorer's map, the career dial, the time in Espoo): wide
- * screens only, where there is room beside the content.
+ * films (the Explorer's map, the office's dial): wide screens only, where
+ * there is room beside the content.
  */
 export const INSTRUMENT_QUERY = "(min-width: 1100px) and (min-height: 680px)";
 

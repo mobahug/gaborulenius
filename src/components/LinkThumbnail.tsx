@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useAtomValue } from "jotai";
+import { useState } from "react";
 import { localeAtom } from "../hooks/localeAtom";
 import { FormattedMessage, useIntl } from "react-intl";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -13,7 +14,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 type LinkThumbnailProps = {
   id: string;
   descriptionId: string;
-  image: string;
+  /** Without one (or if it cannot be loaded), the card is its words. */
+  image?: string;
   urlEN?: string;
   urlFI?: string;
   readingMinutes?: number;
@@ -35,6 +37,7 @@ const LinkThumbnail: React.FC<LinkThumbnailProps> = ({
 }) => {
   const intl = useIntl();
   const locale = useAtomValue(localeAtom);
+  const [imageFailed, setImageFailed] = useState(false);
   const displayUrl = locale === "fi" ? urlFI : urlEN;
   const title = intl.formatMessage({ id });
   const noLinkAvailableLabel = intl.formatMessage({ id: "noLinkAvailable" });
@@ -47,7 +50,15 @@ const LinkThumbnail: React.FC<LinkThumbnailProps> = ({
 
   const thumbnailContent = (
     <>
-      <CardMedia component="img" height={height} image={image} alt={title} />
+      {image && !imageFailed ? (
+        <CardMedia
+          component="img"
+          height={height}
+          image={image}
+          alt={title}
+          onError={() => setImageFailed(true)}
+        />
+      ) : null}
       <CardContent sx={{ pb: 2 }}>
         <Typography variant="subtitle2" component="h3" gutterBottom>
           <FormattedMessage id={id} />

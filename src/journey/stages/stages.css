@@ -179,9 +179,9 @@
 }
 
 /* The instruments in a corner of the screen (instrument.ts): the
-   Explorer's expedition map, the office's career dial and the time in
-   Espoo beside the invitation. Each is a small dial on a soft shade, gold
-   hairlines, and a red walker that moves with the film. */
+   Explorer's expedition map and the office's dial. Each is a small dial on
+   a soft shade, gold hairlines, and a red walker that moves with the film
+   past the film's parts, each one a waypoint that takes you there. */
 .instrument {
   position: fixed;
   right: 72px;
@@ -279,6 +279,7 @@
 
 .instrument-label,
 .instrument-value,
+.instrument-name,
 .instrument-caption,
 .instrument-note {
   font-family: "Inter", sans-serif;
@@ -297,6 +298,31 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   fill: #f6f1e4;
+}
+
+/* The part of the film you are in, in the middle of the office's dial. */
+.instrument-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  fill: #f6f1e4;
+}
+
+/* The career inside the office's dial: a hairline of the years, and the
+   roles, the one whose story is told lit. */
+.career-dial-years {
+  fill: none;
+  stroke: rgba(233, 220, 179, 0.28);
+  stroke-width: 1;
+}
+
+.career-dial-role .instrument-stop {
+  stroke-width: 1.2;
+}
+
+.career-dial-role.is-chosen .instrument-stop {
+  fill: #e9dcb3;
+  stroke: #fff4ec;
 }
 
 .instrument-caption {
