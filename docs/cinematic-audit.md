@@ -286,3 +286,17 @@ content was cut into beats that fit a phone's screen. The Explorer's route
 through the page could not follow content that stands still; it became a
 small map in the corner, and the strip of small screens became a second
 screen behind each capability's first.
+
+## 12. Phones, colour and finding your way (September 2026)
+
+- Phones: the blocks shook under a touch fling, because the script held a
+  fading block in place against the phone's own scrolling; it no longer
+  does. The films looked soft because phones got the light encodes while
+  showing only a slice of each frame; they now move to full HD in the
+  background once the light encode is on screen.
+- Colour: the chase is graded richer, and the cover's leaves vivid lime.
+- The morphos that land on the jungle scenes' blocks are all the film's
+  blue morpho, two or three at a time in different sizes, somewhere else
+  each time.
+- A section rail at the right edge takes the navigation's links; the bar at
+  the top keeps the name, the language and the sound.

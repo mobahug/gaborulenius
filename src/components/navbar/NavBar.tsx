@@ -17,6 +17,7 @@ const ShowAfterCover = React.lazy(() => import("./ShowAfterCover"));
 const importMobileDrawer = () => import("./MobileDrawer");
 const MobileDrawer = React.lazy(importMobileDrawer);
 const DesktopNavItems = React.lazy(() => import("./DesktopNavItems"));
+const SectionRail = React.lazy(() => import("./SectionRail"));
 
 type IdleWindow = Window & {
   requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
@@ -148,7 +149,7 @@ export const NavBar: React.FC = () => {
                 minHeight: isMobile ? "64px" : "60px",
                 px: 1.5,
                 py: 0,
-                justifyContent: isMobile ? "space-between" : "center",
+                justifyContent: "space-between",
               }}
             >
               {isMobile ? (
@@ -207,6 +208,11 @@ export const NavBar: React.FC = () => {
           </AppBar>
         </ShowAfterCover>
       </React.Suspense>
+      {isMobile ? null : (
+        <React.Suspense fallback={null}>
+          <SectionRail />
+        </React.Suspense>
+      )}
       {mobileDrawerLoaded ? (
         <React.Suspense fallback={null}>
           <MobileDrawer

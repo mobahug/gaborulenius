@@ -95,11 +95,13 @@ above and grows from 94 % to its size, and passing the camera as it fades
 out, growing to about 110 % (less than the question: a large block that
 grows much makes the GPU draw it again mid-scroll) — and both take the same
 time, however fast the page is scrolled: the block is shown while the
-scroll is inside its hold (from 4 % to 86 % of it) and fades in or out over
-1.4 s. While it fades out it keeps its place on the screen even if the page
-has already moved on (its drift away from its sticky place is undone by its
-transform), and the next block waits until it is less than 30 % there, so
-two blocks' words never cross. The block's beats carry the motion (their
+scroll is inside its hold (from 4 % to 80 % of it) and fades in or out over
+1.4 s; once the page has moved past its hold, it goes with the page as it
+fades. (Holding it in place from script instead fought a phone's own,
+threaded scrolling: under a touch fling each block jumped back and forth by
+up to 26 px, two or three times; now it moves one way only.) The next
+block waits until the last one is less than 30 % there, so two blocks'
+words never cross. The block's beats carry the motion (their
 transform) and their parts and the veil the opacity: opacity on the block
 itself would cut its veil off from the films. Out of sight it takes no
 clicks, so it never catches one meant for the block on screen. A block
@@ -147,8 +149,14 @@ nothing else is pinned — while the chase moves from the first scroll, about
 0.8 s of film per viewport height, a little more than one second while the
 macaw crosses the clearing, and slowing for the dive into the eye.
 
+The chase itself is graded when it is encoded (saturation 1.16, contrast
+1.12, vibrance 0.2, gamma 0.94): its opening frames were flat and greyish,
+and now carry the richer greens of the old portfolio; it still ends on
+black, so the pupil's hand-off is unchanged.
+
 The cover's jungle leaves are images (`public/cover/`, WebP with alpha, a
-large and a half-size one each): a banana leaf from the top left, a palm
+large and a half-size one each), graded vivid and lime (more red, much less
+blue, as the earlier painted leaves were): a banana leaf from the top left, a palm
 frond hanging from the top right, a giant taro (alocasia) at the right
 edge, a monstera and a fern crossing it at the bottom left, and a
 heart-shaped philodendron close to the camera, dark and out of focus. The
@@ -201,13 +209,13 @@ scroll and back.
 Every film has one small thing of its own, in the same language — gold
 hairlines, a red walker that moves with the film:
 
-| Film     | Signature                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Chase    | The film's morpho comes out of the film as it passes the camera and keeps the pointer company while the introduction and About are read: it follows lazily, settles and slowly opens and closes its blue wings when the pointer rests, and flies away when About has passed (`overlays/morpho.ts`, drawn above the content; mouse only). And as each block of the first scene comes in, a few butterflies of other kinds and sizes — a monarch, a sulphur, a cabbage white, a postman, an emerald swallowtail — fade in from the edges of the screen, fly over and settle on its edges (the buttons, the first fact's icon, the story card), opening and closing their wings; a pointer close by startles one up for a moment, and they fly off when the block goes (`overlays/butterflies.ts`). |
-| Neural   | The pointer is a probe that reads the film's neurons (`overlays/neuralProbe.ts`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| Explorer | The expedition map in the corner (`ExplorerMap.tsx`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| Work     | The career dial in the corner (`CareerDial.tsx`): the years from 2016 to today, walked in red as the office film plays, a waypoint lit at each role of the experience highlights, and in the middle the year and the role of that moment.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| Ending   | Under the invitation, the time in Espoo (`EspooNow.tsx`): a small dial of the day with today's daylight in gold and the moment in red, the time, and the visitor's own — so a visitor knows when to expect a reply. Part of the block, so it shows on every screen.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Film     | Signature                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chase    | The film's morpho comes out of the film as it passes the camera and keeps the pointer company while the introduction and About are read: it follows lazily, settles and slowly opens and closes its blue wings when the pointer rests, and flies away when About has passed (`overlays/morpho.ts`, drawn above the content; mouse only). And whenever a block of the jungle scenes comes in — the introduction, About, its story, and the invitation at the end — two or three more morphos of different sizes fade in from the edges of the screen and settle on its edges (the top of its heading, a button, the story card, a fact's icon), each time somewhere else, like the old portfolio's pixel bird; never more than five at once. A pointer close by startles one up for a moment, and they fly off when the block goes (`overlays/butterflies.ts`). |
+| Neural   | The pointer is a probe that reads the film's neurons (`overlays/neuralProbe.ts`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Explorer | The expedition map in the corner (`ExplorerMap.tsx`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Work     | The career dial in the corner (`CareerDial.tsx`): the years from 2016 to today, walked in red as the office film plays, a waypoint lit at each role of the experience highlights, and in the middle the year and the role of that moment.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Ending   | Under the invitation, the time in Espoo (`EspooNow.tsx`): a small dial of the day with today's daylight in gold and the moment in red, the time, and the visitor's own — so a visitor knows when to expect a reply. Part of the block, so it shows on every screen.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 The corner instruments show on wide screens only (at least 1100 × 680).
 
@@ -241,9 +249,17 @@ and the content's veil is the same glass without its edges. The office
 film's three chapters are headed alike (Professional Highlights, Work
 projects, Skills & Tools), and body copy is set a little heavier (Inter 450) to hold over moving pictures.
 Buttons are glass pills with a gold hairline and gold icons, tinted gold on
-hover; the navigation marks the current section with a thin gold line; the
-language switch is a small segmented pill; focus rings are gold. The
-browser's own chrome follows (`theme-color`, `color-scheme: dark`).
+hover; the language switch is a small segmented pill; focus rings are gold.
+The browser's own chrome follows (`theme-color`, `color-scheme: dark`).
+
+On wide screens the sections are on a rail at the right edge
+(`SectionRail.tsx`): a dot for each, the current one lit, on a thin gold
+line that fills as the journey goes on; hovering it (or tabbing into it)
+shows their names in a glass panel, and each takes you there. The bar at
+the top keeps only who this is (the avatar and name, back to the top), the
+language and the sound. On phones the bar keeps its menu. Both come in once
+the cover has gone. The scroll spy reads a block's section from its hold
+(`data-section`), since the id is on the anchor inside it.
 
 ## The neural probe
 
@@ -315,7 +331,18 @@ screen shows about its middle third, so each film has focus keyframes
 (`focus`, object-position over film time) — the chase's follow the morpho,
 the macaw and its eye, the ending's the macaw onto its branch and the morpho
 to its leaf, measured in every frame — and the portal maps frame coordinates
-through the same crop. Low-tier devices get the light encodes.
+through the same crop.
+
+A portrait screen shows only a slice of each frame, much enlarged, so
+phones need the full-HD films as much as wide screens do — but those take
+long to arrive over a mobile connection (the chase alone is 5.9 MB). So a
+phone first loads a film's light encode, which arrives fast, and once it
+and its neighbours can show their frames, downloads the full-HD one of the
+film being watched into a second video element in the background, drives it
+with the film, and when it shows the same frame fades it in over the light
+one, which is let go (`upgrade` in `FilmLayer.tsx`). One at a time; a
+download for a film the visitor has left gives way. Saved data, 2G/3G and
+very small memories stay with the light encodes.
 
 ## Reduced motion
 

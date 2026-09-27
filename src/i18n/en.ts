@@ -4,6 +4,7 @@ export default {
   navProjects: "Projects",
   navExperience: "Experience",
   navSkills: "Skills & Tools",
+  navSections: "Sections",
   navContact: "Contact",
   effectsSubtitle:
     "Bring the jungle to life around you—choose which ambient elements you’d like to accompany your journey.",

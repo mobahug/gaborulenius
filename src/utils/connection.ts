@@ -28,3 +28,20 @@ export const canPrefetchHeavyAsset = () => {
 
   return !["slow-2g", "2g"].includes(connection?.effectiveType ?? "");
 };
+
+/**
+ * Whether to take the lighter encodes of the films: only when the visitor
+ * asked to save data, the connection is slow, or the device has very little
+ * memory. Screen size is no reason — a phone crops the 16:9 films to a
+ * portrait slice and needs every pixel of the full-HD ones.
+ */
+export const wantsLightVideo = () => {
+  const connection = getNetworkConnection();
+  if (connection?.saveData) return true;
+  if (["slow-2g", "2g", "3g"].includes(connection?.effectiveType ?? "")) {
+    return true;
+  }
+  const memory = (navigator as Navigator & { deviceMemory?: number })
+    .deviceMemory;
+  return memory !== undefined && memory <= 2;
+};

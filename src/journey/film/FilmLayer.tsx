@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { onDirectorFrame } from "../director/director";
 import { filmRect, focusAt, windowGeometry } from "../director/frameMapping";
-import { getQualityTier, hasFinePointer } from "../device";
-import { canPrefetchHeavyAsset } from "../../utils/connection";
+import { hasFinePointer } from "../device";
+import { wantsLightVideo } from "../../utils/connection";
 import { smoothstep } from "../math";
 import { requestSceneFrame } from "../scrollTimeline";
 import { registerFilmVideo } from "./filmElements";
@@ -59,15 +59,16 @@ const FilmLayer = () => {
   const filmRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    const layers = filmRefs.current.map((film) =>
-      film
-        ? {
-            film,
-            still: film.querySelector<HTMLElement>(".film-still")!,
-            video: film.querySelector<HTMLVideoElement>("video")!,
-          }
-        : null,
-    );
+    const layers = filmRefs.current.map((film) => {
+      if (!film) return null;
+      const [video, spare] = Array.from(film.querySelectorAll("video"));
+      return {
+        film,
+        still: film.querySelector<HTMLElement>(".film-still")!,
+        video,
+        spare,
+      };
+    });
     layers.forEach((layer, index) =>
       registerFilmVideo(index, layer?.video ?? null),
     );
@@ -75,6 +76,9 @@ const FilmLayer = () => {
     // is not scrolling.
     const controllers = layers.map((layer) =>
       layer ? new ScrubVideo(layer.video, requestSceneFrame) : null,
+    );
+    const spareControllers = layers.map((layer) =>
+      layer ? new ScrubVideo(layer.spare, requestSceneFrame) : null,
     );
     const loadedAt: Array<number | null> = FILMS.map(() => null);
     const farSince: Array<number | null> = FILMS.map(() => null);
@@ -91,10 +95,21 @@ const FilmLayer = () => {
     const blends = FILMS.map(() => "");
     const filters = FILMS.map(() => "");
     const unloadFar = !hasFinePointer();
-    // Full HD for large screens; phones, weak devices and saved or slow
-    // connections get the lighter encodes.
-    const rendition =
-      getQualityTier() === "low" || !canPrefetchHeavyAsset() ? "sd" : "hd";
+    // Full HD, phones too: a portrait screen shows only a slice of each
+    // frame, much enlarged. Phones first load the lighter encode, which
+    // arrives fast, and move to full HD once it has arrived in the background
+    // (see `upgrade`). Saved data, slow connections and very small memories
+    // stay with the lighter encodes.
+    const light = wantsLightVideo();
+    const firstRendition = light || unloadFar ? "sd" : "hd";
+    const upgradeTo = !light && unloadFar ? "hd" : null;
+    const renditions: Array<"sd" | "hd"> = FILMS.map(() => firstRendition);
+    const upgrades: Array<{
+      abort: AbortController;
+      url: string | null;
+    } | null> = FILMS.map(() => null);
+    // A move to full HD that failed is not tried again for that film.
+    const upgradeFailed = FILMS.map(() => false);
     const root = document.documentElement;
     let lastY: number | null = null;
     let settleTimer = 0;
@@ -161,7 +176,7 @@ const FilmLayer = () => {
       const video = layers[index]?.video;
       if (!video || loadedAt[index] !== null) return;
       loadedAt[index] = performance.now();
-      const source = FILMS[index].src[rendition];
+      const source = FILMS[index].src[renditions[index]];
       const controller = new AbortController();
       downloads[index].abort = controller;
       const attach = (src: string) => {
@@ -196,14 +211,96 @@ const FilmLayer = () => {
       downloads[index] = { url: null, abort: null };
     };
 
+    const empty = (video: HTMLVideoElement) => {
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+      video.style.visibility = "hidden";
+    };
+
+    const cancelUpgrade = (index: number) => {
+      const upgrade = upgrades[index];
+      if (!upgrade) return;
+      upgrade.abort.abort();
+      if (upgrade.url) URL.revokeObjectURL(upgrade.url);
+      upgrades[index] = null;
+      const spare = layers[index]?.spare;
+      if (spare) empty(spare);
+    };
+
     const unload = (index: number) => {
       const video = layers[index]?.video;
       if (!video || loadedAt[index] === null) return;
       loadedAt[index] = null;
-      video.pause();
-      video.removeAttribute("src");
-      video.load();
+      empty(video);
       release(index);
+      cancelUpgrade(index);
+      renditions[index] = firstRendition;
+    };
+
+    /**
+     * The move to full HD, for the film being watched, one at a time: the
+     * full-HD file is downloaded whole into the spare video, which is then
+     * driven with the film; once it shows the same frame, it fades in over
+     * the lighter one, which is let go.
+     */
+    const upgrade = (index: number) => {
+      const layer = layers[index];
+      if (!layer || !upgradeTo || upgrades[index]) return;
+      if (upgrades.some(Boolean)) return;
+      const source = FILMS[index].src[upgradeTo];
+      const abort = new AbortController();
+      const record: { abort: AbortController; url: string | null } = {
+        abort,
+        url: null,
+      };
+      upgrades[index] = record;
+      fetch(source, { signal: abort.signal })
+        .then((response) => {
+          if (!response.ok) throw new Error(`${response.status}`);
+          return response.blob();
+        })
+        .then((blob) => {
+          if (upgrades[index] !== record || abort.signal.aborted) return;
+          record.url = URL.createObjectURL(blob);
+          layer.spare.preload = "auto";
+          layer.spare.src = record.url;
+          layer.spare.load();
+          requestSceneFrame();
+        })
+        .catch(() => {
+          // It stays with the lighter encode.
+          if (upgrades[index] !== record) return;
+          upgrades[index] = null;
+          upgradeFailed[index] = !abort.signal.aborted;
+        });
+    };
+
+    /** The spare shows the film's frame: it takes over. */
+    const takeOver = (index: number, now: number) => {
+      const layer = layers[index]!;
+      const record = upgrades[index]!;
+      const old = layer.video;
+      const oldDownload = downloads[index];
+      layer.video = layer.spare;
+      layer.spare = old;
+      [controllers[index], spareControllers[index]] = [
+        spareControllers[index],
+        controllers[index],
+      ];
+      layer.video.style.zIndex = "1";
+      old.style.zIndex = "";
+      downloads[index] = { url: record.url, abort: record.abort };
+      upgrades[index] = null;
+      renditions[index] = upgradeTo!;
+      registerFilmVideo(index, layer.video);
+      // The new one fades in over the old one, which then goes.
+      videoFade[index] = now;
+      window.setTimeout(() => {
+        if (layers[index]?.spare !== old) return;
+        empty(old);
+        if (oldDownload.url) URL.revokeObjectURL(oldDownload.url);
+      }, READY_FADE + 80);
     };
 
     const isReady = (index: number) => controllers[index]?.ready ?? false;
@@ -254,6 +351,49 @@ const FilmLayer = () => {
               requestSceneFrame();
             }, RELEASE_DELAY + 50);
           }
+        }
+      });
+
+      // The film being watched moves to full HD once it and its neighbours
+      // have what they need; the spare follows the film until it can take
+      // over on the same frame.
+      if (upgradeTo && !reduced && !inTransit) {
+        const settled = films.every(
+          (_, index) =>
+            Math.abs(index - focus) > 1 ||
+            loadedAt[index] === null ||
+            isReady(index),
+        );
+        if (
+          settled &&
+          !upgradeFailed[focus] &&
+          renditions[focus] !== upgradeTo &&
+          loadedAt[focus] !== null &&
+          isReady(focus)
+        ) {
+          upgrade(focus);
+        }
+      }
+      // A download for a film the visitor has left gives way to the films
+      // they are heading for.
+      upgrades.forEach((record, index) => {
+        if (record && !record.url && index !== focus) cancelUpgrade(index);
+      });
+      upgrades.forEach((record, index) => {
+        const entry = films[index];
+        const spare = spareControllers[index];
+        if (!record?.url || !entry || !spare) return;
+        spare.setTarget(entry.time);
+        const primary = controllers[index]?.presentedTime;
+        const next = spare.presentedTime;
+        if (
+          spare.ready &&
+          next !== null &&
+          (primary == null || Math.abs(next - primary) < 0.06)
+        ) {
+          takeOver(index, now);
+        } else {
+          requestSceneFrame();
         }
       });
 
@@ -431,6 +571,8 @@ const FilmLayer = () => {
       window.clearTimeout(navigationTimer);
       document.removeEventListener("click", onNavigate, true);
       controllers.forEach((controller) => controller?.dispose());
+      spareControllers.forEach((controller) => controller?.dispose());
+      upgrades.forEach((_, index) => cancelUpgrade(index));
       layers.forEach((_, index) => registerFilmVideo(index, null));
       downloads.forEach((_, index) => release(index));
     };
@@ -448,16 +590,20 @@ const FilmLayer = () => {
           style={{ visibility: "hidden" }}
         >
           <div className="film-still" />
-          <video
-            className="film-video"
-            style={{ visibility: "hidden" }}
-            muted
-            playsInline
-            preload="none"
-            disablePictureInPicture
-            disableRemotePlayback
-            tabIndex={-1}
-          />
+          {/* The film, and a spare for its move to full HD. */}
+          {[0, 1].map((slot) => (
+            <video
+              key={slot}
+              className="film-video"
+              style={{ visibility: "hidden" }}
+              muted
+              playsInline
+              preload="none"
+              disablePictureInPicture
+              disableRemotePlayback
+              tabIndex={-1}
+            />
+          ))}
         </div>
       ))}
     </div>

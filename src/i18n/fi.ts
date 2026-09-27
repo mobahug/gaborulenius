@@ -5,6 +5,7 @@ export default {
   navExperience: "Työkokemus",
   navbar_projects: "Projektit",
   navSkills: "Taidot",
+  navSections: "Osiot",
   navContact: "Ota yhteyttä",
   effectsSubtitle:
     "Herätä viidakko eloon – valitse, mitkä taustaäänet kulkevat mukanasi.",

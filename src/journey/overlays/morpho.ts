@@ -1,7 +1,6 @@
 import type { DirectorFrame } from "../director/director";
 import { hasFinePointer } from "../device";
-import { drawButterfly, openness, spritesFor } from "./butterflies";
-import { glowSprite } from "./surface";
+import { drawButterfly, openness } from "./butterflies";
 
 /*
  * On the jungle path, while the introduction and About are read, the
@@ -26,11 +25,6 @@ const OFFSET = { x: -16, y: -26 };
 const SPAN = 42;
 export class Morpho {
   private readonly enabled = hasFinePointer();
-  private readonly sprites = spritesFor("morpho");
-  private readonly glow = glowSprite(64, [
-    [0, "rgba(90, 180, 255, 0.55)"],
-    [1, "rgba(40, 120, 255, 0)"],
-  ]);
   private pointer = { x: -1, y: -1, at: 0 };
   private x = 0;
   private y = 0;
@@ -152,14 +146,12 @@ export class Morpho {
   render(context: CanvasRenderingContext2D) {
     drawButterfly(
       context,
-      this.sprites,
       this.x,
       this.y,
       this.heading,
       openness(this.lift),
       this.presence,
       SPAN,
-      this.glow,
     );
   }
 }

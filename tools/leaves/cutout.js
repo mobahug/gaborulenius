@@ -131,7 +131,7 @@ const matte = (data, width, height, minHole) => {
  * - base, tip: where its stalk and its tip are in the photo (px)
  * - minHole: enclosed bright grey regions at least this large are holes
  * - long: length of the image's long side (px); half-size one too
- * - saturation, haze, hazeColor, shade, grain: as in leaves.js
+ * - saturation, haze, hazeColor, shade, grain, tint: as in leaves.js
  * - blur: depth-of-field blur (px, at the image's size)
  * Returns the two images and where the stalk is in them (fractions).
  */
@@ -245,12 +245,13 @@ export const cutout = async (spec) => {
   const hazeColor = spec.hazeColor ?? [122, 142, 108];
   const dim = 1 - (spec.shade ?? 0);
   const grain = spec.grain ?? 5;
+  const tint = spec.tint ?? [1, 1, 1];
   const next = random(spec.seed ?? 1);
   for (let index = 0; index < outWidth * outHeight; index += 1) {
     if (values[index * 4 + 3] === 0) continue;
-    let r = values[index * 4] * dim;
-    let g = values[index * 4 + 1] * dim;
-    let b = values[index * 4 + 2] * dim;
+    let r = values[index * 4] * dim * tint[0];
+    let g = values[index * 4 + 1] * dim * tint[1];
+    let b = values[index * 4 + 2] * dim * tint[2];
     const luma = 0.3 * r + 0.59 * g + 0.11 * b;
     r = luma + (r - luma) * saturation;
     g = luma + (g - luma) * saturation;

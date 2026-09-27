@@ -949,6 +949,7 @@ const alphaOf = (canvas) => {
  * - hue: tint shift [r, g, b] added to the colours
  * - saturation (0.8), haze (0 … 1, toward hazeColor: the mist between the
  *   leaf and the camera), grain: to sit in the film's picture
+ * - tint: [r, g, b] factors (e.g. less blue for a warmer, lime green)
  */
 export const renderLeaf = (spec) => {
   const [W, H] = spec.size;
@@ -1099,6 +1100,7 @@ export const renderLeaf = (spec) => {
   const hazeColor = spec.hazeColor ?? [122, 142, 108];
   const grain = spec.grain ?? 5;
   const grainNext = random(spec.seed * 17 + 9);
+  const warmth = spec.tint ?? [1, 1, 1];
 
   const out = makeCanvas(width, height);
   const outContext = out.getContext("2d");
@@ -1186,9 +1188,9 @@ export const renderLeaf = (spec) => {
       // Into the film's picture: its softer colour, the mist between the
       // leaf and the camera, and a little grain.
       const dim = 1 - shade;
-      r *= dim;
-      g *= dim;
-      b *= dim;
+      r *= dim * warmth[0];
+      g *= dim * warmth[1];
+      b *= dim * warmth[2];
       const luma = 0.3 * r + 0.59 * g + 0.11 * b;
       r = luma + (r - luma) * saturation;
       g = luma + (g - luma) * saturation;

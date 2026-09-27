@@ -20,7 +20,10 @@ const SCROLL_END_THRESHOLD_PX = 2;
 const normalizeSectionHash = (sectionId: string) =>
   sectionId.startsWith("#") ? sectionId : `#${sectionId}`;
 
-const getSectionHash = (section: HTMLElement) => `#${section.id}`;
+/** A section's hash: its id, or, for a block whose id is on the anchor
+ * inside it (see Cue), the name it carries. */
+const getSectionHash = (section: HTMLElement) =>
+  `#${section.id || section.dataset.section || ""}`;
 
 export const useActiveNavLink = () => {
   const currentActiveSectionId = useAtomValue(activeSectionIdAtom);

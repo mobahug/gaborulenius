@@ -36,8 +36,8 @@ export const COVER_LEAVES = [
     species: "palm",
     seed: 9,
     rotate: 206,
-    haze: 0.2,
-    saturation: 0.72,
+    haze: 0,
+    saturation: 1.15,
     size: [900, 1100],
     origin: [0.32, 0.97],
     scale: 0.9,
@@ -50,6 +50,7 @@ export const COVER_LEAVES = [
     foldLevel: 1,
     fold: 1.6,
     blur: 1.4,
+    tint: [1.1, 1, 0.55],
   }),
   // In from the right edge, half in the light.
   leaf({
@@ -57,8 +58,8 @@ export const COVER_LEAVES = [
     species: "alocasia",
     seed: 3,
     rotate: -52,
-    haze: 0.14,
-    saturation: 0.74,
+    haze: 0.02,
+    saturation: 1.1,
     size: [900, 1240],
     origin: [0.5, 0.62],
     scale: 0.56,
@@ -69,6 +70,7 @@ export const COVER_LEAVES = [
     dry: 0.3,
     blemish: 0.35,
     blur: 1.8,
+    tint: [1.06, 1, 0.62],
   }),
   leaf({
     name: "heart-near",
@@ -86,5 +88,8 @@ export const COVER_LEAVES = [
     blemish: 0.2,
     blur: 4,
     quality: 0.72,
+    saturation: 1.05,
+    haze: 0,
+    tint: [1.04, 1, 0.66],
   }),
 ];

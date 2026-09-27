@@ -3,11 +3,9 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import MuiLink from "@mui/material/Link";
-import { alpha } from "@mui/material/styles";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
-import { FormattedMessage, useIntl } from "react-intl";
-import { navLinks } from "./navConstants";
+import { useIntl } from "react-intl";
 import { LanguageToggle } from "./LanguageToggle";
 import { colors as lightColors } from "../../colors";
 import { useActiveNavLink } from "../../hooks/useActiveNavLink";
@@ -23,63 +21,32 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
   onToggleAudio,
 }) => {
   const intl = useIntl();
-  const { currentActiveSectionId, requestActiveSection } = useActiveNavLink();
-  const activeColor = lightColors.textLight;
-  const activeHoverColor = lightColors.accentHover;
-  const inactiveColor = lightColors.textMuted;
-  const underlineColor = lightColors.accent;
+  const { requestActiveSection } = useActiveNavLink();
 
+  // The sections are on the rail at the right edge (SectionRail); the bar
+  // keeps who this is, the language and the sound.
   return (
     <Box
-      sx={{ display: "flex", alignItems: "center", gap: { md: 2.5, lg: 4 } }}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
+      }}
     >
-      <LanguageToggle />
-      {navLinks.map(({ id, href }) => {
-        const isActive = currentActiveSectionId === href;
-        return (
-          <MuiLink
-            key={id}
-            href={href}
-            underline="none"
-            aria-current={isActive ? "page" : undefined}
-            onClick={() => {
-              requestActiveSection(href);
-            }}
-            sx={{
-              fontSize: "0.88rem",
-              fontWeight: 600,
-              letterSpacing: "0.01em",
-              whiteSpace: "nowrap",
-              color: isActive ? activeColor : inactiveColor,
-              position: "relative",
-              transition: "color 0.18s ease, background-color 0.18s ease",
-              "&:hover": {
-                color: activeHoverColor,
-                backgroundColor: alpha(underlineColor, 0.08),
-              },
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                bottom: 4,
-                left: 12,
-                width: "calc(100% - 24px)",
-                height: 1.5,
-                borderRadius: 1,
-                backgroundColor: underlineColor,
-                transform: isActive ? "scaleX(1)" : "scaleX(0)",
-                transformOrigin: "center",
-                transition: "transform 0.18s ease",
-              },
-            }}
-          >
-            <FormattedMessage id={id} />
-          </MuiLink>
-        );
-      })}
       <MuiLink
         href="#home"
         underline="none"
         aria-label={intl.formatMessage({ id: "navHome" })}
+        onClick={() => requestActiveSection("#home")}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1.5,
+          px: 1,
+          color: lightColors.textLight,
+          "&:hover": { backgroundColor: "transparent" },
+        }}
       >
         <Avatar
           src={assetUrl("profile-160.webp")}
@@ -90,20 +57,33 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
             border: `1.5px solid ${lightColors.accent}`,
           }}
         />
+        <Box
+          component="span"
+          sx={{
+            fontSize: "0.95rem",
+            fontWeight: 700,
+            letterSpacing: "-0.01em",
+          }}
+        >
+          Gábor Ulenius
+        </Box>
       </MuiLink>
-      <IconButton
-        color="inherit"
-        onClick={onToggleAudio}
-        aria-label={intl.formatMessage({
-          id: isPlayingAudio ? "navAudioPause" : "navAudioPlay",
-        })}
-      >
-        {isPlayingAudio ? (
-          <PauseCircleOutlineIcon sx={{ fontSize: 28 }} />
-        ) : (
-          <PlayCircleOutlineIcon sx={{ fontSize: 28 }} />
-        )}
-      </IconButton>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <LanguageToggle />
+        <IconButton
+          color="inherit"
+          onClick={onToggleAudio}
+          aria-label={intl.formatMessage({
+            id: isPlayingAudio ? "navAudioPause" : "navAudioPlay",
+          })}
+        >
+          {isPlayingAudio ? (
+            <PauseCircleOutlineIcon sx={{ fontSize: 28 }} />
+          ) : (
+            <PlayCircleOutlineIcon sx={{ fontSize: 28 }} />
+          )}
+        </IconButton>
+      </Box>
     </Box>
   );
 };

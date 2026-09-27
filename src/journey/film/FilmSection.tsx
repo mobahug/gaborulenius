@@ -92,6 +92,7 @@ export const Cue = ({
   <div
     ref={ref}
     className="film-hold"
+    data-section={id}
     data-cue={at}
     data-hold={hold}
     data-hold-narrow={holdNarrow ?? hold}
@@ -157,12 +158,12 @@ const SCREEN_MARGIN = 100;
  * little as it fades. Both take the same time however fast the page is
  * scrolled: the block is shown while the scroll is inside its hold (between
  * `SHOW_FROM` and `SHOW_UNTIL` of it) and fades in or out over `FADE`
- * seconds, and while it fades out it stays in its place on the screen even
- * if the page has already moved on. It grows less than the question does:
+ * seconds; past its hold it goes with the page as it fades. It grows less
+ * than the question does:
  * a large block that grows much makes the GPU draw it again mid-scroll.
  */
 const SHOW_FROM = 0.04;
-const SHOW_UNTIL = 0.86;
+const SHOW_UNTIL = 0.8;
 const FADE = 1.4;
 /**
  * A block may come in beats (elements marked `film-beat`, e.g. a capability's
@@ -439,9 +440,6 @@ const FilmSection = ({
         }
       }
       const count = block.beats.length;
-      // It keeps its place on the screen while the page has already moved
-      // on (before its hold, or after it).
-      const drift = (progress - clamp(progress)) * holdPx;
       const beatOpacity = block.beats.map((beat, index) => {
         if (!held) return 1;
         const delay = (block.shown ? index : count - 1 - index) * BEAT_STAGGER;
@@ -456,11 +454,14 @@ const FilmSection = ({
         // camera.
         const settled = easeOutCubic(beat.level);
         const pass = 1 - beat.level;
+        // Only time moves it: once the page has moved past its hold, it goes
+        // with the page as it fades (holding it in place from script would
+        // fight a phone's own scrolling and shake).
         const transform =
           opacity > 0
             ? beat.rising
-              ? `translate3d(0, ${(drift - (1 - settled) * vh * 0.05).toFixed(1)}px, 0) scale(${(0.94 + 0.06 * settled).toFixed(4)})`
-              : `translate3d(0, ${drift.toFixed(1)}px, 0) scale(${(1 + 0.25 * pass * pass).toFixed(4)})`
+              ? `translate3d(0, ${(-(1 - settled) * vh * 0.05).toFixed(1)}px, 0) scale(${(0.94 + 0.06 * settled).toFixed(4)})`
+              : `scale(${(1 + 0.25 * pass * pass).toFixed(4)})`
             : "";
         if (transform !== beat.transform) {
           beat.transform = transform;
