@@ -90,20 +90,19 @@ screen for its stretch of the scroll (its hold, `hold` viewport heights,
 90 by default) while the film plays behind it: it is sticky, centred a
 little high below the navigation, out of sight while it slides into place
 and away again. It comes and goes the way the question in the pupil does
-(`PortalTitle`): over the first third of its hold it fades in as one,
-settling down into place from a little above (5 % of the screen's height)
-as it grows from 94 % to its size; it stays, perfectly still and at its own
-size; and over the last fifth it passes the camera, growing as it fades —
-to about 110 %, less than the question, because a large block that grows
-much makes the GPU draw it again at the new size in the middle of the
-scroll (a 220 ms frame on a phone profile). The block carries the motion
-(its transform) and its parts and veil carry the opacity: opacity on the
-block itself would cut its veil off from the films. However fast the page
-is scrolled, a block arrives slowly: how far it has come follows the scroll
-with a time constant of 1.5 s, so after a jump its words take under two
-seconds to come in and its phones about three; it leaves with the scroll, so
-it has always gone before it moves away. Out of sight it takes no clicks,
-so it never catches one meant for the block on screen. A block
+(`PortalTitle`) — fading in as it settles down into place from a little
+above and grows from 94 % to its size, and passing the camera as it fades
+out, growing to about 110 % (less than the question: a large block that
+grows much makes the GPU draw it again mid-scroll) — and both take the same
+time, however fast the page is scrolled: the block is shown while the
+scroll is inside its hold (from 4 % to 86 % of it) and fades in or out over
+1.4 s. While it fades out it keeps its place on the screen even if the page
+has already moved on (its drift away from its sticky place is undone by its
+transform), and the next block waits until it is less than 30 % there, so
+two blocks' words never cross. The block's beats carry the motion (their
+transform) and their parts and the veil the opacity: opacity on the block
+itself would cut its veil off from the films. Out of sight it takes no
+clicks, so it never catches one meant for the block on screen. A block
 may come in beats (`film-beat`): an Explorer capability's words come first
 and its phones follow 7 % of the hold later, and on the way out the phones
 leave first, so the words frame each moment. A block holding keyboard
@@ -149,11 +148,17 @@ nothing else is pinned — while the chase moves from the first scroll, about
 macaw crosses the clearing, and slowing for the dive into the eye.
 
 The cover's jungle leaves are images (`public/cover/`, WebP with alpha, a
-large and a half-size one each): a banana leaf lit through from the top
-left, a palm frond hanging from the top right, a giant taro (alocasia) and
-a monstera at the edges, and a fern and a heart-shaped philodendron close to
-the camera, dark and out of focus. They are rendered offline by
-`tools/leaves/` — open `leaves.html` to preview and download them — from
+large and a half-size one each): a banana leaf from the top left, a palm
+frond hanging from the top right, a giant taro (alocasia) at the right
+edge, a monstera and a fern crossing it at the bottom left, and a
+heart-shaped philodendron close to the camera, dark and out of focus. The
+monstera, the banana leaf and the fern are photographs, cut out of their
+white or checkerboard backgrounds by `tools/leaves/cutout.html` (the
+background is what is bright, grey and reaches the edge, plus large
+enclosed holes; the edges lose the background's light), turned upright,
+cropped and graded like the rest (`photos.js`; the photos are not kept in
+the repository). The others are rendered offline by `tools/leaves/` —
+open `leaves.html` to preview and download them — from
 each species' structure: its outline, midrib and veins, the monstera's
 splits and holes, the banana's tears, the fern's pinnae and pinnules; a
 height map (the blade's curve and fold, raised or sunken veins, the fine
@@ -196,13 +201,13 @@ scroll and back.
 Every film has one small thing of its own, in the same language — gold
 hairlines, a red walker that moves with the film:
 
-| Film     | Signature                                                                                                                                                                                                                                                                                                                                |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Chase    | The film's morpho comes out of the film as it passes the camera and keeps the pointer company while the introduction and About are read: it follows lazily, settles and slowly opens and closes its blue wings when the pointer rests, and flies away when About has passed (`overlays/morpho.ts`, drawn above the content; mouse only). |
-| Neural   | The pointer is a probe that reads the film's neurons (`overlays/neuralProbe.ts`).                                                                                                                                                                                                                                                        |
-| Explorer | The expedition map in the corner (`ExplorerMap.tsx`).                                                                                                                                                                                                                                                                                    |
-| Work     | The career dial in the corner (`CareerDial.tsx`): the years from 2016 to today, walked in red as the office film plays, a waypoint lit at each role of the experience highlights, and in the middle the year and the role of that moment.                                                                                                |
-| Ending   | Under the invitation, the time in Espoo (`EspooNow.tsx`): a small dial of the day with today's daylight in gold and the moment in red, the time, and the visitor's own — so a visitor knows when to expect a reply. Part of the block, so it shows on every screen.                                                                      |
+| Film     | Signature                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Chase    | The film's morpho comes out of the film as it passes the camera and keeps the pointer company while the introduction and About are read: it follows lazily, settles and slowly opens and closes its blue wings when the pointer rests, and flies away when About has passed (`overlays/morpho.ts`, drawn above the content; mouse only). And as each block of the first scene comes in, a few butterflies of other kinds and sizes — a monarch, a sulphur, a cabbage white, a postman, an emerald swallowtail — fade in from the edges of the screen, fly over and settle on its edges (the buttons, the first fact's icon, the story card), opening and closing their wings; a pointer close by startles one up for a moment, and they fly off when the block goes (`overlays/butterflies.ts`). |
+| Neural   | The pointer is a probe that reads the film's neurons (`overlays/neuralProbe.ts`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Explorer | The expedition map in the corner (`ExplorerMap.tsx`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| Work     | The career dial in the corner (`CareerDial.tsx`): the years from 2016 to today, walked in red as the office film plays, a waypoint lit at each role of the experience highlights, and in the middle the year and the role of that moment.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Ending   | Under the invitation, the time in Espoo (`EspooNow.tsx`): a small dial of the day with today's daylight in gold and the moment in red, the time, and the visitor's own — so a visitor knows when to expect a reply. Part of the block, so it shows on every screen.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 The corner instruments show on wide screens only (at least 1100 × 680).
 

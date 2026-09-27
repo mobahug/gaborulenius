@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cover leaves from photos</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #1e2a20;
+        color: #f6f1e4;
+        font:
+          14px/1.4 system-ui,
+          sans-serif;
+      }
+      .leaves {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        align-items: flex-start;
+      }
+      figure {
+        margin: 0;
+        background: repeating-conic-gradient(#26332a 0 25%, #1c261f 0 50%) 0 0 /
+          24px 24px;
+      }
+      figure canvas {
+        display: block;
+        max-width: 420px;
+        height: auto;
+      }
+      figcaption {
+        padding: 6px 8px;
+        background: #111;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      The cover's leaves cut out of photos (see cutout.js and photos.js; the
+      photos go in photos/).
+    </p>
+    <div class="leaves" id="leaves"></div>
+    <script type="module">
+      import { cutout } from "./cutout.js";
+      import { PHOTO_LEAVES } from "./photos.js";
+      window.photoLeaves = PHOTO_LEAVES;
+      window.cutoutSpec = async (spec) => {
+        const { full, half, origin } = await cutout({
+          ...spec,
+          url: `photos/${spec.photo}`,
+        });
+        return {
+          full: full.toDataURL("image/webp", spec.quality ?? 0.8),
+          half: half.toDataURL("image/webp", spec.quality ?? 0.8),
+          width: full.width,
+          height: full.height,
+          origin,
+        };
+      };
+      if (!new URLSearchParams(location.search).has("headless")) {
+        for (const spec of PHOTO_LEAVES) {
+          const { full, origin } = await cutout({
+            ...spec,
+            url: `photos/${spec.photo}`,
+          });
+          const figure = document.createElement("figure");
+          figure.append(full);
+          const caption = document.createElement("figcaption");
+          caption.textContent = `${spec.name}: ${full.width}×${full.height}, stalk at ${origin.map((value) => value.toFixed(3)).join(", ")}`;
+          figure.append(caption);
+          document.getElementById("leaves").append(figure);
+        }
+      }
+    </script>
+  </body>
+</html>

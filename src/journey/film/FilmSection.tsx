@@ -7,7 +7,7 @@ import {
   type RefObject,
 } from "react";
 import { isWideLayout, prefersReducedMotion } from "../device";
-import { easeOutCubic, range, smoothstep } from "../math";
+import { clamp, easeOutCubic, smoothstep } from "../math";
 import { readViewport, requestSceneFrame } from "../scrollTimeline";
 import { useScene } from "../useScene";
 import type { FilmId } from "./films";
@@ -16,7 +16,7 @@ import {
   updateFilmSection,
   type Cue as TimelineCue,
 } from "./filmTimeline";
-import { holdProgress } from "./holdProgress";
+import { blockState, holdProgress } from "./holdProgress";
 import "./film.css";
 
 type Spacing = {
@@ -152,27 +152,28 @@ const NAV_ROOM = 80;
 const SCREEN_MARGIN = 100;
 /**
  * A held block comes and goes like the question in the pupil (see
- * PortalTitle): over the first `ARRIVE` of its hold it fades in, settling
- * down into place from a little above as it grows to its size; it stays;
- * and over the last `PASS` it passes the camera, growing as it fades — less
- * than the question does: a large block that grows much makes the GPU draw
- * it again at the new size in the middle of the scroll.
+ * PortalTitle): it fades in, settling down into place from a little above
+ * as it grows to its size; it stays; and it passes the camera, growing a
+ * little as it fades. Both take the same time however fast the page is
+ * scrolled: the block is shown while the scroll is inside its hold (between
+ * `SHOW_FROM` and `SHOW_UNTIL` of it) and fades in or out over `FADE`
+ * seconds, and while it fades out it stays in its place on the screen even
+ * if the page has already moved on. It grows less than the question does:
+ * a large block that grows much makes the GPU draw it again mid-scroll.
  */
-const ARRIVE = 0.36;
-const PASS = 0.22;
-/**
- * However fast the page is scrolled, a block arrives slowly: how far it has
- * come follows the scroll with this time constant (s). It leaves with the
- * scroll, so it has always gone before it moves away.
- */
-const ARRIVE_SECONDS = 1.5;
+const SHOW_FROM = 0.04;
+const SHOW_UNTIL = 0.86;
+const FADE = 1.4;
 /**
  * A block may come in beats (elements marked `film-beat`, e.g. a capability's
- * words and then its screens): each beat comes this much of the hold after
- * the one before it, and leaves as much before it — the first to come is the
- * last to go.
+ * words and then its screens): each beat comes this long (s) after the one
+ * before it, and leaves as long before it — the first to come is the last to
+ * go.
  */
-const BEAT_DELAY = 0.1;
+const BEAT_STAGGER = 0.32;
+/** A block waits to come in while another one is still more visible than
+ * this on its way out, so their words never cross. */
+const MAKE_WAY = 0.3;
 
 type Part = {
   element: HTMLElement;
@@ -197,13 +198,20 @@ type Block = {
   holdPx: number;
   /** Where it stands on the screen while held (px from the top). */
   pin: number;
-  /** What moves: its beats, or the block as a whole; with the transform
-   * last written to each. */
-  beats: Array<{ element: HTMLElement; transform: string }>;
+  /** What moves: its beats, or the block as a whole; each with how far it
+   * has come in (0–1), whether it is coming or going, and the transform last
+   * written to it. */
+  beats: Array<{
+    element: HTMLElement;
+    level: number;
+    rising: boolean;
+    transform: string;
+  }>;
+  /** Whether it is to be shown, and since when (ms). */
+  shown: boolean;
+  since: number;
   /** Last veil written; -1 = none yet. */
   veil: number;
-  /** How far through its hold it has come (eased; see ARRIVE_SECONDS). */
-  arrived: number;
   /** Whether it takes clicks: not while it is out of sight. */
   touchable: boolean;
 };
@@ -281,8 +289,9 @@ const FilmSection = ({
             ? Math.max(NAV_ROOM, Math.round((vh - height) / 2 - 10))
             : 0,
           beats: [],
+          shown: false,
+          since: 0,
           veil: -1,
-          arrived: -1,
           touchable: true,
         };
       });
@@ -305,7 +314,12 @@ const FilmSection = ({
           ? []
           : Array.from(element.querySelectorAll<HTMLElement>(".film-beat"));
         if (!mark && !beats.length) beats.push(element);
-        block.beats = beats.map((beat) => ({ element: beat, transform: "" }));
+        block.beats = beats.map((beat) => ({
+          element: beat,
+          level: 0,
+          rising: true,
+          transform: "",
+        }));
         block.parts = mark
           ? []
           : Array.from(
@@ -373,8 +387,12 @@ const FilmSection = ({
     const now = performance.now();
     const dt = Math.min(0.1, (now - (lastFrameRef.current || now)) / 1000);
     lastFrameRef.current = now;
-    const ease = 1 - Math.exp(-dt / ARRIVE_SECONDS);
-    let arriving = false;
+    let moving = false;
+    // A block on its way out that is still clearly there (see MAKE_WAY).
+    const leaving = blocksRef.current.some(
+      (block) =>
+        !block.shown && block.beats.some((beat) => beat.level > MAKE_WAY),
+    );
     blocksRef.current.forEach((block) => {
       const { element, mark, parts, top, height, holdPx, pin } = block;
       if (mark) return;
@@ -384,6 +402,7 @@ const FilmSection = ({
         block.beats.forEach((beat) => {
           beat.element.style.transform = "";
           beat.transform = "";
+          beat.level = 1;
         });
         element.style.pointerEvents = "";
         block.touchable = true;
@@ -404,38 +423,44 @@ const FilmSection = ({
         element,
         held ? progress : (vh - blockTop) / (vh + height),
       );
-      // Held: each beat of the block (or the block as a whole) comes, stays
-      // and goes as one: the beat carries the motion, its parts and the
-      // veil its opacity, never the block itself, which would cut the veil
-      // off from the films.
-      // It comes in slowly, and goes at once when scrolled back (or far).
-      if (block.arrived < 0 || Math.abs(progress - block.arrived) > 1.5) {
-        block.arrived = progress;
-      } else {
-        block.arrived += (progress - block.arrived) * ease;
+      // Held: shown while the scroll is inside its hold, each beat of it (or
+      // the block as a whole) fading in or out over FADE seconds, one after
+      // another. The beats carry the motion, their parts and the veil the
+      // opacity — never the block itself, which would cut the veil off from
+      // the films.
+      if (held) {
+        const inside = progress >= SHOW_FROM && progress <= SHOW_UNTIL;
+        const waiting =
+          inside && leaving && block.beats.every((beat) => beat.level === 0);
+        const show = inside && !waiting;
+        if (show !== block.shown) {
+          block.shown = show;
+          block.since = now;
+        }
       }
-      block.arrived = Math.min(block.arrived, progress);
-      // Frames are needed until every beat is fully in.
-      const allIn =
-        block.arrived >= ARRIVE + BEAT_DELAY * (block.beats.length - 1);
-      if (held && !allIn && progress - block.arrived > 0.004) arriving = true;
+      const count = block.beats.length;
+      // It keeps its place on the screen while the page has already moved
+      // on (before its hold, or after it).
+      const drift = (progress - clamp(progress)) * holdPx;
       const beatOpacity = block.beats.map((beat, index) => {
-        const reveal = range(
-          block.arrived,
-          index * BEAT_DELAY,
-          index * BEAT_DELAY + ARRIVE,
-        );
-        const pass = range(
-          progress,
-          1 - PASS - index * BEAT_DELAY,
-          1 - index * BEAT_DELAY,
-        );
-        const settled = easeOutCubic(reveal);
-        const opacity =
-          smoothstep(0, 1, reveal) * (1 - smoothstep(0.05, 0.6, pass));
+        if (!held) return 1;
+        const delay = (block.shown ? index : count - 1 - index) * BEAT_STAGGER;
+        if ((now - block.since) / 1000 >= delay) {
+          const step = dt / FADE;
+          beat.level = clamp(beat.level + (block.shown ? step : -step));
+        }
+        beat.rising = block.shown;
+        if (block.shown ? beat.level < 1 : beat.level > 0) moving = true;
+        const opacity = smoothstep(0, 1, beat.level);
+        // Coming in it settles down into place; going out it passes the
+        // camera.
+        const settled = easeOutCubic(beat.level);
+        const pass = 1 - beat.level;
         const transform =
-          held && opacity > 0
-            ? `translate3d(0, ${(-(1 - settled) * vh * 0.05).toFixed(1)}px, 0) scale(${(0.94 + 0.06 * settled + 0.25 * pass * pass).toFixed(4)})`
+          opacity > 0
+            ? beat.rising
+              ? `translate3d(0, ${(drift - (1 - settled) * vh * 0.05).toFixed(1)}px, 0) scale(${(0.94 + 0.06 * settled).toFixed(4)})`
+              : `translate3d(0, ${drift.toFixed(1)}px, 0) scale(${(1 + 0.25 * pass * pass).toFixed(4)})`
             : "";
         if (transform !== beat.transform) {
           beat.transform = transform;
@@ -458,7 +483,9 @@ const FilmSection = ({
       }
       // Out of sight, it must not catch the clicks meant for the block on
       // screen (it may lie over it while it slides in or away).
-      const touchable = held ? Math.max(...beatOpacity) > 0.05 : veil > 0.05;
+      const visible = held ? Math.max(...beatOpacity) : veil;
+      if (held) blockState.set(element, { shown: block.shown, visible, pin });
+      const touchable = visible > 0.05;
       if (touchable !== block.touchable) {
         block.touchable = touchable;
         element.style.pointerEvents = touchable ? "" : "none";
@@ -481,9 +508,9 @@ const FilmSection = ({
         part.element.style.opacity = opacity >= 1 ? "" : String(opacity);
       });
     });
-    // A block still on its way in keeps the frames coming after the scroll
-    // has stopped.
-    if (arriving) requestSceneFrame();
+    // A block still fading keeps the frames coming after the scroll has
+    // stopped.
+    if (moving) requestSceneFrame();
   });
 
   const classes = `film-section film-section--${film}${className ? ` ${className}` : ""}`;

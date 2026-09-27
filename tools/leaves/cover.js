@@ -6,6 +6,8 @@
  * right — turned back by as much.
  *
  * `size` is the large image (for 2× screens); a half-size one is made too.
+ * The monstera, the banana leaf and the fern come from photographs instead
+ * (photos.js).
  */
 
 /** The sun on the cover (x right, y down, z toward the viewer). */
@@ -28,25 +30,6 @@ const leaf = (spec) => ({
 });
 
 export const COVER_LEAVES = [
-  // Arching over the path from the top left, the sun through it.
-  leaf({
-    name: "banana-high",
-    species: "banana",
-    seed: 23,
-    rotate: 128,
-    haze: 0.22,
-    saturation: 0.72,
-    size: [640, 1360],
-    origin: [0.5, 0.94],
-    scale: 0.86,
-    bend: 0.12,
-    turn: 0.15,
-    backlight: 0.85,
-    shade: 0.02,
-    dry: 0.55,
-    blemish: 0.3,
-    blur: 1.6,
-  }),
   // Hanging from the top right, lit through.
   leaf({
     name: "palm-high",
@@ -68,25 +51,6 @@ export const COVER_LEAVES = [
     fold: 1.6,
     blur: 1.4,
   }),
-  // In from the left edge, facing the light.
-  leaf({
-    name: "monstera",
-    species: "monstera",
-    seed: 7,
-    rotate: 14,
-    haze: 0.08,
-    saturation: 0.78,
-    size: [1000, 1180],
-    origin: [0.5, 0.8],
-    scale: 0.7,
-    bend: 0.1,
-    turn: 0.12,
-    backlight: 0.12,
-    shade: 0.18,
-    dry: 0.2,
-    blemish: 0.25,
-    blur: 0.6,
-  }),
   // In from the right edge, half in the light.
   leaf({
     name: "alocasia",
@@ -101,30 +65,10 @@ export const COVER_LEAVES = [
     bend: -0.06,
     turn: 0.2,
     backlight: 0.3,
-    shade: 0.22,
+    shade: 0.32,
     dry: 0.3,
     blemish: 0.35,
-    blur: 0.9,
-  }),
-  // Close to the camera, in shade and out of focus.
-  leaf({
-    name: "fern-near",
-    species: "fern",
-    seed: 4,
-    rotate: 38,
-    size: [640, 820],
-    origin: [0.36, 0.96],
-    scale: 0.9,
-    backlight: 0.25,
-    shade: 0.5,
-    dry: 0.2,
-    blemish: 0.1,
-    domeRadius: 1.2,
-    foldRadius: 3,
-    foldLevel: 1,
-    fold: 1.2,
-    blur: 5,
-    quality: 0.72,
+    blur: 1.8,
   }),
   leaf({
     name: "heart-near",

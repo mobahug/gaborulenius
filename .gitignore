@@ -23,3 +23,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Source photos for the cover leaves (see tools/leaves/cutout.js)
+tools/leaves/photos/

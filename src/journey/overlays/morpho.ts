@@ -1,6 +1,7 @@
 import type { DirectorFrame } from "../director/director";
 import { hasFinePointer } from "../device";
-import { glowSprite, type Surface2D } from "./surface";
+import { drawButterfly, openness, spritesFor } from "./butterflies";
+import { glowSprite } from "./surface";
 
 /*
  * On the jungle path, while the introduction and About are read, the
@@ -23,89 +24,9 @@ const SPAWN = { x: 0.62, y: 0.42 };
 const OFFSET = { x: -16, y: -26 };
 /** Wingspan (px). */
 const SPAN = 42;
-/** Sprite resolution: one wing, drawn this many times larger. */
-const SCALE = 4;
-const WING_W = 30;
-const WING_H = 44;
-
-/** The right wings (forewing and hindwing), in their own coordinates:
- * the body at x = 0, y = 0 at the wing root, the head up. */
-const wingPath = (context: CanvasRenderingContext2D) => {
-  context.beginPath();
-  // Forewing, to its rounded tip up and out.
-  context.moveTo(0, 0);
-  context.bezierCurveTo(5, -12, 16, -19, 24, -17);
-  context.bezierCurveTo(27, -12, 24, -4, 15, 0);
-  context.bezierCurveTo(9, 2, 4, 2, 0, 1);
-  // Hindwing, a rounded lobe below.
-  context.moveTo(0, 1);
-  context.bezierCurveTo(8, 1, 17, 4, 18, 11);
-  context.bezierCurveTo(18, 18, 10, 21, 4, 15);
-  context.bezierCurveTo(2, 12, 0, 6, 0, 1);
-  context.closePath();
-};
-
-/** A wing, blue from above (with its black margin and white spots) or
- * brown from below, stamped with `drawImage`. */
-const wingSprite = (upper: boolean) => {
-  const canvas = document.createElement("canvas");
-  canvas.width = WING_W * SCALE;
-  canvas.height = WING_H * SCALE;
-  const context = canvas.getContext("2d")!;
-  context.scale(SCALE, SCALE);
-  context.translate(1, 21);
-  wingPath(context);
-  const gradient = context.createRadialGradient(0, 0, 1, 0, 0, 24);
-  if (upper) {
-    gradient.addColorStop(0, "#0b2a6e");
-    gradient.addColorStop(0.35, "#1c7cf2");
-    gradient.addColorStop(0.7, "#4ec3ff");
-    gradient.addColorStop(1, "#1a4fa8");
-  } else {
-    gradient.addColorStop(0, "#3a2a1c");
-    gradient.addColorStop(0.6, "#6e5536");
-    gradient.addColorStop(1, "#4a3826");
-  }
-  context.fillStyle = gradient;
-  context.fill();
-  context.lineWidth = upper ? 2.4 : 1.2;
-  context.strokeStyle = upper ? "#07101f" : "#2a1f15";
-  context.stroke();
-  if (upper) {
-    // White spots along the forewing's black margin.
-    context.fillStyle = "rgba(245, 248, 255, 0.85)";
-    [
-      [21.5, -14.5],
-      [23.5, -10.5],
-      [20.5, -6.5],
-    ].forEach(([x, y]) => {
-      context.beginPath();
-      context.arc(x, y, 0.8, 0, Math.PI * 2);
-      context.fill();
-    });
-  } else {
-    // Eyespots underneath.
-    [
-      [12, -8, 2.2],
-      [10, 10, 2.6],
-    ].forEach(([x, y, r]) => {
-      context.fillStyle = "#d9b25a";
-      context.beginPath();
-      context.arc(x, y, r, 0, Math.PI * 2);
-      context.fill();
-      context.fillStyle = "#1a120a";
-      context.beginPath();
-      context.arc(x, y, r * 0.5, 0, Math.PI * 2);
-      context.fill();
-    });
-  }
-  return canvas;
-};
-
 export class Morpho {
   private readonly enabled = hasFinePointer();
-  private readonly upper: HTMLCanvasElement;
-  private readonly lower: HTMLCanvasElement;
+  private readonly sprites = spritesFor("morpho");
   private readonly glow = glowSprite(64, [
     [0, "rgba(90, 180, 255, 0.55)"],
     [1, "rgba(40, 120, 255, 0)"],
@@ -117,6 +38,7 @@ export class Morpho {
   private vy = 0;
   private heading = 0;
   private flap = 0;
+  private lift = 0;
   private stillFor = 0;
   private presence = 0;
   private out = false;
@@ -131,8 +53,6 @@ export class Morpho {
   };
 
   constructor() {
-    this.upper = wingSprite(true);
-    this.lower = wingSprite(false);
     if (this.enabled) {
       window.addEventListener("pointermove", this.onMove, { passive: true });
     }
@@ -142,8 +62,8 @@ export class Morpho {
     window.removeEventListener("pointermove", this.onMove);
   }
 
-  /** Draws it if it is about; returns whether it is (to keep animating). */
-  draw(frame: DirectorFrame, surface: Surface2D) {
+  /** Moves it on; returns whether it is about (to be drawn). */
+  update(frame: DirectorFrame) {
     const chase = frame.timeline.films[0];
     const time = frame.stage.presented[0] ?? chase?.time ?? 0;
     const { vw, vh } = frame.viewport;
@@ -225,41 +145,21 @@ export class Morpho {
     const lift = resting
       ? 0.35 + 0.35 * Math.sin(this.flap)
       : 0.35 + 0.65 * Math.sin(this.flap);
-    // The wing seen from above narrows as it rises: blue when open, the
-    // brown underside as it closes.
-    const open = Math.max(0.1, Math.cos((lift * 80 * Math.PI) / 180));
-
-    const context = surface.begin(vw, vh, frame.deviceTier);
-    context.save();
-    context.translate(this.x, this.y);
-    context.rotate(this.heading);
-    context.globalAlpha = this.presence * 0.5;
-    context.globalCompositeOperation = "lighter";
-    context.drawImage(this.glow, -32, -32, 64, 64);
-    context.globalCompositeOperation = "source-over";
-    context.globalAlpha = this.presence;
-    const scale = SPAN / 2 / 24;
-    const sprite = open > 0.42 ? this.upper : this.lower;
-    [1, -1].forEach((side) => {
-      context.save();
-      context.scale(side * open * scale, scale);
-      context.drawImage(sprite, -1, -21, WING_W, WING_H);
-      context.restore();
-    });
-    // The body and its antennae.
-    context.fillStyle = "#0d0d10";
-    context.beginPath();
-    context.ellipse(0, 2, 1.3, 7, 0, 0, Math.PI * 2);
-    context.fill();
-    context.strokeStyle = "rgba(20, 20, 24, 0.9)";
-    context.lineWidth = 0.7;
-    context.beginPath();
-    context.moveTo(0, -4);
-    context.quadraticCurveTo(-2, -9, -4, -11);
-    context.moveTo(0, -4);
-    context.quadraticCurveTo(2, -9, 4, -11);
-    context.stroke();
-    context.restore();
+    this.lift = lift;
     return true;
+  }
+
+  render(context: CanvasRenderingContext2D) {
+    drawButterfly(
+      context,
+      this.sprites,
+      this.x,
+      this.y,
+      this.heading,
+      openness(this.lift),
+      this.presence,
+      SPAN,
+      this.glow,
+    );
   }
 }

@@ -61,16 +61,18 @@ type LeafLayer = Layer & {
   breathe: [number, number, number, number];
 };
 
-// Turned as in tools/leaves/cover.js, which lights each leaf for its turn.
+// The rendered ones are turned as in tools/leaves/cover.js, which lights
+// each leaf for its turn; the monstera, the banana leaf and the fern are
+// photographs (tools/leaves/photos.js).
 const LEAVES: LeafLayer[] = [
   {
     id: "banana-high",
     image: "banana-high",
-    size: [640, 1360],
-    origin: [0.5, 0.94],
+    size: [494, 1360],
+    origin: [0.571, 0.968],
     rotate: 128,
     exit: { x: -0.36, y: -0.5, scale: 1.4 },
-    wide: { x: -4, y: -6, width: 17 },
+    wide: { x: -3, y: -4, width: 15 },
     breathe: [1.3, 1.012, 9.5, -3],
     wideOnly: true,
   },
@@ -99,22 +101,22 @@ const LEAVES: LeafLayer[] = [
   {
     id: "monstera",
     image: "monstera",
-    size: [1000, 1180],
-    origin: [0.5, 0.8],
-    rotate: 14,
+    size: [1119, 1200],
+    origin: [0.451, 0.751],
+    rotate: 16,
     exit: { x: -0.5, y: 0.35, scale: 1.5 },
-    wide: { x: 12, y: 102, width: 28 },
-    narrow: { x: -8, y: 96, width: 78 },
+    wide: { x: 11, y: 100, width: 27 },
+    narrow: { x: 6, y: 100, width: 70 },
     breathe: [0.9, 1.016, 10.5, -6],
   },
   {
     id: "fern-near",
     image: "fern-near",
-    size: [640, 820],
-    origin: [0.36, 0.96],
-    rotate: 38,
-    exit: { x: -0.6, y: 0.6, scale: 1.7 },
-    wide: { x: 4, y: 112, width: 40 },
+    size: [525, 1300],
+    origin: [0.064, 0.977],
+    rotate: 118,
+    exit: { x: -0.6, y: 0.5, scale: 1.7 },
+    wide: { x: -2, y: 62, width: 15 },
     breathe: [1.8, 1.02, 6.5, -2],
     wideOnly: true,
   },
