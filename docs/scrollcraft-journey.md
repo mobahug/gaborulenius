@@ -330,7 +330,17 @@ where that is missing).
 
 ## Loading
 
-- The cover paints first over a 48×27 placeholder of the chase's first frame.
+- The first paint is a loader, in `index.html` itself so it needs no
+  script: a morpho beating its wings over the jungle's greens, motes of
+  light drifting down, and a thin gold ring that fills as the first film
+  arrives (FilmLayer reads the download as it streams and tells the page,
+  `filmprogress`). It leaves once the film at the scroll's place plays
+  (`data-film-ready`) — the morpho flies up into the light and the jungle
+  opens — or after 5.5 s at the most (the cover's still stands in until the
+  film comes), or at a tap, a scroll or a key. It only fades in after
+  0.45 s, so a visit from the cache never sees it; with reduced motion, or
+  without script, there is none.
+- The cover paints under it over a 48×27 placeholder of the chase's first frame.
   The chase loads once the app has started; the next film once the visitor
   starts scrolling; after that the current film first and its neighbours once
   it can show a frame (or after 2.5 s).
@@ -353,7 +363,9 @@ The same story, about 10 % less scroll per stage. The scroll clock's
 viewport height is the large viewport (`100lvh`, measured once per resize)
 and the fixed stage is exactly that tall, so nothing timed by the scroll
 jumps, and the films do not resize, while a phone's toolbars slide in and
-out. A 16:9 frame on a portrait
+out. The cover's scene is that tall too, so its leaves reach the bottom of
+the screen while the toolbars are hidden (at the small viewport's height
+they were cut off above it). A 16:9 frame on a portrait
 screen shows about its middle third, so each film has focus keyframes
 (`focus`, object-position over film time) — the chase's follow the morpho,
 the macaw and its eye, the ending's the macaw onto its branch and the morpho

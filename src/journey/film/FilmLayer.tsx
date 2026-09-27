@@ -172,6 +172,35 @@ const FilmLayer = () => {
       abort: null as AbortController | null,
     }));
 
+    /**
+     * The whole film as a blob, telling how much of it has arrived (the
+     * page's loader shows it for the first film, see index.html).
+     */
+    const readFilm = async (response: Response, index: number) => {
+      const total = Number(response.headers.get("content-length")) || 0;
+      if (!response.body || !total) return response.blob();
+      const reader = response.body.getReader();
+      const chunks: Uint8Array[] = [];
+      let loaded = 0;
+      let told = -1;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        loaded += value.length;
+        const progress = Math.min(1, loaded / total);
+        if (progress - told >= 0.01 || progress === 1) {
+          told = progress;
+          window.dispatchEvent(
+            new CustomEvent("filmprogress", { detail: { index, progress } }),
+          );
+        }
+      }
+      return new Blob(chunks as BlobPart[], {
+        type: response.headers.get("content-type") ?? "video/mp4",
+      });
+    };
+
     const load = (index: number) => {
       const video = layers[index]?.video;
       if (!video || loadedAt[index] !== null) return;
@@ -188,7 +217,7 @@ const FilmLayer = () => {
       fetch(source, { signal: controller.signal })
         .then((response) => {
           if (!response.ok) throw new Error(`${response.status}`);
-          return response.blob();
+          return readFilm(response, index);
         })
         .then((blob) => {
           if (loadedAt[index] === null || controller.signal.aborted) return;
@@ -562,6 +591,16 @@ const FilmLayer = () => {
       // on screen.
       if (shown[0] >= 1 && root.dataset.videoReady !== "true") {
         root.dataset.videoReady = "true";
+      }
+      // The page's loader (index.html) goes once the film at the scroll's
+      // place plays.
+      if (
+        root.dataset.filmReady !== "true" &&
+        !reduced &&
+        isReady(current) &&
+        shown[current] >= 1
+      ) {
+        root.dataset.filmReady = "true";
       }
     }, 0);
 

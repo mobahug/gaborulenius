@@ -365,3 +365,15 @@ screen behind each capability's first.
   reads over the films, lit when pointed at.
 - The morphos no longer seem to blink: at the top of a beat a wing stays a
   third open and a deeper blue, instead of a dark sliver.
+
+## 16. Phones' full height, and a loader (September 2026)
+
+- On a phone with its toolbars hidden, the cover's leaves were cut off
+  above the bottom of the screen: the cover was as tall as the small
+  viewport, the films behind it as tall as the large one. The cover is now
+  as tall as the large viewport too.
+- The first paint is a loader instead of a plain green screen: a morpho
+  over the jungle's greens and a gold ring that fills with the first film's
+  real download, leaving once that film plays (5.5 s at the most, or at a
+  tap or a scroll), the morpho flying up as the jungle opens. A visit from
+  the cache never sees it.

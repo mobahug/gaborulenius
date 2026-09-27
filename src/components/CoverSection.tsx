@@ -567,17 +567,20 @@ const CoverSection: React.FC = () => {
           </div>
         </section>
         <style>{`
+        /* As tall as the large viewport, like the films behind it: while a
+           phone's toolbars are hidden the screen is that tall, and the
+           leaves must reach its bottom. */
         .cover {
           position: relative;
           z-index: 1;
           height: 150vh;
-          height: 150svh;
+          height: 150lvh;
         }
         .cover-scene {
           position: sticky;
           top: 0;
           height: 100vh;
-          height: 100svh;
+          height: 100lvh;
           overflow: hidden;
           display: flex;
           align-items: center;
@@ -627,7 +630,7 @@ const CoverSection: React.FC = () => {
           50% { rotate: var(--breath-turn, 1deg); scale: var(--breath-grow, 1.015); }
         }
         @media (max-width: 899.95px) {
-          .cover { height: 130vh; height: 130svh; }
+          .cover { height: 130vh; height: 130lvh; }
           .cover-layer--wide-only { display: none; }
           .cover-layer--leaf { --lx: var(--nx); --ly: var(--ny); --lw: var(--nw); }
         }
@@ -740,7 +743,7 @@ const CoverSection: React.FC = () => {
           outline-offset: 3px;
         }
         @media (prefers-reduced-motion: reduce) {
-          .cover { height: 100vh; height: 100svh; }
+          .cover { height: 100vh; height: 100lvh; }
           .cover-mist-band, .cover-shaft { animation: none; }
           .cover-lqip, .cover-pollen, .cover-layer--leaf { transition: none; }
           .cover-layer--leaf { animation: none; }
