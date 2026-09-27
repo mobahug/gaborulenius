@@ -197,6 +197,29 @@ const CoverSection: React.FC = () => {
   // language. The attribute is set both by the inline pre-React script in
   // index.html (initial paint) and by I18nWrapper (after React mounts).
   const [locale, setLocale] = useState<string>(readDocumentLocale);
+  // The leaves load once the first film is on screen (or a moment after the
+  // page, if it is slow to come), so they never hold up its picture.
+  const [leavesOn, setLeavesOn] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (root.dataset.videoReady === "true") {
+      setLeavesOn(true);
+      return;
+    }
+    const observer = new MutationObserver(() => {
+      if (root.dataset.videoReady === "true") setLeavesOn(true);
+    });
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["data-video-ready"],
+    });
+    const fallback = window.setTimeout(() => setLeavesOn(true), 3000);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, []);
   const greeting = GREETINGS[locale] ?? GREETINGS.en;
   const skipLabel = SKIP_LABELS[locale] ?? SKIP_LABELS.en;
 
@@ -502,8 +525,14 @@ const CoverSection: React.FC = () => {
                     }
                   }}
                   className={layerClass(leaf)}
-                  src={assetUrl(`cover/${leaf.image}.webp`)}
-                  srcSet={`${assetUrl(`cover/${leaf.image}-sm.webp`)} ${width / 2}w, ${assetUrl(`cover/${leaf.image}.webp`)} ${width}w`}
+                  src={
+                    leavesOn ? assetUrl(`cover/${leaf.image}.webp`) : undefined
+                  }
+                  srcSet={
+                    leavesOn
+                      ? `${assetUrl(`cover/${leaf.image}-sm.webp`)} ${width / 2}w, ${assetUrl(`cover/${leaf.image}.webp`)} ${width}w`
+                      : undefined
+                  }
                   sizes={`(max-width: 899.95px) ${narrow.width}vw, ${leaf.wide.width}vw`}
                   width={width}
                   height={height}
