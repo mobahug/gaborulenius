@@ -76,8 +76,8 @@ const LEAVES: LeafLayer[] = [
     rotate: 128,
     exit: { x: -0.36, y: -0.5, scale: 1.4 },
     wide: { x: -3, y: -4, width: 15.9 },
+    narrow: { x: -6, y: -3, width: 32 },
     breathe: [1.3, 1.012, 9.5, -3],
-    wideOnly: true,
   },
   {
     id: "palm-high",

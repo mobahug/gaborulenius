@@ -31,6 +31,9 @@ const SectionRail = () => {
   const fillRef = useRef<HTMLSpanElement>(null);
   const visible = useAfterCover();
   const [activeChild, setActiveChild] = useState<string | null>(null);
+  const current = navLinks.findIndex(
+    (link) => link.href === currentActiveSectionId,
+  );
 
   // How far the journey has come, on the line.
   useEffect(() => {
@@ -85,14 +88,22 @@ const SectionRail = () => {
         <span ref={fillRef} className="section-rail-fill" />
       </span>
       <ul>
-        {navLinks.map(({ id, href, children }) => {
+        {navLinks.map(({ id, href, children }, index) => {
           const active = currentActiveSectionId === href;
           const open = active && !!children;
+          // Scrolled through: filled, as the line is.
+          const passed = index < current;
+          // The part on screen, among this section's parts (or -1).
+          const reached = open
+            ? (children?.findIndex((child) => child.href === activeChild) ?? -1)
+            : -1;
           return (
             <li key={id} className={open ? "is-open" : undefined}>
               <a
                 href={href}
-                className={active ? "is-active" : undefined}
+                className={
+                  active ? "is-active" : passed ? "is-passed" : undefined
+                }
                 aria-current={active ? "location" : undefined}
                 onClick={() => requestActiveSection(href)}
               >
@@ -104,7 +115,7 @@ const SectionRail = () => {
               {children ? (
                 <div className="section-rail-children">
                   <ul inert={!open}>
-                    {children.map((child) => {
+                    {children.map((child, childIndex) => {
                       const here = open && activeChild === child.href;
                       const group = child.group
                         ? open && groupOf(children, activeChild) === child.href
@@ -112,6 +123,7 @@ const SectionRail = () => {
                       const classes = [
                         here ? "is-active" : "",
                         group ? "is-current" : "",
+                        childIndex < reached ? "is-passed" : "",
                       ]
                         .filter(Boolean)
                         .join(" ");

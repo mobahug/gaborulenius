@@ -348,3 +348,7 @@ screen behind each capability's first.
   section open.
 - A link card whose picture cannot be loaded shows only its words (Hive's
   picture had gone from its host).
+- Follow-up: the rail's dots are filled once scrolled through, as its line
+  is; the dial's career follows the timeline's open tab (its highlights or
+  all of it, evenly spaced, oldest first); phones show the banana leaf at
+  the top left too.

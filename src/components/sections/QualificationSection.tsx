@@ -26,7 +26,10 @@ import { holdProgress } from "../../journey/film/holdProgress";
 import { clamp, smoothstep } from "../../journey/math";
 import { requestSceneFrame } from "../../journey/scrollTimeline";
 import { useScene } from "../../journey/useScene";
-import { selectedEventAtom } from "../../hooks/selectedEventAtom";
+import {
+  experienceTabAtom,
+  selectedEventAtom,
+} from "../../hooks/experienceAtoms";
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -67,7 +70,7 @@ const QualificationSection = () => {
   const split = useMediaQuery(SPLIT_QUERY, { noSsr: true });
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useAtom(selectedEventAtom);
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useAtom(experienceTabAtom);
   const trailRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const events = tabIndex === 0 ? highlightedEvents : allEvents;

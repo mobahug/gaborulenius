@@ -320,6 +320,17 @@
   stroke-width: 1.2;
 }
 
+/* The other tab's career comes in softly. */
+.career-dial-career {
+  animation: career-dial-in 0.6s ease both;
+}
+
+@keyframes career-dial-in {
+  from {
+    opacity: 0;
+  }
+}
+
 .career-dial-role.is-chosen .instrument-stop {
   fill: #e9dcb3;
   stroke: #fff4ec;
@@ -422,7 +433,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .instrument-pulse {
+  .instrument-pulse,
+  .career-dial-career {
     animation: none;
   }
 }

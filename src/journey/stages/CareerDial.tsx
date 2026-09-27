@@ -1,7 +1,11 @@
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useRef } from "react";
 import { useIntl } from "react-intl";
-import { selectedEventAtom } from "../../hooks/selectedEventAtom";
+import { allEvents, highlightedEvents } from "../../contexts";
+import {
+  experienceTabAtom,
+  selectedEventAtom,
+} from "../../hooks/experienceAtoms";
 import { onDirectorFrame } from "../director/director";
 import { filmIndex } from "../film/films";
 import { clamp } from "../math";
@@ -15,9 +19,9 @@ import {
 const WORK = filmIndex("work");
 /** The dial: 270° from the lower left, round to the lower right. */
 const SWEEP = 270;
-/** The office film's route, outside, and the years, inside. */
+/** The office film's route, outside, and the career, inside. */
 const ROUTE_RADIUS = 78;
-const YEARS_RADIUS = 54;
+const CAREER_RADIUS = 54;
 /** Film times over which the walk goes round. */
 const START = 0.9;
 const END = 7.2;
@@ -28,27 +32,12 @@ const SECTIONS = [
   { time: 5.6, href: "#skills", label: "navSkillsList" },
   { time: 6.5, href: "#tools", label: "navTools" },
 ];
-/** The career, inside: the years from 2016 to today and the roles of the
- * experience timeline's highlights. */
-const FIRST = 2016;
-const today = new Date();
-const NOW = today.getFullYear() + today.getMonth() / 12;
-const ROLES = [
-  { from: 2016, to: 2017, name: "SataEdu", event: "eventSataEduTitle" },
-  { from: 2021, to: 2023, name: "Hive Helsinki", event: "eventHiveTitle" },
-  { from: 2022, to: 2023, name: "Anyhau", event: "eventAnyhauTitle" },
-  {
-    from: 2023,
-    to: null,
-    name: "Tieto Caretech",
-    event: "eventTietoCaretechTitle",
-  },
-];
+/** This year, the end of the career inside. */
+const NOW = new Date().getFullYear();
 
 /** Degrees clockwise from the top of the dial, for a share of the sweep. */
 const angleAt = (share: number) => -SWEEP / 2 + share * SWEEP;
 const along = (time: number) => clamp((time - START) / (END - START));
-const angleOfYear = (year: number) => angleAt((year - FIRST) / (NOW - FIRST));
 
 const polar = (radius: number, degrees: number) => {
   const radians = (degrees * Math.PI) / 180;
@@ -63,11 +52,7 @@ const arc = (radius: number, from: number, to: number) => {
 };
 
 const ROUTE = arc(ROUTE_RADIUS, angleAt(0), angleAt(1));
-const YEARS_ARC = arc(YEARS_RADIUS, angleAt(0), angleAt(1));
-const YEARS = Array.from(
-  { length: Math.floor(NOW) - FIRST + 1 },
-  (_, index) => FIRST + index,
-);
+const CAREER_ARC = arc(CAREER_RADIUS, angleAt(0), angleAt(1));
 
 const at = (radius: number, degrees: number) => {
   const [x, y] = polar(radius, degrees);
@@ -79,14 +64,27 @@ const at = (radius: number, degrees: number) => {
  * Explorer's map: the film's parts round the dial — the experience, the work
  * projects, the skills and the tools — walked in red as the film plays, each
  * lit once passed and taking you to it, and the one you are in named in the
- * middle. Inside, as an extra touch, the career: the years from 2016 to
- * today and a dot for each role of the experience highlights, which tells
- * that role's story beside the timeline (the one told is lit).
+ * middle. Inside, as an extra touch, the career: the events of the
+ * experience timeline's open tab (its highlights, or all of it), oldest
+ * first, from the first one's year round to this one; each tells its story
+ * beside the timeline, and the one told is lit.
  */
 const CareerDial = () => {
   const dialRef = useRef<HTMLDivElement>(null);
   const intl = useIntl();
   const [chosen, choose] = useAtom(selectedEventAtom);
+  const tab = useAtomValue(experienceTabAtom);
+  const events = tab === 0 ? highlightedEvents : allEvents;
+  // The timeline lists the latest first; round the dial, time goes on.
+  const career = [...events].reverse();
+  // The one whose story is told: the chosen one, or the latest.
+  const told = events.some((event) => event.titleId === chosen)
+    ? chosen
+    : events[0].titleId;
+  const yearOf = (whenId: string) =>
+    intl.formatMessage({ id: whenId }).match(/\d{4}/)?.[0] ?? "";
+  const shareOf = (index: number) =>
+    career.length > 1 ? index / (career.length - 1) : 0.5;
 
   useEffect(() => {
     const dial = dialRef.current;
@@ -142,45 +140,36 @@ const CareerDial = () => {
   return (
     <div ref={dialRef} className="instrument career-dial" aria-hidden="true">
       <svg viewBox="0 0 200 200">
-        {/* The career, inside. */}
-        <path className="career-dial-years" d={YEARS_ARC} />
-        {YEARS.map((year) => {
-          const [x0, y0] = polar(YEARS_RADIUS - 3, angleOfYear(year));
-          const [x1, y1] = polar(YEARS_RADIUS - 6, angleOfYear(year));
-          return (
-            <line
-              key={year}
-              className="instrument-tick"
-              x1={x0}
-              y1={y0}
-              x2={x1}
-              y2={y1}
-            />
-          );
-        })}
-        {[FIRST, Math.floor(NOW)].map((year) => (
-          <text
-            key={year}
-            className="instrument-label"
-            transform={at(YEARS_RADIUS - 14, angleOfYear(year))}
-          >
-            ’{String(year).slice(2)}
-          </text>
-        ))}
-        {ROLES.map(({ from, to, name, event }) => (
-          <g key={name} transform={at(YEARS_RADIUS, angleOfYear(from))}>
-            <a
-              className={`instrument-waypoint career-dial-role${chosen === event ? " is-chosen" : ""}`}
-              href="#experience"
-              tabIndex={-1}
-              onClick={() => choose(event)}
+        {/* The career, inside (drawn anew for the other tab). */}
+        <path className="career-dial-years" d={CAREER_ARC} />
+        <g key={tab} className="career-dial-career">
+          {[yearOf(career[0].whenId), String(NOW)].map((year, index) => (
+            <text
+              key={index}
+              className="instrument-label"
+              transform={at(CAREER_RADIUS - 14, angleAt(index))}
             >
-              <title>{`${name}, ${from}–${to ?? ""}`}</title>
-              <circle className="instrument-hit" r="8" />
-              <circle className="instrument-stop" r="2.8" />
-            </a>
-          </g>
-        ))}
+              ’{year.slice(2)}
+            </text>
+          ))}
+          {career.map(({ titleId, whenId }, index) => (
+            <g
+              key={titleId}
+              transform={at(CAREER_RADIUS, angleAt(shareOf(index)))}
+            >
+              <a
+                className={`instrument-waypoint career-dial-role${told === titleId ? " is-chosen" : ""}`}
+                href="#experience"
+                tabIndex={-1}
+                onClick={() => choose(titleId)}
+              >
+                <title>{`${intl.formatMessage({ id: titleId })}, ${intl.formatMessage({ id: whenId })}`}</title>
+                <circle className="instrument-hit" r="8" />
+                <circle className="instrument-stop" r="2.8" />
+              </a>
+            </g>
+          ))}
+        </g>
         {/* The film's parts, round the outside. */}
         <path className="instrument-plan" d={ROUTE} />
         <path className="instrument-track" d={ROUTE} />

@@ -227,6 +227,12 @@
   border-color: #f6f1e4;
 }
 
+/* Scrolled through: filled, as the line is. */
+.section-rail a.is-passed .section-rail-dot {
+  background: #d9c89a;
+  border-color: #d9c89a;
+}
+
 .section-rail a.is-active .section-rail-dot {
   background: #e9dcb3;
   border-color: #e9dcb3;
