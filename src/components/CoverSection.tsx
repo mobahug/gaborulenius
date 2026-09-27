@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { colors as lightColors } from "../colors";
 import { assetUrl } from "../utils/assets";
-import { frondPath } from "../journey/foliage";
-import type { BananaLeafSpec } from "../journey/foliage/bananaLeaf";
 import { JUNGLE_LQIP } from "../journey/lqip";
 import { clamp, easeInCubic, range } from "../journey/math";
 import { registerScene } from "../journey/scrollTimeline";
@@ -41,165 +39,107 @@ type Layer = {
   wideOnly?: boolean;
 };
 
-/** Canopy fronds: procedural silhouettes. */
-type Fern = Layer & {
-  path: string;
-  box: { x: number; y: number; width: number; height: number };
-  origin: [number, number];
-};
+/** Where a leaf's stalk is (left and top, as % of the scene) and how wide
+ * the image is (vw). */
+type Place = { x: number; y: number; width: number };
 
 /**
- * Banana leaves painted procedurally on canvas: the near ones in shade and
- * out of focus, the high one lit through by the sun. Each canvas box is set
- * in CSS; the spec positions the leaf inside its box.
+ * A jungle leaf: an image rendered offline (tools/leaves), turned into
+ * place around its stalk, breathing — a slow sway and swell, each on its
+ * own rhythm.
  */
-type BananaLayer = Layer & {
-  spec: BananaLeafSpec;
-  /** Overrides for the narrow (phone) composition. */
-  narrow?: Partial<BananaLeafSpec>;
-  /** Sway amplitude (deg), period (s) and delay (s). */
-  sway: [number, number, number];
+type LeafLayer = Layer & {
+  /** public/cover/<image>.webp, and <image>-sm.webp at half the size. */
+  image: string;
+  /** Size of the large image (px). */
+  size: [number, number];
+  /** Where the stalk attaches, as fractions of the image. */
+  origin: [number, number];
+  wide: Place;
+  narrow?: Place;
+  /** Sway (deg), swell (scale), period (s), delay (s). */
+  breathe: [number, number, number, number];
 };
 
-const BANANA_LEAVES: BananaLayer[] = [
+// Turned as in tools/leaves/cover.js, which lights each leaf for its turn.
+const LEAVES: LeafLayer[] = [
   {
-    // Deeper in the shade behind the near leaf, and further out of focus.
-    id: "leaf-rear",
-    rotate: 0,
-    exit: { x: 0.4, y: 0.45, scale: 1.35 },
-    sway: [0.8, 9.5, -3],
+    id: "banana-high",
+    image: "banana-high",
+    size: [640, 1360],
+    origin: [0.5, 0.94],
+    rotate: 128,
+    exit: { x: -0.36, y: -0.5, scale: 1.4 },
+    wide: { x: -4, y: -6, width: 17 },
+    breathe: [1.3, 1.012, 9.5, -3],
     wideOnly: true,
-    spec: {
-      baseX: 0.92,
-      baseY: 1.1,
-      angle: -0.42,
-      bend: -0.95,
-      length: 0.8,
-      halfWidth: 0.13,
-      tears: 10,
-      seed: 41,
-      backlight: 0.22,
-      shade: 0.78,
-      turn: 0.35,
-      blur: 3.5,
-    },
   },
   {
-    id: "leaf-high",
-    rotate: 0,
+    id: "palm-high",
+    image: "palm-high",
+    size: [900, 1100],
+    origin: [0.32, 0.97],
+    rotate: 206,
     exit: { x: 0.34, y: -0.5, scale: 1.4 },
-    sway: [1.4, 7.5, -2],
-    spec: {
-      baseX: 1.02,
-      baseY: -0.1,
-      angle: -2.45,
-      bend: -0.7,
-      length: 0.95,
-      halfWidth: 0.18,
-      tears: 13,
-      seed: 29,
-      backlight: 0.95,
-      turn: 0.1,
-      blur: 1.2,
-    },
+    wide: { x: 96, y: -8, width: 34 },
+    narrow: { x: 104, y: -4, width: 70 },
+    breathe: [1.6, 1.014, 7.5, -1],
   },
   {
-    id: "leaf-near",
-    rotate: 0,
-    exit: { x: 0.5, y: 0.5, scale: 1.5 },
-    sway: [1, 8.5, -5],
-    spec: {
-      baseX: 0.97,
-      baseY: 1.08,
-      angle: -0.8,
-      bend: -0.6,
-      length: 0.72,
-      halfWidth: 0.12,
-      tears: 14,
-      seed: 11,
-      backlight: 0.3,
-      shade: 0.6,
-      turn: 0.25,
-      blur: 1.2,
-    },
-    narrow: { angle: -0.74, length: 0.74, halfWidth: 0.15, tears: 12, blur: 1 },
-  },
-  {
-    id: "leaf-low",
-    rotate: 0,
-    exit: { x: -0.5, y: 0.4, scale: 1.5 },
-    sway: [1.2, 6.5, -1],
+    id: "alocasia",
+    image: "alocasia",
+    size: [900, 1240],
+    origin: [0.5, 0.62],
+    rotate: -52,
+    exit: { x: 0.5, y: 0.35, scale: 1.5 },
+    wide: { x: 104, y: 78, width: 30 },
+    breathe: [1.1, 1.015, 8.5, -4],
     wideOnly: true,
-    spec: {
-      baseX: 0.05,
-      baseY: 1.08,
-      angle: 0.72,
-      bend: 0.55,
-      length: 0.66,
-      halfWidth: 0.12,
-      tears: 12,
-      seed: 3,
-      backlight: 0.26,
-      shade: 0.65,
-      turn: 0.3,
-      blur: 1.6,
-    },
+  },
+  {
+    id: "monstera",
+    image: "monstera",
+    size: [1000, 1180],
+    origin: [0.5, 0.8],
+    rotate: 14,
+    exit: { x: -0.5, y: 0.35, scale: 1.5 },
+    wide: { x: 12, y: 102, width: 28 },
+    narrow: { x: -8, y: 96, width: 78 },
+    breathe: [0.9, 1.016, 10.5, -6],
+  },
+  {
+    id: "fern-near",
+    image: "fern-near",
+    size: [640, 820],
+    origin: [0.36, 0.96],
+    rotate: 38,
+    exit: { x: -0.6, y: 0.6, scale: 1.7 },
+    wide: { x: 4, y: 112, width: 40 },
+    breathe: [1.8, 1.02, 6.5, -2],
+    wideOnly: true,
+  },
+  {
+    id: "heart-near",
+    image: "heart-near",
+    size: [640, 820],
+    origin: [0.5, 0.74],
+    rotate: -28,
+    exit: { x: 0.6, y: 0.6, scale: 1.7 },
+    wide: { x: 90, y: 116, width: 34 },
+    narrow: { x: 96, y: 108, width: 74 },
+    breathe: [1.4, 1.018, 7, -5],
   },
 ];
 
-const FERN_LENGTH = 1000;
-const LEAFLET_LENGTH = 300;
-
-const fern = (
-  id: string,
-  seed: number,
-  bend: number,
-  rotate: number,
-  exit: Exit,
-  options: Partial<Fern> = {},
-): Fern => {
-  const x = Math.min(-LEAFLET_LENGTH, bend * FERN_LENGTH - LEAFLET_LENGTH);
-  const right = Math.max(LEAFLET_LENGTH, bend * FERN_LENGTH + LEAFLET_LENGTH);
-  const box = {
-    x,
-    y: -FERN_LENGTH - LEAFLET_LENGTH * 0.4,
-    width: right - x,
-    height: FERN_LENGTH + LEAFLET_LENGTH * 0.9,
-  };
-  return {
-    id,
-    path: frondPath({
-      length: FERN_LENGTH,
-      leaflets: 15,
-      leafletLength: LEAFLET_LENGTH,
-      leafletWidth: 56,
-      bend,
-      seed,
-    }),
-    box,
-    origin: [
-      (-x / box.width) * 100,
-      ((FERN_LENGTH + LEAFLET_LENGTH * 0.4) / box.height) * 100,
-    ],
-    rotate,
-    exit,
-    ...options,
-  };
+/** A leaf fades in once loaded; after that its opacity follows the scroll
+ * without easing. */
+const showLeaf = (element: HTMLElement) => {
+  if (element.dataset.ready === "true") return;
+  element.dataset.ready = "true";
+  window.setTimeout(() => {
+    element.dataset.settled = "true";
+  }, 1500);
 };
-
-const FERNS: Fern[] = [
-  fern(
-    "fern-left",
-    71,
-    0.28,
-    -156,
-    { x: -0.32, y: -0.42, scale: 1.6 },
-    {
-      mirror: true,
-      wideOnly: true,
-    },
-  ),
-];
 
 type Pollen = {
   x: number;
@@ -283,7 +223,7 @@ const CoverSection: React.FC = () => {
     let progress = 0;
     let viewport = { vw: window.innerWidth, vh: window.innerHeight };
     let pointerFrame: number | null = null;
-    const layers: Layer[] = [...BANANA_LEAVES, ...FERNS];
+    const layers: Layer[] = LEAVES;
 
     const apply = () => {
       const walk = reduced ? 0 : easeInCubic(progress);
@@ -368,77 +308,6 @@ const CoverSection: React.FC = () => {
       unregister();
       if (finePointer) window.removeEventListener("pointermove", onPointerMove);
       if (pointerFrame !== null) window.cancelAnimationFrame(pointerFrame);
-    };
-  }, []);
-
-  // Banana leaves, painted once the page is idle (one per idle slice, so no
-  // long task competes with input) and again when the width changes.
-  // Canvases are not LCP candidates, so they never move LCP.
-  useEffect(() => {
-    let cancelled = false;
-    let cancelIdle = () => {};
-    let painter: typeof import("../journey/foliage/bananaLeaf") | null = null;
-    let resizeTimer = 0;
-
-    const paintAll = () => {
-      cancelIdle();
-      const wide = isWideLayout();
-      const queue = BANANA_LEAVES.filter((leaf) => wide || !leaf.wideOnly);
-      const next = () => {
-        const leaf = queue.shift();
-        if (!leaf) {
-          painter?.releaseLeafRenderer();
-          return;
-        }
-        if (cancelled || !painter) return;
-        const canvas = layerRefs.current[leaf.id] as HTMLCanvasElement | null;
-        const spec = wide ? leaf.spec : { ...leaf.spec, ...leaf.narrow };
-        // Out-of-focus leaves need no more than CSS resolution.
-        const ratio = Math.min(
-          window.devicePixelRatio || 1,
-          (spec.blur ?? 0) > 2 ? 1 : 1.5,
-        );
-        if (canvas && painter.paintBananaLeaf(canvas, spec, ratio)) {
-          if (canvas.dataset.ready !== "true") {
-            canvas.dataset.ready = "true";
-            // Once faded in, opacity follows the scroll without easing.
-            window.setTimeout(() => {
-              canvas.dataset.settled = "true";
-            }, 1300);
-          }
-        }
-        cancelIdle = whenIdle(next, 600);
-      };
-      cancelIdle = whenIdle(next, 2000);
-    };
-
-    const load = () => {
-      void import("../journey/foliage/bananaLeaf").then((module) => {
-        if (cancelled) return;
-        painter = module;
-        paintAll();
-      });
-    };
-    const cancelLoad = whenIdle(load, 2000);
-
-    let lastSize = `${window.innerWidth}`;
-    const onResize = () => {
-      // Mobile browsers resize the viewport height while scrolling; only a
-      // width change re-lays the leaves out.
-      const size = `${window.innerWidth}`;
-      if (size === lastSize || !painter) return;
-      lastSize = size;
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(paintAll, 250);
-    };
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      cancelled = true;
-      cancelLoad();
-      cancelIdle();
-      window.clearTimeout(resizeTimer);
-      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -578,8 +447,8 @@ const CoverSection: React.FC = () => {
     };
   }, []);
 
-  const layerClass = (spec: Layer, kind: string) =>
-    `cover-layer cover-layer--${kind} cover-layer--${spec.id}${spec.wideOnly ? " cover-layer--wide-only" : ""}`;
+  const layerClass = (spec: Layer) =>
+    `cover-layer cover-layer--leaf cover-layer--${spec.id}${spec.wideOnly ? " cover-layer--wide-only" : ""}`;
 
   return (
     <>
@@ -617,71 +486,50 @@ const CoverSection: React.FC = () => {
             </h1>
           </div>
           <div className="cover-depth cover-depth--near" aria-hidden="true">
-            <svg className="cover-defs" width="0" height="0" focusable="false">
-              <defs>
-                <linearGradient
-                  id="cover-fern-fill"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="0" className="cover-stop-top" />
-                  <stop offset="1" className="cover-stop-bottom" />
-                </linearGradient>
-                <filter
-                  id="cover-fern-blur"
-                  x="-10%"
-                  y="-10%"
-                  width="120%"
-                  height="120%"
-                >
-                  <feGaussianBlur stdDeviation="6" />
-                </filter>
-              </defs>
-            </svg>
-            {FERNS.map((spec) => (
-              <div
-                key={spec.id}
-                ref={(element) => {
-                  layerRefs.current[spec.id] = element;
-                }}
-                className={layerClass(spec, "fern")}
-                style={{
-                  aspectRatio: `${spec.box.width} / ${spec.box.height}`,
-                  transformOrigin: `${spec.origin[0].toFixed(2)}% ${spec.origin[1].toFixed(2)}%`,
-                  transform: `rotate(${spec.rotate}deg) scale(${spec.mirror ? -1 : 1}, 1)`,
-                }}
-              >
-                <svg
-                  viewBox={`${spec.box.x.toFixed(1)} ${spec.box.y.toFixed(1)} ${spec.box.width.toFixed(1)} ${spec.box.height.toFixed(1)}`}
-                  focusable="false"
-                >
-                  <path
-                    d={spec.path}
-                    fill="url(#cover-fern-fill)"
-                    filter="url(#cover-fern-blur)"
-                  />
-                </svg>
-              </div>
-            ))}
-            {BANANA_LEAVES.map((leaf) => (
-              <canvas
-                key={leaf.id}
-                ref={(element) => {
-                  layerRefs.current[leaf.id] = element;
-                }}
-                className={layerClass(leaf, "banana")}
-                style={
-                  {
-                    "--sway": `${leaf.sway[0]}deg`,
-                    "--sway-period": `${leaf.sway[1]}s`,
-                    "--sway-delay": `${leaf.sway[2]}s`,
-                    transformOrigin: `${(leaf.spec.baseX * 100).toFixed(1)}% ${(leaf.spec.baseY * 100).toFixed(1)}%`,
-                  } as React.CSSProperties
-                }
-              />
-            ))}
+            {LEAVES.map((leaf) => {
+              const [width, height] = leaf.size;
+              const narrow = leaf.narrow ?? leaf.wide;
+              return (
+                <img
+                  key={leaf.id}
+                  ref={(element) => {
+                    layerRefs.current[leaf.id] = element;
+                    // Already there (from the cache) before React listened.
+                    if (element?.complete && element.naturalWidth) {
+                      showLeaf(element);
+                    }
+                  }}
+                  className={layerClass(leaf)}
+                  src={assetUrl(`cover/${leaf.image}.webp`)}
+                  srcSet={`${assetUrl(`cover/${leaf.image}-sm.webp`)} ${width / 2}w, ${assetUrl(`cover/${leaf.image}.webp`)} ${width}w`}
+                  sizes={`(max-width: 899.95px) ${narrow.width}vw, ${leaf.wide.width}vw`}
+                  width={width}
+                  height={height}
+                  alt=""
+                  decoding="async"
+                  fetchPriority="low"
+                  draggable={false}
+                  onLoad={(event) => showLeaf(event.currentTarget)}
+                  style={
+                    {
+                      "--x": `${leaf.wide.x}%`,
+                      "--y": `${leaf.wide.y}%`,
+                      "--w": `${leaf.wide.width}vw`,
+                      "--nx": `${narrow.x}%`,
+                      "--ny": `${narrow.y}%`,
+                      "--nw": `${narrow.width}vw`,
+                      "--ox": leaf.origin[0],
+                      "--oy": leaf.origin[1],
+                      "--aspect": height / width,
+                      "--breath-turn": `${leaf.breathe[0]}deg`,
+                      "--breath-grow": leaf.breathe[1],
+                      "--breath-period": `${leaf.breathe[2]}s`,
+                      "--breath-delay": `${leaf.breathe[3]}s`,
+                    } as React.CSSProperties
+                  }
+                />
+              );
+            })}
           </div>
         </section>
         <style>{`
@@ -702,12 +550,7 @@ const CoverSection: React.FC = () => {
           justify-content: center;
           text-align: center;
           color: ${lightColors.textLight};
-          --fern-top: #16301d;
-          --fern-bottom: #050c07;
         }
-        .cover-stop-top { stop-color: var(--fern-top); }
-        .cover-stop-bottom { stop-color: var(--fern-bottom); }
-        .cover-defs { position: absolute; width: 0; height: 0; }
         .cover-lqip {
           position: absolute;
           inset: -4%;
@@ -726,30 +569,33 @@ const CoverSection: React.FC = () => {
           position: absolute;
           will-change: transform;
         }
-        .cover-layer--fern { opacity: calc(0.9 * var(--leave, 1)); }
-        .cover-layer--fern svg { display: block; width: 100%; height: 100%; overflow: visible; }
-        .cover-layer--banana {
+        /* A leaf: placed by its stalk (--x, --y) and its width (--w), turned
+           around the stalk, fading in once loaded, and breathing. */
+        .cover-layer--leaf {
+          --lx: var(--x);
+          --ly: var(--y);
+          --lw: var(--w);
+          left: calc(var(--lx) - var(--ox) * var(--lw));
+          top: calc(var(--ly) - var(--oy) * var(--lw) * var(--aspect));
+          width: var(--lw);
+          height: auto;
+          transform-origin: calc(var(--ox) * 100%) calc(var(--oy) * 100%);
           opacity: 0;
-          transition: opacity 1.2s ease;
-          animation: cover-leaf-sway var(--sway-period, 8s) ease-in-out var(--sway-delay, 0s) infinite alternate;
+          transition: opacity 1.4s ease;
+          user-select: none;
+          animation: cover-leaf-breathe var(--breath-period, 8s) ease-in-out var(--breath-delay, 0s) infinite;
         }
-        .cover-layer--banana[data-ready="true"] { opacity: var(--leave, 1); }
-        .cover-layer--banana[data-settled="true"],
+        .cover-layer--leaf[data-ready="true"] { opacity: var(--leave, 1); }
+        .cover-layer--leaf[data-settled="true"],
         .cover-pollen[data-settled="true"] { transition: none; }
-        @keyframes cover-leaf-sway {
-          from { rotate: calc(var(--sway, 1deg) * -1); }
-          to { rotate: var(--sway, 1deg); }
+        @keyframes cover-leaf-breathe {
+          0%, 100% { rotate: calc(var(--breath-turn, 1deg) * -1); scale: 1; }
+          50% { rotate: var(--breath-turn, 1deg); scale: var(--breath-grow, 1.015); }
         }
-        .cover-layer--leaf-rear { right: -2vw; bottom: 0; width: 30vw; height: 82vh; }
-        .cover-layer--leaf-high { right: 0; top: 0; width: 38vw; height: 58vh; }
-        .cover-layer--leaf-near { right: -4vw; bottom: 0; width: 40vw; height: 100vh; }
-        .cover-layer--leaf-low { left: -6vw; bottom: 0; width: 32vw; height: 92vh; }
-        .cover-layer--fern-left { height: 78vh; left: 4vw; top: -62vh; }
         @media (max-width: 899.95px) {
           .cover { height: 130vh; height: 130svh; }
           .cover-layer--wide-only { display: none; }
-          .cover-layer--leaf-high { right: -8vw; top: 0; width: 64vw; height: 36vh; }
-          .cover-layer--leaf-near { right: -12vw; bottom: 0; width: 96vw; height: 50vh; }
+          .cover-layer--leaf { --lx: var(--nx); --ly: var(--ny); --lw: var(--nw); }
         }
         .cover-mist {
           position: absolute;
@@ -862,8 +708,8 @@ const CoverSection: React.FC = () => {
         @media (prefers-reduced-motion: reduce) {
           .cover { height: 100vh; height: 100svh; }
           .cover-mist-band, .cover-shaft { animation: none; }
-          .cover-lqip, .cover-pollen, .cover-layer--banana { transition: none; }
-          .cover-layer--banana { animation: none; }
+          .cover-lqip, .cover-pollen, .cover-layer--leaf { transition: none; }
+          .cover-layer--leaf { animation: none; }
         }
       `}</style>
       </div>

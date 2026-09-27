@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cover leaves</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #1e2a20;
+        color: #f6f1e4;
+        font:
+          14px/1.4 system-ui,
+          sans-serif;
+      }
+      .leaves {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        align-items: flex-start;
+      }
+      figure {
+        margin: 0;
+        background: repeating-conic-gradient(#26332a 0 25%, #1c261f 0 50%) 0 0 /
+          24px 24px;
+      }
+      figure canvas {
+        display: block;
+        max-width: 420px;
+        height: auto;
+      }
+      figcaption {
+        padding: 6px 8px;
+        background: #111;
+      }
+      button {
+        margin: 0 0 16px;
+        padding: 10px 18px;
+        font: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      The cover's leaves (see leaves.js and cover.js). Rendering takes a little
+      while.
+    </p>
+    <button id="download" disabled>Download all as WebP</button>
+    <div class="leaves" id="leaves"></div>
+    <script type="module">
+      import { renderLeaf, toWebp } from "./leaves.js";
+      import { COVER_LEAVES } from "./cover.js";
+      const results = [];
+      window.renderSpec = (spec) => {
+        const { full, half } = renderLeaf(spec);
+        return {
+          full: toWebp(full, spec.quality ?? 0.82),
+          half: toWebp(half, spec.quality ?? 0.82),
+          width: full.width,
+          height: full.height,
+        };
+      };
+      window.coverLeaves = COVER_LEAVES;
+      if (!new URLSearchParams(location.search).has("headless")) {
+        for (const spec of COVER_LEAVES) {
+          const { full } = renderLeaf(spec);
+          const figure = document.createElement("figure");
+          figure.append(full);
+          const caption = document.createElement("figcaption");
+          caption.textContent = `${spec.name} — ${spec.species}, ${full.width}×${full.height}`;
+          figure.append(caption);
+          document.getElementById("leaves").append(figure);
+          results.push({ spec, full });
+          await new Promise((resolve) => setTimeout(resolve, 0));
+        }
+        const button = document.getElementById("download");
+        button.disabled = false;
+        button.onclick = () => {
+          results.forEach(({ spec }) => {
+            const { full, half } = window.renderSpec(spec);
+            [
+              ["", full],
+              ["-sm", half],
+            ].forEach(([suffix, url]) => {
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = `${spec.name}${suffix}.webp`;
+              link.click();
+            });
+          });
+        };
+      }
+    </script>
+  </body>
+</html>

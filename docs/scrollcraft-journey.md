@@ -40,7 +40,7 @@ lands in the same state slow scrolling would reach.
 | Stage sections, timed content                            | `src/journey/film/FilmSection.tsx`, `stages/*Stage.tsx` |
 | The question inside the pupil                            | `src/journey/film/PortalTitle.tsx`                      |
 | The neural probe                                         | `src/journey/overlays/*`                                |
-| Cover (plain DOM, LCP) and its leaves                    | `src/components/CoverSection.tsx`, `journey/foliage/*`  |
+| Cover (plain DOM, LCP) and its leaves                    | `src/components/CoverSection.tsx`, `tools/leaves/*`     |
 | Introduction and About (film blocks of the chase)        | `src/journey/chapters/*`                                |
 | Palette and interface (navigation, dialogs, cards …)     | `src/colors.ts`, `src/theme.tsx`                        |
 
@@ -147,6 +147,23 @@ leaves part, and the introduction and About follow as ordinary blocks —
 nothing else is pinned — while the chase moves from the first scroll, about
 0.8 s of film per viewport height, a little more than one second while the
 macaw crosses the clearing, and slowing for the dive into the eye.
+
+The cover's jungle leaves are images (`public/cover/`, WebP with alpha, a
+large and a half-size one each): a banana leaf lit through from the top
+left, a palm frond hanging from the top right, a giant taro (alocasia) and
+a monstera at the edges, and a fern and a heart-shaped philodendron close to
+the camera, dark and out of focus. They are rendered offline by
+`tools/leaves/` — open `leaves.html` to preview and download them — from
+each species' structure: its outline, midrib and veins, the monstera's
+splits and holes, the banana's tears, the fern's pinnae and pinnules; a
+height map (the blade's curve and fold, raised or sunken veins, the fine
+veinlet network, undulation) lit per pixel with gloss and light through
+the thin tissue; dry margins and blemishes; and graded into the film's
+picture (softer colour, the mist between leaf and camera, grain). Each
+leaf is lit by the scene's sun turned back by the angle the cover places
+it at. On the cover each one breathes — a slow sway and swell around its
+stalk, on its own rhythm (CSS, so the compositor animates it) — and they
+still part as the visitor walks in.
 
 Blocks sit where their shot leaves room for them: for every film the left
 and right halves were measured every 0.3 s for brightness and busyness, and
