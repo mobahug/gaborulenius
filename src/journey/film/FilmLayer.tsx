@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { onDirectorFrame } from "../director/director";
 import { filmRect, focusAt, windowGeometry } from "../director/frameMapping";
 import { hasFinePointer } from "../device";
-import { wantsLightVideo } from "../../utils/connection";
+import { isModestConnection, wantsLightVideo } from "../../utils/connection";
 import { smoothstep } from "../math";
 import { requestSceneFrame } from "../scrollTimeline";
 import { registerFilmVideo } from "./filmElements";
@@ -96,13 +96,13 @@ const FilmLayer = () => {
     const filters = FILMS.map(() => "");
     const unloadFar = !hasFinePointer();
     // Full HD, phones too: a portrait screen shows only a slice of each
-    // frame, much enlarged. Phones first load the lighter encode, which
-    // arrives fast, and move to full HD once it has arrived in the background
-    // (see `upgrade`). Saved data, slow connections and very small memories
-    // stay with the lighter encodes.
+    // frame, much enlarged. On a connection known to be modest the lighter
+    // encode comes first, which arrives fast, and full HD takes over once it
+    // has arrived in the background (see `upgrade`). Saved data, slow
+    // connections and very small memories stay with the lighter encodes.
     const light = wantsLightVideo();
-    const firstRendition = light || unloadFar ? "sd" : "hd";
-    const upgradeTo = !light && unloadFar ? "hd" : null;
+    const firstRendition = light || isModestConnection() ? "sd" : "hd";
+    const upgradeTo = !light && firstRendition === "sd" ? "hd" : null;
     const renditions: Array<"sd" | "hd"> = FILMS.map(() => firstRendition);
     const upgrades: Array<{
       abort: AbortController;
@@ -408,8 +408,9 @@ const FilmLayer = () => {
         }
         let value = 0;
         if (entry.window) {
-          // Seen through a window: only once it has the right frame.
-          value = isReady(index) ? 1 : 0;
+          // Seen through a window: only once it has the right frame, fading
+          // in as the window opens.
+          value = isReady(index) ? entry.opacity : 0;
         } else if (!reduced && isReady(index)) {
           value = entry.opacity;
         } else if (entry.opacity >= 1 && stills[index] === "ready") {

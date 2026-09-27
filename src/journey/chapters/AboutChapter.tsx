@@ -66,7 +66,7 @@ const AboutChapter = ({ at, storyAt, ref }: AboutChapterProps) => {
         </div>
       </Cue>
       <Space vh={10} />
-      <Cue at={storyAt} align="end" hold={80}>
+      <Cue at={storyAt} id="story" align="end" hold={80}>
         <div className="about-card">
           <LinkThumbnail
             id="linkThumbnailTitleGabor"

@@ -147,26 +147,26 @@ const ExplorerStage = () => {
       </Cue>
       <Space vh={20} />
       {/* Low over the channel, the sun on the water. */}
-      <Cue at={2.3}>
+      <Cue at={2.3} id="explorer-maps">
         <Feature {...maps} />
       </Cue>
       <Space vh={15} />
       {/* The mokoro: its poler stays clear on the left. */}
-      <Cue at={3.3} align="end">
+      <Cue at={3.3} id="explorer-precision" align="end">
         <Feature {...precision} />
       </Cue>
       <Space vh={45} narrow={40} />
       {/* Through the splash, under the surface among the reeds. */}
-      <Cue at={4.9}>
+      <Cue at={4.9} id="explorer-capture">
         <Feature {...capture} />
       </Cue>
       <Space vh={15} />
-      <Cue at={5.8} align="end">
+      <Cue at={5.8} id="explorer-cloud" align="end">
         <Feature {...cloud} />
       </Cue>
       <Space vh={15} />
       {/* The fish comes out of the green: how the app is built. */}
-      <Cue at={6.45} hold={75}>
+      <Cue at={6.45} id="explorer-built" hold={75}>
         <div className="film-copy explorer-details">
           <h4 className="explorer-details-title">
             <FormattedMessage id="projectExplorerWhyHeading" />

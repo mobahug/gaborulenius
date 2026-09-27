@@ -4,104 +4,170 @@ import { smoothstep } from "../math";
 import { glowSprite } from "./surface";
 
 /*
- * The morpho of the jungle films — iridescent blue above, brown with
- * eyespots below — drawn from two wing sprites; a flapping wing is its
- * sprite narrowed, showing the underside as it closes. The pointer's
- * companion (morpho.ts) and the flock below are the same butterfly.
+ * The morpho of the jungle films — iridescent blue, with a black margin and
+ * white spots along its forewings — drawn from a wing sprite; a flapping
+ * wing is the sprite narrowed, turning a deeper blue as it closes.
  *
  * The flock: in the jungle scenes (the introduction, About and its story,
  * and the invitation at the end), whenever a block comes in, two or three
  * morphos of different sizes fade in from the edges of the screen, fly over
- * and settle on its edges — the top of its heading, of a button, of the
- * story card, of a fact's icon — each time somewhere else, like the old
- * portfolio's pixel bird, and slowly open and close their wings. Never more
- * than five at once. A pointer that comes close startles one up for a
- * moment; when the block goes, they fly away.
+ * and settle on its edges — on top of its heading, of a button or of the
+ * story card, on a fact's icon, or clinging to the side of a button or the
+ * card — each time somewhere else, like the old portfolio's pixel bird, and
+ * slowly open and close their wings. Never more than five at once. A
+ * pointer that comes close startles one up for a moment; when the block
+ * goes, they fly away.
  */
 
 /** Sprite resolution: one wing, this many times its size in wing units. */
-const SCALE = 4;
+const SCALE = 5;
 const WING_W = 30;
-const WING_H = 44;
+const WING_H = 46;
 /** The wing root in the sprite (wing units). */
-const ROOT = [1, 21];
+const ROOT = [1, 22];
 
-/** The right wings, the body at x = 0 and the root at y = 0, head up: a
- * forewing to its rounded tip up and out, a rounded hindwing below. */
-const wingPath = (context: CanvasRenderingContext2D) => {
-  context.beginPath();
+/** The right forewing: from the root up to a pointed apex, a slightly
+ * concave outer margin, and back along the inner margin. */
+const forewing = (context: CanvasRenderingContext2D) => {
   context.moveTo(0, 0);
-  context.bezierCurveTo(5, -12, 16, -19, 24, -17);
-  context.bezierCurveTo(27, -12, 24, -4, 15, 0);
-  context.bezierCurveTo(9, 2, 4, 2, 0, 1);
+  context.bezierCurveTo(4, -9, 13, -17, 24.5, -18.5);
+  context.bezierCurveTo(25.5, -14, 23.5, -9, 23, -5);
+  context.bezierCurveTo(22.5, -2, 19, 0.5, 14, 1);
+  context.bezierCurveTo(9, 1.5, 4, 1.5, 0, 1);
+};
+
+/** The right hindwing: rounded, with a softly scalloped outer margin. */
+const hindwing = (context: CanvasRenderingContext2D) => {
   context.moveTo(0, 1);
-  context.bezierCurveTo(8, 1, 17, 4, 18, 11);
-  context.bezierCurveTo(18, 18, 10, 21, 4, 15);
-  context.bezierCurveTo(2, 12, 0, 6, 0, 1);
-  context.closePath();
+  context.bezierCurveTo(7, 0, 15, 2.5, 18.5, 8);
+  context.quadraticCurveTo(19.5, 10.5, 18, 12.5);
+  context.quadraticCurveTo(17.5, 15.5, 15, 17);
+  context.quadraticCurveTo(12.5, 19.5, 9.5, 19.5);
+  context.quadraticCurveTo(6, 19.5, 4, 16);
+  context.bezierCurveTo(2, 12, 0.5, 6, 0, 1);
 };
 
-const dots = (
-  context: CanvasRenderingContext2D,
-  color: string,
-  points: Array<[number, number, number]>,
-) => {
-  context.fillStyle = color;
-  points.forEach(([x, y, r]) => {
-    context.beginPath();
-    context.arc(x, y, r, 0, Math.PI * 2);
-    context.fill();
-  });
+const noise = (seed: number) => {
+  let state = seed;
+  return () => {
+    state = (state * 16807) % 2147483647;
+    return (state - 1) / 2147483646;
+  };
 };
 
-/** A wing, blue from above (with its black margin and white spots) or
- * brown with eyespots from below. */
-const wingSprite = (upper: boolean) => {
+/**
+ * A wing seen from above: iridescent blue, darker toward the body, a broad
+ * black margin along the forewing's apex and outer edge with white spots,
+ * a thin dark rim on the hindwing, dark veins radiating from the root and
+ * the fine speckle of its scales. `dark` is the same wing turned away from
+ * the light (a deep blue), laid over it as the wing closes.
+ */
+const wingSprite = (dark: boolean) => {
   const canvas = document.createElement("canvas");
   canvas.width = WING_W * SCALE;
   canvas.height = WING_H * SCALE;
   const context = canvas.getContext("2d")!;
   context.scale(SCALE, SCALE);
   context.translate(ROOT[0], ROOT[1]);
-  wingPath(context);
-  const gradient = context.createRadialGradient(0, 0, 1, 0, 0, 24);
-  if (upper) {
-    gradient.addColorStop(0, "#0b2a6e");
-    gradient.addColorStop(0.35, "#1c7cf2");
-    gradient.addColorStop(0.7, "#4ec3ff");
-    gradient.addColorStop(1, "#1a4fa8");
-  } else {
-    gradient.addColorStop(0, "#3a2a1c");
-    gradient.addColorStop(0.6, "#6e5536");
-    gradient.addColorStop(1, "#4a3826");
-  }
-  context.fillStyle = gradient;
-  context.fill();
-  context.lineWidth = upper ? 2.4 : 1.2;
-  context.strokeStyle = upper ? "#07101f" : "#2a1f15";
+  const fill = (path: (context: CanvasRenderingContext2D) => void) => {
+    context.beginPath();
+    path(context);
+    context.closePath();
+  };
+  [forewing, hindwing].forEach((path, index) => {
+    context.save();
+    fill(path);
+    context.clip();
+    const gradient = context.createRadialGradient(-2, 0, 1, 2, 0, 25);
+    if (dark) {
+      gradient.addColorStop(0, "#050d22");
+      gradient.addColorStop(0.5, "#0c2a66");
+      gradient.addColorStop(1, "#0a1f4c");
+    } else {
+      gradient.addColorStop(0, "#08204f");
+      gradient.addColorStop(0.28, "#1557c9");
+      gradient.addColorStop(0.58, "#2a93f5");
+      gradient.addColorStop(0.8, "#5fd2ff");
+      gradient.addColorStop(1, "#2f7fd6");
+    }
+    context.fillStyle = gradient;
+    context.fillRect(-2, -22, 30, 44);
+    // Veins from the root.
+    context.strokeStyle = dark
+      ? "rgba(2, 6, 16, 0.5)"
+      : "rgba(6, 18, 48, 0.42)";
+    context.lineWidth = 0.35;
+    const veins =
+      index === 0
+        ? [
+            [8, -10, 20, -17],
+            [10, -7, 23, -12],
+            [11, -4, 23, -6],
+            [10, -2, 21, -1],
+            [7, 0, 16, 1],
+          ]
+        : [
+            [7, 3, 17, 9],
+            [7, 6, 16, 14],
+            [6, 9, 12, 18],
+            [4, 10, 7, 18],
+          ];
+    veins.forEach(([cx, cy, x, y]) => {
+      context.beginPath();
+      context.moveTo(0.5, 0.5);
+      context.quadraticCurveTo(cx, cy, x, y);
+      context.stroke();
+    });
+    // Scales.
+    const next = noise(index ? 97 : 31);
+    for (let dot = 0; dot < 420; dot += 1) {
+      const x = next() * 27;
+      const y = -20 + next() * 42;
+      context.fillStyle =
+        next() < 0.5 ? "rgba(255, 255, 255, 0.07)" : "rgba(0, 10, 30, 0.1)";
+      context.fillRect(x, y, 0.35, 0.35);
+    }
+    context.restore();
+  });
+  // The forewing's black margin, along the apex and the outer edge, with
+  // white spots in it.
+  context.save();
+  fill(forewing);
+  context.clip();
+  context.strokeStyle = "#060a14";
+  context.lineWidth = 6;
+  context.beginPath();
+  context.moveTo(9, -14);
+  context.bezierCurveTo(15, -18.5, 21, -19.5, 25.5, -18.5);
+  context.bezierCurveTo(26, -13, 24.5, -8, 24, -3.5);
   context.stroke();
-  if (upper) {
-    dots(context, "rgba(245, 248, 255, 0.85)", [
-      [21.5, -14.5, 0.8],
-      [23.5, -10.5, 0.8],
-      [20.5, -6.5, 0.8],
-    ]);
-  } else {
-    dots(context, "#d9b25a", [
-      [12, -8, 2.2],
-      [10, 10, 2.6],
-    ]);
-    dots(context, "#1a120a", [
-      [12, -8, 1.1],
-      [10, 10, 1.3],
-    ]);
+  if (!dark) {
+    context.fillStyle = "rgba(246, 248, 255, 0.9)";
+    [
+      [22.4, -16.2, 0.75],
+      [24.1, -12.4, 0.7],
+      [23.6, -8.6, 0.65],
+      [18.5, -16.4, 0.55],
+    ].forEach(([x, y, r]) => {
+      context.beginPath();
+      context.arc(x, y, r, 0, Math.PI * 2);
+      context.fill();
+    });
   }
+  context.restore();
+  // Thin dark rims.
+  context.strokeStyle = "rgba(4, 8, 18, 0.95)";
+  context.lineWidth = 0.9;
+  fill(forewing);
+  context.stroke();
+  fill(hindwing);
+  context.stroke();
   return canvas;
 };
 
 type Sprites = {
-  upper: HTMLCanvasElement;
-  lower: HTMLCanvasElement;
+  lit: HTMLCanvasElement;
+  dark: HTMLCanvasElement;
   glow: HTMLCanvasElement;
 };
 
@@ -110,10 +176,10 @@ let sprites: Sprites | null = null;
 /** The morpho's sprites, made once. */
 const morphoSprites = () => {
   sprites ??= {
-    upper: wingSprite(true),
-    lower: wingSprite(false),
+    lit: wingSprite(false),
+    dark: wingSprite(true),
     glow: glowSprite(64, [
-      [0, "rgba(90, 180, 255, 0.55)"],
+      [0, "rgba(90, 180, 255, 0.5)"],
       [1, "rgba(40, 120, 255, 0)"],
     ]),
   };
@@ -123,11 +189,13 @@ const morphoSprites = () => {
 /** How far a wing is open (seen from above) for a beat of `lift` (0 open
  * flat … 1 closed up). */
 export const openness = (lift: number) =>
-  Math.max(0.1, Math.cos((lift * 80 * Math.PI) / 180));
+  Math.max(0.12, Math.cos((lift * 78 * Math.PI) / 180));
 
 /**
  * Draws a morpho at (x, y), its head toward `heading` (radians, 0 up), with
- * `span` px between its wing tips, in its soft blue glow.
+ * `span` px between its wing tips, in its soft blue glow. Its wings are
+ * always blue: as they close they narrow and turn a deeper blue, away from
+ * the light.
  */
 export const drawButterfly = (
   context: CanvasRenderingContext2D,
@@ -139,37 +207,57 @@ export const drawButterfly = (
   span: number,
 ) => {
   if (alpha <= 0.01) return;
-  const { upper, lower, glow } = morphoSprites();
+  const { lit, dark, glow } = morphoSprites();
   context.save();
   context.translate(x, y);
   context.rotate(heading);
-  context.globalAlpha = alpha * 0.5;
+  context.globalAlpha = alpha * 0.45 * (0.5 + 0.5 * open);
   context.globalCompositeOperation = "lighter";
   context.drawImage(glow, -span * 0.76, -span * 0.76, span * 1.52, span * 1.52);
   context.globalCompositeOperation = "source-over";
-  context.globalAlpha = alpha;
-  const scale = span / 2 / 24;
-  const sprite = open > 0.42 ? upper : lower;
+  const scale = span / 2 / 25;
+  const shade = Math.min(1, (1 - open) * 1.3);
   [1, -1].forEach((side) => {
     context.save();
     context.scale(side * open * scale, scale);
-    context.drawImage(sprite, -ROOT[0], -ROOT[1], WING_W, WING_H);
+    context.globalAlpha = alpha;
+    context.drawImage(lit, -ROOT[0], -ROOT[1], WING_W, WING_H);
+    if (shade > 0.02) {
+      context.globalAlpha = alpha * shade;
+      context.drawImage(dark, -ROOT[0], -ROOT[1], WING_W, WING_H);
+    }
     context.restore();
   });
-  // The body and its antennae.
+  // The body: a furry thorax, a tapering abdomen, the head and its clubbed
+  // antennae.
   const body = span / 42;
-  context.fillStyle = "#0d0d10";
+  context.globalAlpha = alpha;
+  context.fillStyle = "#12100e";
   context.beginPath();
-  context.ellipse(0, 2 * body, 1.3 * body, 7 * body, 0, 0, Math.PI * 2);
+  context.ellipse(0, -1 * body, 1.6 * body, 3.4 * body, 0, 0, Math.PI * 2);
   context.fill();
-  context.strokeStyle = "rgba(20, 20, 24, 0.9)";
-  context.lineWidth = 0.7 * body;
   context.beginPath();
-  context.moveTo(0, -4 * body);
-  context.quadraticCurveTo(-2 * body, -9 * body, -4 * body, -11 * body);
-  context.moveTo(0, -4 * body);
-  context.quadraticCurveTo(2 * body, -9 * body, 4 * body, -11 * body);
-  context.stroke();
+  context.ellipse(0, 5.2 * body, 1.05 * body, 5 * body, 0, 0, Math.PI * 2);
+  context.fill();
+  context.beginPath();
+  context.arc(0, -4.8 * body, 1.2 * body, 0, Math.PI * 2);
+  context.fill();
+  context.strokeStyle = "rgba(20, 18, 16, 0.95)";
+  context.lineWidth = 0.55 * body;
+  [-1, 1].forEach((side) => {
+    context.beginPath();
+    context.moveTo(side * 0.5 * body, -5.6 * body);
+    context.quadraticCurveTo(
+      side * 2 * body,
+      -10 * body,
+      side * 4.2 * body,
+      -12.5 * body,
+    );
+    context.stroke();
+    context.beginPath();
+    context.arc(side * 4.3 * body, -12.7 * body, 0.6 * body, 0, Math.PI * 2);
+    context.fill();
+  });
   context.restore();
 };
 
@@ -192,20 +280,37 @@ const SCENE_BLOCKS: Array<() => HTMLElement | null> = [
   () => cueOf(document.getElementById("contact")),
 ];
 
+type Perch = {
+  element: HTMLElement;
+  /** Which edge: its top, or one of its sides. */
+  edge: "top" | "left" | "right";
+  /** The stretch of that edge (0–1, left to right or top to bottom). */
+  from: number;
+  to: number;
+};
+
 /** Where on a block a butterfly can sit: along the top edges of its
- * heading, its buttons, its card and its facts' icons (element, and the
- * stretch of its top edge). */
+ * heading, its buttons, its card and its facts' icons, and on the sides of
+ * its buttons and card. */
 const perchesOn = (block: HTMLElement) => {
-  const perches: Array<{ element: HTMLElement; from: number; to: number }> = [];
-  const add = (selector: string, from: number, to: number) =>
+  const perches: Perch[] = [];
+  const add = (
+    selector: string,
+    edge: Perch["edge"],
+    from: number,
+    to: number,
+  ) =>
     block
       .querySelectorAll<HTMLElement>(selector)
-      .forEach((element) => perches.push({ element, from, to }));
-  add(".intro-sentence, .film-title", 0.06, 0.55);
-  add(".film-actions > *", 0.2, 0.8);
-  add(".about-card > *", 0.1, 0.9);
-  add(".about-meta-icon", 0.5, 0.5);
-  add(".espoo-now-dial", 0.5, 0.5);
+      .forEach((element) => perches.push({ element, edge, from, to }));
+  add(".intro-sentence, .film-title", "top", 0.06, 0.55);
+  add(".film-actions > *", "top", 0.2, 0.8);
+  add(".film-actions > :first-child", "left", 0.3, 0.6);
+  add(".film-actions > :last-child", "right", 0.3, 0.6);
+  add(".about-card > *", "top", 0.1, 0.9);
+  add(".about-card > *", "left", 0.15, 0.7);
+  add(".about-card > *", "right", 0.15, 0.7);
+  add(".about-meta-icon", "top", 0.5, 0.5);
   return perches;
 };
 
@@ -237,6 +342,8 @@ type Flyer = {
   ty: number;
   /** Which way it came from, and leaves toward. */
   side: -1 | 1;
+  /** How it sits: on a top edge, or clinging to a side (−1 left, 1 right). */
+  cling: -1 | 0 | 1;
   heading: number;
   tilt: number;
   flap: number;
@@ -259,6 +366,7 @@ export class Flock {
       tx: 0,
       ty: 0,
       side: 1,
+      cling: 0,
       heading: 0,
       tilt: 0,
       flap: index * 1.7,
@@ -299,14 +407,20 @@ export class Flock {
     for (let index = 0; index < count; index += 1) {
       // Somewhere else each time, and not on top of another one.
       let point: [number, number] | null = null;
+      let cling: -1 | 0 | 1 = 0;
       for (let tries = 0; tries < 12 && !point; tries += 1) {
         const perch = pick(perches);
         const at = offsetIn(perch.element, block);
         const along = perch.from + Math.random() * (perch.to - perch.from);
-        const x = at.left + perch.element.offsetWidth * along;
-        const y = pin + at.top;
+        const { offsetWidth: width, offsetHeight: height } = perch.element;
+        const x =
+          perch.edge === "top"
+            ? at.left + width * along
+            : at.left + (perch.edge === "right" ? width : 0);
+        const y = pin + at.top + (perch.edge === "top" ? 0 : height * along);
         if (taken.every(([tx, ty]) => Math.hypot(tx - x, ty - y) > 70)) {
           point = [x, y];
+          cling = perch.edge === "top" ? 0 : perch.edge === "left" ? -1 : 1;
         }
       }
       if (!point) break;
@@ -314,14 +428,19 @@ export class Flock {
       const flyer = free[index];
       flyer.block = block;
       flyer.span = pick(SPANS);
-      flyer.tx = point[0];
-      flyer.ty = point[1] - flyer.span * 0.22;
+      flyer.cling = cling;
+      // On a top edge it stands on it; on a side it clings to it, head up,
+      // leaning out a little.
+      flyer.tx = point[0] + cling * flyer.span * 0.08;
+      flyer.ty = point[1] - (cling ? 0 : flyer.span * 0.22);
       flyer.side = Math.random() < 0.5 ? -1 : 1;
       flyer.x = flyer.side > 0 ? vw + 40 : -40;
       flyer.y = flyer.ty - 100 - Math.random() * 180;
       flyer.vx = -flyer.side * 220;
       flyer.vy = 40;
-      flyer.tilt = (Math.random() - 0.5) * 0.4;
+      flyer.tilt = cling
+        ? cling * (0.12 + Math.random() * 0.12)
+        : (Math.random() - 0.5) * 0.4;
       flyer.alpha = 0;
       flyer.state = "coming";
       // One after another.

@@ -14,40 +14,42 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { colors as lightColors } from "../../colors";
 
 type TimelineBlockProps = {
-  titleId: string;
   events: TimelineEvent[];
-  onClick: (evt: TimelineEvent) => void;
-  isSmallScreen: boolean;
+  onSelect: (evt: TimelineEvent) => void;
+  /** One column beside the dots, or alternating on either side. */
+  position: "right" | "alternate";
+  /** The event shown beside the timeline, when its details are shown there
+   * (instead of in a dialog). */
+  selectedId?: string;
+  /** Where the chosen event's details are shown (its id). */
+  controls?: string;
 };
 
 export const TimelineBlock: React.FC<TimelineBlockProps> = ({
-  titleId,
   events,
-  onClick,
-  isSmallScreen,
+  onSelect,
+  position,
+  selectedId,
+  controls,
 }) => {
+  // Chosen in place: the details are beside the timeline. Otherwise they
+  // open in a dialog.
+  const inPlace = selectedId !== undefined;
   return (
-    <div>
-      <Typography
-        id={`${titleId}-heading`}
-        variant="h4"
-        component="h2"
-        className="film-part trail-heading"
-      >
-        <FormattedMessage id={titleId} />
-      </Typography>
-
-      <Timeline
-        position={isSmallScreen ? "right" : "alternate"}
-        sx={{
-          padding: 0,
-          "& .MuiTimelineItem-root:before": {
-            display: isSmallScreen ? "none" : undefined,
-          },
-        }}
-      >
-        {events.map((evt, i) => (
-          <TimelineItem key={evt.titleId} className="film-part">
+    <Timeline
+      position={position}
+      sx={{
+        m: 0,
+        padding: 0,
+        "& .MuiTimelineItem-root:before": {
+          display: position === "right" ? "none" : undefined,
+        },
+      }}
+    >
+      {events.map((evt, i) => {
+        const selected = inPlace && evt.titleId === selectedId;
+        return (
+          <TimelineItem key={evt.titleId} data-event={evt.titleId}>
             <TimelineSeparator>
               <TimelineDot
                 className="trail-dot"
@@ -75,15 +77,18 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
             </TimelineSeparator>
 
             <TimelineContent
-              onClick={() => onClick(evt)}
+              onClick={() => onSelect(evt)}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
-                  onClick(evt);
+                  onSelect(evt);
                 }
               }}
               role="button"
               tabIndex={0}
+              aria-current={selected ? "true" : undefined}
+              aria-controls={inPlace ? controls : undefined}
+              className={selected ? "is-selected" : undefined}
               sx={{
                 "&:focus-visible": {
                   outline: (theme) => `2px solid ${theme.palette.primary.main}`,
@@ -91,11 +96,19 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
                   borderRadius: 0.5,
                 },
                 cursor: "pointer",
+                borderRadius: 0.5,
+                transition: "background-color 0.3s ease, box-shadow 0.3s ease",
                 "&:hover": {
                   backgroundColor: "rgba(255,255,255,.04)",
-                  borderRadius: 0.5,
                   boxShadow: "0 2px 8px rgba(0,0,0,.25)",
                 },
+                ...(selected && {
+                  "&, &:hover": {
+                    backgroundColor: alpha(lightColors.accent, 0.1),
+                    boxShadow: `inset 2px 0 0 ${lightColors.accent}`,
+                  },
+                  "& .trail-event-title": { color: lightColors.accent },
+                }),
               }}
             >
               <Typography
@@ -104,8 +117,13 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
                 className="trail-event-title"
                 gutterBottom
               >
-                <FormattedMessage id={evt.titleId} />{" "}
-                <OpenInNewIcon sx={{ fontSize: 16 }} />
+                <FormattedMessage id={evt.titleId} />
+                {inPlace ? null : (
+                  <>
+                    {" "}
+                    <OpenInNewIcon sx={{ fontSize: 16 }} />
+                  </>
+                )}
               </Typography>
               <Box
                 component="time"
@@ -124,8 +142,8 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
               </Box>
             </TimelineContent>
           </TimelineItem>
-        ))}
-      </Timeline>
-    </div>
+        );
+      })}
+    </Timeline>
   );
 };

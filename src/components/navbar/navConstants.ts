@@ -24,11 +24,54 @@ export const getCoverVisibility = (
   return Math.min(1, Math.max(0, distance / fadeRange));
 };
 
-export const navLinks = [
+export type NavLink = {
+  id: string;
+  href: string;
+  /** The section's own parts, shown on the rail while it is the current
+   * one (see SectionRail). */
+  children?: ReadonlyArray<{ id: string; href: string }>;
+};
+
+export const navLinks: ReadonlyArray<NavLink> = [
   { id: "navHome", href: "#home" },
-  { id: "navAbout", href: "#about" },
-  { id: "navProjects", href: "#projects" },
-  { id: "navExperience", href: "#experience" },
-  { id: "navSkills", href: "#skills" },
+  {
+    id: "navAbout",
+    href: "#about",
+    children: [
+      { id: "navAboutMe", href: "#about" },
+      { id: "navAboutStory", href: "#story" },
+    ],
+  },
+  {
+    id: "navProjects",
+    href: "#projects",
+    children: [
+      { id: "navNeural", href: "#neural" },
+      { id: "navNeuralCase", href: "#neural-case" },
+      { id: "navNeuralMethod", href: "#neural-method" },
+      { id: "navExplorer", href: "#explorer" },
+      { id: "navExplorerMaps", href: "#explorer-maps" },
+      { id: "navExplorerPrecision", href: "#explorer-precision" },
+      { id: "navExplorerCapture", href: "#explorer-capture" },
+      { id: "navExplorerCloud", href: "#explorer-cloud" },
+      { id: "navExplorerBuilt", href: "#explorer-built" },
+    ],
+  },
+  {
+    id: "navExperience",
+    href: "#experience",
+    children: [
+      { id: "navHighlights", href: "#experience" },
+      { id: "navWorkProjects", href: "#work" },
+    ],
+  },
+  {
+    id: "navSkills",
+    href: "#skills",
+    children: [
+      { id: "navSkillsList", href: "#skills" },
+      { id: "navTools", href: "#tools" },
+    ],
+  },
   { id: "navContact", href: "#contact" },
 ];

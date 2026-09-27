@@ -1,4 +1,5 @@
 import { useEffect, useRef, type CSSProperties } from "react";
+import { useIntl } from "react-intl";
 import { assetUrl } from "../../utils/assets";
 import { onDirectorFrame } from "../director/director";
 import { filmIndex } from "../film/films";
@@ -18,7 +19,13 @@ const START = 1.2;
 const END = 7.4;
 /** … and reaches each waypoint: the four capabilities, then how the app is
  * built (the times of their blocks in ExplorerStage). */
-const WAYPOINTS = [2.3, 3.3, 4.9, 5.8, 6.45];
+const WAYPOINTS = [
+  { time: 2.3, href: "#explorer-maps", label: "navExplorerMaps" },
+  { time: 3.3, href: "#explorer-precision", label: "navExplorerPrecision" },
+  { time: 4.9, href: "#explorer-capture", label: "navExplorerCapture" },
+  { time: 5.8, href: "#explorer-cloud", label: "navExplorerCloud" },
+  { time: 6.45, href: "#explorer-built", label: "navExplorerBuilt" },
+];
 const EXPLORER = filmIndex("explorer");
 /** Samples of the walker's place along the route. */
 const SAMPLES = 200;
@@ -29,11 +36,13 @@ const along = (time: number) => clamp((time - START) / (END - START));
  * The Explorer's expedition, in a corner of the screen while its film plays
  * (wide screens only): an almost transparent topographic map, the planned
  * route dotted, the walked track in red with the walker at its head, and a
- * waypoint for every capability, lit once the walker has passed it. The
- * walk follows the film's time, so it moves with the scroll and back.
+ * waypoint for every capability, lit once the walker has passed it, which
+ * takes you to it. The walk follows the film's time, so it moves with the
+ * scroll and back.
  */
 const ExplorerMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const intl = useIntl();
 
   useEffect(() => {
     const map = mapRef.current;
@@ -44,14 +53,19 @@ const ExplorerMap = () => {
     const stops = Array.from(
       map.querySelectorAll<SVGCircleElement>(".instrument-stop"),
     );
+    const waypoints = Array.from(
+      map.querySelectorAll<SVGAElement>(".instrument-waypoint"),
+    );
     const length = plan.getTotalLength();
     const samples = Array.from({ length: SAMPLES + 1 }, (_, index) =>
       plan.getPointAtLength((length * index) / SAMPLES),
     );
-    WAYPOINTS.forEach((time, index) => {
+    WAYPOINTS.forEach(({ time }, index) => {
       const point = plan.getPointAtLength(length * along(time));
-      stops[index].setAttribute("cx", point.x.toFixed(1));
-      stops[index].setAttribute("cy", point.y.toFixed(1));
+      waypoints[index].setAttribute(
+        "transform",
+        `translate(${point.x.toFixed(1)} ${point.y.toFixed(1)})`,
+      );
     });
     track.style.strokeDasharray = `${length.toFixed(2)}`;
     const wide = window.matchMedia(INSTRUMENT_QUERY);
@@ -79,7 +93,9 @@ const ExplorerMap = () => {
           `translate(${point.x.toFixed(1)} ${point.y.toFixed(1)})`,
         );
       }
-      const passed = WAYPOINTS.filter((stop) => time >= stop - 0.05).length;
+      const passed = WAYPOINTS.filter(
+        (stop) => time >= stop.time - 0.05,
+      ).length;
       if (passed !== reached) {
         reached = passed;
         stops.forEach((stop, index) =>
@@ -103,8 +119,18 @@ const ExplorerMap = () => {
       <svg viewBox="0 0 200 200">
         <path className="instrument-plan" d={ROUTE} />
         <path className="instrument-track" d={ROUTE} />
-        {WAYPOINTS.map((time) => (
-          <circle key={time} className="instrument-stop" r="4" />
+        {/* Each waypoint takes you to its part of the Explorer. */}
+        {WAYPOINTS.map(({ time, href, label }) => (
+          <a
+            key={time}
+            className="instrument-waypoint"
+            href={href}
+            tabIndex={-1}
+          >
+            <title>{intl.formatMessage({ id: label })}</title>
+            <circle className="instrument-hit" r="11" />
+            <circle className="instrument-stop" r="4" />
+          </a>
         ))}
         <g className="instrument-walker">
           <circle className="instrument-pulse" r={WALKER_RADIUS} />

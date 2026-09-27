@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cover leaves in the film's look</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #1e2a20;
+        color: #f6f1e4;
+        font:
+          14px/1.4 system-ui,
+          sans-serif;
+      }
+      .leaves {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        align-items: flex-start;
+      }
+      figure {
+        margin: 0;
+        background: repeating-conic-gradient(#26332a 0 25%, #1c261f 0 50%) 0 0 /
+          24px 24px;
+      }
+      figure canvas {
+        display: block;
+        max-width: 420px;
+        height: auto;
+      }
+      figcaption {
+        padding: 6px 8px;
+        background: #111;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      The cover's leaves (renders/) in the film's look (see filmlook.js), for
+      public/cover/.
+    </p>
+    <div class="leaves" id="leaves"></div>
+    <script type="module">
+      import { filmLook, FILM_LOOK } from "./filmlook.js";
+      const still = await new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = "../../film/jungle_chase-still.webp";
+      });
+      window.filmLeaves = FILM_LOOK;
+      window.filmLookSpec = async (name) => {
+        const spec = FILM_LOOK.find((leaf) => leaf.name === name);
+        const { full, half, margin, film, leaf } = await filmLook(spec, still);
+        return {
+          full: full.toDataURL("image/webp", spec.quality ?? 0.8),
+          half: half.toDataURL("image/webp", spec.quality ?? 0.8),
+          width: full.width,
+          height: full.height,
+          margin,
+          film,
+          leaf,
+        };
+      };
+      if (!new URLSearchParams(location.search).has("headless")) {
+        for (const spec of FILM_LOOK) {
+          const { full, margin } = await filmLook(spec, still);
+          const figure = document.createElement("figure");
+          figure.append(full);
+          const caption = document.createElement("figcaption");
+          caption.textContent = `${spec.name}: ${full.width}×${full.height}, margin ${margin}`;
+          figure.append(caption);
+          document.getElementById("leaves").append(figure);
+        }
+      }
+    </script>
+  </body>
+</html>

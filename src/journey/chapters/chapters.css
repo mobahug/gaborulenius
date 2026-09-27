@@ -107,6 +107,14 @@
   }
 }
 
+/* Each tab has its own heading, one line or two on a phone: the room of two
+   either way, so switching tabs does not change the block's size. */
+@media (max-width: 599.95px) {
+  .trail-heading.MuiTypography-root {
+    min-height: 2.04em;
+  }
+}
+
 .trail-event-title.MuiTypography-root {
   font-size: 1.05rem;
   font-weight: 700;

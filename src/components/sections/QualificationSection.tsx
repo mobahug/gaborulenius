@@ -11,6 +11,9 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { TimelineEvent, highlightedEvents, allEvents } from "../../contexts";
@@ -23,6 +26,7 @@ import { holdProgress } from "../../journey/film/holdProgress";
 import { clamp, smoothstep } from "../../journey/math";
 import { requestSceneFrame } from "../../journey/scrollTimeline";
 import { useScene } from "../../journey/useScene";
+import { selectedEventAtom } from "../../hooks/selectedEventAtom";
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -45,19 +49,31 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+/** Wide enough for the chosen event's details beside the timeline, instead
+ * of in a dialog. */
+const SPLIT_QUERY = "(min-width: 900px)";
+
 /**
  * Experience and qualifications over the office film: no panel, only the
  * veil behind the words, like every block over the films (see `film.css`).
+ * On wider screens the chosen event's story is told beside the timeline (the
+ * career dial can choose it too); on phones it opens in a dialog. The list
+ * keeps its height whichever tab is open (it scrolls inside), so switching
+ * tabs never moves the block, or the page.
  */
 const QualificationSection = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const split = useMediaQuery(SPLIT_QUERY, { noSsr: true });
   const [open, setOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(
-    null,
-  );
+  const [selectedId, setSelectedId] = useAtom(selectedEventAtom);
   const [tabIndex, setTabIndex] = useState(0);
   const trailRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const events = tabIndex === 0 ? highlightedEvents : allEvents;
+  // The chosen event, or the latest one.
+  const selectedEvent =
+    events.find((evt) => evt.titleId === selectedId) ?? events[0];
 
   // "The Trail": while the timeline is on screen the walker goes from its
   // first waypoint to its last; the path behind lights up and each
@@ -91,9 +107,27 @@ const QualificationSection = () => {
     requestSceneFrame();
   }, [tabIndex]);
 
-  const handleOpen = (evt: TimelineEvent) => {
-    setSelectedEvent(evt);
-    setOpen(true);
+  // An event chosen elsewhere (on the career dial) is brought into the
+  // list's view — the list scrolls, never the page.
+  useEffect(() => {
+    const list = listRef.current;
+    if (!split || !list || !selectedId) return;
+    const item = list.querySelector<HTMLElement>(
+      `[data-event="${selectedId}"]`,
+    );
+    if (!item) return;
+    const bounds = list.getBoundingClientRect();
+    const place = item.getBoundingClientRect();
+    if (place.top >= bounds.top && place.bottom <= bounds.bottom) return;
+    list.scrollTo({
+      top: list.scrollTop + place.top - bounds.top - 12,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  }, [split, selectedId, tabIndex]);
+
+  const handleSelect = (evt: TimelineEvent) => {
+    setSelectedId(evt.titleId);
+    if (!split) setOpen(true);
   };
 
   const handleClose = () => {
@@ -102,6 +136,7 @@ const QualificationSection = () => {
 
   const handleTabChange = (_event: React.SyntheticEvent, newIndex: number) => {
     setTabIndex(newIndex);
+    listRef.current?.scrollTo({ top: 0 });
   };
 
   return (
@@ -110,7 +145,7 @@ const QualificationSection = () => {
         component="section"
         ref={trailRef}
         aria-label="Experience and qualifications"
-        className="trail-panel trail-panel--overlay"
+        className={`trail-panel trail-panel--overlay${split ? " trail-panel--split" : ""}`}
         sx={{
           pt: 0,
           width: "100%",
@@ -123,53 +158,109 @@ const QualificationSection = () => {
           "&:hover": { transform: "none" },
         }}
       >
-        <Tabs
-          className="film-part"
-          value={tabIndex}
-          onChange={handleTabChange}
-          aria-label="Qualification Tabs"
-          centered
-          variant="fullWidth"
-          sx={{
-            p: 2,
-          }}
+        <Typography
+          variant="h4"
+          component="h2"
+          className="film-part trail-heading"
         >
-          <Tab
-            label={<FormattedMessage id="qualificationTabHighlights" />}
-            id="qualification-tab-0"
-            aria-controls="qualification-tabpanel-0"
+          <FormattedMessage
+            id={
+              tabIndex === 0
+                ? "qualificationHeadingHighlights"
+                : "qualificationHeadingTimeline"
+            }
           />
-          <Tab
-            label={<FormattedMessage id="qualificationTabTimeline" />}
-            id="qualification-tab-1"
-            aria-controls="qualification-tabpanel-1"
-          />
-        </Tabs>
-        <TabPanel value={tabIndex} index={0}>
-          <TimelineBlock
-            titleId="qualificationHeadingHighlights"
-            events={highlightedEvents}
-            onClick={handleOpen}
-            isSmallScreen={isSmallScreen}
-          />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={1}>
-          <TimelineBlock
-            titleId="qualificationHeadingTimeline"
-            events={allEvents}
-            onClick={handleOpen}
-            isSmallScreen={isSmallScreen}
-          />
-        </TabPanel>
+        </Typography>
+        <div className="trail-split">
+          <div className="trail-master film-part">
+            <Tabs
+              value={tabIndex}
+              onChange={handleTabChange}
+              aria-label="Qualification Tabs"
+              centered
+              variant="fullWidth"
+              sx={{
+                p: 2,
+                pt: 0,
+              }}
+            >
+              <Tab
+                label={<FormattedMessage id="qualificationTabHighlights" />}
+                id="qualification-tab-0"
+                aria-controls="qualification-tabpanel-0"
+              />
+              <Tab
+                label={<FormattedMessage id="qualificationTabTimeline" />}
+                id="qualification-tab-1"
+                aria-controls="qualification-tabpanel-1"
+              />
+            </Tabs>
+            <div ref={listRef} className="trail-list">
+              {[highlightedEvents, allEvents].map((list, index) => (
+                <TabPanel key={index} value={tabIndex} index={index}>
+                  <TimelineBlock
+                    events={list}
+                    onSelect={handleSelect}
+                    position={split || isSmallScreen ? "right" : "alternate"}
+                    selectedId={split ? selectedEvent.titleId : undefined}
+                    controls="trail-details"
+                  />
+                </TabPanel>
+              ))}
+            </div>
+          </div>
+          {split ? <TrailDetails event={selectedEvent} /> : null}
+        </div>
       </Paper>
-      <QualificationDialog
-        open={open}
-        onClose={handleClose}
-        event={selectedEvent}
-      />
+      {split ? null : (
+        <QualificationDialog
+          open={open}
+          onClose={handleClose}
+          event={selectedEvent}
+        />
+      )}
     </>
   );
 };
+
+/**
+ * The chosen event's story, beside the timeline: it fades in, as the blocks
+ * do, whenever another is chosen, and scrolls inside when it is long.
+ */
+const TrailDetails = ({ event }: { event: TimelineEvent }) => (
+  <aside
+    id="trail-details"
+    className="trail-details film-part"
+    aria-labelledby="trail-details-title"
+  >
+    <div key={event.titleId} className="trail-details-scroll">
+      <Box
+        component="p"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+          m: 0,
+          mb: 1,
+          color: "primary.main",
+          fontSize: "0.92rem",
+        }}
+      >
+        <CalendarMonthIcon sx={{ fontSize: 18 }} />
+        <FormattedMessage id={event.whenId} />
+      </Box>
+      <Typography
+        id="trail-details-title"
+        variant="h5"
+        component="h3"
+        className="trail-details-title"
+      >
+        <FormattedMessage id={event.titleId} />
+      </Typography>
+      <div className="trail-details-body">{event.details}</div>
+    </div>
+  </aside>
+);
 
 type QualificationDialogProps = {
   open: boolean;

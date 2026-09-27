@@ -1,4 +1,6 @@
+import { useSetAtom } from "jotai";
 import { useEffect, useRef } from "react";
+import { selectedEventAtom } from "../../hooks/selectedEventAtom";
 import { onDirectorFrame } from "../director/director";
 import { filmIndex } from "../film/films";
 import { clamp } from "../math";
@@ -21,10 +23,15 @@ const END = 7.2;
 
 /** The roles of the experience timeline's highlights. */
 const ROLES = [
-  { from: 2016, to: 2018, name: "SataEdu" },
-  { from: 2021, to: 2024, name: "Hive Helsinki" },
-  { from: 2022, to: 2024, name: "Anyhau" },
-  { from: 2023, to: Infinity, name: "Tieto Caretech" },
+  { from: 2016, to: 2018, name: "SataEdu", event: "eventSataEduTitle" },
+  { from: 2021, to: 2024, name: "Hive Helsinki", event: "eventHiveTitle" },
+  { from: 2022, to: 2024, name: "Anyhau", event: "eventAnyhauTitle" },
+  {
+    from: 2023,
+    to: Infinity,
+    name: "Tieto Caretech",
+    event: "eventTietoCaretechTitle",
+  },
 ];
 
 const today = new Date();
@@ -53,11 +60,12 @@ const ROUTE = arc(RADIUS, angleOf(FIRST), angleOf(NOW));
  * The office film's instrument (wide screens only), the Explorer's walked
  * route turned into time: a dial of the years from 2016 to today, the
  * career walked in red as the film plays, a waypoint lit at every role of
- * the experience timeline's highlights as it is passed, and in the middle
- * the year and the role of that moment.
+ * the experience timeline's highlights as it is passed (which opens that
+ * role's story), and in the middle the year and the role of that moment.
  */
 const CareerDial = () => {
   const dialRef = useRef<HTMLDivElement>(null);
+  const select = useSetAtom(selectedEventAtom);
 
   useEffect(() => {
     const dial = dialRef.current;
@@ -141,16 +149,25 @@ const CareerDial = () => {
         })}
         <path className="instrument-plan" d={ROUTE} />
         <path className="instrument-track" d={ROUTE} />
-        {ROLES.map(({ from, name }) => {
+        {/* Each role opens its story in the experience timeline. */}
+        {ROLES.map(({ from, name, event }) => {
           const [x, y] = polar(RADIUS, angleOf(from));
           return (
-            <circle
+            <g
               key={name}
-              className="instrument-stop"
-              cx={x}
-              cy={y}
-              r="4"
-            />
+              transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`}
+            >
+              <a
+                className="instrument-waypoint"
+                href="#experience"
+                tabIndex={-1}
+                onClick={() => select(event)}
+              >
+                <title>{name}</title>
+                <circle className="instrument-hit" r="11" />
+                <circle className="instrument-stop" r="4" />
+              </a>
+            </g>
           );
         })}
         <g className="instrument-walker">

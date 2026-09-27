@@ -59,7 +59,7 @@ export const highlightedEvents: TimelineEvent[] = [
             color: lightColors.textLight,
           }}
         >
-          <FormattedMessage id="eventTietoCaretechP1" />
+          <FormattedMessage id="eventTietoCaretechP1" />{" "}
           <FormattedMessage id="eventTietoCaretechP2" />
         </Typography>
         <Typography
@@ -215,7 +215,7 @@ export const highlightedEvents: TimelineEvent[] = [
             color: lightColors.textLight,
           }}
         >
-          <FormattedMessage id="eventSataEduP1" />
+          <FormattedMessage id="eventSataEduP1" />{" "}
           <FormattedMessage id="eventSataEduP2" />
         </Typography>
       </>
@@ -235,7 +235,7 @@ export const allEvents: TimelineEvent[] = [
             color: lightColors.textLight,
           }}
         >
-          <FormattedMessage id="eventTietoCaretechP1" />
+          <FormattedMessage id="eventTietoCaretechP1" />{" "}
           <FormattedMessage id="eventTietoCaretechP2" />
         </Typography>
         <Typography
@@ -407,9 +407,9 @@ export const allEvents: TimelineEvent[] = [
             color: lightColors.textLight,
           }}
         >
-          <FormattedMessage id="eventKotipalveluP1" />
-          <FormattedMessage id="eventKotipalveluP2" />
-          <FormattedMessage id="eventKotipalveluP3" />
+          <FormattedMessage id="eventKotipalveluP1" />{" "}
+          <FormattedMessage id="eventKotipalveluP2" />{" "}
+          <FormattedMessage id="eventKotipalveluP3" />{" "}
           <FormattedMessage id="eventKotipalveluP4" />
         </Typography>
       </>
@@ -490,7 +490,7 @@ export const allEvents: TimelineEvent[] = [
             color: lightColors.textLight,
           }}
         >
-          <FormattedMessage id="eventSataEduP1" />
+          <FormattedMessage id="eventSataEduP1" />{" "}
           <FormattedMessage id="eventSataEduP2" />
         </Typography>
       </>
@@ -507,9 +507,9 @@ export const allEvents: TimelineEvent[] = [
             color: lightColors.textLight,
           }}
         >
-          <FormattedMessage id="eventBkszcP1" />
-          <FormattedMessage id="eventBkszcP2" />
-          <FormattedMessage id="eventBkszcP3" />
+          <FormattedMessage id="eventBkszcP1" />{" "}
+          <FormattedMessage id="eventBkszcP2" />{" "}
+          <FormattedMessage id="eventBkszcP3" />{" "}
           <FormattedMessage id="eventBkszcP4" />
         </Typography>
       </>

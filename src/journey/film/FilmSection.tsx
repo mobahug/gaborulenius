@@ -6,7 +6,7 @@ import {
   type Ref,
   type RefObject,
 } from "react";
-import { isWideLayout, prefersReducedMotion } from "../device";
+import { hasFinePointer, isWideLayout, prefersReducedMotion } from "../device";
 import { clamp, easeOutCubic, smoothstep } from "../math";
 import { readViewport, requestSceneFrame } from "../scrollTimeline";
 import { useScene } from "../useScene";
@@ -162,9 +162,15 @@ const SCREEN_MARGIN = 100;
  * than the question does:
  * a large block that grows much makes the GPU draw it again mid-scroll.
  */
-const SHOW_FROM = 0.04;
-const SHOW_UNTIL = 0.8;
-const FADE = 1.4;
+const SHOW_FROM = 0.03;
+const SHOW_UNTIL = 0.9;
+/** Seconds to fade in or out: a little quicker on touch screens, where a
+ * fling passes a block fast. */
+const FADE = 1.2;
+const FADE_TOUCH = 0.8;
+/** Every hold is this much longer than asked (see `.film-hold-space`). */
+const HOLD_SCALE = 1.2;
+const HOLD_SCALE_NARROW = 1.3;
 /**
  * A block may come in beats (elements marked `film-beat`, e.g. a capability's
  * words and then its screens): each beat comes this long (s) after the one
@@ -265,6 +271,11 @@ const FilmSection = ({
       const elements = Array.from(
         section.querySelectorAll<HTMLElement>(".film-cue, .film-mark"),
       );
+      // A block measured again (its content changed, e.g. a tab) keeps how
+      // far it has come in, so it does not fade out and in again.
+      const previous = new Map(
+        blocksRef.current.map((block) => [block.element, block]),
+      );
       // Sizes first: holding a block does not change its size.
       const blocks: Block[] = elements.map((element) => {
         const mark = element.classList.contains("film-mark");
@@ -284,14 +295,16 @@ const FilmSection = ({
           parts: [],
           top: 0,
           height,
-          holdPx: held ? (holdVh * vh) / 100 : 0,
+          holdPx: held
+            ? (holdVh * (narrow ? HOLD_SCALE_NARROW : HOLD_SCALE) * vh) / 100
+            : 0,
           // Centred in the room below the navigation, a little high.
           pin: held
             ? Math.max(NAV_ROOM, Math.round((vh - height) / 2 - 10))
             : 0,
           beats: [],
-          shown: false,
-          since: 0,
+          shown: previous.get(element)?.shown ?? false,
+          since: previous.get(element)?.since ?? 0,
           veil: -1,
           touchable: true,
         };
@@ -315,12 +328,16 @@ const FilmSection = ({
           ? []
           : Array.from(element.querySelectorAll<HTMLElement>(".film-beat"));
         if (!mark && !beats.length) beats.push(element);
-        block.beats = beats.map((beat) => ({
-          element: beat,
-          level: 0,
-          rising: true,
-          transform: "",
-        }));
+        const before = previous.get(element)?.beats;
+        block.beats = beats.map((beat) => {
+          const was = before?.find((other) => other.element === beat);
+          return {
+            element: beat,
+            level: was?.level ?? 0,
+            rising: was?.rising ?? true,
+            transform: "",
+          };
+        });
         block.parts = mark
           ? []
           : Array.from(
@@ -389,6 +406,7 @@ const FilmSection = ({
     const dt = Math.min(0.1, (now - (lastFrameRef.current || now)) / 1000);
     lastFrameRef.current = now;
     let moving = false;
+    const finePointer = hasFinePointer();
     // A block on its way out that is still clearly there (see MAKE_WAY).
     const leaving = blocksRef.current.some(
       (block) =>
@@ -444,7 +462,7 @@ const FilmSection = ({
         if (!held) return 1;
         const delay = (block.shown ? index : count - 1 - index) * BEAT_STAGGER;
         if ((now - block.since) / 1000 >= delay) {
-          const step = dt / FADE;
+          const step = dt / (finePointer ? FADE : FADE_TOUCH);
           beat.level = clamp(beat.level + (block.shown ? step : -step));
         }
         beat.rising = block.shown;

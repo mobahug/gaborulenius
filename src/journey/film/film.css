@@ -16,6 +16,10 @@
   position: absolute;
   inset: 0;
   transform-origin: 50% 50%;
+  /* Its videos' order (the full-HD one over the lighter one, see
+     FilmLayer.tsx) stays inside it: never over a later film, or a film
+     seen through the pupil. */
+  isolation: isolate;
 }
 
 .film-still,
@@ -65,13 +69,14 @@
   position: relative;
 }
 
+/* Every hold is a little longer than asked (HOLD_SCALE in FilmSection.tsx). */
 .film-hold-space {
-  height: var(--hold);
+  height: calc(var(--hold) * 1.2);
 }
 
 @media (max-width: 899.95px) {
   .film-hold-space {
-    height: var(--hold-narrow);
+    height: calc(var(--hold-narrow) * 1.3);
   }
 }
 

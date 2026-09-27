@@ -73,6 +73,41 @@
   gap: 4px;
 }
 
+/* The current section's own parts, opening below it. */
+.section-rail-children {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s ease;
+}
+
+.section-rail li.is-open > .section-rail-children {
+  grid-template-rows: 1fr;
+}
+
+.section-rail-children > ul {
+  min-height: 0;
+  overflow: hidden;
+  gap: 0;
+}
+
+.section-rail-children a {
+  min-height: 22px;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.section-rail-children .section-rail-dot {
+  width: 6px;
+  height: 6px;
+  margin-right: 2px;
+  border-width: 1px;
+}
+
+.section-rail-children a.is-active .section-rail-dot {
+  scale: 1.35;
+  box-shadow: 0 0 8px rgba(233, 220, 179, 0.6);
+}
+
 .section-rail a {
   display: flex;
   align-items: center;
@@ -147,6 +182,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .section-rail,
+  .section-rail-children,
   .section-rail::before,
   .section-rail-label,
   .section-rail-dot {

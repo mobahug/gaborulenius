@@ -158,16 +158,16 @@ export const FILMS: readonly Film[] = [
     src: sources("neural"),
     // 240 frames at 30 fps.
     duration: 8,
-    // The pupil is the window: the first spark of the network is a tiny
-    // point inside it while the camera moves into the eye (the pupil
-    // measured in every frame of the chase from 6.92 s, then followed past
-    // the edges of the frame), comes closer as the pupil grows and fills the
-    // screen as the pupil does.
+    // The pupil is the window: the first spark of the network and its
+    // nebula fade in inside it while the camera moves into the eye (the
+    // pupil measured in every frame of the chase from 6.92 s, then followed
+    // past the edges of the frame), framed with the pupil, so they grow with
+    // it and fill the screen as it does.
     seam: {
       blend: 0,
       portal: {
         opens: 6.917,
-        depth: 1.3,
+        depth: 1.0,
         track: [
           [6.917, 0.51, 0.5, 0.077],
           [6.958, 0.509, 0.497, 0.082],

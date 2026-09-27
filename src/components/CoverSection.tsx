@@ -63,72 +63,75 @@ type LeafLayer = Layer & {
 
 // The rendered ones are turned as in tools/leaves/cover.js, which lights
 // each leaf for its turn; the monstera, the banana leaf and the fern are
-// photographs (tools/leaves/photos.js).
+// photographs (tools/leaves/photos.js). All of them are then graded into the
+// film's look (tools/leaves/filmlook.js), which gives each a margin for its
+// soft edge: the sizes, stalks and widths here are those of the final
+// images.
 const LEAVES: LeafLayer[] = [
   {
     id: "banana-high",
     image: "banana-high",
-    size: [494, 1360],
-    origin: [0.571, 0.968],
+    size: [522, 1388],
+    origin: [0.567, 0.959],
     rotate: 128,
     exit: { x: -0.36, y: -0.5, scale: 1.4 },
-    wide: { x: -3, y: -4, width: 15 },
+    wide: { x: -3, y: -4, width: 15.9 },
     breathe: [1.3, 1.012, 9.5, -3],
     wideOnly: true,
   },
   {
     id: "palm-high",
     image: "palm-high",
-    size: [900, 1100],
-    origin: [0.32, 0.97],
+    size: [920, 1120],
+    origin: [0.324, 0.962],
     rotate: 206,
     exit: { x: 0.34, y: -0.5, scale: 1.4 },
-    wide: { x: 96, y: -8, width: 34 },
-    narrow: { x: 104, y: -4, width: 70 },
+    wide: { x: 96, y: -8, width: 34.8 },
+    narrow: { x: 104, y: -4, width: 71.6 },
     breathe: [1.6, 1.014, 7.5, -1],
   },
   {
     id: "alocasia",
     image: "alocasia",
-    size: [900, 1240],
-    origin: [0.5, 0.62],
+    size: [934, 1274],
+    origin: [0.5, 0.617],
     rotate: -52,
     exit: { x: 0.5, y: 0.35, scale: 1.5 },
-    wide: { x: 104, y: 78, width: 30 },
+    wide: { x: 104, y: 78, width: 31.1 },
     breathe: [1.1, 1.015, 8.5, -4],
     wideOnly: true,
   },
   {
     id: "monstera",
     image: "monstera",
-    size: [1119, 1200],
-    origin: [0.451, 0.751],
+    size: [1181, 1262],
+    origin: [0.454, 0.739],
     rotate: 16,
     exit: { x: -0.5, y: 0.35, scale: 1.5 },
-    wide: { x: 11, y: 100, width: 27 },
-    narrow: { x: 6, y: 100, width: 70 },
+    wide: { x: 11, y: 100, width: 28.5 },
+    narrow: { x: 6, y: 100, width: 73.9 },
     breathe: [0.9, 1.016, 10.5, -6],
   },
   {
     id: "fern-near",
     image: "fern-near",
-    size: [525, 1300],
-    origin: [0.064, 0.977],
+    size: [573, 1348],
+    origin: [0.101, 0.96],
     rotate: 118,
     exit: { x: -0.6, y: 0.5, scale: 1.7 },
-    wide: { x: -2, y: 62, width: 15 },
+    wide: { x: -2, y: 62, width: 16.4 },
     breathe: [1.8, 1.02, 6.5, -2],
     wideOnly: true,
   },
   {
     id: "heart-near",
     image: "heart-near",
-    size: [640, 820],
-    origin: [0.5, 0.74],
+    size: [674, 854],
+    origin: [0.5, 0.73],
     rotate: -28,
     exit: { x: 0.6, y: 0.6, scale: 1.7 },
-    wide: { x: 90, y: 116, width: 34 },
-    narrow: { x: 96, y: 108, width: 74 },
+    wide: { x: 90, y: 116, width: 35.8 },
+    narrow: { x: 96, y: 108, width: 77.9 },
     breathe: [1.4, 1.018, 7, -5],
   },
 ];
@@ -530,7 +533,7 @@ const CoverSection: React.FC = () => {
                   }
                   srcSet={
                     leavesOn
-                      ? `${assetUrl(`cover/${leaf.image}-sm.webp`)} ${width / 2}w, ${assetUrl(`cover/${leaf.image}.webp`)} ${width}w`
+                      ? `${assetUrl(`cover/${leaf.image}-sm.webp`)} ${Math.ceil(width / 2)}w, ${assetUrl(`cover/${leaf.image}.webp`)} ${width}w`
                       : undefined
                   }
                   sizes={`(max-width: 899.95px) ${narrow.width}vw, ${leaf.wide.width}vw`}

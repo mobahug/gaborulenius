@@ -51,7 +51,7 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
         </p>
       </PortalTitle>
       <Space vh={100} narrow={90} />
-      <Cue at={3.0} hold={90}>
+      <Cue at={3.0} id="neural" hold={90}>
         <div className="film-copy">
           <p className="film-kicker">
             <FormattedMessage id="neuralTag" />
@@ -65,7 +65,7 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
         </div>
       </Cue>
       <Space vh={20} />
-      <Cue at={4.4} align="end" hold={80}>
+      <Cue at={4.4} id="neural-case" align="end" hold={80}>
         <div className="film-copy film-copy--narrow">
           <p className="film-lead stage-emphasis">
             <FormattedMessage id="neuralCaseStudy" />
@@ -73,7 +73,7 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
         </div>
       </Cue>
       <Space vh={25} />
-      <Cue at={5.9} hold={100}>
+      <Cue at={5.9} id="neural-method" hold={100}>
         <div className="film-copy">
           <h4 className="film-subheading">
             <FormattedMessage id="neuralMethodHeading" />

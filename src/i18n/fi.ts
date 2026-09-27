@@ -6,6 +6,21 @@ export default {
   navbar_projects: "Projektit",
   navSkills: "Taidot",
   navSections: "Osiot",
+  navAboutMe: "Minusta",
+  navAboutStory: "Tarinani",
+  navNeural: "Neural Decompiler",
+  navNeuralCase: "Tapaustutkimus",
+  navNeuralMethod: "Menetelmä",
+  navExplorer: "The Explorer",
+  navExplorerMaps: "Offline-kartat",
+  navExplorerPrecision: "Kenttätarkkuus",
+  navExplorerCapture: "Kenttätallennus",
+  navExplorerCloud: "Pilvialusta",
+  navExplorerBuilt: "Miten se on rakennettu",
+  navHighlights: "Kohokohdat",
+  navWorkProjects: "Työprojektit",
+  navSkillsList: "Taidot",
+  navTools: "Työkalut",
   navContact: "Ota yhteyttä",
   effectsSubtitle:
     "Herätä viidakko eloon – valitse, mitkä taustaäänet kulkevat mukanasi.",
@@ -228,9 +243,6 @@ export default {
   skillsCatTools: "Työkalut",
 
   /* Yhteydenotto-osio */
-  connectPlace: "Espoo · Suomi",
-  connectSameTime: "Sama aika kuin sinulla",
-  connectYourTime: "Sinulla {time}",
   contactHeading: "Ota yhteyttä",
   contactIntro:
     "Etsimässä opasta digitaalisen viidakon halki seuraavaan projektiisi tai uutta tiiminjäsentä? Olipa kyseessä mullistava idea, yhteinen seikkailu tai kutkuttava mahdollisuus, olen valmis tutkimaan. Otetaan yhteyttä ja luodaan yhdessä jotain villiä!",

@@ -135,7 +135,7 @@ const WorkStage = ({ experienceRef, skillsRef }: WorkStageProps) => {
         </div>
       </Cue>
       <Space vh={10} />
-      <Cue at={6.5} hold={80}>
+      <Cue at={6.5} id="tools" hold={80}>
         <div className="film-copy film-copy--wide">
           <SkillGroups groups={categories.slice(-1)} />
         </div>

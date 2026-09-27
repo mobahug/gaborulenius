@@ -47,6 +47,10 @@ export const getFilmSection = (id: FilmId) => sections.get(id) ?? null;
 
 const IDENTITY: Transform = { scale: 1, x: 0, y: 0 };
 
+/** A film seen through a window fades in over this much of the outer film's
+ * time (s) as the window starts to open. */
+const PORTAL_FADE = 0.6;
+
 const mixTransform = (a: Transform, b: Transform, t: number): Transform => ({
   scale: a.scale + (b.scale - a.scale) * t,
   x: a.x + (b.x - a.x) * t,
@@ -165,9 +169,14 @@ export const computeTimeline = (
           Math.max(1e-3, outer.film.duration - portal.opens),
       );
       view = { outer: outer.film, outerTime: outer.time, progress };
-      // Held still on its first moment until the window has opened.
+      // Held still on its first moment until the window has opened, and
+      // fading in as the window starts to open.
       time = from;
-      opacity = 1;
+      opacity = smoothstep(
+        portal.opens,
+        portal.opens + PORTAL_FADE,
+        outer.time,
+      );
     }
 
     const incoming = film.seam.incoming;

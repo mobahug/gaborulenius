@@ -5,6 +5,21 @@ export default {
   navExperience: "Experience",
   navSkills: "Skills & Tools",
   navSections: "Sections",
+  navAboutMe: "About me",
+  navAboutStory: "My story",
+  navNeural: "Neural Decompiler",
+  navNeuralCase: "Case study",
+  navNeuralMethod: "Method",
+  navExplorer: "The Explorer",
+  navExplorerMaps: "Offline maps",
+  navExplorerPrecision: "Field precision",
+  navExplorerCapture: "Field capture",
+  navExplorerCloud: "Cloud platform",
+  navExplorerBuilt: "How it's built",
+  navHighlights: "Highlights",
+  navWorkProjects: "Work projects",
+  navSkillsList: "Skills",
+  navTools: "Tools",
   navContact: "Contact",
   effectsSubtitle:
     "Bring the jungle to life around you—choose which ambient elements you’d like to accompany your journey.",
@@ -224,9 +239,6 @@ export default {
   skillsCatTools: "Tools",
 
   /* Contact section */
-  connectPlace: "Espoo · Finland",
-  connectSameTime: "Same time as you",
-  connectYourTime: "Your time {time}",
   contactHeading: "Let’s Connect",
   contactIntro:
     "Navigating the digital jungle for your next project or a new team member? Whether it's a groundbreaking idea, a collaborative adventure, or an exciting opportunity, I'm ready to explore. Let's connect and create something wild!",

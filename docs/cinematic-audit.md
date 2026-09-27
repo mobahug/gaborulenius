@@ -300,3 +300,33 @@ screen behind each capability's first.
   each time.
 - A section rail at the right edge takes the navigation's links; the bar at
   the top keeps the name, the language and the sound.
+
+## 13. Longer holds, the pupil and the leaves' look (September 2026)
+
+- Blocks stay on screen longer: every hold is a fifth longer (three tenths
+  on phones), a block shows from 3 % to 90 % of its hold, and the fades are
+  1.2 s (0.8 s on touch screens, so a quick flick does not outrun them).
+- The pupil: the neural film was held back by the chase's full-HD video,
+  which lay over it (its z-index escaped its film); each film now keeps its
+  videos to itself. The spark and its nebula fade in inside the pupil from
+  the moment it opens and grow with it (the window film is framed with the
+  pupil, `depth` 1), so the network no longer appears all at once when the
+  eye fills the screen.
+- Butterflies: always blue on both sides of the wing, with veins, the black
+  margin and its white spots; they land on the tops and the sides of the
+  blocks, buttons and the About card. The butterfly that followed the
+  cursor is gone; the ones that land still fly off from a hovering pointer.
+- Finding your way: the rail opens the current section's parts (the Neural
+  Decompiler's case study and method, each capability of the Explorer, the
+  highlights and work projects, skills and tools), lit as they come by; the
+  Explorer map's waypoints and the career dial's roles take you to them.
+- The experience: on wider screens the chosen role's story is told beside
+  the timeline (a role on the career dial chooses it too); phones keep the
+  dialog. The timeline keeps its height on either tab — a longer list
+  scrolls inside it — so switching tabs no longer moves the page.
+- Phones get the full-HD films first unless the connection is slow; the
+  light encodes are for slow connections, which still move up to full HD.
+- The cover's leaves are graded into the film's look (tools/leaves/
+  filmlook.js): their colours moved toward the film's around each, the
+  film's haze and glow, depth of field (the near ones softest) and grain.
+- Let's Connect no longer shows the time in Espoo.

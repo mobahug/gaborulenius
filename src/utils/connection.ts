@@ -1,6 +1,8 @@
 type NavigatorConnection = {
   effectiveType?: string;
   saveData?: boolean;
+  /** Estimated bandwidth (Mb/s). */
+  downlink?: number;
 };
 
 type NavigatorWithConnection = Navigator & {
@@ -44,4 +46,11 @@ export const wantsLightVideo = () => {
   const memory = (navigator as Navigator & { deviceMemory?: number })
     .deviceMemory;
   return memory !== undefined && memory <= 2;
+};
+
+/** A connection known to be modest (under 4 Mb/s), where a large file is
+ * better fetched after a light one (where the browser tells). */
+export const isModestConnection = () => {
+  const downlink = getNetworkConnection()?.downlink;
+  return typeof downlink === "number" && downlink > 0 && downlink < 4;
 };
