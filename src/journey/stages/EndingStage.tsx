@@ -6,6 +6,7 @@ import type React from "react";
 import { FormattedMessage } from "react-intl";
 import { GITHUB_URL, LINKEDIN_URL } from "../../seo";
 import FilmSection, { Cue, Mark, Space } from "../film/FilmSection";
+import EspooNow from "./EspooNow";
 import "./stages.css";
 
 type EndingStageProps = {
@@ -70,6 +71,7 @@ const EndingStage = ({ contactRef }: EndingStageProps) => (
             GitHub
           </Button>
         </div>
+        <EspooNow />
       </div>
     </Cue>
   </FilmSection>

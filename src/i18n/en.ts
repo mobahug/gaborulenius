@@ -223,6 +223,9 @@ export default {
   skillsCatTools: "Tools",
 
   /* Contact section */
+  connectPlace: "Espoo · Finland",
+  connectSameTime: "Same time as you",
+  connectYourTime: "Your time {time}",
   contactHeading: "Let’s Connect",
   contactIntro:
     "Navigating the digital jungle for your next project or a new team member? Whether it's a groundbreaking idea, a collaborative adventure, or an exciting opportunity, I'm ready to explore. Let's connect and create something wild!",

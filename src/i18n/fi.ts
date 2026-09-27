@@ -227,6 +227,9 @@ export default {
   skillsCatTools: "Työkalut",
 
   /* Yhteydenotto-osio */
+  connectPlace: "Espoo · Suomi",
+  connectSameTime: "Sama aika kuin sinulla",
+  connectYourTime: "Sinulla {time}",
   contactHeading: "Ota yhteyttä",
   contactIntro:
     "Etsimässä opasta digitaalisen viidakon halki seuraavaan projektiisi tai uutta tiiminjäsentä? Olipa kyseessä mullistava idea, yhteinen seikkailu tai kutkuttava mahdollisuus, olen valmis tutkimaan. Otetaan yhteyttä ja luodaan yhdessä jotain villiä!",

@@ -90,7 +90,7 @@ screen for its stretch of the scroll (its hold, `hold` viewport heights,
 90 by default) while the film plays behind it: it is sticky, centred a
 little high below the navigation, out of sight while it slides into place
 and away again. It comes and goes the way the question in the pupil does
-(`PortalTitle`): over the first fifth of its hold it fades in as one,
+(`PortalTitle`): over the first third of its hold it fades in as one,
 settling down into place from a little above (5 % of the screen's height)
 as it grows from 94 % to its size; it stays, perfectly still and at its own
 size; and over the last fifth it passes the camera, growing as it fades —
@@ -98,8 +98,12 @@ to about 110 %, less than the question, because a large block that grows
 much makes the GPU draw it again at the new size in the middle of the
 scroll (a 220 ms frame on a phone profile). The block carries the motion
 (its transform) and its parts and veil carry the opacity: opacity on the
-block itself would cut its veil off from the films. Out of sight it takes
-no clicks, so it never catches one meant for the block on screen. A block
+block itself would cut its veil off from the films. However fast the page
+is scrolled, a block arrives slowly: how far it has come follows the scroll
+with a time constant of 1.1 s, so after a jump its words take about a
+second to come in and its phones nearly two; it leaves with the scroll, so
+it has always gone before it moves away. Out of sight it takes no clicks,
+so it never catches one meant for the block on screen. A block
 may come in beats (`film-beat`): an Explorer capability's words come first
 and its phones follow 7 % of the hold later, and on the way out the phones
 leave first, so the words frame each moment. A block holding keyboard
@@ -163,13 +167,27 @@ or tapping it (or with the keyboard: they are buttons); the other slides
 back, and the caption names the one in front. How it is built (the three groups of the former
 dialog) and its stack follow, one group at a time.
 
-While its film plays, a small map in the corner walks the expedition
+While its film plays, a small map in the corner (250 px, less on short
+screens) walks the expedition
 (`ExplorerMap.tsx`, wide screens only): an almost transparent topographic
 map (a generated contour tile, `public/explorer/topography.svg`, 8 KB
 compressed), the planned route dotted, the walked track in red with the
 walker pulsing at its head, and a waypoint for every capability that lights
 up once passed. The walk follows the film's time, so it moves with the
 scroll and back.
+
+Every film has one small thing of its own, in the same language — gold
+hairlines, a red walker that moves with the film:
+
+| Film     | Signature                                                                                                                                                                                                                                                                                                                                |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chase    | The film's morpho comes out of the film as it passes the camera and keeps the pointer company while the introduction and About are read: it follows lazily, settles and slowly opens and closes its blue wings when the pointer rests, and flies away when About has passed (`overlays/morpho.ts`, drawn above the content; mouse only). |
+| Neural   | The pointer is a probe that reads the film's neurons (`overlays/neuralProbe.ts`).                                                                                                                                                                                                                                                        |
+| Explorer | The expedition map in the corner (`ExplorerMap.tsx`).                                                                                                                                                                                                                                                                                    |
+| Work     | The career dial in the corner (`CareerDial.tsx`): the years from 2016 to today, walked in red as the office film plays, a waypoint lit at each role of the experience highlights, and in the middle the year and the role of that moment.                                                                                                |
+| Ending   | Under the invitation, the time in Espoo (`EspooNow.tsx`): a small dial of the day with today's daylight in gold and the moment in red, the time, and the visitor's own — so a visitor knows when to expect a reply. Part of the block, so it shows on every screen.                                                                      |
+
+The corner instruments show on wide screens only (at least 1100 × 680).
 
 The question in the pupil (`PortalTitle`) is not there while the pupil is
 still a circle. It comes in once the pupil covers the whole screen — the

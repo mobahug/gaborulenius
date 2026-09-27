@@ -11,3 +11,12 @@
 .overlay-canvas--film {
   z-index: 3;
 }
+
+/* Above the content (it keeps the pointer company), under the navigation. */
+.overlay-canvas--cursor {
+  position: fixed;
+  z-index: 3;
+  width: 100vw;
+  height: 100vh;
+  height: 100lvh;
+}

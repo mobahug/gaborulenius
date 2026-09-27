@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { categories, projects } from "../../contexts";
 import { localeAtom } from "../../hooks/localeAtom";
 import FilmSection, { Cue, Space } from "../film/FilmSection";
+import CareerDial from "./CareerDial";
 import "./stages.css";
 
 const QualificationSection = React.lazy(
@@ -94,6 +95,7 @@ const WorkStage = ({ experienceRef, skillsRef }: WorkStageProps) => {
       lead={{ vh: 112, narrow: 104 }}
       tail={{ vh: 62, narrow: 54 }}
     >
+      <CareerDial />
       <Cue
         at={1.6}
         id="experience"

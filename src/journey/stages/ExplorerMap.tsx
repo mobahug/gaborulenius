@@ -2,7 +2,13 @@ import { useEffect, useRef, type CSSProperties } from "react";
 import { assetUrl } from "../../utils/assets";
 import { onDirectorFrame } from "../director/director";
 import { filmIndex } from "../film/films";
-import { clamp, smoothstep } from "../math";
+import { clamp } from "../math";
+import {
+  INSTRUMENT_QUERY,
+  WALKER_RADIUS,
+  presenceBetween,
+  showInstrument,
+} from "./instrument";
 
 /** The route on the map (a 200 × 200 box), from the trailhead to the camp. */
 const ROUTE =
@@ -32,11 +38,11 @@ const ExplorerMap = () => {
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    const plan = map.querySelector<SVGPathElement>(".explorer-map-plan")!;
-    const track = map.querySelector<SVGPathElement>(".explorer-map-track")!;
-    const head = map.querySelector<HTMLElement>(".explorer-map-head")!;
+    const plan = map.querySelector<SVGPathElement>(".instrument-plan")!;
+    const track = map.querySelector<SVGPathElement>(".instrument-track")!;
+    const head = map.querySelector<SVGGElement>(".instrument-walker")!;
     const stops = Array.from(
-      map.querySelectorAll<SVGCircleElement>(".explorer-map-stop"),
+      map.querySelectorAll<SVGCircleElement>(".instrument-stop"),
     );
     const length = plan.getTotalLength();
     const samples = Array.from({ length: SAMPLES + 1 }, (_, index) =>
@@ -48,26 +54,19 @@ const ExplorerMap = () => {
       stops[index].setAttribute("cy", point.y.toFixed(1));
     });
     track.style.strokeDasharray = `${length.toFixed(2)}`;
-    const wide = window.matchMedia("(min-width: 900px)");
-    let shown = -1;
+    const wide = window.matchMedia(INSTRUMENT_QUERY);
+    const show = showInstrument();
     let walked = -1;
     let reached = -1;
     return onDirectorFrame((frame) => {
       const entry = frame.timeline.films[EXPLORER];
       const time = entry?.time ?? 0;
       // From the title to the end of the expedition, in the Explorer only.
-      const visible =
+      const presence =
         wide.matches && entry && frame.timeline.current === EXPLORER
-          ? smoothstep(START - 0.4, START + 0.1, time) *
-            (1 - smoothstep(END + 0.15, END + 0.45, time))
+          ? presenceBetween(time, START, END)
           : 0;
-      const opacity = Math.round(visible * 50) / 50;
-      if (opacity !== shown) {
-        shown = opacity;
-        map.style.opacity = String(opacity);
-        map.style.visibility = opacity > 0 ? "visible" : "hidden";
-      }
-      if (opacity <= 0) return;
+      if (!show(map, presence)) return;
       const progress = frame.reduced
         ? 1
         : Math.round(along(time) * SAMPLES) / SAMPLES;
@@ -75,13 +74,16 @@ const ExplorerMap = () => {
         walked = progress;
         track.style.strokeDashoffset = (length * (1 - progress)).toFixed(2);
         const point = samples[Math.round(progress * SAMPLES)];
-        head.style.transform = `translate(${point.x.toFixed(1)}px, ${point.y.toFixed(1)}px)`;
+        head.setAttribute(
+          "transform",
+          `translate(${point.x.toFixed(1)} ${point.y.toFixed(1)})`,
+        );
       }
       const passed = WAYPOINTS.filter((stop) => time >= stop - 0.05).length;
       if (passed !== reached) {
         reached = passed;
         stops.forEach((stop, index) =>
-          stop.classList.toggle("explorer-map-stop--reached", index < passed),
+          stop.classList.toggle("instrument-stop--reached", index < passed),
         );
       }
     }, 40);
@@ -90,7 +92,7 @@ const ExplorerMap = () => {
   return (
     <div
       ref={mapRef}
-      className="explorer-map"
+      className="instrument explorer-map"
       aria-hidden="true"
       style={
         {
@@ -98,14 +100,17 @@ const ExplorerMap = () => {
         } as CSSProperties
       }
     >
-      <svg viewBox="0 0 200 200" width="200" height="200">
-        <path className="explorer-map-plan" d={ROUTE} />
-        <path className="explorer-map-track" d={ROUTE} />
+      <svg viewBox="0 0 200 200">
+        <path className="instrument-plan" d={ROUTE} />
+        <path className="instrument-track" d={ROUTE} />
         {WAYPOINTS.map((time) => (
-          <circle key={time} className="explorer-map-stop" r="4" />
+          <circle key={time} className="instrument-stop" r="4" />
         ))}
+        <g className="instrument-walker">
+          <circle className="instrument-pulse" r={WALKER_RADIUS} />
+          <circle className="instrument-head" r={WALKER_RADIUS} />
+        </g>
       </svg>
-      <div className="explorer-map-head" />
     </div>
   );
 };

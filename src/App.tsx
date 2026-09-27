@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Hero from "./components/Hero";
 import NavBar from "./components/navbar/NavBar";
+import CursorLayer from "./journey/overlays/CursorLayer";
 
 const App: React.FC = () => (
   <Box id="scrolly-container" sx={{ position: "relative" }}>
@@ -13,6 +14,7 @@ const App: React.FC = () => (
     >
       <Hero />
     </Box>
+    <CursorLayer />
   </Box>
 );
 export default App;
