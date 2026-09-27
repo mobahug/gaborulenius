@@ -567,9 +567,9 @@
   min-height: 70vh;
 }
 
+/* As large as every chapter's title (film-title). */
 .stage-section-title {
   margin-bottom: 26px;
-  font-size: clamp(2rem, 4.2vw, 3.6rem);
 }
 
 .stage-work-list {

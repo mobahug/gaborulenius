@@ -39,14 +39,7 @@
    scroll. */
 .reveal-item:has(:focus-visible),
 .reveal-item:has(:focus-visible)
-  :is(
-    .film-beat,
-    .film-part,
-    .film-copy > *,
-    li,
-    .film-actions > *,
-    .about-card > *
-  ) {
+  :is(.film-beat, .film-part, .film-copy > *, li, .film-actions > *) {
   --veil: 1 !important;
   opacity: 1 !important;
   transform: none !important;

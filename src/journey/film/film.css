@@ -306,22 +306,47 @@
 }
 
 /* A stack written as one line of text, not a row of pills. */
+/* A stack of tools, skills or technologies: each one a chip, on a shade of
+   its own so it reads over any picture, lit when pointed at. */
 .film-stack {
   margin: 20px 0 0;
   padding: 0;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 0;
-  font-size: 0.97rem;
+  gap: 8px;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: rgba(246, 241, 228, 0.9);
+  line-height: 1.2;
+  color: rgba(246, 241, 228, 0.92);
 }
 
-.film-stack li:not(:last-child)::after {
-  content: "·";
-  margin: 0 10px;
-  color: #d9c89a;
+.film-stack li {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(233, 220, 179, 0.26);
+  background: rgba(9, 13, 10, 0.46);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.film-stack li:hover {
+  border-color: rgba(233, 220, 179, 0.75);
+  background: rgba(217, 200, 154, 0.16);
+  color: #fff8ea;
+}
+
+@media (max-width: 899.95px) {
+  .film-stack {
+    gap: 6px;
+    font-size: 0.82rem;
+  }
+
+  .film-stack li {
+    padding: 5px 10px;
+  }
 }
 
 .film-actions {

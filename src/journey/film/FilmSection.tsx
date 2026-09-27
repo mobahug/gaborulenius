@@ -143,7 +143,6 @@ const PART_SELECTOR = [
   ".stage-work-list > li",
   ".stage-skills > *",
   ".film-actions > *",
-  ".about-card > *",
 ].join(", ");
 
 /** Room kept clear above a held block for the navigation (px). */

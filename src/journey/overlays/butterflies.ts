@@ -6,14 +6,15 @@ import { glowSprite } from "./surface";
 /*
  * The morpho of the jungle films — iridescent blue, with a black margin and
  * white spots along its forewings — drawn from a wing sprite; a flapping
- * wing is the sprite narrowed, turning a deeper blue as it closes.
+ * wing is the sprite narrowed, a deeper blue as it rises, and never
+ * narrower than a third, so it does not seem to blink.
  *
  * The flock: in the jungle scenes (the introduction, About and its story,
  * and the invitation at the end), whenever a block comes in, two or three
  * morphos of different sizes fade in from the edges of the screen, fly over
  * and settle on its edges — on top of its heading, of a button or of the
- * story card, on a fact's icon, or clinging to the side of a button or the
- * card — each time somewhere else, like the old portfolio's pixel bird, and
+ * story's portrait, on a fact's icon, or clinging to the side of a button —
+ * each time somewhere else, like the old portfolio's pixel bird, and
  * slowly open and close their wings. Never more than five at once. A
  * pointer that comes close startles one up for a moment; when the block
  * goes, they fly away.
@@ -187,14 +188,15 @@ const morphoSprites = () => {
 };
 
 /** How far a wing is open (seen from above) for a beat of `lift` (0 open
- * flat … 1 closed up). */
+ * flat … 1 up). Never less than a third: a wing seen edge-on would all but
+ * vanish, and the butterfly would seem to blink at every beat. */
 export const openness = (lift: number) =>
-  Math.max(0.12, Math.cos((lift * 78 * Math.PI) / 180));
+  Math.max(0.36, Math.cos((lift * 70 * Math.PI) / 180));
 
 /**
  * Draws a morpho at (x, y), its head toward `heading` (radians, 0 up), with
  * `span` px between its wing tips, in its soft blue glow. Its wings are
- * always blue: as they close they narrow and turn a deeper blue, away from
+ * always blue: as they rise they narrow and turn a deeper blue, away from
  * the light.
  */
 export const drawButterfly = (
@@ -211,12 +213,13 @@ export const drawButterfly = (
   context.save();
   context.translate(x, y);
   context.rotate(heading);
-  context.globalAlpha = alpha * 0.45 * (0.5 + 0.5 * open);
+  context.globalAlpha = alpha * 0.45 * (0.7 + 0.3 * open);
   context.globalCompositeOperation = "lighter";
   context.drawImage(glow, -span * 0.76, -span * 0.76, span * 1.52, span * 1.52);
   context.globalCompositeOperation = "source-over";
   const scale = span / 2 / 25;
-  const shade = Math.min(1, (1 - open) * 1.3);
+  // A deeper blue as it rises, never so dark that it is lost.
+  const shade = Math.min(0.45, (1 - open) * 0.7);
   [1, -1].forEach((side) => {
     context.save();
     context.scale(side * open * scale, scale);
@@ -265,7 +268,7 @@ export const drawButterfly = (
 
 /** Never more than this many at once. */
 const MAX = 5;
-/** Wingspans (px); the pointer's own is 42. */
+/** Wingspans (px). */
 const SPANS = [26, 32, 38, 46];
 
 const cueOf = (element: Element | null | undefined) =>
@@ -276,7 +279,7 @@ const cueOf = (element: Element | null | undefined) =>
 const SCENE_BLOCKS: Array<() => HTMLElement | null> = [
   () => cueOf(document.getElementById("home")),
   () => cueOf(document.getElementById("about")),
-  () => cueOf(document.querySelector(".about-card")),
+  () => cueOf(document.getElementById("story")),
   () => cueOf(document.getElementById("contact")),
 ];
 
@@ -290,8 +293,8 @@ type Perch = {
 };
 
 /** Where on a block a butterfly can sit: along the top edges of its
- * heading, its buttons, its card and its facts' icons, and on the sides of
- * its buttons and card. */
+ * heading, its buttons, the story's portrait and the facts' icons, and on
+ * the sides of its buttons. */
 const perchesOn = (block: HTMLElement) => {
   const perches: Perch[] = [];
   const add = (
@@ -305,11 +308,11 @@ const perchesOn = (block: HTMLElement) => {
       .forEach((element) => perches.push({ element, edge, from, to }));
   add(".intro-sentence, .film-title", "top", 0.06, 0.55);
   add(".film-actions > *", "top", 0.2, 0.8);
-  add(".film-actions > :first-child", "left", 0.3, 0.6);
-  add(".film-actions > :last-child", "right", 0.3, 0.6);
-  add(".about-card > *", "top", 0.1, 0.9);
-  add(".about-card > *", "left", 0.15, 0.7);
-  add(".about-card > *", "right", 0.15, 0.7);
+  // The sides of the first and last buttons (not of words, which a
+  // butterfly on the side would cover).
+  add(".film-actions > .MuiButton-root:first-child", "left", 0.3, 0.6);
+  add(".film-actions > .MuiButton-root:last-child", "right", 0.3, 0.6);
+  add(".story-avatar", "top", 0.35, 0.65);
   add(".about-meta-icon", "top", 0.5, 0.5);
   return perches;
 };

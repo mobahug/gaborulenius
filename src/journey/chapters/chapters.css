@@ -30,14 +30,6 @@
   max-width: 44rem;
 }
 
-.about-card {
-  width: min(440px, 100%);
-}
-
-.about-title {
-  font-size: clamp(2.2rem, 5vw, 4.2rem);
-}
-
 .about-body {
   margin: 24px 0 26px;
 }
@@ -78,8 +70,45 @@
   color: inherit;
 }
 
-.about-card {
-  position: relative;
+/* The story, told the way the greeting is: its title large, a line about
+   it, the way to read it, and who wrote it and when. */
+/* A narrow column, clear of the morpho flying up the path beside it. */
+.story-copy {
+  max-width: min(40rem, 88vw);
+}
+
+.story-title {
+  font-size: clamp(2.4rem, 4.8vw, 4.4rem);
+}
+
+.story-lead {
+  max-width: 46ch;
+  margin: 22px 0 0;
+}
+
+.story-actions {
+  align-items: center;
+  gap: 18px 24px;
+}
+
+.story-byline {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(246, 241, 228, 0.8);
+}
+
+/* The author: a small round portrait, the face close up. */
+.story-avatar {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #1e2a20 var(--portrait) 51% 42% / 190% no-repeat;
+  border: 1.5px solid rgba(217, 200, 154, 0.75);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
 /* ------------------------------------------------------------------

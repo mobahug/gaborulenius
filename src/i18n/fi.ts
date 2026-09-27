@@ -279,6 +279,7 @@ export default {
   linkThumbnailTitleGabor: "Epätavanomainen matka koodaukseen ja tekoälyyn",
   linkThumbnailDescriptionGabor:
     "Gábor kertoo urapolustaan ohjelmoinnin pariin ja AI-ratkaisuista Tieto Caretechilla.",
+  storyRead: "Lue tarina",
   linkThumbnailReadingTime: "lukuaika {minutes} min",
   /* ---------- Matka: Neural Decompiler ---------- */
   neuralQuestion: "Mitä neuroverkko oikeastaan laskee?",

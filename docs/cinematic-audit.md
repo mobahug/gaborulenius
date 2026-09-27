@@ -352,3 +352,16 @@ screen behind each capability's first.
   is; the dial's career follows the timeline's open tab (its highlights or
   all of it, evenly spaced, oldest first); phones show the banana leaf at
   the top left too.
+
+## 15. The story, chips and steady wings (September 2026)
+
+- The career story is no longer a lone card on the right: it is told the
+  way the greeting is — "My story", its title large, a line about it, the
+  way to read it, and the author's portrait with the reading time and date
+  — in a narrow column that leaves the film's morpho clear beside it.
+  Chapter titles share one large size (Work projects and Skills & Tools
+  were smaller).
+- Tools, skills and technologies are chips, each on its own shade so it
+  reads over the films, lit when pointed at.
+- The morphos no longer seem to blink: at the top of a beat a wing stays a
+  third open and a deeper blue, instead of a dark sliver.

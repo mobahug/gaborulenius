@@ -275,6 +275,7 @@ export default {
   linkThumbnailTitleGabor: "A non-traditional journey into coding and AI",
   linkThumbnailDescriptionGabor:
     "Gábor shares how he moved into software development and now builds AI solutions at Tieto Caretech.",
+  storyRead: "Read the story",
   linkThumbnailReadingTime: "{minutes} min read",
   /* ---------- Journey: Neural Decompiler ---------- */
   neuralQuestion: "What is a neural network actually computing?",
