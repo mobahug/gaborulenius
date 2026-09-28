@@ -337,9 +337,10 @@ where that is missing).
   `filmprogress`). It leaves once the film at the scroll's place plays
   (`data-film-ready`) — the morpho flies up into the light and the jungle
   opens — or after 5.5 s at the most (the cover's still stands in until the
-  film comes), or at a tap, a scroll or a key. It only fades in after
-  0.45 s, so a visit from the cache never sees it; with reduced motion, or
-  without script, there is none.
+  film comes), or at a tap, a scroll or a key. It is there from the first
+  paint, so nothing shows through it before (the cover renders under it),
+  and goes quickly when the film is ready at once (a visit from the cache);
+  with reduced motion, or without script, there is none.
 - The cover paints under it over a 48×27 placeholder of the chase's first frame.
   The chase loads once the app has started; the next film once the visitor
   starts scrolling; after that the current film first and its neighbours once

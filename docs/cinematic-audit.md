@@ -375,5 +375,9 @@ screen behind each capability's first.
 - The first paint is a loader instead of a plain green screen: a morpho
   over the jungle's greens and a gold ring that fills with the first film's
   real download, leaving once that film plays (5.5 s at the most, or at a
-  tap or a scroll), the morpho flying up as the jungle opens. A visit from
-  the cache never sees it.
+  tap or a scroll), the morpho flying up as the jungle opens. It is there
+  from the first paint (nothing shows through it before) and goes quickly
+  for a visit from the cache.
+- The cover's blurred placeholder was a tiny picture of the macaw's eye,
+  which a hard reload showed first; it is now the path, the chase's first
+  frame.

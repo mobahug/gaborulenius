@@ -201,9 +201,9 @@
 
       /* The loader: the first thing on screen, while the first film comes.
          A morpho over the jungle's greens, a gold ring filling as the film
-         arrives; it leaves once the film plays (at most a few seconds). It
-         only fades in after a moment, so a visit from the cache never sees
-         it. */
+         arrives; it leaves once the film plays (at most a few seconds), and
+         quickly when that is at once (a visit from the cache). It is there
+         from the first paint, so nothing shows through it before. */
       #jungle-loader {
         position: fixed;
         inset: 0;
@@ -223,10 +223,8 @@
             #142b19 42%,
             #0a160d 100%
           );
-        opacity: 0;
-        animation:
-          jl-in 0.6s ease 0.45s forwards,
-          jl-out 0.9s ease 9s forwards;
+        /* Should its script never run, it still goes. */
+        animation: jl-out 0.9s ease 9s forwards;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
       }
@@ -234,9 +232,13 @@
       /* (A name of its own: the same one would carry on the animation begun
          at load, long finished by now.) */
       #jungle-loader.is-leaving {
-        opacity: 1;
         animation: jl-leave 0.9s ease 0.35s forwards;
         pointer-events: none;
+      }
+
+      #jungle-loader.is-leaving.is-quick {
+        animation-duration: 0.45s;
+        animation-delay: 0.1s;
       }
 
       .jl-scene {
@@ -260,7 +262,8 @@
         width: 100%;
         height: 100%;
         rotate: -90deg;
-        transition: opacity 0.4s ease;
+        /* Gone before the jungle shows through, never over the cover. */
+        transition: opacity 0.15s ease;
       }
 
       .jl-ring circle {
@@ -359,12 +362,6 @@
       #jungle-loader.is-leaving .jl-ring,
       #jungle-loader.is-leaving .jl-name {
         opacity: 0;
-      }
-
-      @keyframes jl-in {
-        to {
-          opacity: 1;
-        }
       }
 
       @keyframes jl-out {
@@ -560,21 +557,22 @@
           loader.remove();
           return;
         }
-        // Not yet faded in: a visit from the cache never sees it.
-        var visibleFrom = performance.now() + 450;
+        // Ready at once (a visit from the cache): it goes quickly.
+        var quickUntil = performance.now() + 900;
         var gone = false;
         var film = null;
         var leave = function () {
           if (gone) return;
           gone = true;
-          if (performance.now() < visibleFrom) {
-            loader.remove();
-            return;
-          }
+          var quick = performance.now() < quickUntil;
           loader.classList.add("is-leaving");
-          window.setTimeout(function () {
-            loader.remove();
-          }, 1300);
+          if (quick) loader.classList.add("is-quick");
+          window.setTimeout(
+            function () {
+              loader.remove();
+            },
+            quick ? 700 : 1300,
+          );
         };
         window.addEventListener("filmprogress", function (event) {
           var detail = event.detail || {};
