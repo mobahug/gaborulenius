@@ -355,8 +355,12 @@ smoothly. So there, while the scroll moves forward, the film plays: at the
 scroll's own speed (film seconds a second, measured from the targets) plus
 whatever closes the gap over a quarter of a second, between 0.12× and 4×.
 Backward, at rest, on jumps and in a film's last frames it seeks as before,
-and at rest it lands on the exact frame (on the phone profile: within a
-frame while scrolling, where seeking trailed by about three).
+and at rest it lands on the exact frame: once the scroll stops, the film
+only closes the gap, slowing into the frame instead of passing it and
+seeking back. Its rate changes only when that matters (by more than 8 %),
+since each change costs a phone's decoder a frame or two. On the phone
+profile it keeps within a frame of the scroll, where seeking trailed by
+about three.
 
 ## Loading
 

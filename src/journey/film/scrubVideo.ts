@@ -25,15 +25,19 @@ const JUMP_SECONDS = 1.2;
 const SEEK_EPSILON = 1 / 60;
 /** A first frame this close to the target is good enough to show. */
 const READY_SECONDS = 0.25;
-/** Playing forward: below this speed (film seconds a second) the scroll
- * counts as resting and the film seeks; above the fastest it seeks too. */
+/** Playing forward: it starts once the scroll moves faster than this (film
+ * seconds a second) and never plays faster than the fastest. */
 const PLAY_MIN_RATE = 0.12;
 const PLAY_MAX_RATE = 4;
+/** Arriving, it stops playing below this rate and settles by seeking (a
+ * gap of well under a frame by then). */
+const PLAY_STOP_RATE = 0.08;
 /** It catches up on a gap over this much time. */
 const CATCH_UP_SECONDS = 0.25;
 /** Time constant of the target's measured speed. */
 const SPEED_SECONDS = 0.12;
-/** Without a new target for this long (ms) the scroll has stopped. */
+/** Once the target has not moved for this long (ms) the scroll has
+ * stopped: the film only closes the gap, slowing into the frame. */
 const REST_MS = 100;
 
 type FrameCallbackVideo = HTMLVideoElement & {
@@ -60,6 +64,8 @@ export class ScrubVideo {
   private speed = 0;
   private lastTarget: number | null = null;
   private lastTargetAt = 0;
+  /** When the target last moved. */
+  private lastMoveAt = 0;
   private readonly onReady: () => void;
   /** How long its latest seeks took (ms), how many frames it has put on
    * screen, and whether it plays or seeks: for the film overlay
@@ -117,6 +123,7 @@ export class ScrubVideo {
         this.speed +=
           (moved / dt - this.speed) * (1 - Math.exp(-dt / SPEED_SECONDS));
       }
+      if (moved !== 0) this.lastMoveAt = now;
     }
     this.lastTarget = time;
     this.lastTargetAt = now;
@@ -200,7 +207,9 @@ export class ScrubVideo {
   /**
    * While the target moves forward steadily, plays toward it: at the
    * target's own speed, plus whatever closes the gap over CATCH_UP_SECONDS.
-   * Returns whether it is playing.
+   * Once the target stops it only closes the gap, slowing into the frame
+   * rather than passing it (and seeking back). Returns whether it is
+   * playing.
    */
   private play(now: number) {
     const { video } = this;
@@ -212,22 +221,29 @@ export class ScrubVideo {
     ) {
       return this.stopPlaying();
     }
-    const speed = now - this.lastTargetAt > REST_MS ? 0 : this.speed;
+    const moving = now - this.lastMoveAt < REST_MS;
+    const speed = moving ? this.speed : 0;
     const time = video.currentTime;
     const gap = this.target - time;
-    const forward =
-      speed > PLAY_MIN_RATE &&
-      speed < PLAY_MAX_RATE &&
-      gap > -2 / 60 &&
-      gap < JUMP_SECONDS &&
+    const rate = Math.min(PLAY_MAX_RATE, speed + gap / CATCH_UP_SECONDS);
+    const start =
+      moving && speed > PLAY_MIN_RATE && speed < PLAY_MAX_RATE && gap > -2 / 60;
+    const keep = this.playing && rate > PLAY_STOP_RATE && gap > -1 / 60;
+    if (
+      !(start || keep) ||
+      gap >= JUMP_SECONDS ||
       // Never into its end: an ended video would start again from 0.
-      time < this.clampTime(Infinity) - 1 / 30;
-    if (!forward) return this.stopPlaying();
-    const rate = Math.min(
-      PLAY_MAX_RATE,
-      Math.max(0.0625, speed + gap / CATCH_UP_SECONDS),
-    );
-    if (Math.abs(video.playbackRate - rate) > 0.03) video.playbackRate = rate;
+      time >= this.clampTime(Infinity) - 1 / 30
+    ) {
+      return this.stopPlaying();
+    }
+    // The rate changes only when it matters: every change costs the
+    // decoder a frame or two.
+    const next = Math.max(0.0625, rate);
+    const current = video.playbackRate;
+    if (Math.abs(next - current) > Math.max(0.03, current * 0.08)) {
+      video.playbackRate = next;
+    }
     if (video.paused) {
       video.play().catch((error: DOMException) => {
         // Not allowed to play here at all: it only seeks.
@@ -236,7 +252,7 @@ export class ScrubVideo {
     }
     this.playing = true;
     this.shown = time;
-    this.stats.mode = `play ×${rate.toFixed(2)}`;
+    this.stats.mode = `play ×${video.playbackRate.toFixed(2)}`;
     return true;
   }
 
