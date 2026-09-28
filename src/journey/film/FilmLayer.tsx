@@ -6,7 +6,8 @@ import { isModestConnection, wantsLightVideo } from "../../utils/connection";
 import { smoothstep } from "../math";
 import { requestSceneFrame } from "../scrollTimeline";
 import { registerFilmVideo } from "./filmElements";
-import { FILMS } from "./films";
+import { createFilmDebug } from "./filmDebug";
+import { FILMS, PORTRAIT_ASPECT } from "./films";
 import { ScrubVideo } from "./scrubVideo";
 
 /** Scrolling faster than this (viewport heights per frame) is a jump, such
@@ -95,15 +96,25 @@ const FilmLayer = () => {
     const blends = FILMS.map(() => "");
     const filters = FILMS.map(() => "");
     const unloadFar = !hasFinePointer();
-    // Full HD, phones too: a portrait screen shows only a slice of each
-    // frame, much enlarged. On a connection known to be modest the lighter
-    // encode comes first, which arrives fast, and full HD takes over once it
-    // has arrived in the background (see `upgrade`). Saved data, slow
-    // connections and very small memories stay with the lighter encodes.
+    // A phone held upright gets the portrait encodes: the window of the
+    // frame it shows, as sharp as full HD and a third of the pixels to
+    // decode, so it scrubs smoothly (see films.ts). Other screens get full
+    // HD — on a connection known to be modest the lighter encode first,
+    // which arrives fast, full HD taking over once it has arrived in the
+    // background (see `upgrade`). Saved data, slow connections and very
+    // small memories stay with the lighter encodes.
     const light = wantsLightVideo();
-    const firstRendition = light || isModestConnection() ? "sd" : "hd";
-    const upgradeTo = !light && firstRendition === "sd" ? "hd" : null;
-    const renditions: Array<"sd" | "hd"> = FILMS.map(() => firstRendition);
+    const wideRendition = light || isModestConnection() ? "sd" : "hd";
+    const upgradeTo = !light && wideRendition === "sd" ? "hd" : null;
+    type Rendition = "sd" | "hd" | "portrait";
+    const renditions: Rendition[] = FILMS.map(() => wideRendition);
+    // Whether the screen is that narrow (known from the first frame on).
+    let portrait: boolean | null = null;
+    // `?debug=film`: how the film on screen is doing, on the device itself.
+    const debug =
+      new URLSearchParams(window.location.search).get("debug") === "film"
+        ? createFilmDebug()
+        : null;
     const upgrades: Array<{
       abort: AbortController;
       url: string | null;
@@ -205,6 +216,7 @@ const FilmLayer = () => {
       const video = layers[index]?.video;
       if (!video || loadedAt[index] !== null) return;
       loadedAt[index] = performance.now();
+      renditions[index] = portrait ? "portrait" : wideRendition;
       const source = FILMS[index].src[renditions[index]];
       const controller = new AbortController();
       downloads[index].abort = controller;
@@ -264,7 +276,7 @@ const FilmLayer = () => {
       empty(video);
       release(index);
       cancelUpgrade(index);
-      renditions[index] = firstRendition;
+      renditions[index] = wideRendition;
     };
 
     /**
@@ -336,6 +348,24 @@ const FilmLayer = () => {
 
     const unsubscribe = onDirectorFrame((frame) => {
       const { viewport, timeline, reduced, now } = frame;
+      // Turned between upright and wide: a film loaded for the other shape
+      // loads again for this one.
+      const upright =
+        viewport.vw / Math.max(1, viewport.vh) <= PORTRAIT_ASPECT + 0.001;
+      if (upright !== portrait) {
+        const turned = portrait !== null;
+        portrait = upright;
+        if (turned) {
+          renditions.forEach((rendition, index) => {
+            if (
+              loadedAt[index] !== null &&
+              (rendition === "portrait") !== upright
+            ) {
+              unload(index);
+            }
+          });
+        }
+      }
       const { current, films } = timeline;
       const aspect = viewport.vw / Math.max(1, viewport.vh);
 
@@ -396,7 +426,7 @@ const FilmLayer = () => {
         if (
           settled &&
           !upgradeFailed[focus] &&
-          renditions[focus] !== upgradeTo &&
+          renditions[focus] === "sd" &&
           loadedAt[focus] !== null &&
           isReady(focus)
         ) {
@@ -602,10 +632,24 @@ const FilmLayer = () => {
       ) {
         root.dataset.filmReady = "true";
       }
+      if (debug) {
+        const index = Math.max(0, current);
+        const layer = layers[index];
+        const controller = controllers[index];
+        if (layer && controller) {
+          debug.frame(now, {
+            film: FILMS[index].id,
+            rendition: renditions[index],
+            video: layer.video,
+            stats: controller.stats,
+          });
+        }
+      }
     }, 0);
 
     return () => {
       unsubscribe();
+      debug?.dispose();
       window.clearTimeout(settleTimer);
       window.clearTimeout(releaseTimer);
       window.clearTimeout(navigationTimer);

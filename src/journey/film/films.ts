@@ -5,13 +5,20 @@ import { assetUrl } from "../../utils/assets";
  * to the one before it. See `docs/cinematic-audit.md` for what the footage
  * contains and why each seam is handled the way it is.
  *
- * `public/film/hd/` and `public/film/sd/` hold scrub encodes of the
- * delivered full-HD videos: 1880×1080 for large screens and 1128×648 for
- * phones and light connections (the chase, delivered at 1920×1080, is cut to
- * the same 47:27 frame), a keyframe every 8 frames, no frame reordering (no
- * B-frames), metadata first, BT.709 tags — made with AVFoundation
- * (`AVAssetWriter`). Each film also has a still frame (WebP) at its `still`
- * time.
+ * `public/film/` holds scrub encodes of the delivered full-HD videos (the
+ * chase, delivered at 1920×1080, is cut to the same 47:27 frame), no frame
+ * reordering (no B-frames), metadata first, BT.709 tags — made with
+ * AVFoundation (`tools/film/encode-films.mjs`):
+ *
+ * - `hd/`: the frame, 1880×1080, a keyframe every 4 frames, for wide screens;
+ * - `sd/`: 1128×648, a keyframe every 8, for light connections;
+ * - `portrait/`: for phones held upright, a 640×1080 window of the frame
+ *   that follows the film's `focus` (a keyframe every 8): exactly what a
+ *   screen that narrow shows of the full frame, at the same object-position,
+ *   from a third of its pixels — so it is as sharp as full HD there, and
+ *   seeks about three times faster.
+ *
+ * Each film also has a still frame (WebP) at its `still` time.
  */
 
 export type FilmId = "chase" | "neural" | "explorer" | "work" | "ending";
@@ -67,8 +74,9 @@ export type Seam = {
 
 export type Film = {
   id: FilmId;
-  /** The film at full HD, and lighter for phones and slow connections. */
-  src: { hd: string; sd: string };
+  /** The film at full HD, lighter for slow connections, and the window of
+   * it that phones held upright show. */
+  src: { hd: string; sd: string; portrait: string };
   /** Duration of the file in seconds. */
   duration: number;
   /** How this film joins the one before it. */
@@ -77,7 +85,9 @@ export type Film = {
   from?: number;
   /**
    * Horizontal focus (object-position, %) over film time on portrait
-   * screens, where a 16:9 frame is cropped to its middle quarter.
+   * screens, where a 16:9 frame is cropped to its middle quarter. The
+   * portrait encodes follow it (tools/film/encode-films.mjs reads it from
+   * here): re-encode them when it changes.
    */
   focus: ReadonlyArray<readonly [time: number, x: number]>;
   /** Time of the still frame (s), shown instead of the film when motion
@@ -103,7 +113,12 @@ export const FRAME_ASPECT = 1880 / 1080;
 const sources = (id: FilmId) => ({
   hd: assetUrl(`film/hd/${id}.mp4`),
   sd: assetUrl(`film/sd/${id}.mp4`),
+  portrait: assetUrl(`film/portrait/${id}.mp4`),
 });
+
+/** The portrait encodes' shape (640 × 1080): a screen no wider than this
+ * sees in them exactly what it sees of the full frame. */
+export const PORTRAIT_ASPECT = 640 / 1080;
 
 export const FILMS: readonly Film[] = [
   {

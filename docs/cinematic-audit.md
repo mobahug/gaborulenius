@@ -381,3 +381,20 @@ screen behind each capability's first.
 - The cover's blurred placeholder was a tiny picture of the macaw's eye,
   which a hard reload showed first; it is now the path, the chase's first
   frame.
+
+## 17. Smoother films on phones (September 2026)
+
+- A scrubbed film is as smooth as its seeks are fast. Phones held upright
+  had been decoding the whole full-HD frame to show a third of it; on a
+  phone-like decoder that meant about 23 new frames a second while
+  scrolling, with 50–70 ms seeks now and then.
+- They now get portrait encodes (`public/film/portrait/`): the 640×1080
+  window of the frame they show, following each film's focus, as sharp as
+  full HD, a third of the size (about 12 MB for all five), seeking in
+  8–9 ms. On the phone profile: 33 film frames a second while scrolling,
+  over 4G too (9 before, while the full-HD chase was still arriving), and
+  no frame over 34 ms (815 ms before).
+- The full-HD films have a keyframe every 4 frames instead of 8 (15 %
+  larger, seeks about a quarter faster).
+- `?debug=film` shows how the film on screen is doing, on the device.
+- The encodes are made by `tools/film/encode-films.mjs` from the masters.

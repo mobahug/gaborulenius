@@ -302,18 +302,40 @@ and is idle and hidden everywhere else.
 The delivered full-HD files (the chase: 1920×1080 HEVC, 24 fps, 193 frames,
 with an audio track; the ending: 1922×1080; the others: 1880×1080; H.264,
 30 fps, 239–240 frames;
-B-frames and few keyframes throughout) cannot be scrubbed. `public/film/hd/`
-and `public/film/sd/` hold scrub encodes made with AVFoundation/VideoToolbox
-(FFmpeg is not installed here): 1880×1080 (the chase and the ending cut by
-20–21 px a side to
-the same 47:27 frame) and 1128×648, a keyframe every 8 frames, no frame
-reordering, fast-start, BT.709 tags, no audio. Full HD is 5–7.5 Mb/s (about
-31 MB for all five), the light set 2–3 Mb/s (about 12.5 MB). Large screens
-get full HD; low-tier devices and saved or slow connections get the light
-set. A seek plus a drawable frame costs about three times as much at full HD
-as at 864×496 (software decoding in headless Chrome: 21 ms against 7 ms at
-the median; hardware decoders are far faster). Each film also has a still
-(WebP, 1128×648) for reduced motion and loading.
+B-frames and few keyframes throughout) cannot be scrubbed. `public/film/`
+holds scrub encodes made with AVFoundation/VideoToolbox (FFmpeg is not
+installed here; `tools/film/encode-films.mjs` makes them from the masters,
+which are not kept in the repository): no frame reordering, fast-start,
+BT.709 tags, no audio, the chase and the ending cut by 20–21 px a side to
+the same 47:27 frame, the chase graded richer.
+
+- `hd/`: 1880×1080, a keyframe every 4 frames, 5.7–8.5 Mb/s (about 36 MB
+  for all five), for wide screens;
+- `sd/`: 1128×648, a keyframe every 8, 2–3 Mb/s (about 12.5 MB), for saved
+  or slow connections and low-tier devices;
+- `portrait/`: for phones held upright (screens no wider than 640:1080), a
+  640×1080 window of the full-HD frame that follows the film's `focus`, a
+  keyframe every 8, 2–2.9 Mb/s (about 12 MB). With `object-fit: cover` and
+  the same `object-position` it shows such a screen exactly what the full
+  frame shows it — as sharp as full HD — from a third of the pixels.
+
+A scrubbed film is as smooth as its seeks are fast: the video is paused and
+sought to the scroll's time, one seek at a time. A seek decodes from the
+keyframe before it, so it costs the frame's size times the frames since that
+keyframe. Measured on a phone-like decoder (headless Chrome, software
+decoding, CPU slowed 4×), the Explorer's seeks took 29 ms at the median and
+48–73 ms for the slow tenth at full HD with a keyframe every 8 (about 23 new
+frames a second while scrolling), 22 ms with one every 4 (about 30), and
+8–9 ms in the portrait window (55–60). Every frame a keyframe did not help
+at full HD (larger frames, 16.7 MB) and was not needed in the portrait
+window. On a desktop's hardware decoder every rendition seeks within a
+display frame. Each film also has a still (WebP, 1128×648) for reduced
+motion and loading.
+
+`?debug=film` shows, on the device itself, the film on screen, its encode
+and size, its seeks (the median and the slow tenth of the last 60), the
+frames it puts on screen each second while scrolling, the page's frame rate
+and the frames the browser dropped (`filmDebug.ts`).
 
 Each film is downloaded whole and given to its video element as a blob URL,
 so every seek lands on frames already in memory; streamed with range
@@ -374,15 +396,22 @@ to its leaf, measured in every frame — and the portal maps frame coordinates
 through the same crop.
 
 A portrait screen shows only a slice of each frame, much enlarged, so
-phones need the full-HD films as much as wide screens do — but those take
-long to arrive over a mobile connection (the chase alone is 5.9 MB). So a
-phone first loads a film's light encode, which arrives fast, and once it
-and its neighbours can show their frames, downloads the full-HD one of the
-film being watched into a second video element in the background, drives it
-with the film, and when it shows the same frame fades it in over the light
-one, which is let go (`upgrade` in `FilmLayer.tsx`). One at a time; a
-download for a film the visitor has left gives way. Saved data, 2G/3G and
-very small memories stay with the light encodes.
+phones need full-HD sharpness as much as wide screens do — but decoding the
+whole full-HD frame for a slice of it made scrubbing uneven on a phone's
+slower decoder, and the files took long to arrive over a mobile connection.
+So a phone held upright gets the portrait encodes: the slice it shows, at
+full-HD sharpness, about a third of the size, seeking about three times as
+fast (measured on a phone profile: 33 film frames a second while
+scrolling, even over 4G, where the full-HD chase had managed 9 while it was
+still arriving). Turned on its side it loads the films again in the wide
+renditions. Wide screens on a connection known to be modest first load a
+film's light encode, which arrives fast, and once it and its neighbours can
+show their frames, download the full-HD one of the film being watched into
+a second video element in the background, drive it with the film, and when
+it shows the same frame fade it in over the light one, which is let go
+(`upgrade` in `FilmLayer.tsx`). One at a time; a download for a film the
+visitor has left gives way. Saved data, 2G/3G and very small memories stay
+with the light encodes (on wide screens).
 
 ## Reduced motion
 

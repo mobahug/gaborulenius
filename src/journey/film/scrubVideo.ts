@@ -37,7 +37,11 @@ export class ScrubVideo {
   private frameCallback = 0;
   private smooth = true;
   private hasFrame = false;
+  private seekStarted = 0;
   private readonly onReady: () => void;
+  /** How long its latest seeks took (ms), and how many frames it has put on
+   * screen: for the film overlay (`?debug=film`). */
+  readonly stats = { seeks: [] as number[], presented: 0 };
 
   constructor(video: HTMLVideoElement, onReady: () => void = () => {}) {
     this.video = video;
@@ -46,6 +50,7 @@ export class ScrubVideo {
     video.pause();
     video.addEventListener("loadedmetadata", this.onMetadata);
     video.addEventListener("seeked", this.onFrame);
+    video.addEventListener("seeked", this.onSeeked);
     video.addEventListener("loadeddata", this.onFrame);
     video.addEventListener("emptied", this.onEmptied);
     this.watchFrames();
@@ -89,6 +94,7 @@ export class ScrubVideo {
     }
     this.video.removeEventListener("loadedmetadata", this.onMetadata);
     this.video.removeEventListener("seeked", this.onFrame);
+    this.video.removeEventListener("seeked", this.onSeeked);
     this.video.removeEventListener("loadeddata", this.onFrame);
     this.video.removeEventListener("emptied", this.onEmptied);
   }
@@ -98,6 +104,7 @@ export class ScrubVideo {
     if (!video.requestVideoFrameCallback) return;
     const onPresented = (_now: number, metadata: { mediaTime: number }) => {
       this.presented = metadata.mediaTime;
+      this.stats.presented += 1;
       this.frameCallback = video.requestVideoFrameCallback!(onPresented);
     };
     this.frameCallback = video.requestVideoFrameCallback(onPresented);
@@ -140,6 +147,13 @@ export class ScrubVideo {
     }
   };
 
+  private onSeeked = () => {
+    if (!this.seekStarted) return;
+    this.stats.seeks.push(performance.now() - this.seekStarted);
+    if (this.stats.seeks.length > 60) this.stats.seeks.shift();
+    this.seekStarted = 0;
+  };
+
   private onEmptied = () => {
     this.hasFrame = false;
     this.presented = null;
@@ -161,6 +175,7 @@ export class ScrubVideo {
     if (video.readyState >= 1 && !video.seeking) {
       const time = this.clampTime(this.shown);
       if (Math.abs(video.currentTime - time) > SEEK_EPSILON) {
+        this.seekStarted = performance.now();
         video.currentTime = time;
       }
     }
