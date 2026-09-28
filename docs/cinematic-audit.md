@@ -398,3 +398,9 @@ screen behind each capability's first.
   larger, seeks about a quarter faster).
 - `?debug=film` shows how the film on screen is doing, on the device.
 - The encodes are made by `tools/film/encode-films.mjs` from the masters.
+- On a real Android phone the panel showed why phones stayed uneven: a seek
+  takes 40–80 ms there even in the portrait window (13–20 new frames a
+  second), while the page ran at 64–94 fps with no frames dropped. So on
+  phones the film now plays while the scroll moves forward — at the
+  scroll's speed, catching up on any gap — and seeks only backward, at rest
+  and on jumps.

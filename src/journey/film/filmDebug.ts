@@ -1,12 +1,13 @@
 /**
  * `?debug=film`: a small panel in a corner of the screen telling how the
  * film on screen is doing, measured on the device itself — which encode it
- * plays and at what size, how long its seeks take (the median and the slow
- * tenth of the last 60), how many of its frames reach the screen each second
- * while scrolling, the page's own frame rate, and the frames the browser
- * dropped. For checking a phone without a computer beside it.
+ * plays and at what size, whether it plays (and how fast) or seeks, how long
+ * its seeks take (the median and the slow tenth of the last 60), how many
+ * of its frames reach the screen each second while scrolling, the page's
+ * own frame rate, and the frames the browser dropped. For checking a phone
+ * without a computer beside it.
  */
-type FilmStats = { seeks: number[]; presented: number };
+type FilmStats = { seeks: number[]; presented: number; mode: string };
 
 export const createFilmDebug = () => {
   const panel = document.createElement("pre");
@@ -59,6 +60,7 @@ export const createFilmDebug = () => {
       const quality = info.video.getVideoPlaybackQuality?.();
       panel.textContent = [
         `${info.film} · ${info.rendition} ${info.video.videoWidth}×${info.video.videoHeight}`,
+        info.stats.mode,
         `seek ${at(0.5)} ms · slow ${at(0.9)} ms (${seeks.length})`,
         `film ${(shown / seconds).toFixed(0)}/s · page ${(pageFrames / seconds).toFixed(0)} fps`,
         quality

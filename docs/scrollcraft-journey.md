@@ -348,7 +348,15 @@ elsewhere in the film.
 `ScrubVideo` eases the shown time toward the target (35 ms), never has more
 than one seek in flight, jumps over gaps above 1.2 s, and reports the
 presented frame's time from `requestVideoFrameCallback` (the `seeked` time
-where that is missing).
+where that is missing). On phones a seek is slow however small the frame —
+40–80 ms on an Android phone, measured with `?debug=film`, so seeking alone
+put only 13–20 new frames a second on screen — while their decoders play
+smoothly. So there, while the scroll moves forward, the film plays: at the
+scroll's own speed (film seconds a second, measured from the targets) plus
+whatever closes the gap over a quarter of a second, between 0.12× and 4×.
+Backward, at rest, on jumps and in a film's last frames it seeks as before,
+and at rest it lands on the exact frame (on the phone profile: within a
+frame while scrolling, where seeking trailed by about three).
 
 ## Loading
 

@@ -75,8 +75,13 @@ const FilmLayer = () => {
     );
     // A film that becomes ready re-evaluates the frame even when the page
     // is not scrolling.
+    // On phones a film plays while the scroll goes forward (see ScrubVideo):
+    // their decoders play smoothly but seek slowly.
+    const playForward = !hasFinePointer();
     const controllers = layers.map((layer) =>
-      layer ? new ScrubVideo(layer.video, requestSceneFrame) : null,
+      layer
+        ? new ScrubVideo(layer.video, requestSceneFrame, { playForward })
+        : null,
     );
     const spareControllers = layers.map((layer) =>
       layer ? new ScrubVideo(layer.spare, requestSceneFrame) : null,

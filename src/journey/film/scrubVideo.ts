@@ -1,10 +1,16 @@
 /**
- * Drives one paused <video> to a target time. The shown time eases toward
- * the target (a few tens of milliseconds), so scrolling reads as motion
- * rather than a series of jumps; seeks are coalesced (never more than one in
+ * Drives one <video> to a target time. The shown time eases toward the
+ * target (a few tens of milliseconds), so scrolling reads as motion rather
+ * than a series of jumps; seeks are coalesced (never more than one in
  * flight), so fast scrolling cannot build up a backlog; and large jumps
  * (navigation, flicks) land immediately instead of sweeping through every
- * frame in between. The video is never played.
+ * frame in between.
+ *
+ * With `playForward` (phones), while the target moves forward steadily the
+ * video plays instead, at the speed the scroll asks for and catching up on
+ * any gap: a phone's decoder plays smoothly but takes 40–80 ms a seek
+ * (measured on an Android phone), so seeking alone showed only 13–20 new
+ * frames a second. Backward, at rest and on jumps it seeks as before.
  *
  * `presentedTime` is the time of the frame actually on screen (from
  * `requestVideoFrameCallback` where available), for layers that must line
@@ -19,6 +25,16 @@ const JUMP_SECONDS = 1.2;
 const SEEK_EPSILON = 1 / 60;
 /** A first frame this close to the target is good enough to show. */
 const READY_SECONDS = 0.25;
+/** Playing forward: below this speed (film seconds a second) the scroll
+ * counts as resting and the film seeks; above the fastest it seeks too. */
+const PLAY_MIN_RATE = 0.12;
+const PLAY_MAX_RATE = 4;
+/** It catches up on a gap over this much time. */
+const CATCH_UP_SECONDS = 0.25;
+/** Time constant of the target's measured speed. */
+const SPEED_SECONDS = 0.12;
+/** Without a new target for this long (ms) the scroll has stopped. */
+const REST_MS = 100;
 
 type FrameCallbackVideo = HTMLVideoElement & {
   requestVideoFrameCallback?: (
@@ -38,14 +54,26 @@ export class ScrubVideo {
   private smooth = true;
   private hasFrame = false;
   private seekStarted = 0;
+  private playForward: boolean;
+  private playing = false;
+  /** How fast the target moves (film seconds a second), and its last. */
+  private speed = 0;
+  private lastTarget: number | null = null;
+  private lastTargetAt = 0;
   private readonly onReady: () => void;
-  /** How long its latest seeks took (ms), and how many frames it has put on
-   * screen: for the film overlay (`?debug=film`). */
-  readonly stats = { seeks: [] as number[], presented: 0 };
+  /** How long its latest seeks took (ms), how many frames it has put on
+   * screen, and whether it plays or seeks: for the film overlay
+   * (`?debug=film`). */
+  readonly stats = { seeks: [] as number[], presented: 0, mode: "seek" };
 
-  constructor(video: HTMLVideoElement, onReady: () => void = () => {}) {
+  constructor(
+    video: HTMLVideoElement,
+    onReady: () => void = () => {},
+    { playForward = false }: { playForward?: boolean } = {},
+  ) {
     this.video = video;
     this.onReady = onReady;
+    this.playForward = playForward;
     video.muted = true;
     video.pause();
     video.addEventListener("loadedmetadata", this.onMetadata);
@@ -78,6 +106,20 @@ export class ScrubVideo {
 
   /** Latest time the scroll position asks for. */
   setTarget(time: number, smooth = true) {
+    const now = performance.now();
+    if (this.lastTarget !== null) {
+      const dt = (now - this.lastTargetAt) / 1000;
+      const moved = time - this.lastTarget;
+      if (Math.abs(moved) > JUMP_SECONDS) {
+        // A jump, not a scroll.
+        this.speed = 0;
+      } else if (dt > 0) {
+        this.speed +=
+          (moved / dt - this.speed) * (1 - Math.exp(-dt / SPEED_SECONDS));
+      }
+    }
+    this.lastTarget = time;
+    this.lastTargetAt = now;
     this.target = time;
     this.smooth = smooth;
     if (!this.frame) {
@@ -87,6 +129,7 @@ export class ScrubVideo {
   }
 
   dispose() {
+    this.stopPlaying();
     cancelAnimationFrame(this.frame);
     this.frame = 0;
     if (this.frameCallback) {
@@ -154,15 +197,74 @@ export class ScrubVideo {
     this.seekStarted = 0;
   };
 
+  /**
+   * While the target moves forward steadily, plays toward it: at the
+   * target's own speed, plus whatever closes the gap over CATCH_UP_SECONDS.
+   * Returns whether it is playing.
+   */
+  private play(now: number) {
+    const { video } = this;
+    if (
+      !this.playForward ||
+      !this.hasFrame ||
+      video.readyState < 3 ||
+      video.seeking
+    ) {
+      return this.stopPlaying();
+    }
+    const speed = now - this.lastTargetAt > REST_MS ? 0 : this.speed;
+    const time = video.currentTime;
+    const gap = this.target - time;
+    const forward =
+      speed > PLAY_MIN_RATE &&
+      speed < PLAY_MAX_RATE &&
+      gap > -2 / 60 &&
+      gap < JUMP_SECONDS &&
+      // Never into its end: an ended video would start again from 0.
+      time < this.clampTime(Infinity) - 1 / 30;
+    if (!forward) return this.stopPlaying();
+    const rate = Math.min(
+      PLAY_MAX_RATE,
+      Math.max(0.0625, speed + gap / CATCH_UP_SECONDS),
+    );
+    if (Math.abs(video.playbackRate - rate) > 0.03) video.playbackRate = rate;
+    if (video.paused) {
+      video.play().catch((error: DOMException) => {
+        // Not allowed to play here at all: it only seeks.
+        if (error?.name === "NotAllowedError") this.playForward = false;
+      });
+    }
+    this.playing = true;
+    this.shown = time;
+    this.stats.mode = `play ×${rate.toFixed(2)}`;
+    return true;
+  }
+
+  /** Back to seeking, from the frame it has come to. */
+  private stopPlaying() {
+    if (this.playing) {
+      this.playing = false;
+      this.video.pause();
+      this.shown = this.video.currentTime;
+    }
+    this.stats.mode = "seek";
+    return false;
+  }
+
   private onEmptied = () => {
     this.hasFrame = false;
     this.presented = null;
+    this.playing = false;
   };
 
   private tick = (now: number) => {
     this.frame = 0;
     const dt = Math.min(0.1, Math.max(0, (now - this.lastTick) / 1000));
     this.lastTick = now;
+    if (this.play(now)) {
+      this.frame = requestAnimationFrame(this.tick);
+      return;
+    }
     const gap = this.target - this.shown;
     if (!this.smooth || Math.abs(gap) > JUMP_SECONDS) {
       this.shown = this.target;
