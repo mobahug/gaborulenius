@@ -272,16 +272,9 @@
   stroke: #fff4ec;
 }
 
-.instrument-tick {
-  stroke: rgba(233, 220, 179, 0.4);
-  stroke-width: 1;
-}
-
 .instrument-label,
-.instrument-value,
 .instrument-name,
-.instrument-caption,
-.instrument-note {
+.instrument-caption {
   font-family: "Inter", sans-serif;
   text-anchor: middle;
   dominant-baseline: middle;
@@ -291,13 +284,6 @@
   font-size: 8.5px;
   font-weight: 600;
   fill: rgba(246, 241, 228, 0.55);
-}
-
-.instrument-value {
-  font-size: 25px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  fill: #f6f1e4;
 }
 
 /* The part of the film you are in, in the middle of the office's dial. */
@@ -342,11 +328,6 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   fill: #d9c89a;
-}
-
-.instrument-note {
-  font-size: 7.5px;
-  fill: rgba(246, 241, 228, 0.62);
 }
 
 /* The walker: a red dot, pulsing. */

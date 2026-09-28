@@ -55,6 +55,7 @@ const LinkThumbnail: React.FC<LinkThumbnailProps> = ({
           component="img"
           height={height}
           image={image}
+          loading="lazy"
           alt={title}
           onError={() => setImageFailed(true)}
         />

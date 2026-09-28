@@ -20,6 +20,9 @@ const CursorLayer = () => {
     const flock = new Flock();
     const wake = () => requestSceneFrame();
     window.addEventListener("pointermove", wake, { passive: true });
+    window.addEventListener("pointerdown", wake, { passive: true });
+    window.addEventListener("pointerup", wake, { passive: true });
+    window.addEventListener("pointercancel", wake, { passive: true });
     const stop = onDirectorFrame((frame) => {
       if (!flock.update(frame)) {
         surface.idle();
@@ -34,6 +37,9 @@ const CursorLayer = () => {
       stop();
       flock.dispose();
       window.removeEventListener("pointermove", wake);
+      window.removeEventListener("pointerdown", wake);
+      window.removeEventListener("pointerup", wake);
+      window.removeEventListener("pointercancel", wake);
     };
   }, []);
 

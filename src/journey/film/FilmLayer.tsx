@@ -105,9 +105,9 @@ const FilmLayer = () => {
     // frame it shows, as sharp as full HD and a third of the pixels to
     // decode, so it scrubs smoothly (see films.ts). Other screens get full
     // HD — on a connection known to be modest the lighter encode first,
-    // which arrives fast, full HD taking over once it has arrived in the
-    // background (see `upgrade`). Saved data, slow connections and very
-    // small memories stay with the lighter encodes.
+    // which arrives fast, full HD taking over after the visitor scrolls
+    // and the background download finishes (see `upgrade`). Saved data,
+    // slow connections and very small memories stay with the lighter encodes.
     const light = wantsLightVideo();
     const wideRendition = light || isModestConnection() ? "sd" : "hd";
     const upgradeTo = !light && wideRendition === "sd" ? "hd" : null;
@@ -418,10 +418,9 @@ const FilmLayer = () => {
         }
       });
 
-      // The film being watched moves to full HD once it and its neighbours
-      // have what they need; the spare follows the film until it can take
-      // over on the same frame.
-      if (upgradeTo && !reduced && !inTransit) {
+      // Let the first picture finish without competing with a full-HD copy.
+      // Once the visitor scrolls, the usual upgrade can run.
+      if (upgradeTo && !reduced && !inTransit && viewport.y > 0) {
         const settled = films.every(
           (_, index) =>
             Math.abs(index - focus) > 1 ||

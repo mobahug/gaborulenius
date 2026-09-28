@@ -96,7 +96,7 @@ const AboutChapter = ({ at, storyAt, ref }: AboutChapterProps) => {
                 aria-hidden="true"
                 style={
                   {
-                    "--portrait": `url("${assetUrl("profile2-small.webp")}")`,
+                    "--portrait": `url("${assetUrl("profile-story.webp")}")`,
                   } as CSSProperties
                 }
               />

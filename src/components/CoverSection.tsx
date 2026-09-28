@@ -14,8 +14,8 @@ import {
 // Plain-DOM cover. It stays outside MUI/react-intl so the LCP avatar and the
 // heading paint before the rest of the app has loaded.
 const GREETINGS: Record<string, string> = {
-  en: "Hi, I'm Gábor",
-  fi: "Hei, olen Gábor",
+  en: "Hi, I'm",
+  fi: "Hei, olen",
 };
 const SKIP_LABELS: Record<string, string> = {
   en: "Skip to content",
@@ -71,7 +71,7 @@ const LEAVES: LeafLayer[] = [
   {
     id: "banana-high",
     image: "banana-high",
-    size: [522, 1388],
+    size: [365, 972],
     origin: [0.567, 0.959],
     rotate: 128,
     exit: { x: -0.36, y: -0.5, scale: 1.4 },
@@ -82,7 +82,7 @@ const LEAVES: LeafLayer[] = [
   {
     id: "palm-high",
     image: "palm-high",
-    size: [920, 1120],
+    size: [644, 784],
     origin: [0.324, 0.962],
     rotate: 206,
     exit: { x: 0.34, y: -0.5, scale: 1.4 },
@@ -93,7 +93,7 @@ const LEAVES: LeafLayer[] = [
   {
     id: "alocasia",
     image: "alocasia",
-    size: [934, 1274],
+    size: [654, 892],
     origin: [0.5, 0.617],
     rotate: -52,
     exit: { x: 0.5, y: 0.35, scale: 1.5 },
@@ -104,7 +104,7 @@ const LEAVES: LeafLayer[] = [
   {
     id: "monstera",
     image: "monstera",
-    size: [1181, 1262],
+    size: [827, 883],
     origin: [0.454, 0.739],
     rotate: 16,
     exit: { x: -0.5, y: 0.35, scale: 1.5 },
@@ -115,7 +115,7 @@ const LEAVES: LeafLayer[] = [
   {
     id: "fern-near",
     image: "fern-near",
-    size: [573, 1348],
+    size: [401, 944],
     origin: [0.101, 0.96],
     rotate: 118,
     exit: { x: -0.6, y: 0.5, scale: 1.7 },
@@ -126,7 +126,7 @@ const LEAVES: LeafLayer[] = [
   {
     id: "heart-near",
     image: "heart-near",
-    size: [674, 854],
+    size: [472, 598],
     origin: [0.5, 0.73],
     rotate: -28,
     exit: { x: 0.6, y: 0.6, scale: 1.7 },
@@ -510,58 +510,63 @@ const CoverSection: React.FC = () => {
               className="cover-avatar"
             />
             <h1 id="cover-heading" className="cover-greeting">
-              {greeting}
+              {greeting} <span id="cover-name">Gábor</span>
             </h1>
           </div>
           <div className="cover-depth cover-depth--near" aria-hidden="true">
             {LEAVES.map((leaf) => {
               const [width, height] = leaf.size;
               const narrow = leaf.narrow ?? leaf.wide;
+              const full = assetUrl(`cover/${leaf.image}.webp`);
+              const small = assetUrl(`cover/${leaf.image}-sm.webp`);
+              const srcSet = `${small} ${Math.ceil(width / 2)}w, ${full} ${width}w`;
               return (
-                <img
-                  key={leaf.id}
-                  ref={(element) => {
-                    layerRefs.current[leaf.id] = element;
-                    // Already there (from the cache) before React listened.
-                    if (element?.complete && element.naturalWidth) {
-                      showLeaf(element);
+                <picture key={leaf.id}>
+                  {leaf.wideOnly && leavesOn ? (
+                    <source
+                      media="(min-width: 900px)"
+                      srcSet={srcSet}
+                      sizes={`${leaf.wide.width}vw`}
+                    />
+                  ) : null}
+                  <img
+                    ref={(element) => {
+                      layerRefs.current[leaf.id] = element;
+                      // Already there (from the cache) before React listened.
+                      if (element?.complete && element.naturalWidth) {
+                        showLeaf(element);
+                      }
+                    }}
+                    className={layerClass(leaf)}
+                    src={leavesOn && !leaf.wideOnly ? full : undefined}
+                    srcSet={leavesOn && !leaf.wideOnly ? srcSet : undefined}
+                    sizes={`(max-width: 899.95px) ${narrow.width}vw, ${leaf.wide.width}vw`}
+                    width={width}
+                    height={height}
+                    alt=""
+                    decoding="async"
+                    fetchPriority="low"
+                    draggable={false}
+                    onLoad={(event) => showLeaf(event.currentTarget)}
+                    style={
+                      {
+                        "--x": `${leaf.wide.x}%`,
+                        "--y": `${leaf.wide.y}%`,
+                        "--w": `${leaf.wide.width}vw`,
+                        "--nx": `${narrow.x}%`,
+                        "--ny": `${narrow.y}%`,
+                        "--nw": `${narrow.width}vw`,
+                        "--ox": leaf.origin[0],
+                        "--oy": leaf.origin[1],
+                        "--aspect": height / width,
+                        "--breath-turn": `${leaf.breathe[0]}deg`,
+                        "--breath-grow": leaf.breathe[1],
+                        "--breath-period": `${leaf.breathe[2]}s`,
+                        "--breath-delay": `${leaf.breathe[3]}s`,
+                      } as React.CSSProperties
                     }
-                  }}
-                  className={layerClass(leaf)}
-                  src={
-                    leavesOn ? assetUrl(`cover/${leaf.image}.webp`) : undefined
-                  }
-                  srcSet={
-                    leavesOn
-                      ? `${assetUrl(`cover/${leaf.image}-sm.webp`)} ${Math.ceil(width / 2)}w, ${assetUrl(`cover/${leaf.image}.webp`)} ${width}w`
-                      : undefined
-                  }
-                  sizes={`(max-width: 899.95px) ${narrow.width}vw, ${leaf.wide.width}vw`}
-                  width={width}
-                  height={height}
-                  alt=""
-                  decoding="async"
-                  fetchPriority="low"
-                  draggable={false}
-                  onLoad={(event) => showLeaf(event.currentTarget)}
-                  style={
-                    {
-                      "--x": `${leaf.wide.x}%`,
-                      "--y": `${leaf.wide.y}%`,
-                      "--w": `${leaf.wide.width}vw`,
-                      "--nx": `${narrow.x}%`,
-                      "--ny": `${narrow.y}%`,
-                      "--nw": `${narrow.width}vw`,
-                      "--ox": leaf.origin[0],
-                      "--oy": leaf.origin[1],
-                      "--aspect": height / width,
-                      "--breath-turn": `${leaf.breathe[0]}deg`,
-                      "--breath-grow": leaf.breathe[1],
-                      "--breath-period": `${leaf.breathe[2]}s`,
-                      "--breath-delay": `${leaf.breathe[3]}s`,
-                    } as React.CSSProperties
-                  }
-                />
+                  />
+                </picture>
               );
             })}
           </div>

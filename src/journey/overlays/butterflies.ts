@@ -385,9 +385,31 @@ export class Flock {
   private readonly onMove = (event: PointerEvent) => {
     this.pointer = { x: event.clientX, y: event.clientY };
   };
+  private readonly onDown = (event: PointerEvent) => {
+    this.onMove(event);
+    // A short touch can end before the next frame, so startle it now.
+    this.flyers.forEach((flyer) => {
+      if (
+        flyer.state === "perched" &&
+        Math.hypot(this.pointer.x - flyer.x, this.pointer.y - flyer.y) <
+          flyer.span * 1.2
+      ) {
+        flyer.state = "startled";
+        flyer.since = performance.now();
+      }
+    });
+  };
+  private readonly onEnd = (event: PointerEvent) => {
+    if (event.pointerType !== "mouse") {
+      this.pointer = { x: -1e4, y: -1e4 };
+    }
+  };
 
   constructor() {
     window.addEventListener("pointermove", this.onMove, { passive: true });
+    window.addEventListener("pointerdown", this.onDown, { passive: true });
+    window.addEventListener("pointerup", this.onEnd, { passive: true });
+    window.addEventListener("pointercancel", this.onEnd, { passive: true });
     if (import.meta.env.DEV) {
       (window as unknown as { __flock: Flyer[] }).__flock = this.flyers;
     }
@@ -395,6 +417,9 @@ export class Flock {
 
   dispose() {
     window.removeEventListener("pointermove", this.onMove);
+    window.removeEventListener("pointerdown", this.onDown);
+    window.removeEventListener("pointerup", this.onEnd);
+    window.removeEventListener("pointercancel", this.onEnd);
   }
 
   /** A block has come in: two or three set off for it. */

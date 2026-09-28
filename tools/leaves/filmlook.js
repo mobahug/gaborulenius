@@ -241,17 +241,26 @@ export const filmLook = async (spec, still) => {
     fullContext.putImageData(final, 0, 0);
   }
 
+  // The finished leaves are deliberately soft; deliver them at 70% of the
+  // working resolution to avoid shipping pixels the cover cannot show.
+  const delivered = makeCanvas(
+    Math.round(full.width * 0.7),
+    Math.round(full.height * 0.7),
+  );
+  const deliveredContext = delivered.getContext("2d");
+  deliveredContext.imageSmoothingQuality = "high";
+  deliveredContext.drawImage(full, 0, 0, delivered.width, delivered.height);
   const half = makeCanvas(
-    Math.ceil(full.width / 2),
-    Math.ceil(full.height / 2),
+    Math.ceil(delivered.width / 2),
+    Math.ceil(delivered.height / 2),
   );
   const halfContext = half.getContext("2d");
   halfContext.imageSmoothingQuality = "high";
-  halfContext.drawImage(full, 0, 0, half.width, half.height);
+  halfContext.drawImage(delivered, 0, 0, half.width, half.height);
   return {
-    full,
+    full: delivered,
     half,
-    margin,
+    margin: Math.round(margin * 0.7),
     film,
     leaf,
   };

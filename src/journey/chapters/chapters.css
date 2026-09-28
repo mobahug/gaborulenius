@@ -106,7 +106,7 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #1e2a20 var(--portrait) 51% 42% / 190% no-repeat;
+  background: #1e2a20 var(--portrait) center / cover no-repeat;
   border: 1.5px solid rgba(217, 200, 154, 0.75);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
