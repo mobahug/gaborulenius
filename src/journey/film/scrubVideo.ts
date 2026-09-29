@@ -39,6 +39,12 @@ const SPEED_SECONDS = 0.12;
 /** Once the target has not moved for this long (ms) the scroll has
  * stopped: the film only closes the gap, slowing into the frame. */
 const REST_MS = 100;
+/** For this long (ms) after the scroll last moved one way, the picture
+ * never moves the other way: one still behind it (a phone's lag) waits
+ * where it is until the scroll comes back to it. */
+const AGAINST_MS = 160;
+/** At rest a picture that close to its target on the far side stays. */
+const HOLD_SECONDS = 0.1;
 
 type FrameCallbackVideo = HTMLVideoElement & {
   requestVideoFrameCallback?: (
@@ -64,8 +70,9 @@ export class ScrubVideo {
   private speed = 0;
   private lastTarget: number | null = null;
   private lastTargetAt = 0;
-  /** When the target last moved. */
+  /** When the target last moved, and which way (1 forward, -1 back). */
   private lastMoveAt = 0;
+  private direction = 0;
   private readonly onReady: () => void;
   /** How long its latest seeks took (ms), how many frames it has put on
    * screen, and whether it plays or seeks: for the film overlay
@@ -117,11 +124,15 @@ export class ScrubVideo {
       const dt = (now - this.lastTargetAt) / 1000;
       const moved = time - this.lastTarget;
       if (Math.abs(moved) > JUMP_SECONDS) {
-        // A jump, not a scroll.
+        // A jump, not a scroll: it has no way to hold to.
         this.speed = 0;
-      } else if (dt > 0) {
-        this.speed +=
-          (moved / dt - this.speed) * (1 - Math.exp(-dt / SPEED_SECONDS));
+        this.direction = 0;
+      } else {
+        if (dt > 0) {
+          this.speed +=
+            (moved / dt - this.speed) * (1 - Math.exp(-dt / SPEED_SECONDS));
+        }
+        if (moved !== 0) this.direction = Math.sign(moved);
       }
       if (moved !== 0) this.lastMoveAt = now;
     }
@@ -229,8 +240,12 @@ export class ScrubVideo {
     const start =
       moving && speed > PLAY_MIN_RATE && speed < PLAY_MAX_RATE && gap > -2 / 60;
     const keep = this.playing && rate > PLAY_STOP_RATE && gap > -1 / 60;
+    // The scroll has turned back: never on forward (its measured speed
+    // takes a moment to turn).
+    const turnedBack = this.direction < 0 && now - this.lastMoveAt < AGAINST_MS;
     if (
       !(start || keep) ||
+      turnedBack ||
       gap >= JUMP_SECONDS ||
       // Never into its end: an ended video would start again from 0.
       time >= this.clampTime(Infinity) - 1 / 30
@@ -282,6 +297,20 @@ export class ScrubVideo {
       return;
     }
     const gap = this.target - this.shown;
+    // Never against the scroll: while it goes one way (and at rest, when
+    // only a few frames are left) a picture still on the other side of the
+    // target waits there instead of moving away from the finger.
+    const recent = now - this.lastMoveAt < AGAINST_MS;
+    if (
+      this.smooth &&
+      this.direction !== 0 &&
+      Math.sign(gap) === -this.direction &&
+      Math.abs(gap) < JUMP_SECONDS &&
+      (recent || Math.abs(gap) < HOLD_SECONDS)
+    ) {
+      if (recent) this.frame = requestAnimationFrame(this.tick);
+      return;
+    }
     if (!this.smooth || Math.abs(gap) > JUMP_SECONDS) {
       this.shown = this.target;
     } else {

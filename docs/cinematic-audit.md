@@ -461,3 +461,15 @@ the others'). Two causes, both fixed:
 At 1.5, 4 and 8 viewport heights a second, on 320 × 568 and 412 × 915
 phones and on a desktop: no overlaps (five pairs before, on the small
 phone).
+
+## 21. The film turns with the finger (September 2026)
+
+Scrolling on a phone, stopping and turning back a little, the film went on
+forward for a moment before it turned: its decoder trails the finger, the
+scroll clock eased the position by another 90 ms, and play mode read the
+scroll's speed, which takes a moment to turn. With a phone-like decoder
+(software decoding, CPU slowed 6×), five such turns showed 34 frames moving
+against the scroll, up to 2.3 frames past the turn; now 2, at most 0.3 of
+a frame. The picture never moves against the scroll's way (it waits until
+the scroll comes back to it), play stops as soon as the scroll turns back,
+and on touch screens the scroll clock follows the finger almost directly.

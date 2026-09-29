@@ -380,7 +380,15 @@ Backward, at rest, on jumps and in a film's last frames it seeks as before,
 and at rest it lands on the exact frame: once the scroll stops, the film
 only closes the gap, slowing into the frame instead of passing it and
 seeking back. Its rate changes only when that matters (by more than 8 %),
-since each change costs a phone's decoder a frame or two. On the phone
+since each change costs a phone's decoder a frame or two. The picture never
+moves against the scroll: for 160 ms after the scroll last moved one way
+(and at rest, for less than 0.1 s), a picture still on the other side of
+its target — a phone's decoder trails the finger — waits there until the
+scroll comes back to it, and playing stops the moment the scroll turns
+back (its measured speed takes a moment to turn). On touch screens the
+scroll clock follows the finger almost directly (20 ms; 90 ms is for the
+steps of a wheel or a key), or the film went on after the finger had
+turned. On the phone
 profile it keeps within a frame of the scroll, where seeking trailed by
 about three.
 

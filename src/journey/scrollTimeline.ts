@@ -1,4 +1,4 @@
-import { prefersReducedMotion } from "./device";
+import { hasFinePointer, prefersReducedMotion } from "./device";
 import { clamp } from "./math";
 import { isWheelGliding } from "./smoothWheel";
 
@@ -63,12 +63,16 @@ const afterFrameCallbacks = new Set<FrameCallback>();
 let frameId: number | null = null;
 let listening = false;
 
-/** Time constant of the eased scroll position (s); while a wheel glides
- * the page (smoothWheel.ts), which eases it already, a few milliseconds. */
+/** Time constant of the eased scroll position (s), for steps a wheel or a
+ * key takes; while a wheel glides the page (smoothWheel.ts), and on touch
+ * screens, whose scrolling glides by itself, a few milliseconds — eased any
+ * more it trails the finger, and the film goes on a moment after the finger
+ * has turned back. */
 const SMOOTH_SECONDS = 0.09;
 const GLIDING_SECONDS = 0.02;
 let smoothY: number | null = null;
 let lastFlush = 0;
+let touch: boolean | null = null;
 
 const resolveTarget = (target: SceneTarget) =>
   typeof target === "function" ? target() : target;
@@ -125,7 +129,9 @@ const easeScroll = (y: number, vh: number) => {
   ) {
     smoothY = y;
   } else {
-    const seconds = isWheelGliding() ? GLIDING_SECONDS : SMOOTH_SECONDS;
+    touch ??= !hasFinePointer();
+    const seconds =
+      touch || isWheelGliding() ? GLIDING_SECONDS : SMOOTH_SECONDS;
     smoothY += (y - smoothY) * (1 - Math.exp(-dt / seconds));
     if (Math.abs(y - smoothY) < 0.5) smoothY = y;
   }
