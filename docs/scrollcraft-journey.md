@@ -102,7 +102,11 @@ fades. (Holding it in place from script instead fought a phone's own,
 threaded scrolling: under a touch fling each block jumped back and forth by
 up to 26 px, two or three times; now it moves one way only.) The next
 block waits until the last one is less than 30 % there, so two blocks'
-words never cross. The block's beats carry the motion (their
+words never cross. Within a block its parts come in one after another, top to
+bottom — the greeting word by word, a heading, each line or item, the
+buttons — each starting 14 % of the fade after the one before (the whole
+cascade within half of it), and go bottom to top (`cascade` in
+FilmSection.tsx). The block's beats carry the motion (their
 transform) and their parts and the veil the opacity: opacity on the block
 itself would cut its veil off from the films. Out of sight it takes no
 clicks, so it never catches one meant for the block on screen. A block
@@ -250,6 +254,17 @@ links and the scroll spy.
 | Ending   | "Let's Connect" with email, LinkedIn and GitHub, fading in like every other block; the footer follows.                                                                                                                                                                               |
 
 ## Interface
+
+A mouse wheel or a trackpad glides the page (`smoothWheel.ts`, as Lenis
+does): each wheel event moves a target and every frame the page eases
+toward it (0.12 s), so the films and the blocks move on continuously
+instead of a notch at a time (measured: ten 100 px notches, which moved
+the page in ten jumps, now glide over about 100 frames, never more than
+20 px in one). Touch screens keep their own scrolling, which glides
+already; so do the keyboard, the scroll bar and links (a click, a key or
+a scroll the glide did not make ends it), anything that scrolls by itself
+(the experience list, a story, a dialog, the menu) and the page while a
+dialog holds it still. While it glides, the scroll clock eases no further.
 
 Everything that is not the films speaks the films' language (`colors.ts`,
 `theme.tsx`): cream text (#f6f1e4) and muted cream for secondary text, gold

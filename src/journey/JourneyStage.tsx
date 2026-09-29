@@ -2,6 +2,7 @@ import { useFilmLight } from "./director/filmLight";
 import { useRestorePosition } from "./director/restorePosition";
 import FilmLayer from "./film/FilmLayer";
 import { FilmOverlay } from "./overlays/Overlays";
+import { useSmoothWheel } from "./smoothWheel";
 import "./journey.css";
 
 /**
@@ -14,6 +15,7 @@ import "./journey.css";
 const JourneyStage = () => {
   useFilmLight();
   useRestorePosition();
+  useSmoothWheel();
   return (
     <div className="journey-stage" aria-hidden="true">
       <FilmLayer />

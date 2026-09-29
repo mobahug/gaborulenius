@@ -425,3 +425,18 @@ film and, at once, its full-HD copy.
 - Removed: an unused dependency (framer-motion), the starter template's
   logo, an unused profile picture, two unused helpers and the CSS of the
   old dial's year and the Espoo clock.
+
+## 19. Gliding like the Convex Seascape Survey (September 2026)
+
+The reference (convexseascapesurvey.com/virtual-experience) is a real-time
+three.js scene on one fixed canvas, its scroll virtual: Lenis eases every
+wheel and touch movement, and GSAP reveals its texts line after line with
+the scroll. The films here cannot be rendered like that, but the two
+things that make it feel smooth can be had:
+
+- Wheels and trackpads glide (`smoothWheel.ts`): ten 100 px wheel notches
+  used to move the page in ten jumps; they now glide over about 100 frames,
+  never more than 20 px in one. Touch keeps its own momentum; lists,
+  dialogs, keys, the scroll bar and links are left alone.
+- A block's parts come in one after another, top to bottom (the greeting
+  word by word), and leave in reverse.

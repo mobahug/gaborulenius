@@ -181,10 +181,30 @@ const BEAT_STAGGER = 0.32;
  * this on its way out, so their words never cross. */
 const MAKE_WAY = 0.3;
 
+/**
+ * Within a beat its parts come in one after another, top to bottom — the
+ * heading, then each line or item, then the buttons — and go bottom to top:
+ * each starts this share of the fade after the one before, the whole
+ * cascade taking at most CASCADE_SPREAD of it.
+ */
+const CASCADE = 0.14;
+const CASCADE_SPREAD = 0.5;
+
+/** How far a part has come in (0–1) at its beat's `level`: the `order`th of
+ * `of` parts in the beat. */
+const cascade = (level: number, order: number, of: number) => {
+  if (of < 2) return smoothstep(0, 1, level);
+  const step = Math.min(CASCADE, CASCADE_SPREAD / (of - 1));
+  return smoothstep(0, 1, clamp(level * (1 + step * (of - 1)) - step * order));
+};
+
 type Part = {
   element: HTMLElement;
   /** The beat it belongs to (see BEAT_DELAY). */
   beat: number;
+  /** Its place among its beat's parts, and how many there are. */
+  order: number;
+  of: number;
   /** Its top in the section (px) and its height, for blocks that scroll. */
   top: number;
   height: number;
@@ -237,9 +257,9 @@ const offsetWithin = (element: HTMLElement, ancestor: HTMLElement) => {
  * One stage of the journey: a tall section whose scroll distance drives a
  * film, with its content blocks in document order (readable, focusable and
  * searchable at any pace). Each block holds still on the screen for its
- * stretch of the scroll while the film plays behind it: it fades in as one,
- * settling into place, stays, and passes the camera, and its veil (see
- * film.css) softens the film behind it. A block too tall for the screen
+ * stretch of the scroll while the film plays behind it: it fades in part
+ * after part, top to bottom (see CASCADE), settling into place, stays, and
+ * passes the camera, and its veil (see film.css) softens the film behind it. A block too tall for the screen
  * scrolls with the page instead, fading in and out at the edges. With
  * reduced motion everything simply stays visible, in the page's flow.
  */
@@ -347,10 +367,20 @@ const FilmSection = ({
                 0,
                 beats.findIndex((beat) => beat.contains(part)),
               ),
+              order: 0,
+              of: 1,
               top: offsetWithin(part, section),
               height: part.offsetHeight,
               opacity: -1,
             }));
+        // Their order within their beats, top to bottom (document order).
+        block.parts.forEach((part) => {
+          const inBeat = block.parts.filter(
+            (other) => other.beat === part.beat,
+          );
+          part.order = inBeat.indexOf(part);
+          part.of = inBeat.length;
+        });
         // A link lands in the middle of the hold (anchors scroll to 28vh
         // above themselves, see film.css).
         const anchor = hold?.querySelector<HTMLElement>(
@@ -511,7 +541,8 @@ const FilmSection = ({
       parts.forEach((part) => {
         let shown: number;
         if (held) {
-          shown = beatOpacity[part.beat] ?? 0;
+          const beat = block.beats[part.beat];
+          shown = beat ? cascade(beat.level, part.order, part.of) : 0;
         } else {
           // In over the lower part of the screen, out under the navigation.
           const partTop = frame.top + part.top - y;
