@@ -156,7 +156,8 @@ and now carry the richer greens of the old portfolio; it still ends on
 black, so the pupil's hand-off is unchanged.
 
 The cover's jungle leaves are images (`public/cover/`, WebP with alpha, a
-large and a half-size one each), graded vivid and lime (more red, much less
+large and a half-size one each, delivered at 70 % of the resolution they
+are worked at — they are out of focus, so the pixels would not show), graded vivid and lime (more red, much less
 blue, as the earlier painted leaves were): a banana leaf from the top left, a palm
 frond hanging from the top right, a giant taro (alocasia) at the right
 edge, a monstera and a fern crossing it at the bottom left, and a
@@ -368,13 +369,22 @@ about three.
   script: a morpho beating its wings over the jungle's greens, motes of
   light drifting down, and a thin gold ring that fills as the first film
   arrives (FilmLayer reads the download as it streams and tells the page,
-  `filmprogress`). It leaves once the film at the scroll's place plays
-  (`data-film-ready`) — the morpho flies up into the light and the jungle
-  opens — or after 5.5 s at the most (the cover's still stands in until the
-  film comes), or at a tap, a scroll or a key. It is there from the first
-  paint, so nothing shows through it before (the cover renders under it),
-  and goes quickly when the film is ready at once (a visit from the cache);
-  with reduced motion, or without script, there is none.
+  `filmprogress`). Once the film at the scroll's place plays
+  (`data-film-ready`) the loader's greens give way to the film and the
+  cover, and the same morpho flies onto the greeting and settles on the
+  last letter of "Gábor" (`#cover-name`), opening and closing its wings; a
+  pointer or a tap close by startles it up for a moment, and it flies off
+  with the first scroll. Before the film plays, a tap, a scroll, a key or
+  5.5 s let the visitor straight through (the cover's still stands in until
+  the film comes). It is there from the first paint, so nothing shows
+  through it before (the cover renders under it); with reduced motion, or
+  without script, there is none.
+- The first visit fetches only what its first screen shows: the first film
+  (on a connection known to be modest, its light encode — the full-HD one
+  only once the visitor starts scrolling), the cover's still, the font and
+  the leaves on screen (a phone never fetches the leaves only wide screens
+  show). Pictures further down (the link cards) load as they come near;
+  the other language's texts are fetched only after the first film plays.
 - The cover paints under it over a 48×27 placeholder of the chase's first frame.
   The chase loads once the app has started; the next film once the visitor
   starts scrolling; after that the current film first and its neighbours once

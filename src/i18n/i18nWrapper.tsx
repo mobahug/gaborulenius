@@ -59,23 +59,51 @@ export function I18nWrapper({ children }: React.PropsWithChildren) {
 
     const alternateLocale = locale === "fi" ? "en" : "fi";
     const windowWithIdleCallback = window as BrowserWindowWithIdleCallback;
+    const root = document.documentElement;
     let idleCallbackHandle: number | null = null;
     let timeoutId: number | null = null;
+    let fallbackId: number | null = null;
+    let observer: MutationObserver | null = null;
 
     const prefetchAlternateLocale = () => {
       preloadMessages(alternateLocale);
     };
 
-    if (windowWithIdleCallback.requestIdleCallback) {
-      idleCallbackHandle = windowWithIdleCallback.requestIdleCallback(
-        prefetchAlternateLocale,
-        { timeout: 3000 },
-      );
+    // Not while the first film is arriving: the connection is the film's
+    // until it plays (data-film-ready, set by FilmLayer), or 8 s at most
+    // (a film that never plays: reduced motion, no video).
+    const schedule = () => {
+      if (idleCallbackHandle !== null || timeoutId !== null) return;
+      observer?.disconnect();
+      if (fallbackId !== null) window.clearTimeout(fallbackId);
+      if (windowWithIdleCallback.requestIdleCallback) {
+        idleCallbackHandle = windowWithIdleCallback.requestIdleCallback(
+          prefetchAlternateLocale,
+          { timeout: 3000 },
+        );
+      } else {
+        timeoutId = window.setTimeout(prefetchAlternateLocale, 3000);
+      }
+    };
+
+    if (root.dataset.filmReady === "true") {
+      schedule();
     } else {
-      timeoutId = window.setTimeout(prefetchAlternateLocale, 3000);
+      observer = new MutationObserver(() => {
+        if (root.dataset.filmReady === "true") schedule();
+      });
+      observer.observe(root, {
+        attributes: true,
+        attributeFilter: ["data-film-ready"],
+      });
+      fallbackId = window.setTimeout(schedule, 8000);
     }
 
     return () => {
+      observer?.disconnect();
+      if (fallbackId !== null) {
+        window.clearTimeout(fallbackId);
+      }
       if (
         idleCallbackHandle !== null &&
         windowWithIdleCallback.cancelIdleCallback

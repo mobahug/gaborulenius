@@ -404,3 +404,24 @@ screen behind each capability's first.
   phones the film now plays while the scroll moves forward — at the
   scroll's speed, catching up on any gap — and seeks only backward, at rest
   and on jumps.
+
+## 18. Less on the first load (September 2026)
+
+Measured on the live site before (no cache, no scrolling, 8 s): a phone
+fetched 3.0 MB (2.3 MB of it the first film), a laptop about 7.8 MB, and a
+laptop on a connection known to be modest about 9.9 MB — the light first
+film and, at once, its full-HD copy.
+
+- The full-HD copy waits until the visitor starts scrolling.
+- The cover's leaves are delivered at 70 % of their working resolution
+  (they are out of focus; 704 KB → 392 KB for all twelve images), and
+  a phone no longer fetches the two leaves only wide screens show.
+- The story's portrait is a 7 KB crop (the 860 × 860 photo stays for the
+  profile data search engines read).
+- Link-card pictures load as they come near (two article pictures, 121 KB,
+  came with the first load on wide screens); the Anyhau picture, 3446 ×
+  1832 px for a card 140 px tall, is 1000 px wide (166 KB → 20 KB).
+- The other language's texts are fetched after the first film plays.
+- Removed: an unused dependency (framer-motion), the starter template's
+  logo, an unused profile picture, two unused helpers and the CSS of the
+  old dial's year and the Espoo clock.
