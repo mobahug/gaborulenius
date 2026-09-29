@@ -440,3 +440,24 @@ things that make it feel smooth can be had:
   dialogs, keys, the scroll bar and links are left alone.
 - A block's parts come in one after another, top to bottom (the greeting
   word by word), and leave in reverse.
+
+## 20. Blocks never over one another on a phone (September 2026)
+
+On a small phone (320–375 px wide) two blocks could be seen over one
+another while scrolling: the introduction's buttons under About's heading,
+the highlights under the work projects, and three more pairs (measured by
+scrolling the whole journey and testing every visible part's box against
+the others'). Two causes, both fixed:
+
+- A block about to leave and the next about to come were decided in the
+  same frame from the previous frame's state, so the next one did not wait
+  for the other. Now all decide first; a block waits until the leaving one
+  is under 15 % (its heading, which leaves last in the cascade, all but
+  gone).
+- About, too tall to hold on such a screen, scrolls with the page and
+  passed over the held introduction, which had given its height back. A
+  held block followed by one that scrolls now keeps its height.
+
+At 1.5, 4 and 8 viewport heights a second, on 320 × 568 and 412 × 915
+phones and on a desktop: no overlaps (five pairs before, on the small
+phone).

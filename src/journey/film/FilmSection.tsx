@@ -177,9 +177,11 @@ const HOLD_SCALE_NARROW = 1.3;
  * go.
  */
 const BEAT_STAGGER = 0.32;
-/** A block waits to come in while another one is still more visible than
- * this on its way out, so their words never cross. */
-const MAKE_WAY = 0.3;
+/** A block waits to come in while another one on its way out has come
+ * further in than this (its beat's level): by then even its heading, the
+ * last of its parts to go (see CASCADE), is all but gone, so two blocks'
+ * words never cross. */
+const MAKE_WAY = 0.15;
 
 /**
  * Within a beat its parts come in one after another, top to bottom — the
@@ -329,15 +331,20 @@ const FilmSection = ({
         };
       });
       // Then place them: a held block is sticky at its pin, and its hold
-      // takes only the scroll it is held for (the block's own height is
-      // given back below it, where the next one is still out of sight).
-      blocks.forEach(({ element, hold, holdPx, pin, height }) => {
+      // takes only the scroll it is held for — its own height is given back
+      // below it, where the next block, held too, stays out of sight until
+      // its turn. A next block that scrolls with the page (too tall for the
+      // screen: About on a phone) is seen as it comes, so it follows this
+      // one instead of passing over it, and this one goes up ahead of it.
+      blocks.forEach(({ element, hold, holdPx, pin, height }, index) => {
         if (!hold) return;
         const held = holdPx > 0;
+        const next = blocks.slice(index + 1).find((other) => !other.mark);
+        const giveBack = held && (!next || next.holdPx > 0);
         element.classList.toggle("film-cue--held", held);
         element.style.top = held ? `${pin}px` : "";
         hold.classList.toggle("film-hold--flow", !held);
-        hold.style.marginBottom = held ? `${-height}px` : "";
+        hold.style.marginBottom = giveBack ? `${-height}px` : "";
       });
       // Positions last, once the page has taken its new shape.
       blocks.forEach((block) => {
@@ -436,10 +443,25 @@ const FilmSection = ({
     lastFrameRef.current = now;
     let moving = false;
     const finePointer = hasFinePointer();
-    // A block on its way out that is still clearly there (see MAKE_WAY).
-    const leaving = blocksRef.current.some(
+    // Which held blocks the scroll is inside now — decided for all of them
+    // before any comes in, so a block that starts to leave in this very
+    // frame already counts as leaving.
+    const insideNow = new Map(
+      blocksRef.current.map((block) => {
+        const progress =
+          (y - (frame.top + block.top - block.pin)) / (block.holdPx || 1);
+        return [
+          block,
+          block.holdPx > 0 && progress >= SHOW_FROM && progress <= SHOW_UNTIL,
+        ] as const;
+      }),
+    );
+    // A block on its way out that is still there (see MAKE_WAY).
+    const leavingBlocks = blocksRef.current.filter(
       (block) =>
-        !block.shown && block.beats.some((beat) => beat.level > MAKE_WAY),
+        !block.mark &&
+        !insideNow.get(block) &&
+        block.beats.some((beat) => beat.level > MAKE_WAY),
     );
     blocksRef.current.forEach((block) => {
       const { element, mark, parts, top, height, holdPx, pin } = block;
@@ -477,9 +499,11 @@ const FilmSection = ({
       // opacity — never the block itself, which would cut the veil off from
       // the films.
       if (held) {
-        const inside = progress >= SHOW_FROM && progress <= SHOW_UNTIL;
+        const inside = insideNow.get(block) ?? false;
         const waiting =
-          inside && leaving && block.beats.every((beat) => beat.level === 0);
+          inside &&
+          leavingBlocks.some((other) => other !== block) &&
+          block.beats.every((beat) => beat.level === 0);
         const show = inside && !waiting;
         if (show !== block.shown) {
           block.shown = show;

@@ -101,8 +101,14 @@ scroll is inside its hold (from 3 % to 90 % of it) and fades in or out over
 fades. (Holding it in place from script instead fought a phone's own,
 threaded scrolling: under a touch fling each block jumped back and forth by
 up to 26 px, two or three times; now it moves one way only.) The next
-block waits until the last one is less than 30 % there, so two blocks'
-words never cross. Within a block its parts come in one after another, top to
+block waits until the last one has all but gone (its level under 15 %, when
+even its heading, the last part to leave, is nearly clear), so two blocks'
+words never cross; every block decides whether it is in or out before any
+comes in, so one that starts to leave in the same frame already counts. A
+block that scrolls with the page (too tall for the screen, as About on a
+small phone) is seen as it comes, so the held block before it keeps its own
+height instead of giving it back: the tall block follows it up the screen
+instead of passing over it. Within a block its parts come in one after another, top to
 bottom — the greeting word by word, a heading, each line or item, the
 buttons — each starting 14 % of the fade after the one before (the whole
 cascade within half of it), and go bottom to top (`cascade` in
