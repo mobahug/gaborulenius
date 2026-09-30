@@ -99,7 +99,7 @@ export default {
     "The read-only web companion preserves field provenance while helping teams review synced expeditions, logs, trails, zones, photos, and structured metadata.",
   projectExplorerDetailWebItemReporting:
     "The reporting view supports map review, dashboards, GeoJSON/GPX/KML/CSV/ZIP exports, print-ready reports, Auth0, Supabase, MapLibre, and PMTiles.",
-  projectExplorerStackHeading: "Stack",
+  stackHeading: "Stack",
   projectExplorerScreenshotHomeTitle: "Active expedition home",
   projectExplorerScreenshotHomeAlt:
     "Explorer home screen with active expedition card, sync prompt, and field summary",

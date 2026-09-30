@@ -200,12 +200,12 @@ const ExplorerStage = () => {
         <div className="film-copy explorer-details">
           <DetailGroup group={review} />
           <h5 className="stage-skill-title explorer-stack-title">
-            <FormattedMessage id="projectExplorerStackHeading" />
+            <FormattedMessage id="stackHeading" />
           </h5>
           <ul
             className="film-stack stage-stack-tight"
             aria-label={intl.formatMessage({
-              id: "projectExplorerStackHeading",
+              id: "stackHeading",
             })}
           >
             {explorerStack.map((item) => (

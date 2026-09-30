@@ -81,13 +81,25 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
         </div>
       </Cue>
       <Space vh={10} />
-      <Cue at={7.0} align="end" hold={70}>
-        <div className="film-copy">
+      {/* The project's tools and the way to the research, under its name
+          so the chips are never on their own. */}
+      <Cue
+        at={7.0}
+        id="neural-stack"
+        align="end"
+        hold={70}
+        className="stage-stack"
+      >
+        <div className="film-copy film-copy--narrow">
+          <p className="film-kicker">
+            <FormattedMessage id="neuralTitle" />
+          </p>
+          <h4 className="film-subheading">
+            <FormattedMessage id="stackHeading" />
+          </h4>
           <ul
             className="film-stack"
-            aria-label={intl.formatMessage({
-              id: "projectExplorerStackHeading",
-            })}
+            aria-label={intl.formatMessage({ id: "stackHeading" })}
           >
             {neuralStack.map((item) => (
               <li key={item}>{item}</li>

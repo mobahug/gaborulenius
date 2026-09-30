@@ -100,7 +100,7 @@ export default {
     "Vain luku -tilassa toimiva verkkosovellus säilyttää kenttähavaintojen alkuperätiedot ja auttaa tiimejä tarkastelemaan synkronoituja retkiä, lokeja, reittejä, vyöhykkeitä, kuvia ja rakenteista metatietoa.",
   projectExplorerDetailWebItemReporting:
     "Raportointinäkymässä on karttatarkastelu, koontinäkymät, GeoJSON-, GPX-, KML-, CSV- ja ZIP-viennit sekä tulostettavat raportit; taustalla toimivat Auth0, Supabase, MapLibre ja PMTiles.",
-  projectExplorerStackHeading: "Teknologiat",
+  stackHeading: "Teknologiat",
   projectExplorerScreenshotHomeTitle: "Käynnissä oleva retki",
   projectExplorerScreenshotHomeAlt:
     "Explorerin etusivu: käynnissä olevan retken kortti, synkronointikehote ja kenttäyhteenveto",
