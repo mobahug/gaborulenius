@@ -1,0 +1,30 @@
+# Once a week: every outside link of the portfolio still answers. The
+# articles and sites it points to can disappear (two Tieto articles and
+# Anyhau's site did); a failed run is GitHub's e-mail saying so.
+name: Links
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          fail: true
+          args: >-
+            --no-progress
+            --scheme https --scheme http
+            --max-retries 3 --timeout 30
+            --accept 200,206,429
+            --exclude "linkedin\.com"
+            --exclude "instagram\.com"
+            --exclude "127\.0\.0\.1|localhost"
+            --exclude "ogp\.me"
+            "src/**/*.ts" "src/**/*.tsx" "index.html" "public/*.xml"
+            "public/*.html" "README.md"

@@ -26,3 +26,7 @@ dist-ssr
 
 # Source photos for the cover leaves (see tools/leaves/cutout.js)
 tools/leaves/photos/
+
+# Test reports
+playwright-report
+test-results

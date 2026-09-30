@@ -1,5 +1,5 @@
 {
-  "homepage": "http://mobahug.github.io/gaborulenius",
+  "homepage": "https://mobahug.github.io/gaborulenius/",
   "name": "gaborulenius",
   "private": true,
   "license": "UNLICENSED",
@@ -8,11 +8,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "preview": "vite preview",
+    "lint": "eslint 'src/**/*.{ts,tsx}' 'e2e/**/*.ts'",
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,md}' 'e2e/**/*.ts'",
+    "format:check": "prettier --check 'src/**/*.{ts,tsx,js,jsx,json,css,md}' 'e2e/**/*.ts'",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
     "lighthouse:mobile": "npx -y lighthouse@13.0.2 http://127.0.0.1:4173/gaborulenius/ --form-factor=mobile --screenEmulation.mobile --throttling-method=simulate --output=json --output-path=.lighthouse/mobile.json --chrome-flags=\"--headless --disable-extensions\" && node scripts/assert-lighthouse.mjs .lighthouse/mobile.json",
     "lighthouse:assert": "node scripts/assert-lighthouse.mjs .lighthouse/mobile.json",
-    "format": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,md}'",
-    "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
@@ -29,16 +32,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.4",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "@typescript-eslint/eslint-plugin": "^8.31.1",
-    "@typescript-eslint/parser": "^8.31.1",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.26.0",
-    "eslint-config-prettier": "^10.1.2",
-    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
@@ -47,6 +47,7 @@
     "prettier": "^3.5.3",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
-    "vite": "^6.3.1"
+    "vite": "^6.3.1",
+    "vitest": "^3.2.7"
   }
 }

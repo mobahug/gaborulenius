@@ -1,0 +1,70 @@
+# Every push and pull request: lint, format, unit tests, build and the
+# browser smoke tests. A push to main that passes is deployed to GitHub
+# Pages (the gh-pages branch). Lighthouse runs last and only reports.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  # Never stop a deploy halfway; a newer push to a pull request wins.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test
+      - run: npm run build
+
+      # The films need H.264, so the tests use the runner's Google Chrome.
+      - name: Browser smoke tests
+        run: npx playwright test
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+
+      - name: Lighthouse (mobile, report only)
+        continue-on-error: true
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 --strictPort &
+          for attempt in $(seq 1 30); do
+            curl -sf http://127.0.0.1:4173/gaborulenius/ > /dev/null && break
+            sleep 1
+          done
+          mkdir -p .lighthouse
+          npx -y lighthouse@13.0.2 http://127.0.0.1:4173/gaborulenius/ \
+            --form-factor=mobile --screenEmulation.mobile \
+            --throttling-method=simulate --quiet \
+            --output=json --output-path=.lighthouse/mobile.json \
+            --chrome-flags="--headless --no-sandbox --disable-extensions"
+          node scripts/lighthouse-summary.mjs >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: reports
+          path: |
+            playwright-report
+            .lighthouse
+          if-no-files-found: ignore
