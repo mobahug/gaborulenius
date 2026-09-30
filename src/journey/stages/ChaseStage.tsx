@@ -25,9 +25,9 @@ const ChaseStage = ({ homeRef, aboutRef }: ChaseStageProps) => (
     <AboutChapter at={2.1} storyAt={2.9} ref={aboutRef} />
     <Space vh={30} />
     <Mark at={3.7} />
-    <Space vh={150} narrow={130} />
+    <Space vh={100} narrow={88} />
     <Mark at={5.6} />
-    <Space vh={95} narrow={85} />
+    <Space vh={70} narrow={62} />
     <Mark at={7.0} />
     <Space vh={90} narrow={80} />
   </FilmSection>

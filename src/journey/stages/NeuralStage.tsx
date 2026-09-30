@@ -30,7 +30,7 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
       id="neural-decompiler"
       labelledBy="neural-heading"
       lead={{ vh: 45, narrow: 40 }}
-      tail={{ vh: 42, narrow: 36 }}
+      tail={{ vh: 30, narrow: 26 }}
     >
       <PortalTitle
         film="neural"
@@ -106,7 +106,7 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
         </div>
       </Cue>
       {/* The film flies on alone, into the ringed node and the white. */}
-      <Space vh={60} narrow={50} />
+      <Space vh={40} narrow={34} />
       <Mark at={7.0} />
     </FilmSection>
   );

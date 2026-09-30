@@ -205,8 +205,9 @@ each block is timed to a moment and placed on the calmer side — the Neural
 Decompiler's case study on the right while the axon's glowing tip fills the
 left, the Explorer's capabilities alternating sides along the channel and
 under the water (the mokoro's poler kept clear), the experience timeline
-over the dark espresso, "Let's Connect" on the left beside the macaw on its
-branch, with the morpho below it.
+over the dark espresso, "Let's Connect" on the left, coming in as the macaw
+flies in and staying while it lands on its branch and the morpho settles below
+it.
 
 The Explorer is shown in the field rather than behind a dialog: each of its
 four capabilities stands beside two of the app's screens in phones with a

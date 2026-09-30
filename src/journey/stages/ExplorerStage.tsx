@@ -131,8 +131,8 @@ const ExplorerStage = () => {
       film="explorer"
       id="explorer-project"
       labelledBy="explorer-heading"
-      lead={{ vh: 108, narrow: 98 }}
-      tail={{ vh: 60, narrow: 50 }}
+      lead={{ vh: 80, narrow: 72 }}
+      tail={{ vh: 40, narrow: 34 }}
     >
       <ExplorerMap />
       <Cue at={1.2} id="explorer" hold={80}>

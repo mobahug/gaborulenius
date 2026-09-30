@@ -646,3 +646,32 @@ page turns with the keyboard leave it whole; a slow scroll crosses into the
 neural score, the birds, the water and the office, each after its half
 second; a skim at 4 screens a second from the Explorer to the end is
 silent until the page stops, and the jungle then fades in.
+
+## 28. Less scrolling with nothing to read (September 2026)
+
+Scrolling itself was already smooth in headless Chrome (60 fps with a
+trackpad's and a mouse wheel's scrolling; with a phone's CPU slowed four
+times, 0.9 % of frames late). What the measurement showed instead was how
+much of the scroll had nothing to read, sampling the screen every fifth of a
+screen at a steady reading pace: 58 % of the desktop scroll (47 % on a
+phone), with the longest stretches between the scenes — 4.2 screens before
+"Let's Connect", the way to get in touch, and 2–3 screens after the story,
+between the Neural Decompiler and the Explorer, and between the Explorer
+and the work.
+
+"Let's Connect" now comes in as the macaw flies into the last film (film
+time about 3 s instead of 6.6 s) and stays on the calm left while it lands
+and the morpho settles, so the invitation holds for two screens instead of
+one; the film keeps its pace. On a phone, where the frame follows the
+macaw, it lands behind the invitation's veil. The other film-only stretches
+are about a third shorter: the macaw's crossing in the chase, the white
+between the neural network and the Okavango, the black between the fish and
+the espresso, the office's leaf. The films play there at up to 2 film
+seconds a screen (2.3 on a phone) instead of 1.5, still slower than the
+ending always has (2.4–2.8); the seams keep their distances.
+
+The page is 35.6 screens instead of 38.3 (35.9 instead of 38.4 on a phone).
+By the same measure the longest stretch with nothing to read is 2.9 screens
+instead of 4.2 (2.0 instead of 3.4 on a phone), and "Let's Connect" can be
+read from screen 33.5 instead of about 37.5. The fades themselves, 1.2 s in
+and out, stay as slow as they were asked to be.

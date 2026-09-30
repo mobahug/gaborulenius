@@ -89,8 +89,8 @@ const WorkStage = ({ experienceRef, skillsRef }: WorkStageProps) => {
       film="work"
       id="work-history"
       label={intl.formatMessage({ id: "navExperience" })}
-      lead={{ vh: 112, narrow: 104 }}
-      tail={{ vh: 62, narrow: 54 }}
+      lead={{ vh: 80, narrow: 74 }}
+      tail={{ vh: 45, narrow: 40 }}
     >
       <CareerDial />
       <Cue

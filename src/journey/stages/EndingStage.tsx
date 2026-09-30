@@ -16,8 +16,9 @@ type EndingStageProps = {
 /**
  * Through the office plant's leaf and out into the jungle again: the macaw
  * lands on its branch on the right, the morpho settles on a leaf beside it,
- * and the light stays. The journey ends with an open invitation, on the calm
- * left, resting in the upper half of the screen as the film ends.
+ * and the light stays. The journey ends with an open invitation on the calm
+ * left: it comes in as the macaw flies in and stays while the film ends, so
+ * the way to get in touch is not the last thing to wait for.
  */
 const EndingStage = ({ contactRef }: EndingStageProps) => (
   <FilmSection
@@ -25,15 +26,18 @@ const EndingStage = ({ contactRef }: EndingStageProps) => (
     id="connect"
     labelledBy="contact-heading"
     lead={{ vh: 105, narrow: 95 }}
-    tail={{ vh: 45, narrow: 40 }}
+    tail={{ vh: 37, narrow: 50 }}
   >
     <Mark at={1.5} />
-    <Space vh={88} narrow={76} />
-    <Mark at={3.6} />
-    <Space vh={88} narrow={76} />
-    <Mark at={5.7} />
-    <Space vh={50} narrow={44} />
-    <Cue at={7.2} id="contact" ref={contactRef} className="stage-contact">
+    <Space vh={35} narrow={40} />
+    <Cue
+      at={6.0}
+      id="contact"
+      ref={contactRef}
+      className="stage-contact"
+      hold={207}
+      holdNarrow={150}
+    >
       <div className="film-copy stage-contact-copy">
         <h2 id="contact-heading" className="film-title">
           <FormattedMessage id="contactHeading" />
