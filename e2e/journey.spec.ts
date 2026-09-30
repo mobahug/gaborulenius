@@ -68,6 +68,7 @@ test("quick read shows the essentials on one calm page", async ({ page }) => {
   for (const name of [
     "About Me",
     "Experience",
+    "Education",
     "Work projects",
     "Personal projects",
     "Skills & Tools",

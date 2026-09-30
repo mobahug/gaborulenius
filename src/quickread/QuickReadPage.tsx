@@ -8,6 +8,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SchoolIcon from "@mui/icons-material/School";
 import TranslateIcon from "@mui/icons-material/Translate";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import WorkIcon from "@mui/icons-material/Work";
 import { useAtomValue } from "jotai";
 import { useState, type ReactNode } from "react";
@@ -41,8 +42,10 @@ const FACTS = [
   { id: "aboutLanguages", icon: <TranslateIcon /> },
 ];
 
-/** The developer years, newest first, one line each. */
-const EXPERIENCE = [
+type Entry = { titleId: string; whenId: string; textId: string };
+
+/** The developer jobs, newest first, one line each. */
+const EXPERIENCE: Entry[] = [
   {
     titleId: "eventTietoCaretechTitle",
     whenId: "eventTietoCaretechWhen",
@@ -53,12 +56,36 @@ const EXPERIENCE = [
     whenId: "eventAnyhauWhen",
     textId: "projectAnyhauTitle",
   },
+];
+
+/** The school behind the developer years, and the certificate. */
+const EDUCATION: Entry[] = [
   {
     titleId: "eventHiveTitle",
     whenId: "eventHiveWhen",
     textId: "eventHiveP1",
   },
 ];
+const CERTIFICATION = "Microsoft Certified: Azure Fundamentals (AZ-900)";
+
+/** Entries along a gold line, newest first. */
+const Timeline = ({ entries }: { entries: Entry[] }) => (
+  <ol className="qr-timeline">
+    {entries.map(({ titleId, whenId, textId }) => (
+      <li key={titleId}>
+        <h3>
+          <FormattedMessage id={titleId} />
+        </h3>
+        <p className="qr-meta">
+          <FormattedMessage id={whenId} />
+        </p>
+        <p className="qr-text">
+          <FormattedMessage id={textId} />
+        </p>
+      </li>
+    ))}
+  </ol>
+);
 
 const bold = (chunks: ReactNode) => <strong>{chunks}</strong>;
 
@@ -211,21 +238,23 @@ const QuickReadPage = () => {
           <h2 id="qr-experience">
             <FormattedMessage id="navExperience" />
           </h2>
-          <ol className="qr-timeline">
-            {EXPERIENCE.map(({ titleId, whenId, textId }) => (
-              <li key={titleId}>
-                <h3>
-                  <FormattedMessage id={titleId} />
-                </h3>
-                <p className="qr-meta">
-                  <FormattedMessage id={whenId} />
-                </p>
-                <p className="qr-text">
-                  <FormattedMessage id={textId} />
-                </p>
-              </li>
-            ))}
-          </ol>
+          <Timeline entries={EXPERIENCE} />
+        </section>
+
+        <section className="qr-card" aria-labelledby="qr-education">
+          <h2 id="qr-education">
+            <FormattedMessage id="qrEducation" />
+          </h2>
+          <Timeline entries={EDUCATION} />
+          <p className="qr-cert">
+            <WorkspacePremiumIcon aria-hidden="true" />
+            <span>
+              <span className="sr-only">
+                <FormattedMessage id="qrCertification" />:{" "}
+              </span>
+              {CERTIFICATION}
+            </span>
+          </p>
         </section>
 
         <section className="qr-card" aria-labelledby="qr-work">

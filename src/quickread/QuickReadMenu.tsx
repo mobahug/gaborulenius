@@ -22,6 +22,7 @@ import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../seo";
 const SECTIONS = [
   { href: "#qr-about", labelId: "navAbout" },
   { href: "#qr-experience", labelId: "navExperience" },
+  { href: "#qr-education", labelId: "qrEducation" },
   { href: "#qr-work", labelId: "navWorkProjects" },
   { href: "#qr-personal", labelId: "qrPersonalProjects" },
   { href: "#qr-skills", labelId: "navSkills" },

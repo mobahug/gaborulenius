@@ -192,6 +192,22 @@
   color: #d9c89a;
 }
 
+.qr-card .qr-cert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(246, 241, 228, 0.92);
+}
+
+.qr-cert .MuiSvgIcon-root {
+  flex: none;
+  font-size: 20px;
+  color: #d9c89a;
+}
+
 /* ---------- The work and the projects ---------- */
 
 .qr-grid {

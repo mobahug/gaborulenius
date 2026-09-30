@@ -562,3 +562,7 @@ SEO 92).
 - The flock (`butterflies.ts`) takes any blocks and perches now, so quick
   read has the journey's morphos: one or two on the card in view once the
   page is still, gone when it moves. The journey's flock is unchanged.
+- Hive Helsinki is a school, not a job: quick read lists the developer
+  jobs under Experience and Hive under Education, with the Azure
+  Fundamentals (AZ-900) certification from the CV; everywhere, Hive's entry
+  is "Computer Programming", as on the CV.

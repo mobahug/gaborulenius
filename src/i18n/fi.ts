@@ -36,6 +36,8 @@ export default {
   qrRole: "Full stack -kehittäjä Espoosta",
   qrFilmJourney: "Elokuvamatka",
   qrPersonalProjects: "Omat projektit",
+  qrEducation: "Koulutus",
+  qrCertification: "Sertifiointi",
   /* ---------- Etusivu ---------- */
   homeGreeting: "…full stack -kehittäjä Espoosta.",
   homeSubtitle:
@@ -152,7 +154,7 @@ export default {
   eventAnyhauTitle: "Full stack -kehittäjä – Anyhau Oy",
   eventAnyhauWhen: "Espoo, 2022 – 2023",
 
-  eventHiveTitle: "Ohjelmistokehittäjä – Hive Helsinki",
+  eventHiveTitle: "Ohjelmointi – Hive Helsinki",
   eventHiveWhen: "Helsinki, 2021 – 2023",
 
   eventSataEduTitle: "Suomen kielen opinnot – SataEdu",

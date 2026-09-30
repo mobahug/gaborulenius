@@ -36,6 +36,8 @@ export default {
   qrRole: "Full-Stack Developer in Espoo, Finland",
   qrFilmJourney: "Film journey",
   qrPersonalProjects: "Personal projects",
+  qrEducation: "Education",
+  qrCertification: "Certification",
   /* ---------- Home titles ---------- */
   homeGreeting: "…a Full-Stack Developer based in Espoo.",
   homeSubtitle:
@@ -150,7 +152,7 @@ export default {
   eventAnyhauTitle: "Full-Stack Developer – Anyhau Oy",
   eventAnyhauWhen: "Espoo, 2022 – 2023",
 
-  eventHiveTitle: "Software Developer – Hive Helsinki",
+  eventHiveTitle: "Computer Programming – Hive Helsinki",
   eventHiveWhen: "Helsinki, 2021 – 2023",
 
   eventSataEduTitle: "Finnish Language School – SataEdu",
