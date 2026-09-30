@@ -566,3 +566,8 @@ SEO 92).
   jobs under Experience and Hive under Education, with the Azure
   Fundamentals (AZ-900) certification from the CV; everywhere, Hive's entry
   is "Computer Programming", as on the CV.
+- The Neural Decompiler's last block was its stack and the link to the
+  repository on their own: too little to hold a screen. They now close its
+  method ("How the research works", then Stack, then the link), and the
+  film flies on alone to the white; on a phone, where bright nodes pass
+  right behind the words, that block's veil is deeper.

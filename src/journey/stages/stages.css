@@ -6,12 +6,16 @@
   max-width: 15em;
 }
 
-/* The Neural Decompiler's stack comes as the camera flies at a bright node:
-   a light centre in a dark frame. On a wide screen the block stands narrow
-   beside it; on a phone the node is right behind the words, brighter than
-   the frame's measured light says, so the veil there is deeper. */
+/* The Neural Decompiler's tools, under its method. */
+.film-copy .stage-method-stack {
+  margin-top: 28px;
+}
+
+/* The method holds while the camera flies at bright nodes: light centres in
+   a dark frame, which on a phone pass right behind the words, brighter than
+   the frame's measured light says — so there its veil is deeper. */
 @media (max-width: 899.95px) and (prefers-reduced-transparency: no-preference) {
-  .stage-stack .film-copy::before {
+  .stage-method .film-copy::before {
     background: rgba(4, 8, 6, calc(0.55 * var(--film-shade, 1)));
   }
 }

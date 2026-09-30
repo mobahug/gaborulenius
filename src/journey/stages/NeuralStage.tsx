@@ -4,7 +4,7 @@ import type React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { neuralStack } from "../../contexts";
 import { NEURAL_REPOSITORY_URL } from "../../seo";
-import FilmSection, { Cue, Space } from "../film/FilmSection";
+import FilmSection, { Cue, Mark, Space } from "../film/FilmSection";
 import PortalTitle from "../film/PortalTitle";
 import "./stages.css";
 
@@ -66,7 +66,9 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
         </div>
       </Cue>
       <Space vh={25} />
-      <Cue at={5.9} id="neural-method" hold={100}>
+      {/* How the research works ends the project: its method, the tools it
+          is done with and the way to it. */}
+      <Cue at={5.9} id="neural-method" hold={110} className="stage-method">
         <div className="film-copy">
           <h4 className="film-subheading">
             <FormattedMessage id="neuralMethodHeading" />
@@ -78,27 +80,11 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
               </li>
             ))}
           </ul>
-        </div>
-      </Cue>
-      <Space vh={10} />
-      {/* The project's tools and the way to the research, under its name
-          so the chips are never on their own. */}
-      <Cue
-        at={7.0}
-        id="neural-stack"
-        align="end"
-        hold={70}
-        className="stage-stack"
-      >
-        <div className="film-copy film-copy--narrow">
-          <p className="film-kicker">
-            <FormattedMessage id="neuralTitle" />
-          </p>
-          <h4 className="film-subheading">
+          <h5 className="stage-skill-title stage-method-stack">
             <FormattedMessage id="stackHeading" />
-          </h4>
+          </h5>
           <ul
-            className="film-stack"
+            className="film-stack stage-stack-tight"
             aria-label={intl.formatMessage({ id: "stackHeading" })}
           >
             {neuralStack.map((item) => (
@@ -119,6 +105,9 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
           </div>
         </div>
       </Cue>
+      {/* The film flies on alone, into the ringed node and the white. */}
+      <Space vh={60} narrow={50} />
+      <Mark at={7.0} />
     </FilmSection>
   );
 };
