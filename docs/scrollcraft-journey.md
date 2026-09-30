@@ -302,13 +302,18 @@ capability, how it is built) — and the highlights and the work projects,
 the skills and the tools: sections in larger, brighter type, a project's
 name in small gold capitals, its parts under it. The part on screen is lit,
 and its project, as the scroll goes on (the last whose block has come up to
-a third of the screen). The bar at the top keeps only who this is (the
-avatar and name, back to the top), the way to quick read, the language and
-the sound. On phones the bar keeps its menu (quick read is in its
-settings), which lists the same sections and parts: the
-current section open with the part on screen lit, the others opening with
-their arrow, so any part is a tap away. Both come in once the cover has
-gone. The scroll spy reads a block's section from its hold
+a third of the screen). The bar at the top (`TopBar.tsx`, the same on
+the journey and on quick read) keeps only who this is (the avatar and name,
+back to the top) and, on the right, the sounds, the language and the way to
+the other page; on phones the sounds, the way to the other page and the
+menu. The sounds come first, so on quick read, which has none, nothing
+else moves: switching pages leaves every button where it was, and the
+button itself has one width for both labels. Over the cover only the
+buttons show — no glass, no name, which the cover has — and the rest of the
+bar comes in once the cover has gone, with the rail. The phone's menu lists
+the same sections and parts as the rail: the current section open with the
+part on screen lit, the others opening with their arrow, so any part is a
+tap away. The scroll spy reads a block's section from its hold
 (`data-section`), since the id is on the anchor inside it.
 
 ## The neural probe
@@ -479,9 +484,9 @@ first paint and still while the page scrolls: nothing changes behind the
 words while they are read. No film is downloaded. Printed, it is a plain
 summary.
 
-The way there is a button in the cover's corner, in the bar and in the
-phone's menu, or a `?read` link (`?read=0` leads back); the page's own
-bar and its end lead back to the film. `index.html` decides before the
+The way there is the bar's button (the same bar as the journey's, with a
+menu of quick read's sections on phones), or a `?read` link (`?read=0`
+leads back); the bar and the page's end lead back to the film. `index.html` decides before the
 first paint (`<html data-quick-read>`) and `main.tsx` renders one or the
 other; switching reloads, and the journey returns to where it was
 (`restorePosition`).

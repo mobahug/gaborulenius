@@ -6,7 +6,7 @@ import {
   type Viewport,
 } from "../journey/scrollTimeline";
 
-export const activeSectionIdAtom = atom<string>("#home");
+const activeSectionIdAtom = atom<string>("#home");
 type RequestedSection = {
   expiresAt: number;
   id: string;

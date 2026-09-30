@@ -3,7 +3,7 @@ import type { Film } from "../film/films";
 import { onDirectorFrame } from "./director";
 
 /** Brightness of a film's picture at `time` (0–1), from its measured curve. */
-export const lightAt = (film: Film, time: number) => {
+const lightAt = (film: Film, time: number) => {
   const samples = film.light;
   const position = Math.max(0, Math.min(samples.length - 1, time * 4));
   const index = Math.floor(position);

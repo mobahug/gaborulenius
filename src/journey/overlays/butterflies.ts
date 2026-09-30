@@ -190,7 +190,7 @@ const morphoSprites = () => {
 /** How far a wing is open (seen from above) for a beat of `lift` (0 open
  * flat … 1 up). Never less than a third: a wing seen edge-on would all but
  * vanish, and the butterfly would seem to blink at every beat. */
-export const openness = (lift: number) =>
+const openness = (lift: number) =>
   Math.max(0.36, Math.cos((lift * 70 * Math.PI) / 180));
 
 /**
@@ -199,7 +199,7 @@ export const openness = (lift: number) =>
  * always blue: as they rise they narrow and turn a deeper blue, away from
  * the light.
  */
-export const drawButterfly = (
+const drawButterfly = (
   context: CanvasRenderingContext2D,
   x: number,
   y: number,

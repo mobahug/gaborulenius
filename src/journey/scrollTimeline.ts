@@ -49,7 +49,7 @@ export type SceneFrame = {
 };
 
 export type SceneCallback = (frame: SceneFrame) => void;
-export type FrameCallback = (viewport: Viewport) => void;
+type FrameCallback = (viewport: Viewport) => void;
 
 type SceneTarget = HTMLElement | (() => HTMLElement | null);
 
@@ -138,7 +138,7 @@ const easeScroll = (y: number, vh: number) => {
   return smoothY;
 };
 
-export const computeSceneFrame = (
+const computeSceneFrame = (
   viewport: Viewport,
   top: number,
   height: number,

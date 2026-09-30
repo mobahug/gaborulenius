@@ -8,7 +8,7 @@ import { FRAME_ASPECT, type Film, type Portal } from "../film/films";
  * the video element itself.
  */
 
-export type Rect = { left: number; top: number; width: number; height: number };
+type Rect = { left: number; top: number; width: number; height: number };
 
 /**
  * Horizontal focus (0–1) for the current viewport shape: the film's
@@ -70,7 +70,7 @@ export const portalCircle = (portal: Portal, time: number) => {
  * follow this, so they glide instead of shaking. The radius is left as
  * measured; it only grows.
  */
-export const smoothPortalCircle = (portal: Portal, time: number) => {
+const smoothPortalCircle = (portal: Portal, time: number) => {
   const samples = 9;
   const spread = 0.15;
   let x = 0;
@@ -88,7 +88,7 @@ export const smoothPortalCircle = (portal: Portal, time: number) => {
   };
 };
 
-export type WindowGeometry = {
+type WindowGeometry = {
   /** The pupil on screen (px). */
   cx: number;
   cy: number;

@@ -11,7 +11,7 @@ type NavigatorWithConnection = Navigator & {
   webkitConnection?: NavigatorConnection;
 };
 
-export const getNetworkConnection = () => {
+const getNetworkConnection = () => {
   const navigatorWithConnection = navigator as NavigatorWithConnection;
 
   return (

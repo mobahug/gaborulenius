@@ -19,7 +19,7 @@ export type TimelineEvent = {
   details: React.ReactNode;
 };
 
-export type Project = {
+type Project = {
   id: string;
   /** Its short name (the work projects' headings). */
   labelId: string;

@@ -4,7 +4,7 @@ import StraightenIcon from "@mui/icons-material/Straighten";
 import TerrainIcon from "@mui/icons-material/Terrain";
 import type { ReactNode } from "react";
 
-export type ExplorerScreenshot = {
+type ExplorerScreenshot = {
   src: string;
   altId: string;
   titleId: string;

@@ -533,3 +533,20 @@ SEO 92).
 - The share card is centred, so an app that crops it to a square (WhatsApp,
   iMessage) keeps the portrait, the name and the role; its address carries
   a version (`?v=2`) so caches fetch it again, and its type is declared.
+
+## 24. The CV in each language, a butterfly for an icon, one bar (September 2026)
+
+- The CV comes in the language the page is read in (`public/Gabor_Ulenius_CV_EN.pdf`,
+  `…_FI.pdf`, `CV_FILES` in `seo.ts`), from the intro, quick read and the
+  page without script; the old single CV is gone. The site now matches the
+  CVs on the languages (Finnish: fluent) and links The Explorer on Google
+  Play, as they do.
+- The icon is the loader's blue morpho (`public/favicon.svg`, with PNGs for
+  browsers without SVG icons and for home screens), instead of the leaf.
+- The bar is one component on both pages, its buttons in the same order
+  and places, the way between the pages always in the same spot; on the
+  cover it shows only its buttons (the cover's own quick read button is
+  gone). Quick read has a menu on phones, like the journey.
+- Removed what nothing used any more: the old bar's parts, the cover's
+  button, the leaf icon's source, `robots.txt` (crawlers read it only at a
+  host's root), exports used only inside their own files.
