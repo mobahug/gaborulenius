@@ -1,3 +1,6 @@
+# Crawlers read robots.txt only at a host's root (mobahug.github.io/robots.txt),
+# so this file is informational: the sitemap is submitted in Google Search
+# Console instead.
 User-agent: *
 Allow: /
 

@@ -4,17 +4,63 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
-      // Resolve the locale before any paint so the cover greets in the
-      // user's stored language instantly (no FOUC).
+      // Resolve the locale and the way the page runs before any paint, so
+      // the cover greets in the right language and nothing changes after.
       (function () {
         var root = document.documentElement;
+        var params = null;
         try {
-          var storedLocale = localStorage.getItem("locale");
-          var locale = storedLocale ? storedLocale.replace(/^"|"$/g, "") : null;
-          if (locale !== "en" && locale !== "fi") locale = "en";
-          root.dataset.locale = locale;
+          params = new URLSearchParams(window.location.search);
+        } catch (e) {}
+        var param = function (name) {
+          return params ? params.get(name) : null;
+        };
+
+        // Language: ?lang=en|fi (a link, a search engine) becomes the
+        // stored choice; otherwise the stored choice, else English.
+        var asked = param("lang");
+        if (asked !== "en" && asked !== "fi") asked = null;
+        var locale = asked;
+        try {
+          if (asked) localStorage.setItem("locale", JSON.stringify(asked));
+          else {
+            var storedLocale = localStorage.getItem("locale");
+            locale = storedLocale ? storedLocale.replace(/^"|"$/g, "") : null;
+          }
+        } catch (e) {}
+        if (locale !== "en" && locale !== "fi") locale = "en";
+        root.dataset.locale = locale;
+
+        // Quick read: the whole portfolio on one calm page, stills instead
+        // of the films. ?read (a link for recruiters) or the visitor's own
+        // choice turns it on; ?read=0 off.
+        var read = param("read");
+        var quick = false;
+        try {
+          if (read !== null) {
+            quick = read !== "0" && read !== "false";
+            localStorage.setItem("quickRead", quick ? "1" : "0");
+          } else quick = localStorage.getItem("quickRead") === "1";
         } catch (e) {
-          root.dataset.locale = "en";
+          quick = read !== null && read !== "0" && read !== "false";
+        }
+        root.dataset.quickRead = quick ? "true" : "false";
+
+        // Quick read and a system asking for reduced motion both run the
+        // page in its reduced mode (data-motion="reduced").
+        var motion = window.matchMedia
+          ? window.matchMedia("(prefers-reduced-motion: reduce)")
+          : null;
+        var applyMotion = function () {
+          if (quick || (motion && motion.matches)) {
+            root.dataset.motion = "reduced";
+          } else {
+            delete root.dataset.motion;
+          }
+        };
+        applyMotion();
+        if (motion && motion.addEventListener) {
+          motion.addEventListener("change", applyMotion);
         }
       })();
     </script>
@@ -32,6 +78,21 @@
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="googlebot" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://mobahug.github.io/gaborulenius/" />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://mobahug.github.io/gaborulenius/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fi"
+      href="https://mobahug.github.io/gaborulenius/?lang=fi"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://mobahug.github.io/gaborulenius/"
+    />
     <link
       rel="preload"
       href="/gaborulenius/profile-320.webp"
@@ -78,14 +139,14 @@
     />
     <meta
       property="og:image"
-      content="https://mobahug.github.io/gaborulenius/jungle.png"
+      content="https://mobahug.github.io/gaborulenius/social-card.jpg"
     />
     <meta
       property="og:image:alt"
-      content="Gábor Ulenius full-stack developer portfolio"
+      content="Gábor Ulenius, Full-Stack Developer in Espoo, Finland, on the jungle path of the portfolio’s opening film"
     />
-    <meta property="og:image:width" content="1025" />
-    <meta property="og:image:height" content="612" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -97,11 +158,11 @@
     />
     <meta
       name="twitter:image"
-      content="https://mobahug.github.io/gaborulenius/jungle.png"
+      content="https://mobahug.github.io/gaborulenius/social-card.jpg"
     />
     <meta
       name="twitter:image:alt"
-      content="Gábor Ulenius full-stack developer portfolio"
+      content="Gábor Ulenius, Full-Stack Developer in Espoo, Finland, on the jungle path of the portfolio’s opening film"
     />
     <script type="application/ld+json" id="portfolio-structured-data">
       {
@@ -128,7 +189,12 @@
             "@type": "Person",
             "@id": "https://mobahug.github.io/gaborulenius/#person",
             "name": "Gábor Ulenius",
-            "alternateName": "Gábor Horváth-Ulenius",
+            "alternateName": [
+              "Gábor Horváth-Ulenius",
+              "Gabor Ulenius",
+              "Gabor Horvath-Ulenius",
+              "Gàbor Horvàth-Ulenius"
+            ],
             "jobTitle": "Full-Stack Developer",
             "description": "Espoo-based Full-Stack Developer at Tieto Caretech working on cloud-native healthcare data platforms, AI prototypes and reliable cloud delivery for major Nordic healthcare environments.",
             "url": "https://mobahug.github.io/gaborulenius/",
@@ -193,10 +259,8 @@
         margin: 0;
       }
 
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
+      :root[data-motion="reduced"] {
+        scroll-behavior: auto;
       }
 
       /* The loader covers the first paint while the film arrives. Its ring
@@ -434,10 +498,8 @@
         }
       }
 
-      @media (prefers-reduced-motion: reduce) {
-        #jungle-loader {
-          display: none;
-        }
+      :root[data-motion="reduced"] #jungle-loader {
+        display: none;
       }
     </style>
     <noscript>
@@ -447,7 +509,7 @@
         }
       </style>
     </noscript>
-    <script type="module" crossorigin src="/gaborulenius/assets/index-D4L0f_es.js"></script>
+    <script type="module" crossorigin src="/gaborulenius/assets/index-Q5kURlOR.js"></script>
     <link rel="modulepreload" crossorigin href="/gaborulenius/assets/vendor-react-CptINutj.js">
   </head>
   <body>
@@ -563,10 +625,8 @@
         var stage = loader.querySelector(".jl-stage");
         var flight = loader.querySelector(".jl-flight");
         var wings = loader.querySelectorAll(".jl-wing");
-        var reduced =
-          window.matchMedia &&
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduced) {
+        // Reduced motion and quick read show no film to wait for.
+        if (root.dataset.motion === "reduced") {
           loader.remove();
           return;
         }
