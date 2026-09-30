@@ -23,16 +23,11 @@ export default {
   navSkillsList: "Skills",
   navTools: "Tools",
   navContact: "Contact",
-  effectsSubtitle:
-    "Bring the jungle to life around you—choose which ambient elements you’d like to accompany your journey.",
-  labelBirdCalls: "Bird Calls",
-  labelDriftingLeaves: "Drifting Leaves",
-  appearanceSubtitle:
-    "Adjust the overall mood—daylight greens or the mystery of twilight.",
-  languageSubtitle:
-    "Select your language to guide you through the undergrowth.",
   buttonClose: "Close",
   headingSettings: "Settings",
+  quickRead: "Quick read",
+  quickReadOn: "Show everything on one calm page, without the film",
+  quickReadOff: "Back to the film journey",
   /* ---------- Home titles ---------- */
   homeGreeting: "…a Full-Stack Developer based in Espoo.",
   homeSubtitle:
@@ -45,24 +40,24 @@ export default {
     "Contributed to healthcare data platforms for some of Finland’s largest healthcare providers, improving data accessibility through <b>React</b>/<b>TypeScript</b> UIs, <b>Node.js</b> services, shared packages, and <b>Azure</b> infrastructure. Proficient in <b>GraphQL</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b>, and cloud delivery. Worked on LLM-based AI prototypes, including a demo at ICT Days and a diagnostic tool piloted at the New Children’s Hospital for faster symptom-based searches.",
   aboutLocation: "Finland, Espoo",
   aboutEducation: "Hive Helsinki Alumni",
-  aboutExperience: "3.5 years of professional experience",
+  aboutExperience: "{years} years of professional experience",
+  aboutLanguages:
+    "English (fluent) · Finnish (fluent conversational) · Hungarian (native)",
   /* ---------- Project titles ---------- */
   projectHusDatalakeTitle:
-    "Contributing to healthcare data platforms for real-time patient data access at major Finnish healthcare providers",
+    "Contributing to healthcare data platforms for real-time patient data access at major Finnish healthcare providers.",
   projectMedicalPocTitle:
     "Played a key role in an AI proof of concept at Helsinki’s New Children’s Hospital, helping clinicians find relevant information faster in medical documents.",
   projectIctDaysTitle:
-    "As part of the team, I contributed significantly to the development of an LLM-based AI solution for the ATK-päivät event, which is Finland's largest healthcare IT event.",
+    "Contributed significantly, as part of the team, to an LLM-based AI solution for ATK-päivät, Finland’s largest healthcare IT event.",
   projectAnyhauTitle:
-    "Worked with the 2022 Diili winner to launch a greenfield platform for online pet-service bookings",
+    "Worked with the 2022 Diili winner to launch a greenfield platform for online pet-service bookings.",
   /* ---------- Helpers ---------- */
   projectHeading: "Projects",
   projectExplorerTitle: "The Explorer",
   projectExplorerSummary:
     "A mobile fieldwork app for remote conservation expeditions, built to capture reliable offline GPS trails, ecological zones, media, and structured environmental observations for later sync and review.",
-  projectExplorerGalleryHeading: "More of the app",
   projectExplorerBringForward: "Bring {title} to the front",
-  projectExplorerGalleryLabel: "Explorer mobile app screenshots",
   projectExplorerCapabilityTopoTitle: "Offline topographic maps",
   projectExplorerCapabilityTopoBody:
     "MapLibre + Protomaps/PMTiles power offline topographic maps, with Cloudflare R2/Workers serving tiles and country downloads for remote field use.",
@@ -200,12 +195,6 @@ export default {
   /* ─── Kotipalvelu Ykköset ─────────────── */
   eventKotipalveluP1:
     "I served as a full-time housekeeper at Kotipalvelu Ykköset (Aug 2019 – Jun 2020), delivering thorough cleaning, organising living spaces and maintaining impeccable hygiene standards for residential clients.",
-  eventKotipalveluP2:
-    "I proactively communicated with clients to understand their specific needs and consistently exceeded expectations, driving high satisfaction and repeat bookings.",
-  eventKotipalveluP3:
-    "I managed scheduling and cleaning-supply inventory, streamlining workflows to ensure timely, uninterrupted service delivery.",
-  eventKotipalveluP4:
-    "Strong attention to detail, efficient time management and a reliable work ethic underpinned a seamless customer experience throughout my tenure.",
 
   /* ─── Lumundoo ────────────────────────── */
   eventLumundooP1:
@@ -230,8 +219,6 @@ export default {
     "Developed practical construction skills in masonry, wall building and formwork workshops, turning drawings into on-site structures.",
   eventBkszcP3:
     "Produced numerous house-drawing projects with proper scale and dimensioning, and used ArchiCAD for structural models, quantity take-offs and load calculations.",
-  eventBkszcP4:
-    "Graduated in June 2016 with a final grade of 69 %, demonstrating strong academic performance and hands-on expertise.",
 
   /* Skills & Tools */
   skillsToolsHeading: "Skills & Tools",
@@ -246,10 +233,8 @@ export default {
     "Navigating the digital jungle for your next project or a new team member? Whether it's a groundbreaking idea, a collaborative adventure, or an exciting opportunity, I'm ready to explore. Let's connect and create something wild!",
   contactBtnEmail: "Email Me",
   contactBtnLinkedIn: "LinkedIn",
-
-  /* Cover */
-  coverGreeting: "Hi, I'm {name}",
-  coverScroll: "Scroll Down",
+  contactCopyEmail: "Copy the email address",
+  contactEmailCopied: "Email address copied",
 
   /* Footer */
   footerJobTitle: "Full-Stack Developer",

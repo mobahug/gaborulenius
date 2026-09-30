@@ -47,8 +47,6 @@
   clip-path: none !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto !important;
-  }
+:root[data-motion="reduced"] {
+  scroll-behavior: auto !important;
 }

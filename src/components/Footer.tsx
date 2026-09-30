@@ -12,6 +12,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { colors as lightColors } from "../colors";
 import { FormattedMessage, useIntl } from "react-intl";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../seo";
 
 const Footer = () => {
   const intl = useIntl();
@@ -81,7 +82,7 @@ const Footer = () => {
               <FormattedMessage id="footerNavProjects" />
             </Link>
             <Link
-              href="mailto:gaborulenius@gmail.com"
+              href={`mailto:${EMAIL}`}
               underline="none"
               color="inherit"
               variant="body1"
@@ -99,7 +100,7 @@ const Footer = () => {
             }}
           >
             <IconButton
-              href="https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/"
+              href={LINKEDIN_URL}
               target="_blank"
               rel="me noopener noreferrer"
               aria-label="LinkedIn"
@@ -107,7 +108,7 @@ const Footer = () => {
               <LinkedInIcon sx={{ fontSize: 32 }} />
             </IconButton>
             <IconButton
-              href="https://github.com/mobahug"
+              href={GITHUB_URL}
               target="_blank"
               rel="me noopener noreferrer"
               aria-label="GitHub"

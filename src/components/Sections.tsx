@@ -10,15 +10,3 @@ export const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
-// TODO: Uncomments once needed
-
-// const shorten = (url: string) => {
-//   try {
-//     const u = new URL(url);
-//     const path = u.pathname.split("/").filter(Boolean).slice(0, 2).join("/");
-//     return path ? `${u.host}/${path}…` : u.host;
-//   } catch {
-//     return url;
-//   }
-// };

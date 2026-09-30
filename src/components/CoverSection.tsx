@@ -10,6 +10,11 @@ import {
   isWideLayout,
   prefersReducedMotion,
 } from "../journey/device";
+import {
+  canSwitchQuickRead,
+  isQuickRead,
+  setQuickRead,
+} from "../journey/quickRead";
 
 // Plain-DOM cover. It stays outside MUI/react-intl so the LCP avatar and the
 // heading paint before the rest of the app has loaded.
@@ -20,6 +25,22 @@ const GREETINGS: Record<string, string> = {
 const SKIP_LABELS: Record<string, string> = {
   en: "Skip to content",
   fi: "Siirry sisältöön",
+};
+/** The quick read switch: its name, and what pressing it does. */
+const QUICK_READ_LABELS: Record<
+  string,
+  { name: string; on: string; off: string }
+> = {
+  en: {
+    name: "Quick read",
+    on: "Show everything on one calm page, without the film",
+    off: "Back to the film journey",
+  },
+  fi: {
+    name: "Pikaluku",
+    on: "Näytä kaikki yhdellä rauhallisella sivulla ilman elokuvaa",
+    off: "Takaisin elokuvamatkaan",
+  },
 };
 
 const readDocumentLocale = (): string => {
@@ -225,6 +246,9 @@ const CoverSection: React.FC = () => {
   }, []);
   const greeting = GREETINGS[locale] ?? GREETINGS.en;
   const skipLabel = SKIP_LABELS[locale] ?? SKIP_LABELS.en;
+  const quickReadLabels = QUICK_READ_LABELS[locale] ?? QUICK_READ_LABELS.en;
+  const [quickRead] = useState(isQuickRead);
+  const [quickReadSwitch] = useState(canSwitchQuickRead);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -513,6 +537,20 @@ const CoverSection: React.FC = () => {
               {greeting} <span id="cover-name">Gábor</span>
             </h1>
           </div>
+          {quickReadSwitch ? (
+            <button
+              type="button"
+              className="cover-quick-read"
+              aria-pressed={quickRead}
+              title={quickRead ? quickReadLabels.off : quickReadLabels.on}
+              onClick={() => setQuickRead(!quickRead)}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z" />
+              </svg>
+              {quickReadLabels.name}
+            </button>
+          ) : null}
           <div className="cover-depth cover-depth--near" aria-hidden="true">
             {LEAVES.map((leaf) => {
               const [width, height] = leaf.size;
@@ -747,12 +785,52 @@ const CoverSection: React.FC = () => {
           outline: 2px solid ${lightColors.accentHover};
           outline-offset: 3px;
         }
-        @media (prefers-reduced-motion: reduce) {
-          .cover { height: 100vh; height: 100lvh; }
-          .cover-mist-band, .cover-shaft { animation: none; }
-          .cover-lqip, .cover-pollen, .cover-layer--leaf { transition: none; }
-          .cover-layer--leaf { animation: none; }
+        /* The quick read switch, in the corner of the first screen (the
+           bar with its twin comes in once the cover has gone). */
+        .cover-quick-read {
+          position: absolute;
+          top: max(16px, env(safe-area-inset-top));
+          right: 16px;
+          z-index: 4;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 9px 16px 9px 13px;
+          border: 1px solid ${lightColors.btnBorder};
+          border-radius: 999px;
+          background: ${lightColors.btnBg};
+          -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+          color: ${lightColors.textLight};
+          font: 600 0.85rem/1 "Inter", system-ui, sans-serif;
+          letter-spacing: 0.02em;
+          cursor: pointer;
+          transition: background-color 0.2s ease, color 0.2s ease;
         }
+        .cover-quick-read svg {
+          width: 18px;
+          height: 18px;
+          fill: ${lightColors.accent};
+        }
+        .cover-quick-read:hover,
+        .cover-quick-read[aria-pressed="true"] {
+          background: ${lightColors.btnBgHover};
+          color: ${lightColors.accentHover};
+        }
+        .cover-quick-read:focus-visible {
+          outline: 2px solid ${lightColors.accentHover};
+          outline-offset: 3px;
+        }
+        @media (min-width: 900px) {
+          .cover-quick-read { top: 24px; right: 28px; }
+        }
+        :root[data-motion="reduced"] .cover { height: 100vh; height: 100lvh; }
+        :root[data-motion="reduced"] .cover-mist-band,
+        :root[data-motion="reduced"] .cover-shaft { animation: none; }
+        :root[data-motion="reduced"] .cover-lqip,
+        :root[data-motion="reduced"] .cover-pollen,
+        :root[data-motion="reduced"] .cover-layer--leaf { transition: none; }
+        :root[data-motion="reduced"] .cover-layer--leaf { animation: none; }
       `}</style>
       </div>
     </>

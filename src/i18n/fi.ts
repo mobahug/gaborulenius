@@ -3,7 +3,6 @@ export default {
   navAbout: "Tietoa",
   navProjects: "Projektit",
   navExperience: "Työkokemus",
-  navbar_projects: "Projektit",
   navSkills: "Taidot",
   navSections: "Osiot",
   navShowParts: "Näytä osion {section} osat",
@@ -24,16 +23,11 @@ export default {
   navSkillsList: "Taidot",
   navTools: "Työkalut",
   navContact: "Ota yhteyttä",
-  effectsSubtitle:
-    "Herätä viidakko eloon – valitse, mitkä taustaäänet kulkevat mukanasi.",
-  labelBirdCalls: "Lintujen laulu",
-  labelDriftingLeaves: "Leijuvat lehdet",
-  appearanceSubtitle:
-    "Säädä tunnelmaa – kirkas päivänvalo tai hämärän mystiikka.",
-  languageSubtitle:
-    "Valitse kieli, joka johdattaa sinut aluskasvillisuuden läpi.",
   buttonClose: "Sulje",
   headingSettings: "Asetukset",
+  quickRead: "Pikaluku",
+  quickReadOn: "Näytä kaikki yhdellä rauhallisella sivulla ilman elokuvaa",
+  quickReadOff: "Takaisin elokuvamatkaan",
   /* ---------- Etu otsikot ---------- */
   homeGreeting: "…Full-Stack-kehittäjä Espoosta.",
   homeSubtitle:
@@ -43,27 +37,27 @@ export default {
   /* ---------- Minusta otsikot ---------- */
   aboutHeading: "Minusta",
   aboutBody:
-    "Osallistuin terveysdata-alustojen kehittämiseen Suomen suurimmille terveydenhuollon toimijoille parantaen datan saavutettavuutta moderneilla verkkosovelluksilla, taustapalveluilla, jaetuilla paketeilla ja pilvi-infrastruktuurilla. Kokemukseni kattaa frontend- ja backend-kehityksen, dataintegraatiot, julkaisuautomaation, valvonnan ja pilvitoimituksen. Työskentelin LLM-pohjaisten tekoälyprototyyppien parissa, mm. ICT Days -demon ja Uuden lastensairaalan diagnoosityökalun, joka nopeuttaa oireisiin perustuvia hakuja.",
+    "Osallistuin terveysdata-alustojen kehittämiseen Suomen suurimmille terveydenhuollon toimijoille parantaen datan saavutettavuutta <b>React</b>- ja <b>TypeScript</b>-käyttöliittymillä, <b>Node.js</b>-palveluilla, jaetuilla paketeilla ja <b>Azure</b>-infrastruktuurilla. Osaamiseeni kuuluvat myös <b>GraphQL</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b> ja pilvitoimitus. Työskentelin LLM-pohjaisten tekoälyprototyyppien parissa, mm. ICT Days -demon ja Uuden lastensairaalan diagnoosityökalun, joka nopeuttaa oireisiin perustuvia hakuja.",
   aboutLocation: "Suomi, Espoo",
   aboutEducation: "Hive Helsinki Alumni",
-  aboutExperience: "3,5 vuotta työkokemusta",
+  aboutExperience: "{years} vuotta työkokemusta",
+  aboutLanguages:
+    "Englanti (sujuva) · suomi (sujuva keskustelutaso) · unkari (äidinkieli)",
   /* ---------- Projektien otsikot ---------- */
   projectHusDatalakeTitle:
-    "Terveysdata-alustojen kehittäminen reaaliaikaiseen potilasdatan saatavuuteen suurille suomalaisille terveydenhuollon toimijoille",
+    "Osallistun terveysdata-alustojen kehittämiseen, jotta potilasdata on reaaliaikaisesti saatavilla suurilla suomalaisilla terveydenhuollon toimijoilla.",
   projectMedicalPocTitle:
     "Toimin avainroolissa tekoälyn proof of concept -toteutuksessa Helsingin Uudessa lastensairaalassa, auttaen kliinikoita löytämään olennaista tietoa nopeammin lääketieteellisistä asiakirjoista.",
   projectIctDaysTitle:
     "Osana tiimiä vaikutin merkittävästi LLM-pohjaisen tekoälyratkaisun kehitykseen ATK-päivät -tapahtumaa varten, joka on Suomen suurin sote-IT-tilaisuus.",
   projectAnyhauTitle:
-    "Tein yhteistyötä vuoden 2022 Diili-voittajan kanssa uuden verkkoalustan lanseeraamiseksi lemmikkipalvelujen varaamiseen",
+    "Tein yhteistyötä vuoden 2022 Diili-voittajan kanssa uuden verkkoalustan lanseeraamiseksi lemmikkipalvelujen varaamiseen.",
   /* ---------- Aputekstit ---------- */
   projectHeading: "Projektit",
   projectExplorerTitle: "The Explorer",
   projectExplorerSummary:
     "Mobiilisovellus syrjäisiin luonnonsuojelun kenttäretkiin: GPS-reitit, ekologiset alueet, media ja rakenteiset ympäristöhavainnot tallentuvat luotettavasti offline-tilassa myöhempää synkronointia ja tarkastelua varten.",
-  projectExplorerGalleryHeading: "Lisää sovelluksesta",
   projectExplorerBringForward: "Tuo {title} eteen",
-  projectExplorerGalleryLabel: "Explorer-mobiilisovelluksen kuvakaappaukset",
   projectExplorerCapabilityTopoTitle: "Offline-topografiset kartat",
   projectExplorerCapabilityTopoBody:
     "MapLibre + Protomaps/PMTiles mahdollistavat offline-topografiset kartat, ja Cloudflare R2/Workers toimittaa karttatiilet sekä aluekohtaiset lataukset kenttäkäyttöön.",
@@ -203,12 +197,6 @@ export default {
   /* ─── Kotipalvelu Ykköset ─────────────── */
   eventKotipalveluP1:
     "Työskentelin kokopäiväisenä kotisiivoojana Kotipalvelu Ykkösillä elokuusta 2019 kesäkuuhun 2020 tehden perusteellista siivousta, tilojen organisointia ja ylläpitäen moitteetonta hygieniaa yksityiskodeissa.",
-  eventKotipalveluP2:
-    "Kommunikoin aktiivisesti asiakkaiden kanssa tarpeiden ymmärtämiseksi ja ylitin odotukset johdonmukaisesti, mikä johti korkeaan asiakastyytyväisyyteen ja toistotilauksiin.",
-  eventKotipalveluP3:
-    "Hallinnoin aikatauluja ja siivoustarvikkeiden varastoa, tehostaen työnkulkuja ja varmistaen keskeytymättömän palvelun.",
-  eventKotipalveluP4:
-    "Tarkkuus, tehokas ajankäyttö ja luotettava työote loivat saumattoman asiakaskokemuksen koko työsuhteen ajan.",
 
   /* ─── Lumundoo ────────────────────────── */
   eventLumundooP1:
@@ -233,8 +221,6 @@ export default {
     "Kehitin käytännön rakennustaitoja muurauksen, seinärakentamisen ja muottityön työpajoissa ja muunsin suunnitelmat käytännön rakenteiksi.",
   eventBkszcP3:
     "Toteutin useita talopiirustusprojekteja mittakaava- ja mitoitusstandardeja käyttäen ja hyödynsin ArchiCADia rakenteiden mallintamiseen, määrälaskentaan ja kuormituspisteiden laskemiseen.",
-  eventBkszcP4:
-    "Valmistuin kesäkuussa 2016 arvosanalla 69 %, mikä osoittaa vahvan teoreettisen ja käytännön osaamisen.",
 
   /* Skills & Tools */
 
@@ -250,10 +236,8 @@ export default {
     "Etsimässä opasta digitaalisen viidakon halki seuraavaan projektiisi tai uutta tiiminjäsentä? Olipa kyseessä mullistava idea, yhteinen seikkailu tai kutkuttava mahdollisuus, olen valmis tutkimaan. Otetaan yhteyttä ja luodaan yhdessä jotain villiä!",
   contactBtnEmail: "Lähetä sähköpostia",
   contactBtnLinkedIn: "LinkedIn",
-
-  /* Esikansikuva */
-  coverGreeting: "Hei, olen {name}",
-  coverScroll: "Vieritä alas",
+  contactCopyEmail: "Kopioi sähköpostiosoite",
+  contactEmailCopied: "Sähköpostiosoite kopioitu",
 
   /* Alatunniste */
   footerJobTitle: "Full-Stack-kehittäjä",

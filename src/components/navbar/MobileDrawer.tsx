@@ -21,8 +21,10 @@ import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import { FormattedMessage, useIntl } from "react-intl";
 import { navLinks, partOnScreen } from "./navConstants";
 import { LanguageToggle } from "./LanguageToggle";
+import { QuickReadToggle } from "./QuickReadToggle";
 import { colors as lightColors } from "../../colors";
 import { useActiveNavLink } from "../../hooks/useActiveNavLink";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../../seo";
 
 type MobileDrawerProps = {
   open: boolean;
@@ -263,17 +265,17 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
       >
         {[
           {
-            href: "mailto:gaborulenius@gmail.com",
+            href: `mailto:${EMAIL}`,
             label: "Email",
             icon: <EmailRoundedIcon />,
           },
           {
-            href: "https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/",
+            href: LINKEDIN_URL,
             label: "LinkedIn",
             icon: <LinkedInIcon />,
           },
           {
-            href: "https://github.com/mobahug",
+            href: GITHUB_URL,
             label: "GitHub",
             icon: <GitHubIcon />,
           },
@@ -333,6 +335,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
           </IconButton>
           <LanguageToggle size="small" />
         </Stack>
+        <QuickReadToggle sx={{ alignSelf: "flex-start", ml: 1 }} />
       </Stack>
     </SwipeableDrawer>
   );

@@ -383,14 +383,12 @@
 
 /* Motion reduced: the stages collapse to their content, one still frame
    behind each. */
-@media (prefers-reduced-motion: reduce) {
-  .film-space {
-    height: 12vh;
-  }
+:root[data-motion="reduced"] .film-space {
+  height: 12vh;
+}
 
-  .film-section {
-    padding: 18vh 0;
-  }
+:root[data-motion="reduced"] .film-section {
+  padding: 18vh 0;
 }
 
 /* Where links land: a little above the middle of a block's hold (see
@@ -429,9 +427,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .film-portal-title {
-    position: static;
-    will-change: auto;
-  }
+:root[data-motion="reduced"] .film-portal-title {
+  position: static;
+  will-change: auto;
 }

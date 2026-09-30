@@ -3,9 +3,11 @@ import OpenInNewIcon from "@mui/icons-material/Launch";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkIcon from "@mui/icons-material/Work";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import TranslateIcon from "@mui/icons-material/Translate";
 import type { CSSProperties, ReactNode, Ref } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { assetUrl } from "../../utils/assets";
+import { experienceYears } from "../../utils/experience";
 import { Cue, Space } from "../film/FilmSection";
 import "./chapters.css";
 
@@ -13,6 +15,7 @@ const META_ITEMS = [
   { id: "aboutExperience", icon: <WorkIcon /> },
   { id: "aboutEducation", icon: <SchoolIcon /> },
   { id: "aboutLocation", icon: <LocationOnIcon /> },
+  { id: "aboutLanguages", icon: <TranslateIcon /> },
 ];
 
 const CAREER_STORY_URL =
@@ -61,7 +64,10 @@ const AboutChapter = ({ at, storyAt, ref }: AboutChapterProps) => {
                 <span className="about-meta-icon" aria-hidden="true">
                   {icon}
                 </span>
-                <FormattedMessage id={id} />
+                <FormattedMessage
+                  id={id}
+                  values={{ years: intl.formatNumber(experienceYears()) }}
+                />
               </li>
             ))}
           </ul>

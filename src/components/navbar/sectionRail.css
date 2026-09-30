@@ -242,12 +242,10 @@
     0 0 12px rgba(233, 220, 179, 0.6);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .section-rail,
-  .section-rail-children,
-  .section-rail::before,
-  .section-rail-label,
-  .section-rail-dot {
-    transition: none;
-  }
+:root[data-motion="reduced"] .section-rail,
+:root[data-motion="reduced"] .section-rail-children,
+:root[data-motion="reduced"] .section-rail::before,
+:root[data-motion="reduced"] .section-rail-label,
+:root[data-motion="reduced"] .section-rail-dot {
+  transition: none;
 }

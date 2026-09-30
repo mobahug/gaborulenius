@@ -5,7 +5,19 @@ const FINE_POINTER_QUERY = "(hover: hover) and (pointer: fine)";
 const matches = (query: string) =>
   typeof window !== "undefined" && window.matchMedia(query).matches;
 
-export const prefersReducedMotion = () => matches(REDUCED_MOTION_QUERY);
+/**
+ * The page runs in its reduced mode — stills instead of films, nothing held,
+ * no easing — when the system asks for reduced motion or the visitor chose
+ * quick read. index.html marks either on <html data-motion="reduced"> before
+ * the first paint; the stylesheets follow the same attribute.
+ */
+export const prefersReducedMotion = () =>
+  (typeof document !== "undefined" &&
+    document.documentElement.dataset.motion === "reduced") ||
+  matches(REDUCED_MOTION_QUERY);
+
+/** The system itself asks for reduced motion (quick read cannot be left). */
+export const systemPrefersReducedMotion = () => matches(REDUCED_MOTION_QUERY);
 
 /** Desktop compositions start at MUI's `md` breakpoint. */
 export const isWideLayout = () => matches(WIDE_LAYOUT_QUERY);

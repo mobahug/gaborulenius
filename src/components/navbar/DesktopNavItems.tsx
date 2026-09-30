@@ -7,6 +7,7 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import { useIntl } from "react-intl";
 import { LanguageToggle } from "./LanguageToggle";
+import { QuickReadToggle } from "./QuickReadToggle";
 import { colors as lightColors } from "../../colors";
 import { useActiveNavLink } from "../../hooks/useActiveNavLink";
 import { assetUrl } from "../../utils/assets";
@@ -24,7 +25,7 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
   const { requestActiveSection } = useActiveNavLink();
 
   // The sections are on the rail at the right edge (SectionRail); the bar
-  // keeps who this is, the language and the sound.
+  // keeps who this is, quick read, the language and the sound.
   return (
     <Box
       sx={{
@@ -69,6 +70,7 @@ const DesktopNavItems: React.FC<DesktopNavItemsProps> = ({
         </Box>
       </MuiLink>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <QuickReadToggle />
         <LanguageToggle />
         <IconButton
           color="inherit"

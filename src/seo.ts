@@ -2,11 +2,15 @@ import type { AppLocale } from "./i18n/messages";
 
 export const SITE_URL = "https://mobahug.github.io/gaborulenius/";
 export const SITE_NAME = "Gábor Ulenius Portfolio";
-export const SOCIAL_IMAGE_URL = `${SITE_URL}jungle.png`;
+/** The card shown where the address is shared (tools/social/render.mjs). */
+export const SOCIAL_IMAGE_URL = `${SITE_URL}social-card.jpg`;
+export const SOCIAL_IMAGE_WIDTH = 1200;
+export const SOCIAL_IMAGE_HEIGHT = 630;
 export const PROFILE_IMAGE_URL = `${SITE_URL}profile2-small.webp`;
 export const LINKEDIN_URL =
   "https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/";
 export const GITHUB_URL = "https://github.com/mobahug";
+export const EMAIL = "gaborulenius@gmail.com";
 export const TIETO_CAREERS_PROFILE_URL =
   "https://careers.tieto.com/career-story/2025-5/gabor-horvath-ulenius-a-non-traditional-journey-into-coding";
 
@@ -26,7 +30,8 @@ export const SEO_BY_LOCALE: Record<AppLocale, SeoContent> = {
       "Portfolio of Gábor Ulenius, Full-Stack Developer in Espoo, Finland specializing in healthcare data platforms, cloud delivery, web applications and AI solutions.",
     ogLocale: "en_US",
     ogLocaleAlternate: "fi_FI",
-    imageAlt: "Gábor Ulenius full-stack developer portfolio",
+    imageAlt:
+      "Gábor Ulenius, Full-Stack Developer in Espoo, Finland, on the jungle path of the portfolio’s opening film",
   },
   fi: {
     title:
@@ -35,7 +40,8 @@ export const SEO_BY_LOCALE: Record<AppLocale, SeoContent> = {
       "Gábor Uleniuksen portfolio: Espoossa toimiva Full-Stack-kehittäjä, jonka osaamista ovat terveysdata-alustat, pilvitoimitus, verkkosovellukset ja tekoäly.",
     ogLocale: "fi_FI",
     ogLocaleAlternate: "en_US",
-    imageAlt: "Gábor Uleniuksen full-stack-kehittäjän portfolio",
+    imageAlt:
+      "Gábor Ulenius, Full-Stack-kehittäjä Espoosta, portfolionsa viidakkopolun edessä",
   },
 };
 
@@ -79,13 +85,20 @@ export const getStructuredData = (locale: AppLocale) => {
         "@type": "Person",
         "@id": `${SITE_URL}#person`,
         name: "Gábor Ulenius",
-        alternateName: "Gábor Horváth-Ulenius",
+        // Every spelling a search may use: the CV (no accents), LinkedIn and
+        // the Tieto story (grave accents).
+        alternateName: [
+          "Gábor Horváth-Ulenius",
+          "Gabor Ulenius",
+          "Gabor Horvath-Ulenius",
+          "Gàbor Horvàth-Ulenius",
+        ],
         jobTitle: "Full-Stack Developer",
         description:
           "Espoo-based Full-Stack Developer at Tieto Caretech working on cloud-native healthcare data platforms, AI prototypes and reliable cloud delivery for major Nordic healthcare environments.",
         url: SITE_URL,
         image: PROFILE_IMAGE_URL,
-        email: "mailto:gaborulenius@gmail.com",
+        email: `mailto:${EMAIL}`,
         address: {
           "@type": "PostalAddress",
           addressLocality: "Espoo",

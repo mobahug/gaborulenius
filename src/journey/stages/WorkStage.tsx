@@ -42,6 +42,10 @@ const WorkList = ({ items, locale }: { items: Project[]; locale: string }) => (
               rel="noopener noreferrer"
             >
               <FormattedMessage id="buttonReadMore" />
+              {/* Which one, for screen readers and search engines. */}
+              <span className="sr-only">
+                : <FormattedMessage id={NODE_LABELS[id]} />
+              </span>
               <OpenInNewIcon aria-hidden="true" />
             </a>
           ) : (
