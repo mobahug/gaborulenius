@@ -237,6 +237,11 @@ export default {
   skillsCatMobileCloud: "Mobiili, kartat ja pilvi",
   skillsCatBackend: "Taustajärjestelmät",
   skillsCatTools: "Työkalut",
+  skillsCatAi: "Tekoäly ja koneoppiminen",
+  skillsCatFrontendMobile: "Käyttöliittymät ja mobiili",
+  skillsCatBackendApis: "Taustajärjestelmät ja rajapinnat",
+  skillsCatCloudDevOps: "Pilvi ja DevOps",
+  skillsCatTesting: "Testaus",
 
   /* Yhteydenotto */
   contactHeading: "Ota yhteyttä",

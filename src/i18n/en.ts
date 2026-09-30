@@ -235,6 +235,11 @@ export default {
   skillsCatMobileCloud: "Mobile, Maps & Cloud",
   skillsCatBackend: "Backend",
   skillsCatTools: "Tools",
+  skillsCatAi: "AI & ML",
+  skillsCatFrontendMobile: "Frontend & Mobile",
+  skillsCatBackendApis: "Backend & APIs",
+  skillsCatCloudDevOps: "Cloud & DevOps",
+  skillsCatTesting: "Testing",
 
   /* Contact section */
   contactHeading: "Let’s Connect",

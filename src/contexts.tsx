@@ -283,38 +283,45 @@ export const neuralStack = [
 ];
 
 /**
- * The skills a quick read leads with (the full list is below), grouped as
- * in the journey: what the About text names, and a few more of each kind.
+ * The skills a quick read leads with, grouped as on the CV, the AI work
+ * second: what the About text names, the AI work and its tools, testing.
  */
 export const keySkills = [
   {
-    id: "skillsCatFrontend",
-    items: ["React", "TypeScript", "Next.js", "GraphQL"],
+    id: "skillsCatFrontendMobile",
+    items: ["React", "Next.js", "React Native", "TypeScript", "Expo"],
   },
   {
-    id: "skillsCatBackend",
+    id: "skillsCatAi",
     items: [
-      "Node.js/Express",
-      "PostgreSQL",
-      "Elasticsearch",
-      "Azure Functions",
+      "Python",
+      "PyTorch",
+      "TransformerLens",
+      "GitHub Copilot",
+      "OpenAI Codex",
+      "Claude",
+      "Cursor",
     ],
   },
   {
-    id: "skillsCatMobileCloud",
-    items: ["React Native", "Expo", "Supabase", "Cloudflare Workers"],
+    id: "skillsCatBackendApis",
+    items: ["Node.js", "GraphQL", "PostgreSQL", "Elasticsearch"],
   },
   {
-    id: "skillsCatTools",
+    id: "skillsCatCloudDevOps",
     items: [
-      "Azure Cloud",
+      "Azure",
+      "AKS",
+      "Terraform",
       "Docker",
       "Kubernetes",
-      "Terraform",
-      "Helm",
       "Azure DevOps",
-      "Playwright",
+      "CI/CD",
     ],
+  },
+  {
+    id: "skillsCatTesting",
+    items: ["Playwright", "Jest", "Cypress", "Detox"],
   },
 ];
 
@@ -359,6 +366,19 @@ export const categories = [
       "Redis",
       "Elasticsearch",
       "GraphQL",
+    ],
+  },
+  {
+    id: "skillsCatAi",
+    items: [
+      "Python",
+      "PyTorch",
+      "TransformerLens",
+      "Pythia",
+      "GitHub Copilot",
+      "OpenAI Codex",
+      "Claude",
+      "Cursor",
     ],
   },
   {
@@ -410,7 +430,6 @@ export const categories = [
       "Jotai",
       "VS Code",
       "IntelliJ IDEA",
-      "Cursor",
       "Vim",
       "CLI",
       "Termux",
