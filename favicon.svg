@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120">
+  <defs>
+    <radialGradient id="blue" cx="0" cy="0" r="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0c2a78"/>
+      <stop offset="0.35" stop-color="#1f63f2"/>
+      <stop offset="0.72" stop-color="#4fc4ff"/>
+      <stop offset="1" stop-color="#1a5ad8"/>
+    </radialGradient>
+  </defs>
+  <g stroke="#070b16" stroke-width="3.2" stroke-linejoin="round" fill="url(#blue)">
+    <path d="M2 -3 C9 -28 33 -45 55 -42 C59 -31 53 -13 44 -3 C30 1 14 1 2 -1 Z"/>
+    <path d="M2 1 C19 2 39 6 44 17 C45 32 29 44 15 41 C6 35 2 21 2 5 Z"/>
+    <g transform="scale(-1 1)">
+      <path d="M2 -3 C9 -28 33 -45 55 -42 C59 -31 53 -13 44 -3 C30 1 14 1 2 -1 Z"/>
+      <path d="M2 1 C19 2 39 6 44 17 C45 32 29 44 15 41 C6 35 2 21 2 5 Z"/>
+    </g>
+  </g>
+  <g fill="#f3f7ff">
+    <circle cx="47" cy="-35" r="2"/>
+    <circle cx="51" cy="-27" r="1.8"/>
+    <circle cx="-47" cy="-35" r="2"/>
+    <circle cx="-51" cy="-27" r="1.8"/>
+  </g>
+  <ellipse cx="0" cy="2" rx="2.6" ry="15" fill="#0d0b0a"/>
+  <path d="M-1 -12 Q-6 -22 -11 -27 M1 -12 Q6 -22 11 -27" stroke="#0d0b0a" stroke-width="1.6" fill="none"/>
+</svg>
