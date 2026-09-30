@@ -94,7 +94,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
       <Box sx={{ display: "flex", justifyContent: "flex-end", px: 2, mb: 1 }}>
         <IconButton
           onClick={onClose}
-          aria-label="Close navigation menu"
+          aria-label={intl.formatMessage({ id: "navCloseMenu" })}
           sx={{
             color: textColor,
           }}

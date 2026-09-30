@@ -4,6 +4,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import type { ButtonGroupProps } from "@mui/material/ButtonGroup";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { useAtom } from "jotai";
+import { useIntl } from "react-intl";
 import { colors } from "../../colors";
 import { localeAtom } from "../../hooks/localeAtom";
 
@@ -16,6 +17,7 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
   sx,
   size = "small",
 }) => {
+  const intl = useIntl();
   const [locale, setLocale] = useAtom(localeAtom);
 
   const option = (value: "en" | "fi", label: string) => {
@@ -44,7 +46,7 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
   return (
     <ButtonGroup
       size={size}
-      aria-label="language switcher"
+      aria-label={intl.formatMessage({ id: "navLanguage" })}
       variant="outlined"
       sx={{
         backgroundColor: colors.btnBg,

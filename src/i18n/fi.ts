@@ -1,152 +1,162 @@
 export default {
   navHome: "Etusivu",
-  navAbout: "Tietoa",
+  navAbout: "Minusta",
   navProjects: "Projektit",
   navExperience: "Työkokemus",
-  navSkills: "Taidot",
+  navSkills: "Taidot ja työkalut",
   navSections: "Osiot",
   navShowParts: "Näytä osion {section} osat",
   navHideParts: "Piilota osion {section} osat",
-  navAboutMe: "Minusta",
+  navAboutMe: "Tietoa minusta",
   navAboutStory: "Tarinani",
   navNeural: "Neural Decompiler",
   navNeuralCase: "Tapaustutkimus",
   navNeuralMethod: "Menetelmä",
   navExplorer: "The Explorer",
   navExplorerMaps: "Offline-kartat",
-  navExplorerPrecision: "Kenttätarkkuus",
-  navExplorerCapture: "Kenttätallennus",
+  navExplorerPrecision: "Tarkkuus maastossa",
+  navExplorerCapture: "Kenttähavainnot",
   navExplorerCloud: "Pilvialusta",
-  navExplorerBuilt: "Miten se on rakennettu",
+  navExplorerBuilt: "Näin se on rakennettu",
   navHighlights: "Kohokohdat",
   navWorkProjects: "Työprojektit",
   navSkillsList: "Taidot",
   navTools: "Työkalut",
   navContact: "Ota yhteyttä",
+  navLanguage: "Kieli",
+  navCloseMenu: "Sulje valikko",
   buttonClose: "Sulje",
   headingSettings: "Asetukset",
-  quickRead: "Pikaluku",
-  quickReadOn: "Näytä kaikki yhdellä rauhallisella sivulla ilman elokuvaa",
+  quickRead: "Pikakatsaus",
+  quickReadOn: "Tärkeimmät asiat yhdellä sivulla ilman elokuvaa",
   quickReadOff: "Takaisin elokuvamatkaan",
-  /* ---------- Etu otsikot ---------- */
-  homeGreeting: "…Full-Stack-kehittäjä Espoosta.",
+  /* ---------- Pikakatsaus ---------- */
+  qrNote:
+    "Tärkeimmät asiat yhdellä sivulla. Koko tarina kerrotaan elokuvamatkassa.",
+  qrRole: "Full stack -kehittäjä Espoosta",
+  qrFilmJourney: "Elokuvamatka",
+  qrPersonalProjects: "Omat projektit",
+  /* ---------- Etusivu ---------- */
+  homeGreeting: "…full stack -kehittäjä Espoosta.",
   homeSubtitle:
-    "Töissä Tieto Caretechilla rakentamassa pilvinatiiveja terveysdata-alustoja, tekoälyprototyyppejä ja luotettavaa pilvitoimitusta.",
+    "Töissä Tieto Caretechillä: rakennan pilvinatiiveja terveysdata-alustoja ja tekoälyprototyyppejä sekä huolehdin luotettavasta pilvitoimituksesta.",
   homeBtnExplore: "Tutustu töihini",
   homeBtnDownloadCv: "Lataa CV:ni",
-  /* ---------- Minusta otsikot ---------- */
+  /* ---------- Minusta ---------- */
   aboutHeading: "Minusta",
   aboutBody:
-    "Osallistuin terveysdata-alustojen kehittämiseen Suomen suurimmille terveydenhuollon toimijoille parantaen datan saavutettavuutta <b>React</b>- ja <b>TypeScript</b>-käyttöliittymillä, <b>Node.js</b>-palveluilla, jaetuilla paketeilla ja <b>Azure</b>-infrastruktuurilla. Osaamiseeni kuuluvat myös <b>GraphQL</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b> ja pilvitoimitus. Työskentelin LLM-pohjaisten tekoälyprototyyppien parissa, mm. ICT Days -demon ja Uuden lastensairaalan diagnoosityökalun, joka nopeuttaa oireisiin perustuvia hakuja.",
-  aboutLocation: "Suomi, Espoo",
-  aboutEducation: "Hive Helsinki Alumni",
-  aboutExperience: "{years} vuotta työkokemusta",
+    "Olen kehittänyt terveysdata-alustoja Suomen suurimmille terveydenhuollon toimijoille ja parantanut datan saatavuutta <b>React</b>- ja <b>TypeScript</b>-käyttöliittymillä, <b>Node.js</b>-palveluilla, jaetuilla paketeilla ja <b>Azure</b>-infrastruktuurilla. Osaamiseeni kuuluvat myös <b>GraphQL</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b> ja pilvitoimitus. Olen työskennellyt LLM-pohjaisten tekoälyprototyyppien parissa, kuten ATK-päiville tehdyn demon ja Uudessa lastensairaalassa pilotoidun diagnostiikkatyökalun, joka nopeuttaa oireisiin perustuvia hakuja.",
+  aboutLocation: "Espoo, Suomi",
+  aboutEducation: "Hive Helsingin alumni",
+  aboutExperience: "{years} vuotta kokemusta ohjelmistokehityksestä",
   aboutLanguages:
     "Englanti (sujuva) · suomi (sujuva keskustelutaso) · unkari (äidinkieli)",
-  /* ---------- Projektien otsikot ---------- */
+  /* ---------- Työprojektit ---------- */
   projectHusDatalakeTitle:
     "Osallistun terveysdata-alustojen kehittämiseen, jotta potilasdata on reaaliaikaisesti saatavilla suurilla suomalaisilla terveydenhuollon toimijoilla.",
   projectMedicalPocTitle:
-    "Toimin avainroolissa tekoälyn proof of concept -toteutuksessa Helsingin Uudessa lastensairaalassa, auttaen kliinikoita löytämään olennaista tietoa nopeammin lääketieteellisistä asiakirjoista.",
+    "Minulla oli keskeinen rooli tekoälyn konseptitodistuksessa Helsingin Uudessa lastensairaalassa: se auttaa kliinikoita löytämään olennaisen tiedon lääketieteellisistä asiakirjoista nopeammin.",
   projectIctDaysTitle:
-    "Osana tiimiä vaikutin merkittävästi LLM-pohjaisen tekoälyratkaisun kehitykseen ATK-päivät -tapahtumaa varten, joka on Suomen suurin sote-IT-tilaisuus.",
+    "Osana tiimiä vaikutin merkittävästi LLM-pohjaisen tekoälyratkaisun kehittämiseen ATK-päiville, Suomen suurimpaan terveydenhuollon IT-tapahtumaan.",
   projectAnyhauTitle:
-    "Tein yhteistyötä vuoden 2022 Diili-voittajan kanssa uuden verkkoalustan lanseeraamiseksi lemmikkipalvelujen varaamiseen.",
-  /* ---------- Aputekstit ---------- */
+    "Lanseerasin yhdessä vuoden 2022 Diili-voittajan kanssa uuden alustan lemmikkipalvelujen verkkovarauksiin.",
+  /* ---------- The Explorer ---------- */
   projectHeading: "Projektit",
   projectExplorerTitle: "The Explorer",
   projectExplorerSummary:
-    "Mobiilisovellus syrjäisiin luonnonsuojelun kenttäretkiin: GPS-reitit, ekologiset alueet, media ja rakenteiset ympäristöhavainnot tallentuvat luotettavasti offline-tilassa myöhempää synkronointia ja tarkastelua varten.",
-  projectExplorerBringForward: "Tuo {title} eteen",
-  projectExplorerCapabilityTopoTitle: "Offline-topografiset kartat",
+    "Mobiilisovellus luonnonsuojelun kenttäretkille syrjäisillä alueilla: GPS-reitit, ekologiset vyöhykkeet, media ja rakenteiset ympäristöhavainnot tallentuvat luotettavasti ilman verkkoyhteyttä myöhempää synkronointia ja tarkastelua varten.",
+  projectExplorerBringForward: "Tuo eteen: {title}",
+  projectExplorerCapabilityTopoTitle: "Offline-maastokartat",
   projectExplorerCapabilityTopoBody:
-    "MapLibre + Protomaps/PMTiles mahdollistavat offline-topografiset kartat, ja Cloudflare R2/Workers toimittaa karttatiilet sekä aluekohtaiset lataukset kenttäkäyttöön.",
-  projectExplorerCapabilityPrecisionTitle: "Kenttätarkkuus",
+    "MapLibre ja Protomaps/PMTiles tuovat maastokartat käyttöön ilman verkkoyhteyttä, ja Cloudflare R2/Workers jakaa karttatiilet sekä maakohtaiset lataukset kenttäkäyttöön.",
+  projectExplorerCapabilityPrecisionTitle: "Tarkkuus maastossa",
   projectExplorerCapabilityPrecisionBody:
-    "Korkean tarkkuuden GPS tallentaa reittejä myös taustalla, ja WGS84-geodeettiset viivain- ja etäisyyslaskelmat välttävät karkeat kartta-arviot.",
-  projectExplorerCapabilityCaptureTitle: "Rakenteinen kenttätallennus",
+    "Tarkka GPS tallentaa retkireitit sekä sovelluksen ollessa auki että taustalla, ja WGS84-pohjaiset geodeettiset viivain- ja etäisyyslaskelmat välttävät karkeat kartta-arviot.",
+  projectExplorerCapabilityCaptureTitle: "Rakenteiset kenttähavainnot",
   projectExplorerCapabilityCaptureBody:
-    "Luonnonsuojeluun suunnatut lokit kattavat eläimet, kasvillisuuden, vesinäytteet, uhat, reittipisteet, kuvat, hyönteiset, äänimuistiinpanot, sään ja ekologiset alueet.",
+    "Luonnonsuojeluun suunnatut lokit kattavat eläimistön, kasvillisuuden, vesinäytteet, uhat, reittipisteet, kuvat, hyönteiset, äänimuistiinpanot, sään ja ekologiset vyöhykkeet.",
   projectExplorerCapabilityCloudTitle: "Pilvialusta",
   projectExplorerCapabilityCloudBody:
-    "Data pysyy käytettävissä offline-tilassa; yhteyden palatessa Supabase, Auth0 ja EAS-buildit tukevat synkronointia, turvallista pääsyä ja myöhempää tarkastelua.",
+    "Paikallinen data pysyy käytettävissä ilman verkkoyhteyttä; kun yhteys palaa, Supabase, Auth0 ja EAS-buildit huolehtivat synkronoinnista, turvallisesta pääsystä ja myöhemmästä tarkastelusta.",
   projectExplorerWhyHeading:
-    "Rakennettu syrjäiseen luonnonsuojelun kenttätyöhön",
-  projectExplorerDetailMobileHeading: "Syrjäinen kenttätallennus",
+    "Rakennettu luonnonsuojelun kenttätyöhön syrjäisillä alueilla",
+  projectExplorerDetailMobileHeading: "Tallennus syrjäisillä alueilla",
   projectExplorerDetailMobileItemOffline:
-    "Local-first-tallennus pitää aktiiviset ja arkistoidut retket, lokit, alueet, reittipisteet ja median käytettävissä myös ilman verkkoyhteyttä.",
+    "Local first -tallennus pitää käynnissä olevat ja arkistoidut retket, lokit, vyöhykkeet, reittipisteet ja median käytettävissä syrjäisillä alueilla ilman verkkoyhteyttä.",
   projectExplorerDetailMobileItemPrecision:
-    "Taustaseuranta tallentaa tarkkoja GPS-reittejä, merkitsee katkokset ja pysäytykset ilman virheellisiä yhdysviivoja sekä käyttää WGS84-geodeettisia mittauksia viivaimessa ja reittietäisyyksissä.",
+    "Taustaseuranta tallentaa tarkat GPS-reitit, merkitsee katkokset ja pysähdykset sen sijaan, että piirtäisi virheellisiä yhdysviivoja, ja käyttää WGS84-pohjaista geodeettista mittausta viivaimessa ja reittien etäisyyksissä.",
   projectExplorerDetailMobileItemCapture:
-    "Rakenteinen lokitus tukee eläimiä, kasvillisuutta, vettä ja hydrologiaa, uhkia, reittipisteitä, leiripaikkoja, kuvia, hyönteisiä, tageja, muistiinpanoja, säätä ja muokattavia lokitauluja.",
+    "Rakenteinen kirjaus kattaa eläimistön, kasvillisuuden, vedet ja hydrologian, uhat, reittipisteet, leiripaikat, kuvat, hyönteiset, tagit, muistiinpanot, säätiedot ja muokattavat lokitaulut.",
   projectExplorerDetailInfraHeading: "Infrastruktuuri",
   projectExplorerDetailInfraItemCloudflare:
-    "MapLibre-pohjakartat käyttävät Cloudflare R2/Workersin kautta toimitettuja Protomaps/PMTiles-karttatiiliä, topografista rinnevarjostusta, korkeuskäyriä ja offline-latausten hallintaa.",
+    "MapLibre-pohjakartat käyttävät Cloudflare R2/Workersin kautta jaettuja Protomaps/PMTiles-karttatiiliä, rinnevarjostusta, korkeuskäyriä ja offline-latausten hallintaa.",
   projectExplorerDetailInfraItemSupabase:
-    "Supabase tallentaa retkien datan, median, RLS-käytännöt, Edge Functionit, synkronointitilan, PMTiles-tokenit ja säätilannekuvat.",
+    "Supabase tallentaa retkien tiedot, median, RLS-käytännöt, Edge Functionit, synkronoinnin tilan, PMTiles-tunnisteet ja säätiedot.",
   projectExplorerDetailInfraItemRelease:
-    "Auth0 turvaa kirjautumisen ja pilvipääsyn, ja EAS hoitaa Android-julkaisubuildit sekä tuotantoympäristön muuttujat.",
+    "Auth0 suojaa kirjautumisen ja pääsyn pilvipalveluihin, ja EAS hoitaa Android-julkaisubuildit sekä tuotantoympäristön muuttujat.",
   projectExplorerDetailWebHeading: "Tarkastelu ja raportointi",
   projectExplorerDetailWebItemWorkspace:
-    "Read-only-verkkonäkymä säilyttää kenttähavaintojen alkuperän ja auttaa tiimejä tarkastelemaan synkronoituja retkiä, lokeja, reittejä, alueita, kuvia ja rakenteista metadataa.",
+    "Vain luku -tilassa toimiva verkkosovellus säilyttää kenttähavaintojen alkuperätiedot ja auttaa tiimejä tarkastelemaan synkronoituja retkiä, lokeja, reittejä, vyöhykkeitä, kuvia ja rakenteista metatietoa.",
   projectExplorerDetailWebItemReporting:
-    "Raportointinäkymä tukee karttatarkastelua, dashboardeja, GeoJSON/GPX/KML/CSV/ZIP-vientejä, tulostettavia raportteja, Auth0:ta, Supabasea, MapLibrea ja PMTilesia.",
+    "Raportointinäkymässä on karttatarkastelu, koontinäkymät, GeoJSON-, GPX-, KML-, CSV- ja ZIP-viennit sekä tulostettavat raportit; taustalla toimivat Auth0, Supabase, MapLibre ja PMTiles.",
   projectExplorerStackHeading: "Teknologiat",
-  projectExplorerScreenshotHomeTitle: "Aktiivinen retki",
+  projectExplorerScreenshotHomeTitle: "Käynnissä oleva retki",
   projectExplorerScreenshotHomeAlt:
-    "Explorerin etusivu aktiivisella retkikortilla, synkronointikehotteella ja kenttäyhteenvedolla",
-  projectExplorerScreenshotMapTrackingTitle: "Reaaliaikainen topokartta",
+    "Explorerin etusivu: käynnissä olevan retken kortti, synkronointikehote ja kenttäyhteenveto",
+  projectExplorerScreenshotMapTrackingTitle: "Reaaliaikainen maastokartta",
   projectExplorerScreenshotMapTracking:
-    "Explorerin karttanäkymä GPS-seurannalla, reitillä, aluepeitolla ja lokimerkinnöillä",
+    "Explorerin karttanäkymä: GPS-seuranta, reitti, vyöhykkeet ja lokimerkinnät",
   projectExplorerScreenshotMeasureTitle: "Geodeettinen viivain",
   projectExplorerScreenshotMeasureAlt:
-    "Explorerin etäisyysmittausnäkymä katkoviivasegmenteillä topografisen kartan päällä",
-  projectExplorerScreenshotLogTypeTitle: "Tieteellinen lokivalitsin",
+    "Explorerin etäisyysmittaus: katkoviivainen viivain maastokartan päällä",
+  projectExplorerScreenshotLogTypeTitle: "Tieteellisten lokien valitsin",
   projectExplorerScreenshotLogTypeAlt:
-    "Explorerin uuden lokin näkymä valittavilla tieteellisillä lokikategorioilla",
+    "Explorerin uusi loki: valittavat tieteelliset lokiluokat",
   projectExplorerScreenshotCustomizeTitle: "Muokattava lokitaulu",
   projectExplorerScreenshotCustomizeAlt:
-    "Explorerin asettelun muokkausnäkymä lokityyppien järjestämiseen ja piilottamiseen",
+    "Explorerin asettelun muokkaus: lokityyppien järjestäminen ja piilottaminen",
   projectExplorerScreenshotLogDetailsTitle: "Lokin tiedot ja sää",
   projectExplorerScreenshotLogDetailsAlt:
-    "Explorerin lokin tietonäkymä eläinhavainnon attribuuteilla, koordinaateilla, tageilla ja säädatalla",
-  projectExplorerScreenshotLogsOverviewTitle: "Kronologiset lokit",
+    "Explorerin lokin tiedot: eläinhavainnon ominaisuudet, koordinaatit, tagit ja säätiedot",
+  projectExplorerScreenshotLogsOverviewTitle: "Lokit aikajärjestyksessä",
   projectExplorerScreenshotLogsOverview:
-    "Explorerin kronologinen lokinäkymä kenttämerkinnöillä",
+    "Explorerin kenttämerkinnät aikajärjestyksessä",
   projectExplorerScreenshotExpeditionsTitle: "Retkikirjasto",
   projectExplorerScreenshotExpeditionsAlt:
-    "Explorerin retkilista aktiivisilla ja päättyneillä retkikorteilla",
+    "Explorerin retkilista: käynnissä olevat ja päättyneet retket",
   projectExplorerScreenshotProfileTitle: "Tutkijaprofiili",
   projectExplorerScreenshotProfileAlt:
-    "Explorerin profiilinäkymä tutkijatilastoilla ja kenttätyöyhteenvedolla",
-  projectExplorerScreenshotMapStoppedTitle: "Offline-karttakehote",
+    "Explorerin profiili: tutkijan tilastot ja kenttätyön yhteenveto",
+  projectExplorerScreenshotMapStoppedTitle: "Offline-kartan kehote",
   projectExplorerScreenshotMapStopped:
-    "Explorerin karttanäkymä pysäytetyllä GPS:llä ja offline-karttakehotteella",
-  projectExplorerScreenshotLogsSelectionTitle: "Vientivalinta",
+    "Explorerin karttanäkymä: GPS pysäytetty ja kehote ladata kartta offline-käyttöön",
+  projectExplorerScreenshotLogsSelectionTitle: "Vietävien valinta",
   projectExplorerScreenshotLogsSelection:
-    "Explorerin lokien vientivalinnan näkymä",
-  projectExplorerScreenshotLogsRecordsTitle: "Retkilokikortit",
+    "Explorerin näkymä vietävien lokien valintaan",
+  projectExplorerScreenshotLogsRecordsTitle: "Retken lokikortit",
   projectExplorerScreenshotLogsRecords:
-    "Explorerin retkilokit kuva- ja havaintomerkinnöillä",
+    "Explorerin retken lokit: kuva- ja havaintomerkinnät",
   buttonReadMore: "Lue lisää",
-  noLinkAvailable: "(ei linkkiä saatavilla)",
+  noLinkAvailable: "(ei linkkiä)",
 
+  qualificationLabel: "Työkokemus ja koulutus",
+  qualificationTabs: "Työkokemuksen näkymät",
   qualificationTabHighlights: "Kohokohdat",
   qualificationTabTimeline: "Aikajana",
   qualificationHeadingHighlights: "Ammatilliset kohokohdat",
   qualificationHeadingTimeline: "Koko aikajana",
 
-  /* Tapahtumien otsikot + ajankohdat */
-  eventTietoCaretechTitle: "Full-Stack-kehittäjä – Tieto Caretech",
-  eventTietoCaretechWhen: "Espoo, 2023 – Nykyhetki",
+  /* Tapahtumien otsikot ja ajankohdat */
+  eventTietoCaretechTitle: "Full stack -kehittäjä – Tieto Caretech",
+  eventTietoCaretechWhen: "Espoo, 2023 – nykyään",
 
-  eventAnyhauTitle: "Full-Stack-kehittäjä – Anyhau Oy",
+  eventAnyhauTitle: "Full stack -kehittäjä – Anyhau Oy",
   eventAnyhauWhen: "Espoo, 2022 – 2023",
 
   eventHiveTitle: "Ohjelmistokehittäjä – Hive Helsinki",
   eventHiveWhen: "Helsinki, 2021 – 2023",
 
-  eventSataEduTitle: "Suomen kielikoulu – SataEdu",
+  eventSataEduTitle: "Suomen kielen opinnot – SataEdu",
   eventSataEduWhen: "Rauma, 2016 – 2017",
 
   eventTekijaRentTitle: "Telineasentaja – Tekijä Rent Oy",
@@ -155,10 +165,10 @@ export default {
   eventKotipalveluTitle: "Kotisiivooja – Kotipalvelu Ykköset Oy",
   eventKotipalveluWhen: "Espoo, 2019 – 2020",
 
-  eventLumundooTitle: "Lumundoo-perustaja – Yksityisyrittäjä",
+  eventLumundooTitle: "Lumundoon perustaja – yksityisyrittäjä",
   eventLumundooWhen: "Espoo, 2018 – 2019",
 
-  eventAaltovoimaTitle: "Muutto-/Kotisiivooja – Aaltovoima Oy",
+  eventAaltovoimaTitle: "Muuttotyöntekijä ja kotisiivooja – Aaltovoima Oy",
   eventAaltovoimaWhen: "Espoo, 2018 – 2019",
 
   eventEnersenseTitle: "Loppusiivooja – Enersense International Oyj / VMP Oy",
@@ -170,78 +180,77 @@ export default {
   eventBkszcTitle: "Rakennusteknikko – BKSZC Schulek Frigyes",
   eventBkszcWhen: "Budapest, 2011 – 2016",
 
-  /* Tapahtuminen yksityiset otsikot */
+  /* Tapahtumien kuvaukset */
   eventTietoCaretechP1:
-    "Työskentelen full stack -kehittäjänä terveydenhuollossa rakentaen pilvinatiiveja tuotteita, jotka helpottavat potilasdatan hakua, ylläpitoa ja toimitusta suurissa pohjoismaisissa terveydenhuollon ympäristöissä.",
+    "Työskentelen full stack -kehittäjänä terveydenhuollon alalla ja rakennan pilvinatiiveja tuotteita, jotka helpottavat potilasdatan hakua, ylläpitoa ja toimittamista suurissa pohjoismaisissa terveydenhuollon ympäristöissä.",
   eventTietoCaretechP2:
-    "Päivittäinen työni kattaa frontend- ja backend-kehityksen, dataintegraatiot, pilvi-infrastruktuurin, julkaisuautomaation, valvonnan ja ketterän Scrum-toimituksen.",
-  eventTietoCaretechNotable: "Merkittäviä saavutuksia:",
+    "Päivittäinen työni kattaa frontend- ja backend-kehityksen, dataintegraatiot, pilvi-infrastruktuurin, julkaisuautomaation ja valvonnan ketterässä Scrum-tiimissä.",
+  eventTietoCaretechNotable: "Merkittävimmät panokseni:",
   eventTietoCaretechB1:
-    "Kehitin LLM-pohjaisia AI-prototyyppejä, mukaan lukien ICT Days -demo ja Uuden lastensairaalan diagnoosityökalun proof of concept.",
+    "Kehitin LLM-pohjaisia tekoälyprototyyppejä, kuten demon ATK-päiville ja diagnostiikkaa tukevan konseptitodistuksen Uuteen lastensairaalaan.",
   eventTietoCaretechB2:
-    "Tein merkittäviä muutoksia potilaskäyttöliittymiin, taustapalveluihin ja jaettuihin työkaluihin potilasdatan hakua, integraatioita, julkaisuja ja valvontaa varten.",
+    "Tein laajasti kehitystyötä potilaille suunnattuihin verkkosovelluksiin, taustapalveluihin ja jaettuihin työkaluihin potilasdatan hakua, integraatioita, julkaisuja ja valvontaa varten.",
   eventTietoCaretechB3:
-    "Toteutin pilvi-infrastruktuurin ja tuotantoympäristöjen muutoksia QA- ja tuotantoympäristöihin, kuten alustapäivityksiä, liikenteen reititystä, hakupalveluiden ylläpitoa, yksityisverkkoasetuksia ja salaisuuksien rotaatiota.",
+    "Toteutin pilvi-infrastruktuurin ja tuotannon ylläpidon muutoksia QA- ja tuotantoympäristöihin, kuten alustapäivityksiä, liikenteen reititystä, hakupalveluiden ylläpitoa, yksityisverkkoja ja salaisuuksien säännöllistä vaihtoa.",
   eventAnyhauP1:
-    "Rakensin uuden verkkosovelluksen lemmikkipalvelujen varaamiseen yhteistyössä vuoden 2022 Diili-voittajan kanssa. Alusta (Next.js, Material UI, MongoDB) mahdollistaa palveluntarjoajien listaukset ja asiakkaiden verkkomaksut.",
+    "Rakensin alusta alkaen uuden verkkosovelluksen lemmikkipalvelujen varaamiseen yhteistyössä vuoden 2022 Diili-voittajan kanssa (Next.js, Material UI, MongoDB). Alustalla palveluntarjoajat voivat listata palvelunsa ja asiakkaat varata ja maksaa ne verkossa.",
   eventHiveP1:
-    "Suoritin projektipohjaisen ohjelman, joka painottui tiimityöhön, ongelmanratkaisuun ja itseohjautuvaan oppimiseen, kehittäen yhteistyö- ja kriittisen ajattelun taitojani oikeissa ohjelmistoprojekteissa.",
+    "Suoritin projektipohjaisen ohjelman, joka painottui tiimityöhön, ongelmanratkaisuun ja itseohjautuvaan oppimiseen, ja vahvistin yhteistyötaitojani, kriittistä ajatteluani ja sopeutumiskykyäni oikeissa ohjelmistoprojekteissa.",
   eventSataEduP1:
-    "Suoritin TE-toimiston SataEdu-integraatiokoulutuksen (A2), joka sisälsi päivittäistä suomen kielen, työelämän sanaston ja yhteiskuntataitojen opetusta.",
+    "Suoritin TE-toimiston SataEdu-kotoutumiskoulutuksen (A2-taso), jossa opiskelimme päivittäin käytännön suomea, työelämän sanastoa ja vuorovaikutustaitoja.",
   eventSataEduP2:
-    "Sain A2-todistuksen ja jatkoin itseopiskelua saavuttaakseni sujuvan keskustelutason.",
+    "Sain A2-tason todistuksen ja jatkoin opiskelua itsenäisesti, kunnes saavutin sujuvan keskustelutason.",
   /* ─── Tekijä Rent ─────────────────────── */
   eventTekijaRentP1:
-    "Johdin telineasentajatiimiä – delegoin tehtäviä, annoin käytännön ohjausta ja koordinoin työnkulkuja tiukkojen metrotyömaan aikataulujen saavuttamiseksi. Vastasin myös telinevaraston järjestämisestä sekä telineiden kokonaisesta pystytyksestä ja purusta Soukan asemaprojektissa varmistaen tehokkaan ja turvallisen toteutuksen.",
+    "Johdin telineasentajien tiimiä: jaoin tehtäviä, ohjasin työtä käytännössä ja koordinoin työvaiheita, jotta metrotyömaan tiukat aikataulut pitivät. Vastasin myös telinevarastosta sekä telineiden pystytyksestä ja purusta koko Soukan aseman työmaalla tehokkaasti ja turvallisesti.",
 
   /* ─── Kotipalvelu Ykköset ─────────────── */
   eventKotipalveluP1:
-    "Työskentelin kokopäiväisenä kotisiivoojana Kotipalvelu Ykkösillä elokuusta 2019 kesäkuuhun 2020 tehden perusteellista siivousta, tilojen organisointia ja ylläpitäen moitteetonta hygieniaa yksityiskodeissa.",
+    "Työskentelin kokopäiväisenä kotisiivoojana Kotipalvelu Ykkösillä elokuusta 2019 kesäkuuhun 2020: siivosin perusteellisesti, järjestin asiakkaiden koteja ja huolehdin moitteettomasta hygieniasta.",
 
   /* ─── Lumundoo ────────────────────────── */
   eventLumundooP1:
-    "Perustin ja pyöritin dropshipping-yrityksen Espoossa (12/2018 – 12/2019), vastaten asiakaspalvelusta, varastosta ja verkkosivuston hallinnasta. Neuvottelin vaikuttajayhteistyöt, koordinoin postitukset ja markkinointimateriaalit sekä kartutin koodausosaamista rakentamalla ja ylläpitämällä omaa verkkokauppaa.",
+    "Perustin ja pyöritin dropshipping-yritystä Espoossa (12/2018–12/2019) ja vastasin kaikesta asiakaspalvelusta varastoon ja verkkosivuston ylläpitoon. Neuvottelin yhteistyöt vaikuttajien kanssa, koordinoin postitukset ja markkinointimateriaalit sekä hankin koodauksen perustaidot rakentamalla ja ylläpitämällä verkkokauppaani.",
 
   /* ─── Aaltovoima ──────────────────────── */
   eventAaltovoimaP1:
-    "Työskentelin osa-aikaisena muuttajana ja kotisiivoojana Aaltovoima Oy:ssä (06/2018 – 08/2019) tarjoten sujuvia muutto- ja siivouspalveluja Espoossa ja Helsingissä. Vastasin pakkaamisesta, lastauksesta, kuljetuksesta ja purkamisesta huolellisesti sekä tein perusteelliset siivoukset ennen ja jälkeen muuton, ylittäen asiakkaiden odotukset.",
+    "Työskentelin osa-aikaisena muuttotyöntekijänä ja kotisiivoojana Aaltovoima Oy:ssä (06/2018–08/2019) Espoossa ja Helsingissä. Hoidin pakkaamisen, lastauksen, kuljetuksen ja purkamisen huolellisesti ja siivosin perusteellisesti ennen muuttoa ja sen jälkeen, asiakkaiden odotukset ylittäen.",
 
   /* ─── Enersense / VMP ─────────────────── */
   eventEnersenseP1:
-    "Suoritin tarkkaa loppusiivousta Olkiluoto 3 -ydinvoimalan tiloissa, laitteissa ja tukijärjestelmissä varmistaen tiukkojen dekontaminaatio- ja hygieniavaatimusten täyttymisen. Noudatin STUKin säteilyturvamääräyksiä, käytin tarvittavia suojavarusteita, pidin tarkat siivouslokit ja tein yhteistyötä huoltotiimien kanssa aikataulun säilyttämiseksi.",
+    "Tein tarkkaa loppusiivousta Olkiluoto 3 -ydinvoimalaitoksen tiloissa, laitteissa ja tukijärjestelmissä tiukkojen dekontaminaatiovaatimusten mukaisesti. Noudatin STUKin säteilyturvallisuusmääräyksiä, käytin vaadittuja suojavarusteita, pidin tarkkaa siivouskirjanpitoa ja tein yhteistyötä huoltotiimien kanssa, jotta seisokin aikataulu piti.",
 
   /* ─── Deltamarin ──────────────────────── */
   eventDeltamarinP1:
-    "Suoritin neljän kuukauden harjoittelun Deltamarinilla, seuraten kokeneita laivasuunnittelijoita ja omaksuen työprosessit projektitehtävien kautta. Tarkastelin piirustuksia, osallistuin suunnittelukatseluihin ja luonnostelin AutoCADilla yksinkertaisia komponentteja, luoden vahvan pohjan laivasuunnittelulle ja CAD-osaamiselle.",
+    "Suoritin neljän kuukauden harjoittelun Deltamarinilla, jossa seurasin kokeneiden laivasuunnittelijoiden työtä ja opin suunnittelun työtavat. Tarkastin piirustuksia, osallistuin suunnittelukatselmuksiin ja piirsin AutoCADilla yksinkertaisia komponentteja, mikä antoi vankan pohjan laivasuunnittelun periaatteisiin ja CAD-työskentelyyn.",
 
   /* ─── BKSZC Schulek ──────────────────── */
   eventBkszcP1:
-    "Suoritin viiden vuoden kaksikielisen talonrakennustekniikan ohjelman BKSZC Schulek Frigyesissä (2011–2016), oppien teknisen piirustuksen perusteet ja arkkitehtipiirustusten laatimisen.",
+    "Suoritin viisivuotisen kaksikielisen talonrakennustekniikan koulutuksen BKSZC Schulek Frigyesissä (2011–2016) ja opin teknisen piirustuksen perusteet sekä arkkitehtisuunnitelmien laatimisen.",
   eventBkszcP2:
-    "Kehitin käytännön rakennustaitoja muurauksen, seinärakentamisen ja muottityön työpajoissa ja muunsin suunnitelmat käytännön rakenteiksi.",
+    "Kartutin käytännön rakennustaitoja muuraus-, seinänrakennus- ja muottityöpajoissa ja toteutin piirustuksia rakenteiksi työmaalla.",
   eventBkszcP3:
-    "Toteutin useita talopiirustusprojekteja mittakaava- ja mitoitusstandardeja käyttäen ja hyödynsin ArchiCADia rakenteiden mallintamiseen, määrälaskentaan ja kuormituspisteiden laskemiseen.",
+    "Laadin useita talopiirustuksia oikeassa mittakaavassa ja mitoituksessa sekä käytin ArchiCADia rakennemallinnukseen, määrälaskentaan ja kuormituslaskelmiin.",
 
-  /* Skills & Tools */
-
+  /* Taidot ja työkalut */
   skillsToolsHeading: "Taidot ja työkalut",
-  skillsCatFrontend: "Frontend kehitys",
+  skillsCatFrontend: "Frontend-kehitys",
   skillsCatMobileCloud: "Mobiili, kartat ja pilvi",
   skillsCatBackend: "Taustajärjestelmät",
   skillsCatTools: "Työkalut",
 
-  /* Yhteydenotto-osio */
+  /* Yhteydenotto */
   contactHeading: "Ota yhteyttä",
   contactIntro:
-    "Etsimässä opasta digitaalisen viidakon halki seuraavaan projektiisi tai uutta tiiminjäsentä? Olipa kyseessä mullistava idea, yhteinen seikkailu tai kutkuttava mahdollisuus, olen valmis tutkimaan. Otetaan yhteyttä ja luodaan yhdessä jotain villiä!",
+    "Etsitkö opasta digitaalisen viidakon halki seuraavaan projektiisi tai uutta tiiminjäsentä? Olipa kyseessä mullistava idea, yhteinen seikkailu tai kiinnostava mahdollisuus, lähden mielelläni mukaan. Ollaan yhteydessä ja luodaan yhdessä jotain villiä!",
   contactBtnEmail: "Lähetä sähköpostia",
   contactBtnLinkedIn: "LinkedIn",
   contactCopyEmail: "Kopioi sähköpostiosoite",
   contactEmailCopied: "Sähköpostiosoite kopioitu",
 
   /* Alatunniste */
-  footerJobTitle: "Full-Stack-kehittäjä",
-  footerNavAbout: "Tietoa",
+  footerJobTitle: "Full stack -kehittäjä",
+  footerNavAbout: "Minusta",
   footerNavProjects: "Projektit",
   footerNavContact: "Ota yhteyttä",
   footerCopyright: "© {year} Gábor Ulenius. Kaikki oikeudet pidätetään",
@@ -252,17 +261,17 @@ export default {
   linkThumbnailDescriptionTietoCaretechHus:
     "Ratkaisu mahdollistaa suurten tietomassojen analysoinnin terveydenhuoltoa koskevien ennusteiden ja merkittävien innovaatioiden luomiseksi.",
   linkThumbnailTitleTietoCaretechPoc:
-    "Generatiivinen tekoäly auttaa kliinikoita päätöksenteossa",
+    "Generatiivisen tekoälyn pilotti auttaa Uuden lastensairaalan kliinikoita",
   linkThumbnailDescriptionTietoCaretechPoc:
-    "LLM-pohjainen pilotti auttaa Helsingin Uuden lastensairaalan kliinikoita löytämään oikean tiedon nopeammin lääketieteellisistä asiakirjoista.",
+    "LLM-pohjainen pilotti auttaa Helsingin Uuden lastensairaalan kliinikoita löytämään oikean tiedon lääketieteellisistä asiakirjoista nopeammin.",
   linkThumbnailTitleAnyhau: "Anyhau",
   linkThumbnailDescriptionAnyhau: "Löydä parhaat palvelut lemmikillesi",
   linkThumbnailTitleHive: "Hive Helsinki",
   linkThumbnailDescriptionHive:
-    "Hive Helsinki on uudenlainen koodauskoulu, joka valmistaa sinua tulevaisuudenkestävään uraan yhteistyöhön perustuvan, projektipohjaisen oppimisen avulla.",
-  linkThumbnailTitleGabor: "Epätavanomainen matka koodaukseen ja tekoälyyn",
+    "Hive Helsinki on uudenlainen koodikoulu, joka valmistaa sinut tulevaisuudenkestävään uraan yhteisöllisen ja projektipohjaisen oppimisen avulla.",
+  linkThumbnailTitleGabor: "Epätavallinen polku koodauksen ja tekoälyn pariin",
   linkThumbnailDescriptionGabor:
-    "Gábor kertoo urapolustaan ohjelmoinnin pariin ja AI-ratkaisuista Tieto Caretechilla.",
+    "Gábor kertoo, miten hän siirtyi ohjelmistokehitykseen ja rakentaa nyt tekoälyratkaisuja Tieto Caretechillä.",
   storyRead: "Lue tarina",
   linkThumbnailReadingTime: "lukuaika {minutes} min",
   /* ---------- Matka: Neural Decompiler ---------- */
@@ -270,18 +279,18 @@ export default {
   neuralTitle: "Neural Decompiler",
   neuralTag: "Oma tutkimusprojekti · Mekanistinen tulkittavuus",
   neuralSummary:
-    "Mekanistisen tulkittavuuden tutkimusprojekti, joka selvittää, voiko transformer-kielimallin oppimat laskutoimitukset muuttaa yhä täydellisemmiksi, kausaalisiksi ja ihmisen ymmärrettäviksi selityksiksi.",
+    "Mekanistisen tulkittavuuden tutkimusprojekti, joka selvittää, voiko transformer-kielimallin oppiman laskennan muuttaa yhä täydellisemmiksi, kausaalisiksi ja ihmiselle ymmärrettäviksi selityksiksi.",
   neuralCaseStudy:
-    "Nykyinen tapaustutkimus seuraa, miten Pythia-70M valitsee monikkomuotoisen substantiivin lukusanan jälkeen: signaali jäljitetään vihjesanan koodauksesta tarkkaavaisuuspäiden ja MLP-neuronien kautta mallin tulosteeseen.",
-  neuralMethodHeading: "Miten tutkimus etenee",
+    "Meneillään oleva tapaustutkimus seuraa, miten Pythia-70M valitsee monikkomuotoisen substantiivin lukusanan jälkeen: signaali jäljitetään vihjesanan koodauksesta tarkkaavaisuuspäiden ja MLP-neuronien kautta mallin tulosteeseen.",
+  neuralMethodHeading: "Näin tutkimus etenee",
   neuralMethod1:
-    "Pieniä, toistettavia kokeita avoimilla Pythia-malleilla. Jokaisen kokeen kontrollit, kilpailevat selitykset ja onnistumiskriteerit kirjataan ennakkoon ennen ajoa.",
+    "Pieniä, toistettavia kokeita avoimilla Pythia-malleilla; jokaisen kokeen kontrollit, kilpailevat selitykset ja onnistumiskriteerit rekisteröidään ennen kuin koe ajetaan.",
   neuralMethod2:
     "Ennusteet lukitaan ennen kuin vahvistusaineistoon kosketaan, ja jokainen johtopäätös rajataan niihin malleihin, tehtäviin, kehotteisiin ja interventioihin, joita todella testattiin.",
   neuralMethod3:
     "Negatiiviset ja ristiriitaiset tulokset säilytetään väiterekisterissä ja poikkeamarekisterissä sen sijaan, että ne jätettäisiin hiljaa pois.",
   neuralRepoLink: "Tutustu tutkimukseen GitHubissa",
-  /* ---------- Matka: The Explorer / työ ---------- */
+  /* ---------- Matka: The Explorer ja työ ---------- */
   projectExplorerTag: "Harrastusprojekti · Mobiilisovellus kenttätyöhön",
   projectWorkHeading: "Työprojektit",
   workNodeHus: "Terveysdata-alustat",
@@ -290,6 +299,6 @@ export default {
   workNodeAnyhau: "Anyhaun varausalusta",
   /* ---------- Navigaation painikkeet ---------- */
   navAudioPlay: "Toista viidakon ääniä",
-  navAudioPause: "Keskeytä viidakon äänet",
+  navAudioPause: "Pysäytä viidakon äänet",
   navMenu: "Avaa valikko",
 } as const;

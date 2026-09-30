@@ -164,7 +164,7 @@ export const NavBar: React.FC = () => {
                   <MuiLink href="#home" underline="none">
                     <Avatar
                       src={assetUrl("profile-160.webp")}
-                      alt="Profile"
+                      alt={intl.formatMessage({ id: "navHome" })}
                       sx={{
                         width: 40,
                         height: 40,

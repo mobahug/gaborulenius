@@ -23,11 +23,19 @@ export default {
   navSkillsList: "Skills",
   navTools: "Tools",
   navContact: "Contact",
+  navLanguage: "Language",
+  navCloseMenu: "Close menu",
   buttonClose: "Close",
   headingSettings: "Settings",
   quickRead: "Quick read",
-  quickReadOn: "Show everything on one calm page, without the film",
+  quickReadOn: "The essentials on one page, without the film",
   quickReadOff: "Back to the film journey",
+  /* ---------- Quick read ---------- */
+  qrNote:
+    "The essentials on one page. The whole story is told in the film journey.",
+  qrRole: "Full-Stack Developer in Espoo, Finland",
+  qrFilmJourney: "Film journey",
+  qrPersonalProjects: "Personal projects",
   /* ---------- Home titles ---------- */
   homeGreeting: "…a Full-Stack Developer based in Espoo.",
   homeSubtitle:
@@ -38,7 +46,7 @@ export default {
   aboutHeading: "About Me",
   aboutBody:
     "Contributed to healthcare data platforms for some of Finland’s largest healthcare providers, improving data accessibility through <b>React</b>/<b>TypeScript</b> UIs, <b>Node.js</b> services, shared packages, and <b>Azure</b> infrastructure. Proficient in <b>GraphQL</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b>, and cloud delivery. Worked on LLM-based AI prototypes, including a demo at ICT Days and a diagnostic tool piloted at the New Children’s Hospital for faster symptom-based searches.",
-  aboutLocation: "Finland, Espoo",
+  aboutLocation: "Espoo, Finland",
   aboutEducation: "Hive Helsinki Alumni",
   aboutExperience: "{years} years of professional experience",
   aboutLanguages:
@@ -129,6 +137,8 @@ export default {
     "Explorer expedition logs with photo and observation records",
   buttonReadMore: "Read More",
   noLinkAvailable: "(no link available)",
+  qualificationLabel: "Experience and qualifications",
+  qualificationTabs: "Experience views",
   qualificationTabHighlights: "Highlights",
   qualificationTabTimeline: "Timeline",
   qualificationHeadingHighlights: "Professional Highlights",

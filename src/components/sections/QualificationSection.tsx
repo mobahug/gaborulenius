@@ -65,6 +65,7 @@ const SPLIT_QUERY = "(min-width: 900px)";
  * tabs never moves the block, or the page.
  */
 const QualificationSection = () => {
+  const intl = useIntl();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const split = useMediaQuery(SPLIT_QUERY, { noSsr: true });
@@ -147,7 +148,7 @@ const QualificationSection = () => {
       <Paper
         component="section"
         ref={trailRef}
-        aria-label="Experience and qualifications"
+        aria-label={intl.formatMessage({ id: "qualificationLabel" })}
         className={`trail-panel trail-panel--overlay${split ? " trail-panel--split" : ""}`}
         sx={{
           pt: 0,
@@ -179,7 +180,7 @@ const QualificationSection = () => {
             <Tabs
               value={tabIndex}
               onChange={handleTabChange}
-              aria-label="Qualification Tabs"
+              aria-label={intl.formatMessage({ id: "qualificationTabs" })}
               centered
               variant="fullWidth"
               sx={{
