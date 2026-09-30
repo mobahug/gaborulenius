@@ -49,8 +49,7 @@ export default {
   aboutLocation: "Espoo, Finland",
   aboutEducation: "Hive Helsinki Alumni",
   aboutExperience: "{years} years of professional experience",
-  aboutLanguages:
-    "English (fluent) · Finnish (fluent conversational) · Hungarian (native)",
+  aboutLanguages: "English (fluent) · Finnish (fluent) · Hungarian (native)",
   /* ---------- Project titles ---------- */
   projectHusDatalakeTitle:
     "Contributing to healthcare data platforms for real-time patient data access at major Finnish healthcare providers.",
@@ -290,6 +289,7 @@ export default {
   neuralRepoLink: "Explore the research on GitHub",
   /* ---------- Journey: The Explorer / Work ---------- */
   projectExplorerTag: "Hobby project · Mobile fieldwork app",
+  projectExplorerPlayLink: "The Explorer on Google Play",
   projectWorkHeading: "Work projects",
   workNodeHus: "Healthcare data platforms",
   workNodePoc: "Clinical AI proof of concept",

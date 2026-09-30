@@ -7,13 +7,21 @@ export const SITE_NAME = "Gábor Ulenius Portfolio";
 export const SOCIAL_IMAGE_URL = `${SITE_URL}social-card.jpg?v=2`;
 export const SOCIAL_IMAGE_WIDTH = 1200;
 export const SOCIAL_IMAGE_HEIGHT = 630;
-export const PROFILE_IMAGE_URL = `${SITE_URL}profile2-small.webp`;
+const PROFILE_IMAGE_URL = `${SITE_URL}profile2-small.webp`;
 export const LINKEDIN_URL =
   "https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/";
 export const GITHUB_URL = "https://github.com/mobahug";
 export const EMAIL = "gaborulenius@gmail.com";
 export const NEURAL_REPOSITORY_URL =
   "https://github.com/mobahug/neural-decompiler";
+export const EXPLORER_PLAY_URL =
+  "https://play.google.com/store/apps/details?id=com.mobahugstudio.theexplorer";
+
+/** The CV in the language the page is read in (public/). */
+export const CV_FILES: Record<AppLocale, string> = {
+  en: "Gabor_Ulenius_CV_EN.pdf",
+  fi: "Gabor_Ulenius_CV_FI.pdf",
+};
 export const TIETO_CAREERS_PROFILE_URL =
   "https://careers.tieto.com/career-story/2025-5/gabor-horvath-ulenius-a-non-traditional-journey-into-coding";
 

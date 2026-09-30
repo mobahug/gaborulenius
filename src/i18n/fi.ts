@@ -49,8 +49,7 @@ export default {
   aboutLocation: "Espoo, Suomi",
   aboutEducation: "Hive Helsingin alumni",
   aboutExperience: "{years} vuotta kokemusta ohjelmistokehityksestä",
-  aboutLanguages:
-    "Englanti (sujuva) · suomi (sujuva keskustelutaso) · unkari (äidinkieli)",
+  aboutLanguages: "Englanti (sujuva) · suomi (sujuva) · unkari (äidinkieli)",
   /* ---------- Työprojektit ---------- */
   projectHusDatalakeTitle:
     "Osallistun terveysdata-alustojen kehittämiseen, jotta potilasdata on reaaliaikaisesti saatavilla suurilla suomalaisilla terveydenhuollon toimijoilla.",
@@ -292,6 +291,7 @@ export default {
   neuralRepoLink: "Tutustu tutkimukseen GitHubissa",
   /* ---------- Matka: The Explorer ja työ ---------- */
   projectExplorerTag: "Harrastusprojekti · Mobiilisovellus kenttätyöhön",
+  projectExplorerPlayLink: "The Explorer Google Playssa",
   projectWorkHeading: "Työprojektit",
   workNodeHus: "Terveysdata-alustat",
   workNodePoc: "Kliinisen tekoälyn konseptitodistus",

@@ -1,3 +1,5 @@
+import Button from "@mui/material/Button";
+import ShopIcon from "@mui/icons-material/Shop";
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
@@ -7,6 +9,7 @@ import {
   explorerStack,
   type ExplorerCapability,
 } from "../../components/projects/explorerProjectData";
+import { EXPLORER_PLAY_URL } from "../../seo";
 import { assetUrl } from "../../utils/assets";
 import FilmSection, { Cue, Space } from "../film/FilmSection";
 import ExplorerMap from "./ExplorerMap";
@@ -143,6 +146,18 @@ const ExplorerStage = () => {
           <p className="film-lead">
             <FormattedMessage id="projectExplorerSummary" />
           </p>
+          <div className="film-actions">
+            <Button
+              variant="contained"
+              component="a"
+              href={EXPLORER_PLAY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<ShopIcon />}
+            >
+              <FormattedMessage id="projectExplorerPlayLink" />
+            </Button>
+          </div>
         </div>
       </Cue>
       <Space vh={20} />

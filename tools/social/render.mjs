@@ -4,9 +4,9 @@
  * - public/social-card.jpg (1200 × 630): the card shown where the address is
  *   shared (LinkedIn, Slack, Teams, search results) — the chase's path, the
  *   portrait, the name and the role;
- * - public/favicon-32.png and apple-touch-icon.png: the banana leaf
- *   (tools/social/leaf.png), square, on the jungle's green where the icon
- *   must be opaque.
+ * - public/favicon-32.png and apple-touch-icon.png: the blue morpho of
+ *   public/favicon.svg (the loader's butterfly), on the jungle's green
+ *   where the icon must be opaque.
  *
  * Run from the repository root: node tools/social/render.mjs
  * (uses the installed Google Chrome through Playwright).
@@ -23,7 +23,7 @@ const dataUrl = (path, type) =>
 const font = dataUrl("public/fonts/inter-latin-var.woff2", "font/woff2");
 const still = dataUrl("public/film/jungle_chase-still.webp", "image/webp");
 const portrait = dataUrl("public/profile2-small.webp", "image/webp");
-const leaf = dataUrl("tools/social/leaf.png", "image/png");
+const morpho = dataUrl("public/favicon.svg", "image/svg+xml");
 
 const base = `
   @font-face {
@@ -115,7 +115,7 @@ const card = `<!doctype html><html><head><style>${base}
   <div class="address">mobahug.github.io/gaborulenius</div>
 </body></html>`;
 
-/** The leaf, square: on the jungle's green, or on nothing (the favicon). */
+/** The morpho, square: on the jungle's green, or on nothing (the favicon). */
 const icon = (size, opaque) => `<!doctype html><html><head><style>${base}
   body {
     width: ${size}px;
@@ -131,9 +131,9 @@ const icon = (size, opaque) => `<!doctype html><html><head><style>${base}
   img {
     display: block;
     height: ${Math.round(size * (opaque ? 0.82 : 1))}px;
-    filter: ${opaque ? "drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45))" : "none"};
+    filter: ${opaque ? "drop-shadow(0 0 10px rgba(70, 160, 255, 0.45))" : "none"};
   }
-</style></head><body><img src="${leaf}" alt=""></body></html>`;
+</style></head><body><img src="${morpho}" alt=""></body></html>`;
 
 const browser = await chromium.launch({ channel: "chrome" });
 const shoot = async (html, width, height, path, options = {}) => {
