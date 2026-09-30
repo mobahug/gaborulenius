@@ -194,3 +194,32 @@ test("the journey loads its sections on the way to the end", async ({
     "gaborulenius@gmail.com",
   );
 });
+
+test("on quick read a butterfly or two land once the page is still", async ({
+  page,
+}) => {
+  await page.goto("./?read");
+  await expect(page.locator("#qr-name")).toBeVisible();
+  // The layer shows only while one is out (Surface2D).
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const layer = document.querySelector(".qr-butterflies");
+          return layer ? getComputedStyle(layer).visibility : "missing";
+        }),
+      { timeout: 8_000 },
+    )
+    .toBe("visible");
+});
+
+test("with reduced motion quick read has no butterflies", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await context.newPage();
+  await page.goto("./?read");
+  await expect(page.locator("#qr-name")).toBeVisible();
+  await expect(page.locator(".qr-butterflies")).toHaveCount(0);
+  await context.close();
+});

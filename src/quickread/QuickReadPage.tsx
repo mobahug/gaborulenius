@@ -17,6 +17,7 @@ import TopBar from "../components/navbar/TopBar";
 import { explorerStack } from "../components/projects/explorerProjectData";
 import { keySkills, neuralStack, projects } from "../contexts";
 import { localeAtom } from "../hooks/localeAtom";
+import { prefersReducedMotion } from "../journey/device";
 import { setQuickRead } from "../journey/quickRead";
 import {
   CV_FILES,
@@ -29,6 +30,7 @@ import {
 } from "../seo";
 import { assetUrl } from "../utils/assets";
 import { experienceYears } from "../utils/experience";
+import QuickReadButterflies from "./QuickReadButterflies";
 import QuickReadMenu from "./QuickReadMenu";
 import "./quickRead.css";
 
@@ -122,6 +124,7 @@ const QuickReadPage = () => {
   // The same bar as the journey's, at the same breakpoint.
   const compact = useMediaQuery("(max-width: 1023.95px)");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [butterflies] = useState(() => !prefersReducedMotion());
   const years = intl.formatNumber(experienceYears());
   const backToFilm = intl.formatMessage({ id: "quickReadOff" });
 
@@ -133,6 +136,7 @@ const QuickReadPage = () => {
         homeHref="#qr-top"
         menu={compact ? { open: () => setMenuOpen(true) } : undefined}
       />
+      {butterflies ? <QuickReadButterflies /> : null}
       {compact ? (
         <QuickReadMenu
           open={menuOpen}

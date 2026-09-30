@@ -283,7 +283,7 @@ const SCENE_BLOCKS: Array<() => HTMLElement | null> = [
   () => cueOf(document.getElementById("contact")),
 ];
 
-type Perch = {
+export type Perch = {
   element: HTMLElement;
   /** Which edge: its top, or one of its sides. */
   edge: "top" | "left" | "right";
@@ -316,6 +316,44 @@ const perchesOn = (block: HTMLElement) => {
   add(".about-meta-icon", "top", 0.5, 0.5);
   return perches;
 };
+
+/** A block the flock may visit, as the page shows it now. */
+export type FlockBlock = {
+  element: HTMLElement;
+  /** On screen: the flock may stay on it; once it is not, they leave. */
+  shown: boolean;
+  /** Well in view: visited, once while it is shown. */
+  ready: boolean;
+  /** Its top-left corner on screen (px). */
+  x: number;
+  y: number;
+};
+
+type FlockOptions = {
+  /** Where on a block a butterfly can sit. */
+  perches?: (block: HTMLElement) => Perch[];
+  /** How many set off for a block: at least, at most. */
+  visitors?: readonly [number, number];
+};
+
+/** The journey's blocks for the flock: those of the jungle scenes, where
+ * they are held on screen. */
+const sceneBlocks = (): FlockBlock[] =>
+  SCENE_BLOCKS.flatMap((find) => {
+    const element = find();
+    if (!element) return [];
+    const state = blockState.get(element);
+    const shown = !!state?.shown;
+    return [
+      {
+        element,
+        shown,
+        ready: shown && state!.visible > 0.6,
+        x: 0,
+        y: state?.pin ?? 0,
+      },
+    ];
+  });
 
 /** The element's offset inside `ancestor` (through the offset parents). */
 const offsetIn = (element: HTMLElement, ancestor: HTMLElement) => {
@@ -404,8 +442,14 @@ export class Flock {
       this.pointer = { x: -1e4, y: -1e4 };
     }
   };
+  private readonly perches: (block: HTMLElement) => Perch[];
+  private readonly visitors: readonly [number, number];
 
-  constructor() {
+  /** The journey's flock by default: two or three to a block, on its
+   * heading, buttons, portrait and icons. */
+  constructor({ perches = perchesOn, visitors = [2, 3] }: FlockOptions = {}) {
+    this.perches = perches;
+    this.visitors = visitors;
     window.addEventListener("pointermove", this.onMove, { passive: true });
     window.addEventListener("pointerdown", this.onDown, { passive: true });
     window.addEventListener("pointerup", this.onEnd, { passive: true });
@@ -422,14 +466,15 @@ export class Flock {
     window.removeEventListener("pointercancel", this.onEnd);
   }
 
-  /** A block has come in: two or three set off for it. */
-  private visit(block: HTMLElement, pin: number, vw: number, now: number) {
+  /** A block has come in: a few set off for it. */
+  private visit(block: FlockBlock, vw: number, now: number) {
     const free = this.flyers.filter((flyer) => flyer.state === "away");
-    const perches = perchesOn(block);
+    const perches = this.perches(block.element);
+    const [fewest, most] = this.visitors;
     const count = Math.min(
       free.length,
       perches.length,
-      2 + Math.round(Math.random()),
+      fewest + Math.round(Math.random() * (most - fewest)),
     );
     const taken: Array<[number, number]> = [];
     for (let index = 0; index < count; index += 1) {
@@ -438,14 +483,16 @@ export class Flock {
       let cling: -1 | 0 | 1 = 0;
       for (let tries = 0; tries < 12 && !point; tries += 1) {
         const perch = pick(perches);
-        const at = offsetIn(perch.element, block);
+        const at = offsetIn(perch.element, block.element);
         const along = perch.from + Math.random() * (perch.to - perch.from);
         const { offsetWidth: width, offsetHeight: height } = perch.element;
         const x =
-          perch.edge === "top"
+          block.x +
+          (perch.edge === "top"
             ? at.left + width * along
-            : at.left + (perch.edge === "right" ? width : 0);
-        const y = pin + at.top + (perch.edge === "top" ? 0 : height * along);
+            : at.left + (perch.edge === "right" ? width : 0));
+        const y =
+          block.y + at.top + (perch.edge === "top" ? 0 : height * along);
         if (taken.every(([tx, ty]) => Math.hypot(tx - x, ty - y) > 70)) {
           point = [x, y];
           cling = perch.edge === "top" ? 0 : perch.edge === "left" ? -1 : 1;
@@ -454,7 +501,7 @@ export class Flock {
       if (!point) break;
       taken.push(point);
       const flyer = free[index];
-      flyer.block = block;
+      flyer.block = block.element;
       flyer.span = pick(SPANS);
       flyer.cling = cling;
       // On a top edge it stands on it; on a side it clings to it, head up,
@@ -476,33 +523,34 @@ export class Flock {
     }
   }
 
-  /** Moves the flock on; returns whether any of it is to be drawn. */
+  /** The journey: in the jungle scenes, on their blocks. */
   update(frame: DirectorFrame) {
-    const now = frame.now;
-    const dt = this.last ? Math.min(0.05, (now - this.last) / 1000) : 1 / 60;
-    this.last = now;
-    const { vw } = frame.viewport;
     const inScene =
       !frame.reduced &&
       (frame.activeChapter === "chase" || frame.activeChapter === "ending");
+    return this.step(frame.now, frame.viewport.vw, inScene, sceneBlocks());
+  }
+
+  /** Moves the flock on over `blocks` while it is `active`; returns
+   * whether any of it is to be drawn. */
+  step(now: number, vw: number, active: boolean, blocks: FlockBlock[]) {
+    const dt = this.last ? Math.min(0.05, (now - this.last) / 1000) : 1 / 60;
+    this.last = now;
     // A block that has come in (well in view) is visited once each time.
-    SCENE_BLOCKS.forEach((find) => {
-      const block = find();
-      if (!block) return;
-      const state = blockState.get(block);
-      const there = inScene && !!state?.shown && state.visible > 0.6;
-      if (there && !this.visited.has(block)) {
-        this.visited.add(block);
-        this.visit(block, state!.pin, vw, now);
-      } else if (!state?.shown && this.visited.has(block)) {
-        this.visited.delete(block);
+    blocks.forEach((block) => {
+      const { element } = block;
+      if (active && block.ready && !this.visited.has(element)) {
+        this.visited.add(element);
+        this.visit(block, vw, now);
+      } else if (!block.shown && this.visited.has(element)) {
+        this.visited.delete(element);
       }
     });
     let any = false;
     this.flyers.forEach((flyer) => {
       if (flyer.state === "away") return;
-      const state = flyer.block ? blockState.get(flyer.block) : undefined;
-      const blockThere = inScene && !!state?.shown;
+      const home = blocks.find((block) => block.element === flyer.block);
+      const blockThere = active && !!home?.shown;
       if (!blockThere && flyer.state !== "leaving") {
         flyer.state = "leaving";
         flyer.since = now;

@@ -477,12 +477,21 @@ journey has a second page: **quick read** (`src/quickread/`), the
 essentials on one calm page. Who (portrait, role, the years of experience,
 education, place, languages, and the ways to get in touch), About, the
 developer years, the work projects with their links, the two personal
-projects with their stacks, the key skills, and the invitation. All of it
-is the journey's own copy, in both languages. It stands on one picture,
-the jungle path out of focus and dimmed, drawn by `index.html` from the
-first paint and still while the page scrolls: nothing changes behind the
-words while they are read. No film is downloaded. Printed, it is a plain
-summary.
+projects with their stacks, the key skills grouped as on the CV (the AI
+work — Python, PyTorch, TransformerLens, Copilot, Codex, Claude, Cursor —
+second), and the invitation. All of it is the journey's own copy, in both
+languages. It stands on one picture, the jungle path out of focus and
+dimmed, drawn by `index.html` from the first paint and still while the
+page scrolls: nothing changes behind the words while they are read. No film
+is downloaded. Printed, it is a plain summary.
+
+The journey's morphos visit it too (`QuickReadButterflies.tsx`, the same
+`Flock` as the jungle scenes', given the cards to land on): once the page
+has been still for a moment, one or two fly in and settle on the card in
+view — on its top edge, clear of the heading, on a button or on the
+portrait, never over words — and fly off as soon as the page moves or a
+pointer comes close. At most one visit in nine seconds, so not at every
+stop; none with reduced motion.
 
 The way there is the bar's button (the same bar as the journey's, with a
 menu of quick read's sections on phones), or a `?read` link (`?read=0`

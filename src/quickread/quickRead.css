@@ -25,6 +25,8 @@
 /* No backdrop blur of its own: the picture behind is already out of focus,
    and a dozen blurred layers would cost a phone every scrolled frame. */
 .qr-card {
+  /* The butterflies measure their perches from the card. */
+  position: relative;
   scroll-margin-top: 80px;
   padding: clamp(20px, 4vw, 34px);
   border-radius: 20px;
@@ -275,6 +277,18 @@
   color: #d9c89a;
 }
 
+/* ---------- The butterflies (QuickReadButterflies.tsx) ---------- */
+
+/* Above the cards, under the bar; never in the way of a click. */
+.qr-butterflies {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
 /* ---------- The end ---------- */
 
 .qr-footer {
@@ -323,6 +337,7 @@
 @media print {
   :root[data-quick-read="true"] body::before,
   .MuiAppBar-root,
+  .qr-butterflies,
   .qr-actions,
   .qr-note,
   .qr-footer button,

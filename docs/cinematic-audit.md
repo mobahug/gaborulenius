@@ -550,3 +550,15 @@ SEO 92).
 - Removed what nothing used any more: the old bar's parts, the cover's
   button, the leaf icon's source, `robots.txt` (crawlers read it only at a
   host's root), exports used only inside their own files.
+
+## 25. Quick read: the AI work in the skills, and the morphos (September 2026)
+
+- Quick read's skills are grouped as on the CV — frontend and mobile, AI and
+  ML, backend and APIs, cloud and DevOps, testing — with the AI work second:
+  Python, PyTorch, TransformerLens and the AI tools (GitHub Copilot, OpenAI
+  Codex, Claude, Cursor). The journey's skills have the AI and ML group
+  too; on a very short phone (360 × 640) that block now scrolls with the
+  page instead of holding.
+- The flock (`butterflies.ts`) takes any blocks and perches now, so quick
+  read has the journey's morphos: one or two on the card in view once the
+  page is still, gone when it moves. The journey's flock is unchanged.
