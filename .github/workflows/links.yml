@@ -24,6 +24,7 @@ jobs:
             --accept 200,206,429
             --exclude "linkedin\.com"
             --exclude "instagram\.com"
+            --exclude "pixabay\.com"
             --exclude "127\.0\.0\.1|localhost"
             --exclude "ogp\.me"
             "src/**/*.ts" "src/**/*.tsx" "index.html" "public/*.xml"

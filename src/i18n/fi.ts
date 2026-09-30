@@ -305,7 +305,7 @@ export default {
   workNodeIct: "LLM-ratkaisu ATK-päiville",
   workNodeAnyhau: "Anyhaun varausalusta",
   /* ---------- Navigaation painikkeet ---------- */
-  navAudioPlay: "Toista viidakon ääniä",
-  navAudioPause: "Pysäytä viidakon äänet",
+  navAudioPlay: "Toista elokuvien äänet",
+  navAudioPause: "Pysäytä elokuvien äänet",
   navMenu: "Avaa valikko",
 } as const;

@@ -20,7 +20,7 @@ type TopBarProps = {
   bare?: boolean;
   homeHref: string;
   onHome?: () => void;
-  /** The jungle sounds (the journey has them). */
+  /** The films' sound (the journey has it). */
   audio?: { playing: boolean; toggle: () => void };
   /** Narrow screens: opens the menu. */
   menu?: { open: () => void; prefetch?: () => void };

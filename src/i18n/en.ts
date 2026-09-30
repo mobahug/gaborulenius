@@ -303,7 +303,7 @@ export default {
   workNodeIct: "LLM solution for ATK-päivät",
   workNodeAnyhau: "Anyhau booking platform",
   /* ---------- Navigation controls ---------- */
-  navAudioPlay: "Play jungle sounds",
-  navAudioPause: "Pause jungle sounds",
+  navAudioPlay: "Play the films' sound",
+  navAudioPause: "Pause the films' sound",
   navMenu: "Open menu",
 } as const;

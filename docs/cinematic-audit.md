@@ -594,3 +594,55 @@ and the menu, thumb-sized (44 px), with Home in the menu (quick read's menu
 has it too); wide screens show the name on the left (the way home, not
 over the cover) and the sounds, the language and the way to the other page
 on the right. The empty space between them lets the pointer through.
+
+## 27. Each scene its own sound (September 2026)
+
+The sound button played one jungle track over all five films. Now each
+scene has its own (`src/journey/audio/soundscape.ts`): the jungle's music
+over the chase and the ending, a deep space score over the neural network
+(Pixabay, "Space Cinematic Music" by Tunetank), the Okavango's birds
+("Birds in Wetland") while the Explorer's camera is above the water and
+its murmur ("Underwater Ambience") once it has gone under, and an
+office's room ("Office ambience") over the work.
+
+A first version followed the scroll exactly, crossfading across each seam
+in step with it; skimming through the journey then played every sound for
+a moment, one after the other. Now a scene's sound waits for the visitor
+to stay: it fades in (2 s, eased at both ends and squared, so it rises
+evenly to the ear) once the page has been calm on the scene for half a
+second. Moving on to the next scene fades the sound out (1.2 s) while the
+next one waits its half second, so they overlap only briefly. Scrolling
+fast — the scroll's speed averaged over half a second, above 1.5 screens
+a second — fades the sound out too: skimming the whole journey stays
+quiet, and the sound of the scene the visitor lands on fades in once the
+page is calm. A page turned with the keyboard or one flick of the finger is
+not fast (no scroll counts as faster than 3 screens a second), and a sound
+still fading out comes back as soon as the page slows down, without the
+wait. The Explorer's camera going under the water (film time 4.4 s) is a
+change of scene like any other.
+
+Every sound is as loud as the jungle: integrated loudness (ITU-R BS.1770,
+measured by `tools/audio/encode-sounds.mjs` on the encoded files) of
+−29.6 LUFS, which the score (mastered at −14.1 LUFS) reaches with a gain
+of 0.17 and the office (−44.2 LUFS) with 5.39, its loudest peak then at
+−1 dBFS. The underwater recording fades out over its last 4 s and the
+office has two loud moments, 15 dB over the room: both are cut to
+a steady stretch whose last seconds are folded over its first, so they
+loop without a seam. All five come to 6.3 MB of AAC.
+
+Nothing loads until the button is pressed. Each track then streams from its
+own `<audio>` element through a gain of its own in one `AudioContext` (a
+phone never holds a whole decoded track, and a gain is the only volume iOS
+lets a page set); a 25 Hz tick moves the gains toward their levels. The
+click readies every track at once, since iOS lets a page start sound only
+from a gesture, and asks iOS to play like a music app so the silent switch
+does not swallow what the visitor asked for. The scene's track starts
+playing, silent, as soon as the page is calm on it, so it is ready when
+its fade begins; a track silent for 2.5 s stops decoding.
+
+Checked in headless Chrome (desktop and phone) by logging every gain
+through a scripted visit: the jungle fades in when the sound is turned on;
+page turns with the keyboard leave it whole; a slow scroll crosses into the
+neural score, the birds, the water and the office, each after its half
+second; a skim at 4 screens a second from the Explorer to the end is
+silent until the page stops, and the jungle then fades in.

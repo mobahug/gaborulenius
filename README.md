@@ -37,6 +37,11 @@ HTML, in English and Finnish — held still over them.
   leads to a summary on a single calm page — who, the developer years,
   the work, the key skills and the ways to get in touch — over a still,
   out-of-focus picture of the jungle; no video is downloaded.
+- **Sound, if asked for.** Each scene has its own — the jungle, a space
+  score, the Okavango above and under the water, an office — at the same
+  loudness. A scene's sound fades in once the visitor has stayed on it
+  for half a second and fades out when they move on or scroll fast, so
+  skimming stays quiet. Nothing loads until the sound is turned on.
 - **Reduced motion.** A system that asks for it gets the journey with
   each film's still behind its content and nothing held.
 - **Fast first paint.** The cover is plain DOM, painted before React, MUI
@@ -52,7 +57,8 @@ Design and implementation notes: [docs/scrollcraft-journey.md](docs/scrollcraft-
 React 19 · TypeScript · Vite · MUI · Jotai · react-intl · Vitest ·
 Playwright · GitHub Actions and Pages. The films are encoded with
 AVFoundation (`tools/film`), the cover's leaves are rendered and graded
-offline (`tools/leaves`), and the share card and icons are drawn by
+offline (`tools/leaves`), the sounds are encoded and levelled with
+afconvert (`tools/audio`), and the share card and icons are drawn by
 `tools/social/render.mjs`.
 
 ## Running it
@@ -75,7 +81,7 @@ Useful addresses: `?read` (quick read), `?lang=fi` (Finnish),
 | `src/components/` | the cover, the navigation, sections                            |
 | `src/i18n/`       | the English and Finnish copy                                   |
 | `e2e/`            | Playwright smoke tests                                         |
-| `tools/`          | offline pipelines: films, leaves, share card and icons         |
+| `tools/`          | offline pipelines: films, sounds, leaves, share card and icons |
 | `docs/`           | design notes                                                   |
 
 ## Deployment
@@ -87,4 +93,11 @@ answers.
 
 ## License
 
-© Gábor Ulenius. All rights reserved.
+© Gábor Ulenius. All rights reserved. The sounds of the neural network, the
+Explorer and the work are from Pixabay, under the
+[Pixabay Content License](https://pixabay.com/service/license-summary/):
+[Space Cinematic Music](https://pixabay.com/music/adventure-space-cinematic-music-414649/)
+by Tunetank,
+[Birds in Wetland](https://pixabay.com/sound-effects/nature-birds-in-wetland-16740/),
+[Underwater Ambience](https://pixabay.com/sound-effects/nature-underwater-ambience-376890/),
+[Office ambience](https://pixabay.com/sound-effects/technology-office-ambience-24734/).

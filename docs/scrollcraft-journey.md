@@ -328,6 +328,24 @@ pointer connects to the bright ones near it, showing each one's brightness
 as its "activation". It is drawn right above the films, under the content,
 and is idle and hidden everywhere else.
 
+## Sound
+
+The sound button (off until pressed; nothing loads before) gives each scene
+its own sound (`audio/soundscape.ts`): the jungle's music over the chase
+and the ending, a space score over the neural network, birds over the
+Okavango and its murmur once the camera has gone under the water, an
+office's room over the work, all at the same loudness. `sceneAt` reads a
+director frame's scene (across a seam, the film that shows the most; in
+the Explorer, above or under the water by the film's time). The `Mixer`
+decides what plays: the scene's sound fades in once the page has been calm
+on it for half a second, every other sound fades out, and scrolling faster
+than 1.5 screens a second (averaged over half a second) fades everything
+out, so skimming stays quiet. Each track streams from an `<audio>` element
+through its own gain in one `AudioContext`, moved toward the mixer's
+levels 25 times a second. The click readies every track (iOS starts sound
+only from a gesture); a track silent for 2.5 s stops decoding.
+`tools/audio/encode-sounds.mjs` makes the files and measures the gains.
+
 ## Films
 
 The delivered full-HD files (the chase: 1920×1080 HEVC, 24 fps, 193 frames,

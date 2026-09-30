@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useActiveNavLink } from "../../hooks/useActiveNavLink";
-import { assetUrl } from "../../utils/assets";
+import { Soundscape } from "../../journey/audio/soundscape";
 import TopBar from "./TopBar";
 import { useAfterCover } from "./useAfterCover";
 
@@ -24,7 +24,6 @@ const NavBar: React.FC = () => {
   const [mobileDrawerLoaded, setMobileDrawerLoaded] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Prefetch the mobile drawer chunk on idle so the first tap on the menu
   // button doesn't have to wait for a network round-trip + parse before the
@@ -66,37 +65,21 @@ const NavBar: React.FC = () => {
     setMobileDrawerOpen(open);
   };
 
-  // The jungle sounds load only when first played.
-  const ensureAudio = useCallback(() => {
-    if (!audioRef.current) {
-      const audio = new Audio();
-      audio.loop = true;
-      audio.preload = "none";
-      audio.src = assetUrl("jungle-music.mp3");
-      audioRef.current = audio;
-    }
-    return audioRef.current;
-  }, []);
+  // The films' sound: nothing loads until it is turned on.
+  const soundscapeRef = useRef<Soundscape | null>(null);
 
   useEffect(() => {
-    return () => {
-      audioRef.current?.pause();
-    };
+    return () => soundscapeRef.current?.dispose();
   }, []);
 
   const handlePlayPause = () => {
-    const audio = ensureAudio();
-
-    if (audio.paused) {
-      audio
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => {
-          if (err.name !== "AbortError") console.error(err);
-        });
-    } else {
-      audio.pause();
+    const soundscape = (soundscapeRef.current ??= new Soundscape());
+    if (soundscape.playing) {
+      soundscape.pause();
       setIsPlaying(false);
+    } else {
+      soundscape.play();
+      setIsPlaying(true);
     }
   };
 
