@@ -39,16 +39,17 @@ export const ModeButton: React.FC<ModeButtonProps> = ({ mode, compact }) => {
       onClick={() => setQuickRead(toQuickRead)}
       sx={{
         minWidth: compact ? 148 : 156,
-        minHeight: 34,
+        // A thumb's size on phones, like the round buttons beside it.
+        minHeight: compact ? 44 : 34,
         py: 0.5,
         px: 1.5,
         justifyContent: "center",
-        fontSize: "0.8rem",
+        fontSize: compact ? "0.85rem" : "0.8rem",
         fontWeight: 700,
         letterSpacing: "0.04em",
         whiteSpace: "nowrap",
         color: colors.textLight,
-        backgroundColor: colors.btnBg,
+        backgroundColor: colors.floatBg,
         backdropFilter: "blur(10px)",
         "& .MuiButton-startIcon": { color: colors.accent },
         "&:hover": {

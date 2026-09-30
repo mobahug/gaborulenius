@@ -571,3 +571,26 @@ SEO 92).
   method ("How the research works", then Stack, then the link), and the
   film flies on alone to the white; on a phone, where bright nodes pass
   right behind the words, that block's veil is deeper.
+
+## 26. Controls that float, and no bar (September 2026)
+
+The bar at the top had a glass strip and the portrait; over the cover only
+its buttons showed, and that looked better: more screen, less repetition
+(the cover and the About block show the portrait already). Checked against
+current guidance before changing it: keep what stays at the top small,
+especially on phones (NN/g, Smashing Magazine); a header without a
+background over pictures needs its own contrast (a tint behind each
+control) or it fails over bright frames; the name top-left as the way home
+is what visitors expect on wide screens, with an explicit Home link too.
+A header that hides while scrolling down and returns when scrolling up
+(NN/g's "partially persistent") saves room on phones, but here visitors
+scroll back through the films all the time and it would keep appearing
+and moving; the controls are small enough to stay.
+
+So there is no bar any more: every control floats on its own dark glass
+(`floatBg`), dark enough that its words keep 4.5:1 over the Explorer's pale
+sky and the neural node. Phones show the sounds, the way to the other page
+and the menu, thumb-sized (44 px), with Home in the menu (quick read's menu
+has it too); wide screens show the name on the left (the way home, not
+over the cover) and the sounds, the language and the way to the other page
+on the right. The empty space between them lets the pointer through.

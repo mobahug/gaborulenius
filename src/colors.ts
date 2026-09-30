@@ -31,4 +31,8 @@ export const colors = {
   btnBg: "rgba(10, 16, 12, 0.5)",
   btnBgHover: "rgba(217, 200, 154, 0.16)",
   btnBorder: "rgba(217, 200, 154, 0.42)",
+  /** The controls floating over the films with no bar behind them: dark
+   * enough that their words keep 4.5:1 over the brightest frames (the
+   * Explorer's pale sky, the neural node). */
+  floatBg: "rgba(10, 16, 12, 0.66)",
 };

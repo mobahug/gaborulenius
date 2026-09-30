@@ -1,25 +1,22 @@
 import React from "react";
 import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import MuiLink from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import MenuIcon from "@mui/icons-material/Menu";
-import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import { useIntl } from "react-intl";
 import { colors } from "../../colors";
-import { assetUrl } from "../../utils/assets";
 import { LanguageToggle } from "./LanguageToggle";
 import { ModeButton, type PageMode } from "./ModeButton";
 
 type TopBarProps = {
   mode: PageMode;
-  /** Phones and narrow screens: the avatar alone, and a menu. */
+  /** Phones and narrow screens: the buttons alone, and a menu. */
   compact: boolean;
-  /** Over the cover only the buttons show: the cover has the name, and
-   * the jungle stays clear of glass. */
+  /** Over the cover, which has the name already, the name is not shown. */
   bare?: boolean;
   homeHref: string;
   onHome?: () => void;
@@ -29,12 +26,29 @@ type TopBarProps = {
   menu?: { open: () => void; prefetch?: () => void };
 };
 
+/** Every control is its own piece of dark glass, so it reads over any
+ * frame of the films, bright or dark, with no bar behind it. */
+const glass = {
+  color: colors.textLight,
+  backgroundColor: colors.floatBg,
+  border: `1px solid ${colors.btnBorder}`,
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+  "&:hover": {
+    backgroundColor: colors.btnBgHover,
+    color: colors.accentHover,
+  },
+};
+
 /**
- * The bar at the top of both pages, the journey and quick read: who this is
- * on the left; on the right the sounds, the language (wide screens) and
- * the way to the other page, then the menu (narrow screens). The sounds
- * come first, so where a page has none nothing else moves: switching pages
- * leaves every button where it was.
+ * The controls at the top of both pages, the journey and quick read. There
+ * is no bar: the controls float over the page, each on its own glass, so the
+ * films and the content keep the whole screen. On wide screens the name sits
+ * on the left, the way home (not over the cover, which has it); on the
+ * right the sounds, the language and the way to the other page. Phones keep
+ * only the sounds, the way to the other page and the menu (with the way
+ * home in it). The sounds come first, so on quick read, which has none,
+ * nothing else moves: switching pages leaves every control where it was.
  */
 const TopBar: React.FC<TopBarProps> = ({
   mode,
@@ -47,7 +61,10 @@ const TopBar: React.FC<TopBarProps> = ({
 }) => {
   const intl = useIntl();
   const height = compact ? 64 : 60;
-  const iconSize = compact ? 32 : 28;
+  // Big enough for a thumb on phones; as tall as the pills beside them on
+  // wide screens.
+  const round = compact ? 44 : 34;
+  const iconSize = compact ? 24 : 20;
 
   return (
     <AppBar
@@ -59,13 +76,13 @@ const TopBar: React.FC<TopBarProps> = ({
         height,
         borderRadius: 0,
         justifyContent: "center",
-        transition: "background-color 0.3s ease, border-color 0.3s ease",
-        ...(bare && {
-          backgroundColor: "transparent",
-          backdropFilter: "none",
-          WebkitBackdropFilter: "none",
-          borderBottomColor: "transparent",
-        }),
+        backgroundColor: "transparent",
+        backdropFilter: "none",
+        WebkitBackdropFilter: "none",
+        border: "none",
+        boxShadow: "none",
+        // Only the controls take the pointer, not the space between them.
+        pointerEvents: "none",
       }}
     >
       <Toolbar
@@ -75,78 +92,67 @@ const TopBar: React.FC<TopBarProps> = ({
           px: 1.5,
           py: 0,
           gap: 1,
-          justifyContent: "space-between",
+          justifyContent: compact ? "flex-end" : "space-between",
+          "& > *": { pointerEvents: "auto" },
         }}
       >
-        <MuiLink
-          href={homeHref}
-          underline="none"
-          aria-label={intl.formatMessage({ id: "navHome" })}
-          aria-hidden={bare || undefined}
-          tabIndex={bare ? -1 : undefined}
-          onClick={onHome}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1.5,
-            px: compact ? 0 : 1,
-            color: colors.textLight,
-            opacity: bare ? 0 : 1,
-            visibility: bare ? "hidden" : "visible",
-            transition: "opacity 0.3s ease, visibility 0.3s",
-            "&:hover": { backgroundColor: "transparent" },
-          }}
-        >
-          <Avatar
-            src={assetUrl("profile-160.webp")}
-            alt=""
+        {compact ? null : (
+          <MuiLink
+            href={homeHref}
+            underline="none"
+            aria-label={intl.formatMessage({ id: "navHome" })}
+            aria-hidden={bare || undefined}
+            tabIndex={bare ? -1 : undefined}
+            onClick={onHome}
             sx={{
-              width: compact ? 40 : 34,
-              height: compact ? 40 : 34,
-              border: `1.5px solid ${colors.accent}`,
+              ...glass,
+              display: "inline-flex",
+              alignItems: "center",
+              minHeight: 34,
+              px: 1.75,
+              borderRadius: 999,
+              fontSize: "0.9rem",
+              fontWeight: 700,
+              letterSpacing: "-0.01em",
+              opacity: bare ? 0 : 1,
+              visibility: bare ? "hidden" : "visible",
+              transition:
+                "opacity 0.3s ease, visibility 0.3s, background-color 0.2s ease",
             }}
-          />
-          {compact ? null : (
-            <Box
-              component="span"
-              sx={{
-                fontSize: "0.95rem",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-              }}
-            >
-              Gábor Ulenius
-            </Box>
-          )}
-        </MuiLink>
+          >
+            Gábor Ulenius
+          </MuiLink>
+        )}
         <Box
-          sx={{ display: "flex", alignItems: "center", gap: compact ? 0.5 : 2 }}
+          sx={{ display: "flex", alignItems: "center", gap: compact ? 1 : 2 }}
         >
           {audio ? (
             <IconButton
-              color="inherit"
               onClick={audio.toggle}
               aria-label={intl.formatMessage({
                 id: audio.playing ? "navAudioPause" : "navAudioPlay",
               })}
+              sx={{ ...glass, width: round, height: round }}
             >
               {audio.playing ? (
-                <PauseCircleOutlineIcon sx={{ fontSize: iconSize }} />
+                <PauseRoundedIcon sx={{ fontSize: iconSize }} />
               ) : (
-                <PlayCircleOutlineIcon sx={{ fontSize: iconSize }} />
+                <PlayArrowRoundedIcon sx={{ fontSize: iconSize }} />
               )}
             </IconButton>
           ) : null}
-          {compact ? null : <LanguageToggle />}
+          {compact ? null : (
+            <LanguageToggle sx={{ backgroundColor: colors.floatBg }} />
+          )}
           <ModeButton mode={mode} compact={compact} />
           {compact && menu ? (
             <IconButton
-              color="inherit"
               aria-label={intl.formatMessage({ id: "navMenu" })}
               onPointerDown={menu.prefetch}
               onTouchStart={menu.prefetch}
               onMouseEnter={menu.prefetch}
               onClick={menu.open}
+              sx={{ ...glass, width: round, height: round }}
             >
               <MenuIcon sx={{ fontSize: iconSize }} />
             </IconButton>

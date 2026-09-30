@@ -302,15 +302,18 @@ capability, how it is built) — and the highlights and the work projects,
 the skills and the tools: sections in larger, brighter type, a project's
 name in small gold capitals, its parts under it. The part on screen is lit,
 and its project, as the scroll goes on (the last whose block has come up to
-a third of the screen). The bar at the top (`TopBar.tsx`, the same on
-the journey and on quick read) keeps only who this is (the avatar and name,
-back to the top) and, on the right, the sounds, the language and the way to
-the other page; on phones the sounds, the way to the other page and the
-menu. The sounds come first, so on quick read, which has none, nothing
-else moves: switching pages leaves every button where it was, and the
-button itself has one width for both labels. Over the cover only the
-buttons show — no glass, no name, which the cover has — and the rest of the
-bar comes in once the cover has gone, with the rail. The phone's menu lists
+a third of the screen). At the top there is no bar (`TopBar.tsx`, the
+same on the journey and on quick read): the controls float, each on its own
+dark glass (`floatBg`, dark enough for 4.5:1 over the brightest frames),
+so the films and the content keep the whole screen. On wide screens the
+name sits on the left as the way home (not over the cover, which has it);
+on the right the sounds, the language and the way to the other page. Phones
+keep only the sounds, the way to the other page and the menu, thumb-sized,
+with the way home in the menu. The sounds come first, so on quick read,
+which has none, nothing else moves: switching pages leaves every control
+where it was, and the way between them has one width for both labels. Only
+the controls take the pointer; the space between them does not. The
+rail comes in once the cover has gone. The phone's menu lists
 the same sections and parts as the rail: the current section open with the
 part on screen lit, the others opening with their arrow, so any part is a
 tap away. The scroll spy reads a block's section from its hold

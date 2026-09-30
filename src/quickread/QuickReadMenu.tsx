@@ -18,8 +18,9 @@ import { colors } from "../colors";
 import { LanguageToggle } from "../components/navbar/LanguageToggle";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../seo";
 
-/** Quick read's sections (the ids of their headings' cards). */
+/** Quick read's sections, from the top (the ids of their cards' headings). */
 const SECTIONS = [
+  { href: "#qr-top", labelId: "navHome" },
   { href: "#qr-about", labelId: "navAbout" },
   { href: "#qr-experience", labelId: "navExperience" },
   { href: "#qr-education", labelId: "qrEducation" },
