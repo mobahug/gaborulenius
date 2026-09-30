@@ -28,6 +28,25 @@
     visibility 0s;
 }
 
+/* The dots and the line on their own dark glass, like the controls at the
+   top, so they read over any frame of the films: the sunlit jungle as well
+   as the neural network's black. Under everything else in the rail. */
+.section-rail::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 12px;
+  bottom: 12px;
+  right: 7px;
+  width: 24px;
+  border-radius: 999px;
+  background: rgba(10, 16, 12, 0.66);
+  border: 1px solid rgba(233, 220, 179, 0.16);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+}
+
 /* A glass panel behind the names while they show. */
 .section-rail::before {
   content: "";

@@ -293,7 +293,8 @@ The browser's own chrome follows (`theme-color`, `color-scheme: dark`).
 On wide screens the sections are on a rail at the right edge
 (`SectionRail.tsx`): a dot for each, the current one lit, on a thin gold
 line that fills as the journey goes on, the dots scrolled through filled
-as the line is; hovering the dots (or tabbing into
+as the line is, all on their own slim dark glass like the controls at the
+top, so they read over the sunlit jungle as well as the black; hovering the dots (or tabbing into
 the rail) shows their names in a glass panel, and each takes you there.
 Until then only the dots' column takes the pointer, so the rail's names
 never cover what is beside it (the map's last waypoint sits under them).
@@ -314,7 +315,8 @@ with the way home in the menu. The sounds come first, so on quick read,
 which has none, nothing else moves: switching pages leaves every control
 where it was, and the way between them has one width for both labels. Only
 the controls take the pointer; the space between them does not. The
-rail comes in once the cover has gone. The phone's menu lists
+rail comes in once the cover has gone — as the cover's words finish fading
+(`useAfterCover.ts`), together with the name in the bar. The phone's menu lists
 the same sections and parts as the rail: the current section open with the
 part on screen lit, the others opening with their arrow, so any part is a
 tap away. The scroll spy reads a block's section from its hold

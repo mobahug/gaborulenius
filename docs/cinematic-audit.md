@@ -675,3 +675,17 @@ By the same measure the longest stretch with nothing to read is 2.9 screens
 instead of 4.2 (2.0 instead of 3.4 on a phone), and "Let's Connect" can be
 read from screen 33.5 instead of about 37.5. The fades themselves, 1.2 s in
 and out, stay as slow as they were asked to be.
+
+## 29. The rail from the start of the journey (September 2026)
+
+The section rail and the name in the bar waited for the cover to go by
+watching `#home`, the anchor of the first block. When anchors moved to the
+middle of their holds (so a link lands mid-hold), `#home` moved a screen
+further down with it, and the rail only came in 1.75 screens down, a whole
+screen after the introduction was already on screen. They now watch the
+cover itself and come in as its words finish fading (half a screen down,
+where the introduction begins).
+
+Over the chase's sunlit frames the rail's pale dots and line all but
+disappeared. They now sit on their own slim dark glass, as the controls at
+the top do, and read over any frame.

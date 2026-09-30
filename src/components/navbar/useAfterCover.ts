@@ -1,26 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { onAfterSceneFrame, registerScene } from "../../journey/scrollTimeline";
-import { getCoverVisibility } from "./navConstants";
 
-/** Whether the cover has (nearly) finished fading out, for what only
- * appears after it: the navigation bar and the section rail. */
+/** The cover's words have faded out by this much of its scroll (see
+ * CoverSection), and with them the cover. */
+const COVER_GONE = 0.84;
+
+/** Whether the cover has gone, for what only appears after it: the name in
+ * the bar and the section rail. */
 export const useAfterCover = () => {
   const [visible, setVisible] = useState(false);
   const visibleRef = useRef(false);
 
   useEffect(() => {
-    // The home section is measured by the scroll clock with everything else,
-    // before anything is written in the frame, so reading it never forces a
-    // layout.
-    let homeTop: number | null = null;
+    // How far the cover has been scrolled, measured by the scroll clock with
+    // everything else, before anything is written in the frame.
+    let coverPin: number | null = null;
     const unregister = registerScene(
-      () => document.getElementById("home"),
+      () => document.getElementById("cover"),
       (frame) => {
-        homeTop = frame.top - frame.viewport.y;
+        coverPin = frame.pin;
       },
     );
     const stop = onAfterSceneFrame(({ y, vh }) => {
-      const nextVisible = getCoverVisibility(homeTop, y, vh) < 0.05;
+      const nextVisible =
+        coverPin === null ? y > vh * 0.85 : coverPin >= COVER_GONE;
       if (visibleRef.current === nextVisible) return;
       visibleRef.current = nextVisible;
       setVisible(nextVisible);
