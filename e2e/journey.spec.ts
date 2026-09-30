@@ -1,5 +1,16 @@
 import { expect, test, type Page } from "@playwright/test";
 
+/** Waits until the loader over the first screen lets clicks through. */
+const loaderLetGo = (page: Page) =>
+  page.waitForFunction(() => {
+    const loader = document.getElementById("jungle-loader");
+    return (
+      !loader ||
+      loader.classList.contains("is-landing") ||
+      loader.classList.contains("is-leaving")
+    );
+  });
+
 /** Scrolls down a screen at a time until `locator` exists (the sections
  * further down load as they come near). */
 const scrollUntil = async (page: Page, selector: string) => {
@@ -77,17 +88,55 @@ test("quick read shows the essentials on one calm page", async ({ page }) => {
   await expect(page.locator("#cover-heading")).toBeVisible();
   await expect(page.locator(".qr")).toHaveCount(0);
 
-  // And the cover leads to quick read again, once the loader lets go.
-  await page.waitForFunction(() => {
-    const loader = document.getElementById("jungle-loader");
-    return (
-      !loader ||
-      loader.classList.contains("is-landing") ||
-      loader.classList.contains("is-leaving")
-    );
-  });
-  await page.locator(".cover-quick-read").click();
+  // And the bar leads to quick read again, once the loader lets go.
+  await loaderLetGo(page);
+  await page.getByRole("button", { name: "Quick read", exact: true }).click();
   await expect(page.locator("#qr-name")).toBeVisible();
+});
+
+test("the bar's buttons stay in place between the two pages", async ({
+  page,
+}) => {
+  const place = async (name: string) => {
+    const box = await page
+      .getByRole("button", { name, exact: true })
+      .boundingBox();
+    expect(box).not.toBeNull();
+    return box!;
+  };
+  // Wide screens only: phones keep the language in the menu.
+  const language = async () => {
+    const group = page.getByRole("group", { name: "Language" });
+    return (await group.count()) ? group.boundingBox() : null;
+  };
+
+  await page.goto("./?read");
+  const film = await place("Film journey");
+  const quickLanguage = await language();
+
+  await page.goto("./?read=0");
+  await loaderLetGo(page);
+  const quick = await place("Quick read");
+  expect(quick.x).toBeCloseTo(film.x, 0);
+  expect(quick.y).toBeCloseTo(film.y, 0);
+  expect(quick.width).toBeCloseTo(film.width, 0);
+  // Wide screens show the language in the bar too, in the same place.
+  if (quickLanguage) {
+    const journeyLanguage = await language();
+    expect(journeyLanguage?.x).toBeCloseTo(quickLanguage.x, 0);
+  }
+});
+
+test("the CV comes in the language of the page", async ({ page }) => {
+  await page.goto("./?read&lang=en");
+  await expect(
+    page.getByRole("link", { name: "Download My CV" }),
+  ).toHaveAttribute("href", /Gabor_Ulenius_CV_EN\.pdf$/);
+  await page.goto("./?read&lang=fi");
+  await expect(page.getByRole("link", { name: "Lataa CV:ni" })).toHaveAttribute(
+    "href",
+    /Gabor_Ulenius_CV_FI\.pdf$/,
+  );
 });
 
 test("quick read speaks Finnish too", async ({ page }) => {

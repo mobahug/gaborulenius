@@ -10,7 +10,6 @@ import {
   isWideLayout,
   prefersReducedMotion,
 } from "../journey/device";
-import { setQuickRead } from "../journey/quickRead";
 
 // Plain-DOM cover. It stays outside MUI/react-intl so the LCP avatar and the
 // heading paint before the rest of the app has loaded.
@@ -21,17 +20,6 @@ const GREETINGS: Record<string, string> = {
 const SKIP_LABELS: Record<string, string> = {
   en: "Skip to content",
   fi: "Siirry sisältöön",
-};
-/** The way to quick read: its name, and what it shows. */
-const QUICK_READ_LABELS: Record<string, { name: string; hint: string }> = {
-  en: {
-    name: "Quick read",
-    hint: "The essentials on one page, without the film",
-  },
-  fi: {
-    name: "Pikakatsaus",
-    hint: "Tärkeimmät asiat yhdellä sivulla ilman elokuvaa",
-  },
 };
 
 const readDocumentLocale = (): string => {
@@ -237,7 +225,6 @@ const CoverSection: React.FC = () => {
   }, []);
   const greeting = GREETINGS[locale] ?? GREETINGS.en;
   const skipLabel = SKIP_LABELS[locale] ?? SKIP_LABELS.en;
-  const quickReadLabels = QUICK_READ_LABELS[locale] ?? QUICK_READ_LABELS.en;
 
   useEffect(() => {
     const root = document.documentElement;
@@ -526,17 +513,6 @@ const CoverSection: React.FC = () => {
               {greeting} <span id="cover-name">Gábor</span>
             </h1>
           </div>
-          <button
-            type="button"
-            className="cover-quick-read"
-            title={quickReadLabels.hint}
-            onClick={() => setQuickRead(true)}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z" />
-            </svg>
-            {quickReadLabels.name}
-          </button>
           <div className="cover-depth cover-depth--near" aria-hidden="true">
             {LEAVES.map((leaf) => {
               const [width, height] = leaf.size;
@@ -770,44 +746,6 @@ const CoverSection: React.FC = () => {
           transform: translateY(0);
           outline: 2px solid ${lightColors.accentHover};
           outline-offset: 3px;
-        }
-        /* The way to quick read, in the corner of the first screen (the
-           bar with its twin comes in once the cover has gone). */
-        .cover-quick-read {
-          position: absolute;
-          top: max(16px, env(safe-area-inset-top));
-          right: 16px;
-          z-index: 4;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 9px 16px 9px 13px;
-          border: 1px solid ${lightColors.btnBorder};
-          border-radius: 999px;
-          background: ${lightColors.btnBg};
-          -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
-          color: ${lightColors.textLight};
-          font: 600 0.85rem/1 "Inter", system-ui, sans-serif;
-          letter-spacing: 0.02em;
-          cursor: pointer;
-          transition: background-color 0.2s ease, color 0.2s ease;
-        }
-        .cover-quick-read svg {
-          width: 18px;
-          height: 18px;
-          fill: ${lightColors.accent};
-        }
-        .cover-quick-read:hover {
-          background: ${lightColors.btnBgHover};
-          color: ${lightColors.accentHover};
-        }
-        .cover-quick-read:focus-visible {
-          outline: 2px solid ${lightColors.accentHover};
-          outline-offset: 3px;
-        }
-        @media (min-width: 900px) {
-          .cover-quick-read { top: 24px; right: 28px; }
         }
         :root[data-motion="reduced"] .cover { height: 100vh; height: 100lvh; }
         :root[data-motion="reduced"] .cover-mist-band,

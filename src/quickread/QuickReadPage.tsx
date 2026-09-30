@@ -1,25 +1,27 @@
 import Button from "@mui/material/Button";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import EmailIcon from "@mui/icons-material/Email";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import OpenInNewIcon from "@mui/icons-material/Launch";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import MovieOutlinedIcon from "@mui/icons-material/MovieOutlined";
 import SchoolIcon from "@mui/icons-material/School";
 import TranslateIcon from "@mui/icons-material/Translate";
 import WorkIcon from "@mui/icons-material/Work";
 import { useAtomValue } from "jotai";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import CopyEmail from "../components/CopyEmail";
-import { LanguageToggle } from "../components/navbar/LanguageToggle";
+import TopBar from "../components/navbar/TopBar";
 import { explorerStack } from "../components/projects/explorerProjectData";
 import { keySkills, neuralStack, projects } from "../contexts";
 import { localeAtom } from "../hooks/localeAtom";
 import { setQuickRead } from "../journey/quickRead";
 import {
+  CV_FILES,
   EMAIL,
+  EXPLORER_PLAY_URL,
   GITHUB_URL,
   LINKEDIN_URL,
   NEURAL_REPOSITORY_URL,
@@ -27,6 +29,7 @@ import {
 } from "../seo";
 import { assetUrl } from "../utils/assets";
 import { experienceYears } from "../utils/experience";
+import QuickReadMenu from "./QuickReadMenu";
 import "./quickRead.css";
 
 const FACTS = [
@@ -116,30 +119,27 @@ const ContactButtons = () => (
 const QuickReadPage = () => {
   const intl = useIntl();
   const locale = useAtomValue(localeAtom);
+  // The same bar as the journey's, at the same breakpoint.
+  const compact = useMediaQuery("(max-width: 1023.95px)");
+  const [menuOpen, setMenuOpen] = useState(false);
   const years = intl.formatNumber(experienceYears());
   const backToFilm = intl.formatMessage({ id: "quickReadOff" });
 
   return (
-    <div className="qr">
-      <header className="qr-bar">
-        <a className="qr-bar-name" href="#qr-name">
-          <img src={assetUrl("profile-160.webp")} alt="" />
-          <span>Gábor Ulenius</span>
-        </a>
-        <div className="qr-bar-actions">
-          <LanguageToggle />
-          <Button
-            size="small"
-            variant="outlined"
-            className="qr-film-button"
-            title={backToFilm}
-            startIcon={<MovieOutlinedIcon />}
-            onClick={() => setQuickRead(false)}
-          >
-            <FormattedMessage id="qrFilmJourney" />
-          </Button>
-        </div>
-      </header>
+    <div className="qr" id="qr-top">
+      <TopBar
+        mode="quick"
+        compact={compact}
+        homeHref="#qr-top"
+        menu={compact ? { open: () => setMenuOpen(true) } : undefined}
+      />
+      {compact ? (
+        <QuickReadMenu
+          open={menuOpen}
+          onOpen={() => setMenuOpen(true)}
+          onClose={() => setMenuOpen(false)}
+        />
+      ) : null}
 
       <main className="qr-page" id="main-content">
         <section className="qr-card qr-intro" aria-labelledby="qr-name">
@@ -175,7 +175,7 @@ const QuickReadPage = () => {
             <Button
               variant="contained"
               component="a"
-              href={assetUrl("Gabor_Ulenius_-_Full_Stack_Developer.pdf")}
+              href={assetUrl(CV_FILES[locale])}
               target="_blank"
               rel="noopener noreferrer"
               download
@@ -284,6 +284,9 @@ const QuickReadPage = () => {
                 <FormattedMessage id="projectExplorerSummary" />
               </p>
               <Chips items={explorerStack} />
+              <OutLink href={EXPLORER_PLAY_URL}>
+                <FormattedMessage id="projectExplorerPlayLink" />
+              </OutLink>
             </li>
           </ul>
         </section>

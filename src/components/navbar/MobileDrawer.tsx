@@ -21,7 +21,6 @@ import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import { FormattedMessage, useIntl } from "react-intl";
 import { navLinks, partOnScreen } from "./navConstants";
 import { LanguageToggle } from "./LanguageToggle";
-import { QuickReadToggle } from "./QuickReadToggle";
 import { colors as lightColors } from "../../colors";
 import { useActiveNavLink } from "../../hooks/useActiveNavLink";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../../seo";
@@ -335,7 +334,6 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
           </IconButton>
           <LanguageToggle size="small" />
         </Stack>
-        <QuickReadToggle sx={{ alignSelf: "flex-start", ml: 1 }} />
       </Stack>
     </SwipeableDrawer>
   );

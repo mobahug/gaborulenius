@@ -1,7 +1,7 @@
-export const COVER_FADE_MIN_PX = 300;
-export const COVER_FADE_VIEWPORT_RATIO = 0.85;
+const COVER_FADE_MIN_PX = 300;
+const COVER_FADE_VIEWPORT_RATIO = 0.85;
 
-export const getCoverFadeThreshold = () =>
+const getCoverFadeThreshold = () =>
   Math.max(COVER_FADE_MIN_PX, window.innerHeight * COVER_FADE_VIEWPORT_RATIO);
 
 // Returns 1 while cover should be fully visible, 0 once it should be fully hidden.
@@ -26,9 +26,9 @@ export const getCoverVisibility = (
 
 /** A part of a section: a block to go to, or (`group`) a project whose
  * parts follow it (until the next group). */
-export type NavPart = { id: string; href: string; group?: boolean };
+type NavPart = { id: string; href: string; group?: boolean };
 
-export type NavLink = {
+type NavLink = {
   id: string;
   href: string;
   /** The section's own parts, shown on the rail while it is the current

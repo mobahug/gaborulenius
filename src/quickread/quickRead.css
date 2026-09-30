@@ -11,68 +11,13 @@
   font-family: "Inter", system-ui, sans-serif;
 }
 
-/* ---------- The bar: who this is, the language, the way back ---------- */
-
-.qr-bar {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 16px;
-  background: rgba(7, 11, 8, 0.6);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
-  backdrop-filter: blur(16px) saturate(1.1);
-  border-bottom: 1px solid rgba(233, 220, 179, 0.14);
-}
-
-.qr-bar-name {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: inherit;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-}
-
-.qr-bar-name img {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1.5px solid #d9c89a;
-}
-
-.qr-bar-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.qr-film-button.MuiButton-root {
-  min-height: 34px;
-  padding: 4px 14px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  color: #f6f1e4;
-  background-color: rgba(10, 16, 12, 0.5);
-}
-
-.qr-film-button .MuiButton-startIcon {
-  color: #d9c89a;
-}
-
 /* ---------- The page ---------- */
 
+/* Below the bar (TopBar: 60px, 64px on narrow screens). */
 .qr-page {
   width: min(880px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 28px 0 24px;
+  padding: 88px 0 24px;
   display: grid;
   gap: 18px;
 }
@@ -80,6 +25,7 @@
 /* No backdrop blur of its own: the picture behind is already out of focus,
    and a dozen blurred layers would cost a phone every scrolled frame. */
 .qr-card {
+  scroll-margin-top: 80px;
   padding: clamp(20px, 4vw, 34px);
   border-radius: 20px;
   background: rgba(9, 14, 10, 0.78);
@@ -287,7 +233,6 @@
 }
 
 .qr-link:focus-visible,
-.qr-bar-name:focus-visible,
 .qr-footer button:focus-visible {
   outline: 2px solid #e9dcb3;
   outline-offset: 3px;
@@ -354,6 +299,12 @@
   cursor: pointer;
 }
 
+@media (max-width: 1023.95px) {
+  .qr-page {
+    padding-top: 92px;
+  }
+}
+
 @media (max-width: 699.95px) {
   .qr-intro,
   .qr-facts,
@@ -368,18 +319,10 @@
   }
 }
 
-/* On the smallest phones the bar keeps the portrait, the language and the
-   way back; the name is on the card below. */
-@media (max-width: 479.95px) {
-  .qr-bar-name span {
-    display: none;
-  }
-}
-
 /* Printed (or saved as a PDF), it is a plain one-page summary. */
 @media print {
   :root[data-quick-read="true"] body::before,
-  .qr-bar,
+  .MuiAppBar-root,
   .qr-actions,
   .qr-note,
   .qr-footer button,
