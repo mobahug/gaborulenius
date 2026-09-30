@@ -1,7 +1,6 @@
 import Button from "@mui/material/Button";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import EmailIcon from "@mui/icons-material/Email";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import OpenInNewIcon from "@mui/icons-material/Launch";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -21,7 +20,6 @@ import { localeAtom } from "../hooks/localeAtom";
 import { prefersReducedMotion } from "../journey/device";
 import { setQuickRead } from "../journey/quickRead";
 import {
-  CV_FILES,
   EMAIL,
   EXPLORER_PLAY_URL,
   GITHUB_URL,
@@ -203,17 +201,6 @@ const QuickReadPage = () => {
           </ul>
           <div className="qr-actions">
             <ContactButtons />
-            <Button
-              variant="contained"
-              component="a"
-              href={assetUrl(CV_FILES[locale])}
-              target="_blank"
-              rel="noopener noreferrer"
-              download
-              startIcon={<FileDownloadIcon />}
-            >
-              <FormattedMessage id="homeBtnDownloadCv" />
-            </Button>
           </div>
           <p className="qr-note">
             <FormattedMessage id="qrNote" />

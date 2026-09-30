@@ -17,11 +17,6 @@ export const NEURAL_REPOSITORY_URL =
 export const EXPLORER_PLAY_URL =
   "https://play.google.com/store/apps/details?id=com.mobahugstudio.theexplorer";
 
-/** The CV in the language the page is read in (public/). */
-export const CV_FILES: Record<AppLocale, string> = {
-  en: "Gabor_Ulenius_CV_EN.pdf",
-  fi: "Gabor_Ulenius_CV_FI.pdf",
-};
 export const TIETO_CAREERS_PROFILE_URL =
   "https://careers.tieto.com/career-story/2025-5/gabor-horvath-ulenius-a-non-traditional-journey-into-coding";
 

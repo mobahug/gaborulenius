@@ -1,12 +1,7 @@
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { useAtomValue } from "jotai";
 import type { Ref } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { localeAtom } from "../../hooks/localeAtom";
-import { CV_FILES } from "../../seo";
-import { assetUrl } from "../../utils/assets";
 import { Cue } from "../film/FilmSection";
 import "./chapters.css";
 
@@ -23,7 +18,6 @@ type IntroChapterProps = {
  */
 const IntroChapter = ({ at, ref }: IntroChapterProps) => {
   const intl = useIntl();
-  const locale = useAtomValue(localeAtom);
   const words = intl.formatMessage({ id: "homeGreeting" }).split(" ");
 
   return (
@@ -50,17 +44,6 @@ const IntroChapter = ({ at, ref }: IntroChapterProps) => {
             startIcon={<SearchIcon />}
           >
             <FormattedMessage id="homeBtnExplore" />
-          </Button>
-          <Button
-            variant="contained"
-            component="a"
-            href={assetUrl(CV_FILES[locale])}
-            target="_blank"
-            rel="noopener noreferrer"
-            download
-            startIcon={<FileDownloadIcon />}
-          >
-            <FormattedMessage id="homeBtnDownloadCv" />
           </Button>
         </div>
       </section>

@@ -689,3 +689,14 @@ where the introduction begins).
 Over the chase's sunlit frames the rail's pale dots and line all but
 disappeared. They now sit on their own slim dark glass, as the controls at
 the top do, and read over any frame.
+
+## 30. No CV on the site (September 2026)
+
+The CV is attached to each application anyway, next to the link to the
+portfolio, and a public PDF carried a phone number that search engines
+index and scrapers collect. So the site no longer offers it: the intro's
+and quick read's download buttons, the two PDFs and the fallback link for
+browsers without script are gone, and the PDFs (including the first
+single-language CV) were removed from the repository's history as well.
+Anyone who finds the site outside an application reaches Gábor through the
+email and LinkedIn buttons.

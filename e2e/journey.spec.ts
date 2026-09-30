@@ -128,18 +128,6 @@ test("the bar's buttons stay in place between the two pages", async ({
   }
 });
 
-test("the CV comes in the language of the page", async ({ page }) => {
-  await page.goto("./?read&lang=en");
-  await expect(
-    page.getByRole("link", { name: "Download My CV" }),
-  ).toHaveAttribute("href", /Gabor_Ulenius_CV_EN\.pdf$/);
-  await page.goto("./?read&lang=fi");
-  await expect(page.getByRole("link", { name: "Lataa CV:ni" })).toHaveAttribute(
-    "href",
-    /Gabor_Ulenius_CV_FI\.pdf$/,
-  );
-});
-
 test("quick read speaks Finnish too", async ({ page }) => {
   await page.goto("./?lang=fi&read");
   await expect(page.locator(".qr-kicker")).toHaveText("Pikakatsaus");
