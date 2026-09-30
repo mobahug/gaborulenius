@@ -1,54 +1,87 @@
-# React + TypeScript + Vite
+# Gábor Ulenius — portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The portfolio of Gábor Ulenius, Full-Stack Developer in Espoo, Finland: one
+scroll-driven journey through five films, with the real content — semantic
+HTML, in English and Finnish — held still over them.
 
-Currently, two official plugins are available:
+**Live:** [mobahug.github.io/gaborulenius](https://mobahug.github.io/gaborulenius/)
+· **Quick read**, the same content on one calm page:
+[`?read`](https://mobahug.github.io/gaborulenius/?read)
+· **Suomeksi:** [`?lang=fi`](https://mobahug.github.io/gaborulenius/?lang=fi)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p>
+  <img src="docs/images/cover.jpg" alt="The cover: Hi, I'm Gábor, on a jungle path" width="49%" />
+  <img src="docs/images/neural.jpg" alt="The Neural Decompiler over the neural film" width="49%" />
+</p>
 
-## Expanding the ESLint configuration
+## How it works
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Scroll is the only clock.** Every picture is a pure function of the
+  scroll position (`src/journey/film/filmTimeline.ts`): scrolling back plays
+  everything backwards, and a link or a reload lands in exactly the state
+  slow scrolling would reach.
+- **Five films, joined where the footage allows it** — a pupil that becomes
+  a window into the next film, white into cream, black into black, a leaf
+  onto a leaf. What each film contains and why each seam is where it is:
+  [docs/cinematic-audit.md](docs/cinematic-audit.md).
+- **Scrubbing video smoothly.** The films are re-encoded for seeking (a
+  keyframe every 4–8 frames, no B-frames, fast start), with portrait crops
+  for phones that follow each film's subject: a third of the pixels, as
+  sharp as full HD. Phone decoders seek slowly, so there the film _plays_
+  at the scroll's speed going forward and seeks only backwards.
+- **Content that holds still.** Each block fades in part by part, holds
+  while the film plays behind it and fades out, over a veil (a backdrop
+  blur shaded by the footage's measured brightness) that keeps the words
+  readable.
+- **Quick read and reduced motion.** One switch turns the journey into a
+  short page with each film's still behind its content; no video is
+  downloaded. A system that asks for reduced motion gets the same.
+- **Fast first paint.** The cover is plain DOM, painted before React, MUI
+  and the copy have loaded; the rest arrives around the visitor (about
+  210 KB of JavaScript, gzipped).
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+Design and implementation notes: [docs/scrollcraft-journey.md](docs/scrollcraft-journey.md).
+
+<img src="docs/images/phone-about.jpg" alt="About on a phone, in quick read" width="260" align="right" />
+
+## Stack
+
+React 19 · TypeScript · Vite · MUI · Jotai · react-intl · Vitest ·
+Playwright · GitHub Actions and Pages. The films are encoded with
+AVFoundation (`tools/film`), the cover's leaves are rendered and graded
+offline (`tools/leaves`), and the share card and icons are drawn by
+`tools/social/render.mjs`.
+
+## Running it
+
+```bash
+npm ci
+npm run dev          # http://localhost:5173/gaborulenius/
+npm test             # unit tests (Vitest)
+npm run build
+npm run test:e2e     # browser smoke tests of the build (Google Chrome)
+npm run lint         # ESLint, including jsx-a11y
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Useful addresses: `?read` (quick read), `?lang=fi` (Finnish),
+`?debug=film` (how the film on screen is doing, on the device itself).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Path              | What                                                           |
+| ----------------- | -------------------------------------------------------------- |
+| `src/journey/`    | the scroll clock, the director, the films, stages and overlays |
+| `src/components/` | the cover, the navigation, sections                            |
+| `src/i18n/`       | the English and Finnish copy                                   |
+| `e2e/`            | Playwright smoke tests                                         |
+| `tools/`          | offline pipelines: films, leaves, share card and icons         |
+| `docs/`           | design notes                                                   |
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Deployment
+
+Every push to `main` runs CI — lint, formatting, unit tests, the build and
+the browser tests — and deploys `dist/` to GitHub Pages; Lighthouse reports
+on each run. Once a week a job checks that every outside link still
+answers.
+
+## License
+
+© Gábor Ulenius. All rights reserved.

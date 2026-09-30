@@ -473,3 +473,41 @@ against the scroll, up to 2.3 frames past the turn; now 2, at most 0.3 of
 a frame. The picture never moves against the scroll's way (it waits until
 the scroll comes back to it), play stops as soon as the scroll turns back,
 and on touch screens the scroll clock follows the finger almost directly.
+
+## 22. Quick read, and the portfolio outside itself (September 2026)
+
+A review of the whole site, not only the films, measured on the live site
+(Lighthouse, mobile: performance 94, accessibility 100, best practices 100,
+SEO 92).
+
+- Links: both Tieto articles now redirect to Tieto's newsroom (they went
+  when Tietoevry became Tieto) and Anyhau's domain no longer resolves; the
+  cards and the work projects link to their Wayback Machine copies, and the
+  two article pictures are served from here. The work projects' "Read
+  More" links name their project for screen readers and search engines
+  (the only SEO finding). The Hive video uses YouTube's privacy-enhanced
+  embed, which sets no cookies until it plays.
+- Quick read: the reduced mode as a visitor's choice (see "Reduced motion
+  and quick read" in `scrollcraft-journey.md`) — about 16 screens instead
+  of about 39, stills instead of films, no video downloaded.
+- Contact: the address itself under the invitation, with a button that
+  copies it ("Email Me" does nothing without a mail app).
+- About: the years of experience are counted from December 2022 in whole
+  half-years instead of written in, and the languages are listed. The
+  Finnish About names the stack the English one does.
+- Copy: the work projects speak with one voice; in the full timeline the
+  housekeeping job keeps its first paragraph and the building school no
+  longer gives its final grade.
+- Search and sharing: each language has its own address (`?lang=fi`),
+  canonical link and `hreflang` pair, both in the sitemap; the profile
+  data lists every spelling of the name; the share card is 1200 × 630 with
+  the name and role (`tools/social/render.mjs`), the icons are square, and
+  there is a 404 page. (A web manifest was tried and left out: its request
+  cost the first screen about 90 ms of Lighthouse's simulated LCP.)
+- Code: the timeline's events are defined once (they were written twice,
+  for the highlights and the full timeline); the ESLint configuration in
+  use now includes the React and jsx-a11y rules (the old `.eslintrc.cjs`,
+  which carried them, was never read by ESLint 9); unit tests (Vitest) for
+  the timeline, the frame mapping, the copy's two languages and the
+  experience count; browser smoke tests (Playwright, Google Chrome); CI
+  with deployment to Pages and a weekly link check.

@@ -303,8 +303,8 @@ the skills and the tools: sections in larger, brighter type, a project's
 name in small gold capitals, its parts under it. The part on screen is lit,
 and its project, as the scroll goes on (the last whose block has come up to
 a third of the screen). The bar at the top keeps only who this is (the
-avatar and name, back to the top), the language and the sound. On phones
-the bar keeps its menu, which lists the same sections and parts: the
+avatar and name, back to the top), quick read, the language and the sound.
+On phones the bar keeps its menu (quick read is in its settings), which lists the same sections and parts: the
 current section open with the part on screen lit, the others opening with
 their arrow, so any part is a tap away. Both come in once the cover has
 gone. The scroll spy reads a block's section from its hold
@@ -464,7 +464,17 @@ it shows the same frame fade it in over the light one, which is let go
 visitor has left gives way. Saved data, 2G/3G and very small memories stay
 with the light encodes (on wide screens).
 
-## Reduced motion
+## Reduced motion and quick read
+
+The page has one reduced mode, which a system asking for reduced motion
+gets, and which any visitor can choose as **quick read** — the switch in
+the cover's corner, in the bar and in the phone's menu, or a `?read` link
+(`?read=0` turns it off). `index.html` decides before the first paint and
+marks `<html data-motion="reduced">`; `prefersReducedMotion()` and every
+stylesheet follow that attribute, so the two cannot drift apart. Changing
+it reloads the page, which returns to the same moment (`restorePosition`).
+With the system's reduced motion there is no switch: the page is already
+calm.
 
 Each stage shows its still instead of the film (no video is downloaded),
 stills switch where a section's top crosses the middle of the screen, the
