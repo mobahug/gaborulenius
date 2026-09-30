@@ -1,0 +1,415 @@
+/* Quick read: the essentials on one calm page (src/journey/quickRead.ts).
+   It stands on the jungle path, out of focus and still, drawn by index.html
+   from the first paint; everything here reads over it in the journey's
+   language — cream words, gold accents, dark forest-shade glass. */
+
+.qr {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  color: #f6f1e4;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* ---------- The bar: who this is, the language, the way back ---------- */
+
+.qr-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(7, 11, 8, 0.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  backdrop-filter: blur(16px) saturate(1.1);
+  border-bottom: 1px solid rgba(233, 220, 179, 0.14);
+}
+
+.qr-bar-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.qr-bar-name img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid #d9c89a;
+}
+
+.qr-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qr-film-button.MuiButton-root {
+  min-height: 34px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: #f6f1e4;
+  background-color: rgba(10, 16, 12, 0.5);
+}
+
+.qr-film-button .MuiButton-startIcon {
+  color: #d9c89a;
+}
+
+/* ---------- The page ---------- */
+
+.qr-page {
+  width: min(880px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 24px;
+  display: grid;
+  gap: 18px;
+}
+
+/* No backdrop blur of its own: the picture behind is already out of focus,
+   and a dozen blurred layers would cost a phone every scrolled frame. */
+.qr-card {
+  padding: clamp(20px, 4vw, 34px);
+  border-radius: 20px;
+  background: rgba(9, 14, 10, 0.78);
+  border: 1px solid rgba(233, 220, 179, 0.14);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+}
+
+.qr-card h2 {
+  margin: 0 0 18px;
+  font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.qr-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.qr-card p {
+  margin: 0;
+}
+
+.qr-text {
+  font-size: 1rem;
+  font-weight: 450;
+  line-height: 1.65;
+  color: rgba(246, 241, 228, 0.9);
+}
+
+.qr-text strong {
+  color: #e9dcb3;
+  font-weight: 700;
+}
+
+.qr-card > .qr-text + .qr-link {
+  margin-top: 14px;
+}
+
+/* ---------- Who ---------- */
+
+.qr-intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 22px 28px;
+}
+
+.qr-portrait {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #d9c89a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.qr-kicker,
+.qr-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #d9c89a;
+}
+
+.qr-intro h1 {
+  margin: 6px 0 4px;
+  font-size: clamp(2.1rem, 1.6rem + 2.2vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+.qr-role {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #e9dcb3;
+}
+
+.qr-card .qr-lead {
+  margin-top: 10px;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: rgba(246, 241, 228, 0.88);
+}
+
+.qr-facts {
+  grid-column: 1 / -1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+}
+
+.qr-facts li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: rgba(246, 241, 228, 0.92);
+}
+
+.qr-facts .MuiSvgIcon-root {
+  display: block;
+  font-size: 18px;
+  color: #d9c89a;
+}
+
+.qr-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.qr-card .qr-note {
+  grid-column: 1 / -1;
+  font-size: 0.85rem;
+  color: rgba(246, 241, 228, 0.62);
+}
+
+/* ---------- The developer years ---------- */
+
+.qr-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 20px;
+  border-left: 1px solid rgba(217, 200, 154, 0.35);
+  display: grid;
+  gap: 20px;
+}
+
+.qr-timeline li {
+  position: relative;
+}
+
+.qr-timeline li::before {
+  content: "";
+  position: absolute;
+  left: -25px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d9c89a;
+  box-shadow: 0 0 0 4px rgba(9, 14, 10, 0.95);
+}
+
+.qr-card .qr-meta {
+  margin: 3px 0 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #d9c89a;
+}
+
+/* ---------- The work and the projects ---------- */
+
+.qr-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.qr-grid > li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 14px;
+  background: rgba(246, 241, 228, 0.04);
+  border: 1px solid rgba(233, 220, 179, 0.1);
+}
+
+.qr-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  color: #e9dcb3;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.qr-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.qr-link .MuiSvgIcon-root {
+  font-size: 16px;
+}
+
+.qr-link:focus-visible,
+.qr-bar-name:focus-visible,
+.qr-footer button:focus-visible {
+  outline: 2px solid #e9dcb3;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Skills ---------- */
+
+.qr-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.qr-chips li {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(217, 200, 154, 0.1);
+  border: 1px solid rgba(217, 200, 154, 0.28);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #f6f1e4;
+}
+
+.qr-skills {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 28px;
+}
+
+.qr-card .qr-skills h3 {
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #d9c89a;
+}
+
+/* ---------- The end ---------- */
+
+.qr-footer {
+  width: min(880px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 6px 0 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: rgba(246, 241, 228, 0.66);
+}
+
+.qr-footer button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #e9dcb3;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 699.95px) {
+  .qr-intro,
+  .qr-facts,
+  .qr-grid,
+  .qr-skills {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .qr-portrait {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+/* On the smallest phones the bar keeps the portrait, the language and the
+   way back; the name is on the card below. */
+@media (max-width: 479.95px) {
+  .qr-bar-name span {
+    display: none;
+  }
+}
+
+/* Printed (or saved as a PDF), it is a plain one-page summary. */
+@media print {
+  :root[data-quick-read="true"] body::before,
+  .qr-bar,
+  .qr-actions,
+  .qr-note,
+  .qr-footer button,
+  .copy-email .MuiIconButton-root {
+    display: none !important;
+  }
+
+  .qr,
+  .qr-text,
+  .qr-card .qr-lead,
+  .qr-facts li,
+  .qr-chips li,
+  .copy-email {
+    color: #111 !important;
+  }
+
+  .qr-card {
+    padding: 0 0 14px;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .qr-grid > li {
+    background: none;
+  }
+
+  .qr-chips li {
+    background: none;
+    border-color: #999;
+  }
+}

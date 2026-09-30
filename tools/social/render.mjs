@@ -35,6 +35,8 @@ const base = `
   html, body { margin: 0; }
 `;
 
+/* Centred, so that apps which crop it to a square (WhatsApp, iMessage)
+   keep the portrait, the name and the role. */
 const card = `<!doctype html><html><head><style>${base}
   body {
     width: 1200px;
@@ -49,67 +51,58 @@ const card = `<!doctype html><html><head><style>${base}
   .shade {
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(90deg, rgba(7, 11, 8, 0.92) 0%, rgba(7, 11, 8, 0.78) 38%,
-        rgba(7, 11, 8, 0.2) 72%, rgba(7, 11, 8, 0) 100%),
-      linear-gradient(0deg, rgba(7, 11, 8, 0.55) 0%, rgba(7, 11, 8, 0) 40%);
+    background: radial-gradient(ellipse 60% 75% at 50% 48%,
+      rgba(7, 11, 8, 0.8) 0%, rgba(7, 11, 8, 0.6) 55%, rgba(7, 11, 8, 0.25) 100%);
   }
   .copy {
     position: absolute;
-    left: 80px;
-    top: 0;
-    bottom: 0;
-    width: 700px;
+    inset: 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
+    text-align: center;
+    padding-bottom: 20px;
   }
   .portrait {
-    width: 148px;
-    height: 148px;
+    width: 132px;
+    height: 132px;
     border-radius: 50%;
     border: 3px solid #d9c89a;
     background: url("${portrait}") center / cover;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55), 0 0 0 10px rgba(255, 236, 190, 0.06);
-    margin-bottom: 36px;
+    margin-bottom: 30px;
   }
   h1 {
     margin: 0;
-    font-size: 76px;
+    font-size: 72px;
     font-weight: 800;
     letter-spacing: -0.035em;
     line-height: 1;
   }
   .role {
-    margin: 22px 0 0;
-    font-size: 32px;
+    margin: 20px 0 0;
+    font-size: 29px;
     font-weight: 600;
     color: #e9dcb3;
     letter-spacing: -0.01em;
   }
   .focus {
-    margin: 14px 0 0;
-    font-size: 25px;
+    margin: 12px 0 0;
+    font-size: 23px;
     font-weight: 500;
-    color: rgba(246, 241, 228, 0.82);
+    color: rgba(246, 241, 228, 0.84);
   }
   .address {
     position: absolute;
-    left: 80px;
-    bottom: 46px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: 21px;
+    left: 0;
+    right: 0;
+    bottom: 38px;
+    font-size: 19px;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    color: rgba(246, 241, 228, 0.78);
-  }
-  .address::before {
-    content: "";
-    width: 40px;
-    height: 2px;
-    background: #d9c89a;
+    letter-spacing: 0.03em;
+    text-align: center;
+    color: rgba(246, 241, 228, 0.72);
   }
 </style></head><body>
   <div class="shade"></div>

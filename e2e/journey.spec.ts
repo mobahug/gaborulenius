@@ -41,45 +41,62 @@ test("greets the visitor and tells search engines who this is", async ({
   ).toHaveAttribute("href", /\?lang=fi$/);
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     "content",
-    /social-card\.jpg$/,
+    /social-card\.jpg\?v=\d+$/,
   );
   expect(errors).toEqual([]);
 });
 
-test("quick read shows the whole portfolio on one calm page", async ({
-  page,
-}) => {
+test("quick read shows the essentials on one calm page", async ({ page }) => {
   const films: string[] = [];
   page.on("request", (request) => {
     if (request.url().endsWith(".mp4")) films.push(request.url());
   });
   await page.goto("./?read");
 
-  const root = page.locator("html");
-  await expect(root).toHaveAttribute("data-motion", "reduced");
-  await expect(page.locator(".cover-quick-read")).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
-  for (const heading of [
-    "#about-heading",
-    "#neural-heading",
-    "#explorer-heading",
-    "#contact-heading",
+  await expect(page.locator("#qr-name")).toHaveText("Gábor Ulenius");
+  for (const name of [
+    "About Me",
+    "Experience",
+    "Work projects",
+    "Personal projects",
+    "Skills & Tools",
+    "Let’s Connect",
   ]) {
-    await expect(await scrollUntil(page, heading)).toBeVisible();
+    const heading = page.getByRole("heading", { name, level: 2 });
+    await heading.scrollIntoViewIfNeeded();
+    await expect(heading).toBeVisible();
   }
+  await expect(page.locator("#cover-heading")).toHaveCount(0);
+  await expect(page.locator("#jungle-loader")).toHaveCount(0);
   expect(films).toEqual([]);
 
-  // The choice stays for the next visit, and the switch turns it off.
+  // The choice stays for the next visit; the bar leads back to the film.
   await page.goto("./");
-  await expect(root).toHaveAttribute("data-motion", "reduced");
+  await expect(page.locator("#qr-name")).toBeVisible();
+  await page.getByRole("button", { name: "Film journey", exact: true }).click();
+  await expect(page.locator("#cover-heading")).toBeVisible();
+  await expect(page.locator(".qr")).toHaveCount(0);
+
+  // And the cover leads to quick read again, once the loader lets go.
+  await page.waitForFunction(() => {
+    const loader = document.getElementById("jungle-loader");
+    return (
+      !loader ||
+      loader.classList.contains("is-landing") ||
+      loader.classList.contains("is-leaving")
+    );
+  });
   await page.locator(".cover-quick-read").click();
-  await expect(root).not.toHaveAttribute("data-motion", "reduced");
-  await expect(page.locator(".cover-quick-read")).toHaveAttribute(
-    "aria-pressed",
-    "false",
-  );
+  await expect(page.locator("#qr-name")).toBeVisible();
+});
+
+test("quick read speaks Finnish too", async ({ page }) => {
+  await page.goto("./?lang=fi&read");
+  await expect(page.locator(".qr-kicker")).toHaveText("Pikakatsaus");
+  await expect(
+    page.getByRole("heading", { name: "Työkokemus", level: 2 }),
+  ).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("lang", "fi");
 });
 
 test("a ?lang=fi link opens the portfolio in Finnish", async ({ page }) => {
@@ -102,13 +119,29 @@ test("a link to a section lands on it", async ({ page }) => {
 test("the email address can be copied", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("./?read");
-  await scrollUntil(page, "#contact-heading");
   const copy = page.getByRole("button", { name: "Copy the email address" });
   await copy.click();
   await expect(
     page.getByRole("button", { name: "Email address copied" }),
   ).toBeVisible();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+    "gaborulenius@gmail.com",
+  );
+});
+
+test("the journey loads its sections on the way to the end", async ({
+  page,
+}) => {
+  await page.goto("./?read=0");
+  for (const heading of [
+    "#about-heading",
+    "#neural-heading",
+    "#explorer-heading",
+    "#contact-heading",
+  ]) {
+    await expect(await scrollUntil(page, heading)).toBeAttached();
+  }
+  await expect(page.locator(".copy-email")).toContainText(
     "gaborulenius@gmail.com",
   );
 });

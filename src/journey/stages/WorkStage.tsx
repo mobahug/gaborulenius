@@ -12,24 +12,17 @@ const QualificationSection = React.lazy(
   () => import("../../components/sections/QualificationSection"),
 );
 
-const NODE_LABELS: Record<string, string> = {
-  projectHusDatalakeTitle: "workNodeHus",
-  projectMedicalPocTitle: "workNodePoc",
-  projectIctDaysTitle: "workNodeIct",
-  projectAnyhauTitle: "workNodeAnyhau",
-};
-
 type Project = (typeof projects)[number];
 
 /** Work projects, each with its link (or a note that it has none). */
 const WorkList = ({ items, locale }: { items: Project[]; locale: string }) => (
   <ol className="stage-work-list">
-    {items.map(({ id, hrefEN, hrefFI }) => {
+    {items.map(({ id, labelId, hrefEN, hrefFI }) => {
       const href = locale === "fi" ? hrefFI : hrefEN;
       return (
         <li key={id}>
           <h3 className="stage-work-title">
-            <FormattedMessage id={NODE_LABELS[id]} />
+            <FormattedMessage id={labelId} />
           </h3>
           <p className="stage-work-body">
             <FormattedMessage id={id} />
@@ -44,7 +37,7 @@ const WorkList = ({ items, locale }: { items: Project[]; locale: string }) => (
               <FormattedMessage id="buttonReadMore" />
               {/* Which one, for screen readers and search engines. */}
               <span className="sr-only">
-                : <FormattedMessage id={NODE_LABELS[id]} />
+                : <FormattedMessage id={labelId} />
               </span>
               <OpenInNewIcon aria-hidden="true" />
             </a>

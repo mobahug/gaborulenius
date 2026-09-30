@@ -31,8 +31,8 @@
         if (locale !== "en" && locale !== "fi") locale = "en";
         root.dataset.locale = locale;
 
-        // Quick read: the whole portfolio on one calm page, stills instead
-        // of the films. ?read (a link for recruiters) or the visitor's own
+        // Quick read: the essentials on one calm page instead of the film
+        // journey. ?read (a link for recruiters) or the visitor's own
         // choice turns it on; ?read=0 off.
         var read = param("read");
         var quick = false;
@@ -46,13 +46,13 @@
         }
         root.dataset.quickRead = quick ? "true" : "false";
 
-        // Quick read and a system asking for reduced motion both run the
-        // page in its reduced mode (data-motion="reduced").
+        // A system asking for reduced motion runs the journey in its
+        // reduced mode (data-motion="reduced"): stills, nothing held.
         var motion = window.matchMedia
           ? window.matchMedia("(prefers-reduced-motion: reduce)")
           : null;
         var applyMotion = function () {
-          if (quick || (motion && motion.matches)) {
+          if (motion && motion.matches) {
             root.dataset.motion = "reduced";
           } else {
             delete root.dataset.motion;
@@ -139,12 +139,13 @@
     />
     <meta
       property="og:image"
-      content="https://mobahug.github.io/gaborulenius/social-card.jpg"
+      content="https://mobahug.github.io/gaborulenius/social-card.jpg?v=2"
     />
     <meta
       property="og:image:alt"
       content="Gábor Ulenius, Full-Stack Developer in Espoo, Finland, on the jungle path of the portfolio’s opening film"
     />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -158,7 +159,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://mobahug.github.io/gaborulenius/social-card.jpg"
+      content="https://mobahug.github.io/gaborulenius/social-card.jpg?v=2"
     />
     <meta
       name="twitter:image:alt"
@@ -257,6 +258,19 @@
          app's CSS baseline arrives. */
       body {
         margin: 0;
+      }
+
+      /* Words for screen readers (and search engines) only. */
+      .sr-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
       }
 
       :root[data-motion="reduced"] {
@@ -498,8 +512,22 @@
         }
       }
 
-      :root[data-motion="reduced"] #jungle-loader {
+      :root[data-motion="reduced"] #jungle-loader,
+      :root[data-quick-read="true"] #jungle-loader {
         display: none;
+      }
+
+      /* Quick read stands on one calm picture: the jungle path, out of
+         focus and dimmed, still while the page scrolls — there from the
+         first paint, before the page's script has arrived. */
+      :root[data-quick-read="true"] body::before {
+        content: "";
+        position: fixed;
+        inset: -32px;
+        z-index: 0;
+        background: #0b110d url("film/jungle_chase-still.webp") center / cover
+          no-repeat;
+        filter: blur(14px) brightness(0.5) saturate(1.05);
       }
     </style>
     <noscript>
@@ -624,7 +652,10 @@
         var flight = loader.querySelector(".jl-flight");
         var wings = loader.querySelectorAll(".jl-wing");
         // Reduced motion and quick read show no film to wait for.
-        if (root.dataset.motion === "reduced") {
+        if (
+          root.dataset.motion === "reduced" ||
+          root.dataset.quickRead === "true"
+        ) {
           loader.remove();
           return;
         }

@@ -1,57 +1,16 @@
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import CheckIcon from "@mui/icons-material/Check";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import EmailIcon from "@mui/icons-material/Email";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import type React from "react";
-import { useEffect, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
+import CopyEmail from "../../components/CopyEmail";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "../../seo";
 import FilmSection, { Cue, Mark, Space } from "../film/FilmSection";
 import "./stages.css";
 
 type EndingStageProps = {
   contactRef?: React.Ref<HTMLDivElement>;
-};
-
-/**
- * The address itself, and a way to copy it: "Email Me" does nothing on a
- * computer without a mail app.
- */
-const CopyEmail = () => {
-  const intl = useIntl();
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    if (!copied) return;
-    const reset = window.setTimeout(() => setCopied(false), 2400);
-    return () => window.clearTimeout(reset);
-  }, [copied]);
-
-  const copy = () => {
-    navigator.clipboard?.writeText(EMAIL).then(
-      () => setCopied(true),
-      // No clipboard here: the address stays there to select.
-      () => undefined,
-    );
-  };
-  const label = intl.formatMessage({
-    id: copied ? "contactEmailCopied" : "contactCopyEmail",
-  });
-
-  return (
-    <p className="stage-contact-email">
-      <span>{EMAIL}</span>
-      <IconButton size="small" onClick={copy} aria-label={label} title={label}>
-        {copied ? <CheckIcon /> : <ContentCopyIcon />}
-      </IconButton>
-      <span className="sr-only" aria-live="polite">
-        {copied ? label : ""}
-      </span>
-    </p>
-  );
 };
 
 /**

@@ -21,6 +21,8 @@ export type TimelineEvent = {
 
 export type Project = {
   id: string;
+  /** Its short name (the work projects' headings). */
+  labelId: string;
   hrefEN?: string;
   hrefFI?: string;
 };
@@ -47,17 +49,20 @@ const LINKS = {
 export const projects: Project[] = [
   {
     id: "projectHusDatalakeTitle",
+    labelId: "workNodeHus",
     hrefEN: LINKS.husArticleEN,
     hrefFI: LINKS.husArticleFI,
   },
   {
     id: "projectMedicalPocTitle",
+    labelId: "workNodePoc",
     hrefEN: LINKS.aiArticle,
     hrefFI: LINKS.aiArticle,
   },
-  { id: "projectIctDaysTitle" },
+  { id: "projectIctDaysTitle", labelId: "workNodeIct" },
   {
     id: "projectAnyhauTitle",
+    labelId: "workNodeAnyhau",
     hrefEN: LINKS.anyhauEN,
     hrefFI: LINKS.anyhauFI,
   },
@@ -265,6 +270,52 @@ export const allEvents: TimelineEvent[] = [
     "eventBkszcP2",
     "eventBkszcP3",
   ]),
+];
+
+/** The Neural Decompiler's tools. */
+export const neuralStack = [
+  "Python",
+  "PyTorch",
+  "TransformerLens",
+  "Pythia",
+  "pytest",
+  "uv",
+];
+
+/**
+ * The skills a quick read leads with (the full list is below), grouped as
+ * in the journey: what the About text names, and a few more of each kind.
+ */
+export const keySkills = [
+  {
+    id: "skillsCatFrontend",
+    items: ["React", "TypeScript", "Next.js", "GraphQL"],
+  },
+  {
+    id: "skillsCatBackend",
+    items: [
+      "Node.js/Express",
+      "PostgreSQL",
+      "Elasticsearch",
+      "Azure Functions",
+    ],
+  },
+  {
+    id: "skillsCatMobileCloud",
+    items: ["React Native", "Expo", "Supabase", "Cloudflare Workers"],
+  },
+  {
+    id: "skillsCatTools",
+    items: [
+      "Azure Cloud",
+      "Docker",
+      "Kubernetes",
+      "Terraform",
+      "Helm",
+      "Azure DevOps",
+      "Playwright",
+    ],
+  },
 ];
 
 export const categories = [

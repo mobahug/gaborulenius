@@ -511,3 +511,25 @@ SEO 92).
   the timeline, the frame mapping, the copy's two languages and the
   experience count; browser smoke tests (Playwright, Google Chrome); CI
   with deployment to Pages and a weekly link check.
+
+## 23. Quick read as a summary, proper Finnish, a card for any crop (September 2026)
+
+- Quick read was the journey's reduced mode: every film's still behind the
+  content, changing as the page scrolled, and the whole journey's length.
+  Behind words being read, a picture that keeps changing is one motion too
+  many, and a recruiter wants the essentials. It is now its own page
+  (`src/quickread/`): who, About, the developer years, the work projects,
+  the personal projects, the key skills and the invitation, over one still
+  picture — the jungle path out of focus — in about 3.5 screens on a
+  desktop. Reduced motion keeps the whole journey with its stills.
+- The Finnish copy was read through against the English and corrected: case
+  endings ("ennen ja jälkeen muuton", "valmistaa sinua", "ihmisen
+  ymmärrettäviksi"), words that meant something else ("muuttaja",
+  "saavutettavuus" for data, "kuormituspisteet", "suunnittelukatselu"),
+  vowel harmony ("Caretechillä"), the spelling of "full stack -kehittäjä",
+  English sentence shapes turned Finnish, and the Finnish name of ICT Days,
+  ATK-päivät. Labels that were only in English (the language switch, the
+  menu's close button, the experience tabs) speak both.
+- The share card is centred, so an app that crops it to a square (WhatsApp,
+  iMessage) keeps the portrait, the name and the role; its address carries
+  a version (`?v=2`) so caches fetch it again, and its type is declared.

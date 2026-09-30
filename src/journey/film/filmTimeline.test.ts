@@ -65,7 +65,7 @@ describe("computeTimeline", () => {
     expect(computeTimeline(at(4.5 * SECTION), false)?.current).toBe(4);
   });
 
-  it("shows each film's still in the reduced mode (quick read)", () => {
+  it("shows each film's still with reduced motion", () => {
     FILMS.forEach((film, index) => {
       const y = index * SECTION + SECTION / 2;
       expect(timeAt(index, y, true)).toBe(film.still);

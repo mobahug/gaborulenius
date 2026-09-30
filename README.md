@@ -5,7 +5,7 @@ scroll-driven journey through five films, with the real content — semantic
 HTML, in English and Finnish — held still over them.
 
 **Live:** [mobahug.github.io/gaborulenius](https://mobahug.github.io/gaborulenius/)
-· **Quick read**, the same content on one calm page:
+· **Quick read**, the essentials on one calm page:
 [`?read`](https://mobahug.github.io/gaborulenius/?read)
 · **Suomeksi:** [`?lang=fi`](https://mobahug.github.io/gaborulenius/?lang=fi)
 
@@ -33,16 +33,19 @@ HTML, in English and Finnish — held still over them.
   while the film plays behind it and fades out, over a veil (a backdrop
   blur shaded by the footage's measured brightness) that keeps the words
   readable.
-- **Quick read and reduced motion.** One switch turns the journey into a
-  short page with each film's still behind its content; no video is
-  downloaded. A system that asks for reduced motion gets the same.
+- **Quick read.** For a visitor who wants the facts first, one switch
+  leads to a summary on a single calm page — who, the developer years,
+  the work, the key skills and the ways to get in touch — over a still,
+  out-of-focus picture of the jungle; no video is downloaded.
+- **Reduced motion.** A system that asks for it gets the journey with
+  each film's still behind its content and nothing held.
 - **Fast first paint.** The cover is plain DOM, painted before React, MUI
   and the copy have loaded; the rest arrives around the visitor (about
   210 KB of JavaScript, gzipped).
 
 Design and implementation notes: [docs/scrollcraft-journey.md](docs/scrollcraft-journey.md).
 
-<img src="docs/images/phone-about.jpg" alt="About on a phone, in quick read" width="260" align="right" />
+<img src="docs/images/phone-quick-read.jpg" alt="Quick read on a phone" width="260" align="right" />
 
 ## Stack
 

@@ -3,7 +3,8 @@ import type { AppLocale } from "./i18n/messages";
 export const SITE_URL = "https://mobahug.github.io/gaborulenius/";
 export const SITE_NAME = "Gábor Ulenius Portfolio";
 /** The card shown where the address is shared (tools/social/render.mjs). */
-export const SOCIAL_IMAGE_URL = `${SITE_URL}social-card.jpg`;
+// ?v changes with the picture, so apps that cache previews fetch it again.
+export const SOCIAL_IMAGE_URL = `${SITE_URL}social-card.jpg?v=2`;
 export const SOCIAL_IMAGE_WIDTH = 1200;
 export const SOCIAL_IMAGE_HEIGHT = 630;
 export const PROFILE_IMAGE_URL = `${SITE_URL}profile2-small.webp`;
@@ -11,6 +12,8 @@ export const LINKEDIN_URL =
   "https://www.linkedin.com/in/g%C3%A0bor-horv%C3%A0th-ulenius-07526719a/";
 export const GITHUB_URL = "https://github.com/mobahug";
 export const EMAIL = "gaborulenius@gmail.com";
+export const NEURAL_REPOSITORY_URL =
+  "https://github.com/mobahug/neural-decompiler";
 export const TIETO_CAREERS_PROFILE_URL =
   "https://careers.tieto.com/career-story/2025-5/gabor-horvath-ulenius-a-non-traditional-journey-into-coding";
 
@@ -35,13 +38,13 @@ export const SEO_BY_LOCALE: Record<AppLocale, SeoContent> = {
   },
   fi: {
     title:
-      "Gábor Ulenius | Full-Stack-kehittäjä Suomessa | Terveysdata ja tekoäly",
+      "Gábor Ulenius | Full stack -kehittäjä Suomessa | Terveysdata ja tekoäly",
     description:
-      "Gábor Uleniuksen portfolio: Espoossa toimiva Full-Stack-kehittäjä, jonka osaamista ovat terveysdata-alustat, pilvitoimitus, verkkosovellukset ja tekoäly.",
+      "Gábor Uleniuksen portfolio: espoolainen full stack -kehittäjä, jonka osaamisalueita ovat terveysdata-alustat, pilvitoimitus, verkkosovellukset ja tekoäly.",
     ogLocale: "fi_FI",
     ogLocaleAlternate: "en_US",
     imageAlt:
-      "Gábor Ulenius, Full-Stack-kehittäjä Espoosta, portfolionsa viidakkopolun edessä",
+      "Gábor Ulenius, full stack -kehittäjä Espoosta, portfolion avauselokuvan viidakkopolulla",
   },
 };
 

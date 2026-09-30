@@ -628,27 +628,6 @@
   max-width: 40rem;
 }
 
-/* The address under the invitation, with a way to copy it. */
-.stage-contact-email {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 18px 0 0;
-  font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  color: rgba(246, 241, 228, 0.85);
-  overflow-wrap: anywhere;
-}
-
-.stage-contact-email .MuiIconButton-root {
-  color: #d9c89a;
-}
-
-.stage-contact-email .MuiSvgIcon-root {
-  font-size: 18px;
-}
-
 @media (max-width: 899.95px) {
   .stage-work-list {
     grid-template-columns: minmax(0, 1fr);

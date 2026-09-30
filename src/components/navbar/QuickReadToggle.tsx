@@ -4,33 +4,23 @@ import type { SxProps, Theme } from "@mui/material/styles";
 import SubjectIcon from "@mui/icons-material/Subject";
 import { useIntl } from "react-intl";
 import { colors } from "../../colors";
-import {
-  canSwitchQuickRead,
-  isQuickRead,
-  setQuickRead,
-} from "../../journey/quickRead";
+import { setQuickRead } from "../../journey/quickRead";
 
 type QuickReadToggleProps = {
   sx?: SxProps<Theme>;
 };
 
-/**
- * Quick read on or off (the cover has its twin): the whole portfolio on one
- * calm page, or the film journey. Pressed, in gold, while it is on.
- */
+/** The way to quick read from the journey (the cover has its twin). */
 export const QuickReadToggle: React.FC<QuickReadToggleProps> = ({ sx }) => {
   const intl = useIntl();
-  if (!canSwitchQuickRead()) return null;
-  const on = isQuickRead();
 
   return (
     <Button
       size="small"
       variant="outlined"
-      aria-pressed={on}
-      title={intl.formatMessage({ id: on ? "quickReadOff" : "quickReadOn" })}
+      title={intl.formatMessage({ id: "quickReadOn" })}
       startIcon={<SubjectIcon />}
-      onClick={() => setQuickRead(!on)}
+      onClick={() => setQuickRead(true)}
       sx={{
         // As tall as the language switch beside it.
         minHeight: 34,
@@ -40,8 +30,8 @@ export const QuickReadToggle: React.FC<QuickReadToggleProps> = ({ sx }) => {
         fontWeight: 700,
         letterSpacing: "0.04em",
         whiteSpace: "nowrap",
-        color: on ? colors.accentHover : colors.textLight,
-        backgroundColor: on ? colors.btnBgHover : colors.btnBg,
+        color: colors.textLight,
+        backgroundColor: colors.btnBg,
         backdropFilter: "blur(10px)",
         "& .MuiButton-startIcon": { color: colors.accent },
         "&:hover": {

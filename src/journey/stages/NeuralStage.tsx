@@ -2,19 +2,12 @@ import Button from "@mui/material/Button";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import type React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { neuralStack } from "../../contexts";
+import { NEURAL_REPOSITORY_URL } from "../../seo";
 import FilmSection, { Cue, Space } from "../film/FilmSection";
 import PortalTitle from "../film/PortalTitle";
 import "./stages.css";
 
-const REPOSITORY_URL = "https://github.com/mobahug/neural-decompiler";
-const STACK = [
-  "Python",
-  "PyTorch",
-  "TransformerLens",
-  "Pythia",
-  "pytest",
-  "uv",
-];
 /** The question holds at full size until 1.5 s, and has passed by 2.1 s. */
 const QUESTION_HOLD = [1.5, 2.1] as const;
 
@@ -96,7 +89,7 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
               id: "projectExplorerStackHeading",
             })}
           >
-            {STACK.map((item) => (
+            {neuralStack.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -104,7 +97,7 @@ const NeuralStage = ({ projectsRef }: NeuralStageProps) => {
             <Button
               variant="contained"
               component="a"
-              href={REPOSITORY_URL}
+              href={NEURAL_REPOSITORY_URL}
               target="_blank"
               rel="noopener noreferrer"
               startIcon={<GitHubIcon />}

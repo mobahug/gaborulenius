@@ -10,11 +10,7 @@ import {
   isWideLayout,
   prefersReducedMotion,
 } from "../journey/device";
-import {
-  canSwitchQuickRead,
-  isQuickRead,
-  setQuickRead,
-} from "../journey/quickRead";
+import { setQuickRead } from "../journey/quickRead";
 
 // Plain-DOM cover. It stays outside MUI/react-intl so the LCP avatar and the
 // heading paint before the rest of the app has loaded.
@@ -26,20 +22,15 @@ const SKIP_LABELS: Record<string, string> = {
   en: "Skip to content",
   fi: "Siirry sisältöön",
 };
-/** The quick read switch: its name, and what pressing it does. */
-const QUICK_READ_LABELS: Record<
-  string,
-  { name: string; on: string; off: string }
-> = {
+/** The way to quick read: its name, and what it shows. */
+const QUICK_READ_LABELS: Record<string, { name: string; hint: string }> = {
   en: {
     name: "Quick read",
-    on: "Show everything on one calm page, without the film",
-    off: "Back to the film journey",
+    hint: "The essentials on one page, without the film",
   },
   fi: {
-    name: "Pikaluku",
-    on: "Näytä kaikki yhdellä rauhallisella sivulla ilman elokuvaa",
-    off: "Takaisin elokuvamatkaan",
+    name: "Pikakatsaus",
+    hint: "Tärkeimmät asiat yhdellä sivulla ilman elokuvaa",
   },
 };
 
@@ -247,8 +238,6 @@ const CoverSection: React.FC = () => {
   const greeting = GREETINGS[locale] ?? GREETINGS.en;
   const skipLabel = SKIP_LABELS[locale] ?? SKIP_LABELS.en;
   const quickReadLabels = QUICK_READ_LABELS[locale] ?? QUICK_READ_LABELS.en;
-  const [quickRead] = useState(isQuickRead);
-  const [quickReadSwitch] = useState(canSwitchQuickRead);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -537,20 +526,17 @@ const CoverSection: React.FC = () => {
               {greeting} <span id="cover-name">Gábor</span>
             </h1>
           </div>
-          {quickReadSwitch ? (
-            <button
-              type="button"
-              className="cover-quick-read"
-              aria-pressed={quickRead}
-              title={quickRead ? quickReadLabels.off : quickReadLabels.on}
-              onClick={() => setQuickRead(!quickRead)}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z" />
-              </svg>
-              {quickReadLabels.name}
-            </button>
-          ) : null}
+          <button
+            type="button"
+            className="cover-quick-read"
+            title={quickReadLabels.hint}
+            onClick={() => setQuickRead(true)}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z" />
+            </svg>
+            {quickReadLabels.name}
+          </button>
           <div className="cover-depth cover-depth--near" aria-hidden="true">
             {LEAVES.map((leaf) => {
               const [width, height] = leaf.size;
@@ -785,7 +771,7 @@ const CoverSection: React.FC = () => {
           outline: 2px solid ${lightColors.accentHover};
           outline-offset: 3px;
         }
-        /* The quick read switch, in the corner of the first screen (the
+        /* The way to quick read, in the corner of the first screen (the
            bar with its twin comes in once the cover has gone). */
         .cover-quick-read {
           position: absolute;
@@ -812,8 +798,7 @@ const CoverSection: React.FC = () => {
           height: 18px;
           fill: ${lightColors.accent};
         }
-        .cover-quick-read:hover,
-        .cover-quick-read[aria-pressed="true"] {
+        .cover-quick-read:hover {
           background: ${lightColors.btnBgHover};
           color: ${lightColors.accentHover};
         }

@@ -6,6 +6,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import TranslateIcon from "@mui/icons-material/Translate";
 import type { CSSProperties, ReactNode, Ref } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { TIETO_CAREERS_PROFILE_URL } from "../../seo";
 import { assetUrl } from "../../utils/assets";
 import { experienceYears } from "../../utils/experience";
 import { Cue, Space } from "../film/FilmSection";
@@ -18,8 +19,6 @@ const META_ITEMS = [
   { id: "aboutLanguages", icon: <TranslateIcon /> },
 ];
 
-const CAREER_STORY_URL =
-  "https://careers.tieto.com/career-story/2025-5/gabor-horvath-ulenius-a-non-traditional-journey-into-coding";
 /** When the story was published, and how long it takes to read. */
 const STORY_DATE = new Date(2025, 4, 1);
 const STORY_MINUTES = 3;
@@ -89,7 +88,7 @@ const AboutChapter = ({ at, storyAt, ref }: AboutChapterProps) => {
             <Button
               variant="contained"
               component="a"
-              href={CAREER_STORY_URL}
+              href={TIETO_CAREERS_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"
               endIcon={<OpenInNewIcon />}
