@@ -22,6 +22,16 @@ import {
 /** How long the layout may keep settling after a return (ms). */
 const SETTLE_MS = 2500;
 
+// The page is still to jump to where the visitor arrives (see below).
+let jumpPending = false;
+
+/**
+ * Whether the page is about to jump to a saved position or a linked section
+ * it has not reached yet: what is on screen until then, the top of the
+ * page, is only passed through (the film layer loads nothing for it).
+ */
+export const isJumpPending = () => jumpPending;
+
 const scrollInstantly = (top: number) => {
   // The page scrolls smoothly for links; a restore must not.
   const root = document.documentElement;
@@ -57,9 +67,11 @@ export const useRestorePosition = () => {
     const hash = window.location.hash;
     const linked = !saved && hash.length > 1 ? hash.slice(1) : null;
     let restoring = saved !== null || linked !== null;
+    jumpPending = restoring;
     const until = performance.now() + SETTLE_MS;
     const stopRestoring = () => {
       restoring = false;
+      jumpPending = false;
       window.removeEventListener("wheel", stopRestoring);
       window.removeEventListener("touchstart", stopRestoring);
       window.removeEventListener("keydown", stopRestoring);
@@ -86,8 +98,12 @@ export const useRestorePosition = () => {
         return;
       }
       const top = target();
-      if (top !== null && Math.abs(window.scrollY - top) > 2) {
-        scrollInstantly(top);
+      if (top !== null) {
+        if (Math.abs(window.scrollY - top) > 2) scrollInstantly(top);
+        jumpPending = false;
+      } else if (linked) {
+        // Nothing has that id (yet): the page stays where it is for now.
+        jumpPending = false;
       }
     }, 1);
 

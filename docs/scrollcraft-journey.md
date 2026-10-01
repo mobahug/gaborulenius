@@ -456,6 +456,9 @@ about three.
 - Jumps load nothing on the way: scrolling faster than 0.12 viewport heights
   per frame, and any in-page link (the page scrolls smoothly through
   everything in between), count as transit; loading starts where they land.
+  So does arriving: a link to a section or a return to a saved place starts
+  at the top of the page for a moment, and nothing loads for it until the
+  page has jumped there (`isJumpPending` in `restorePosition.ts`).
 - On phones a film two stages away is released after staying that far for
   6 s (three away at once), so going back and forth over a seam never
   reloads anything.

@@ -220,6 +220,62 @@ test("the first film starts with the page and is fetched once", async ({
   expect(asked.indexOf(film[0])).toBeLessThan(shell);
 });
 
+/** The films asked for from now on, by name (chase, neural, …). Routing
+ * them also keeps the browser's cache out of the count. */
+const watchFilms = async (page: Page) => {
+  const films: string[] = [];
+  await page.route("**/film/*/*.mp4", (route) => {
+    films.push(
+      route
+        .request()
+        .url()
+        .replace(/^.*\/(\w+)\.mp4$/, "$1"),
+    );
+    return route.continue();
+  });
+  return films;
+};
+
+/** The film at the scroll's place plays (the loader then goes). */
+const filmPlays = (page: Page) =>
+  expect(page.locator("html")).toHaveAttribute("data-film-ready", "true", {
+    timeout: 30_000,
+  });
+
+test("a link to a section loads its film, not the first one", async ({
+  page,
+}) => {
+  const films = await watchFilms(page);
+  await page.goto("./?read=0#contact");
+  await filmPlays(page);
+  await expect(page.locator("#contact-heading")).toBeInViewport();
+  expect(films).toContain("ending");
+  expect(films).not.toContain("chase");
+});
+
+test("a reload returns to the same place without the first film", async ({
+  page,
+}) => {
+  await page.goto("./?read=0");
+  await filmPlays(page);
+  // Down at the contact, as if scrolled there; the page keeps the place.
+  await page.evaluate(() =>
+    document.getElementById("contact")?.scrollIntoView({ behavior: "instant" }),
+  );
+  await page.evaluate(
+    () =>
+      new Promise((done) =>
+        requestAnimationFrame(() => requestAnimationFrame(done)),
+      ),
+  );
+  const films = await watchFilms(page);
+  await page.reload();
+  await filmPlays(page);
+  await expect(page.locator("#contact-heading")).toBeInViewport();
+  expect(films).toContain("ending");
+  expect(films).not.toContain("chase");
+});
+
 test("on quick read a butterfly or two land once the page is still", async ({
   page,
 }) => {

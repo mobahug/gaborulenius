@@ -785,3 +785,25 @@ like GitHub Pages (HTTP/2, 140 ms to the first byte of each file, 50 Mb/s):
 and on a fast connection (25 ms, 200 Mb/s): before 96–97 (greeting
 2.45–2.53 s), after 99–100 (1.61–1.64 s). What is left is GitHub Pages'
 first response and the loader itself, which waits for the film by design.
+
+## 34. A link to a section loads that section's film (October 2026)
+
+A link from elsewhere to a section (`#contact`, `#skills`, …) and a return
+to the journey (a reload, back/forward) arrive at the top of the page and
+jump to their place a frame later. The film layer looked at the top first
+and started the opening film: 2.2 MB on a phone, up to 6.4 MB on a
+computer, sharing the connection with the film the visitor was going to
+see. Every section outside the opening film was affected (the projects,
+experience, skills and contact); Home, About and Story are inside it.
+
+Now the jump is known to be coming (`isJumpPending`), and until the page
+has landed the film layer treats it as any other jump: nothing loads on
+the way. Where it lands is where the visitor starts, so loading starts
+there at once (not after the pause that follows a fast scroll). A link to
+something that is not on the page lets the films load at the top straight
+away. In a local server like GitHub Pages (60 ms per response, 50 Mb/s),
+a linked section's film plays about 0.4 s sooner on a computer (contact:
+1.62 → 1.23 s) and the opening film is not fetched at all; phones already
+let a film that far go at once, so there it saves the data and about
+0.07 s. Links into the opening film (About, Story) load as before.
+Browser tests check a link to `#contact` and a reload down there.

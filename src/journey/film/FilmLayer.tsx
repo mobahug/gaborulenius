@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { onDirectorFrame } from "../director/director";
 import { filmRect, focusAt, windowGeometry } from "../director/frameMapping";
+import { isJumpPending } from "../director/restorePosition";
 import { hasFinePointer } from "../device";
 import { wantsLightVideo } from "../../utils/connection";
 import { smoothstep } from "../math";
@@ -343,14 +344,19 @@ const FilmLayer = () => {
       const { current, films } = timeline;
       const aspect = viewport.vw / Math.max(1, viewport.vh);
 
+      // A return or a link to a section is about to jump there: like any
+      // jump, nothing on the way loads (the top of the page included). The
+      // jump itself is no scroll through the films: where it lands is where
+      // the visitor starts, so loading starts there at once.
+      const arriving = isJumpPending();
       const speed =
         lastY === null ? 0 : Math.abs(viewport.y - lastY) / viewport.vh;
-      lastY = viewport.y;
+      lastY = arriving ? null : viewport.y;
       if (navigating && speed > 0) {
         window.clearTimeout(navigationTimer);
         navigationTimer = window.setTimeout(endNavigation, 180);
       }
-      const inTransit = speed > TRANSIT_SPEED || navigating;
+      const inTransit = speed > TRANSIT_SPEED || navigating || arriving;
       if (inTransit) {
         // Load where the jump lands, once it has landed.
         window.clearTimeout(settleTimer);
