@@ -700,3 +700,16 @@ browsers without script are gone, and the PDFs (including the first
 single-language CV) were removed from the repository's history as well.
 Anyone who finds the site outside an application reaches Gábor through the
 email and LinkedIn buttons.
+
+## 31. An update no longer breaks an open page (October 2026)
+
+Every deploy replaces the code files the page loads as it goes (their names
+change with their contents) and removes the old ones. A page loaded before
+the update — a tab left open, or the start page from the browser's cache,
+which GitHub Pages lets it keep for ten minutes — then asked for an old
+file when the visitor went on (the footer, on the way to "Let's Connect"),
+got a 404, and the whole page broke. Now a failed load of a code file
+reloads the page once (`main.tsx`, Vite's `vite:preloadError`), which
+brings the new start page and its new files; a second failure within half a
+minute is not retried. A browser test serves the footer's file as missing
+once and checks that the page reloads and the footer comes.

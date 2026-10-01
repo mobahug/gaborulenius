@@ -12,6 +12,21 @@ const QuickReadShell = React.lazy(() => import("./quickread/QuickReadShell"));
 
 const quickRead = isQuickRead();
 
+// A page loaded before the site was updated asks for code files that the
+// update replaced (their names change with their contents) and are gone:
+// load the page again to get the new ones, instead of breaking. Once — a
+// second failure soon after is not an update, so it is not retried.
+window.addEventListener("vite:preloadError", () => {
+  try {
+    const last = Number(sessionStorage.getItem("reloadedForUpdate") ?? 0);
+    if (Date.now() - last < 30_000) return;
+    sessionStorage.setItem("reloadedForUpdate", String(Date.now()));
+  } catch {
+    return;
+  }
+  window.location.reload();
+});
+
 // The journey puts the visitor back where they were itself, once its
 // sections exist (see journey/director/restorePosition.ts); the browser's
 // own restore would run while only the cover is there.

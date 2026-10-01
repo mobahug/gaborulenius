@@ -154,6 +154,22 @@ test("a link to a section lands on it", async ({ page }) => {
   ).toBeInViewport();
 });
 
+test("a page from before an update loads again instead of breaking", async ({
+  page,
+}) => {
+  // The footer's code file is gone, as it is after an update.
+  let asked = 0;
+  await page.route("**/assets/Footer-*.js", (route) =>
+    asked++ === 0 ? route.fulfill({ status: 404 }) : route.continue(),
+  );
+  let loads = 0;
+  page.on("load", () => (loads += 1));
+  await page.goto("./?read=0#contact");
+  await expect(page.locator("footer")).toBeAttached({ timeout: 30_000 });
+  expect(asked).toBe(2);
+  expect(loads).toBe(2);
+});
+
 test("the email address can be copied", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("./?read");
