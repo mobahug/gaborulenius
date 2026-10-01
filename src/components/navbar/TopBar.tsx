@@ -98,9 +98,9 @@ const TopBar: React.FC<TopBarProps> = ({
       >
         {compact ? null : (
           <MuiLink
+            // Named by the words it shows, which voice control users say.
             href={homeHref}
             underline="none"
-            aria-label={intl.formatMessage({ id: "navHome" })}
             aria-hidden={bare || undefined}
             tabIndex={bare ? -1 : undefined}
             onClick={onHome}

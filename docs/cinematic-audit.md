@@ -713,3 +713,29 @@ reloads the page once (`main.tsx`, Vite's `vite:preloadError`), which
 brings the new start page and its new files; a second failure within half a
 minute is not retried. A browser test serves the footer's file as missing
 once and checks that the page reloads and the footer comes.
+
+## 32. What Lighthouse finds (October 2026)
+
+Lighthouse 13 on desktop scores 98 for performance (first paint 0.5 s,
+largest paint 0.7 s, 10 ms of blocking, no layout shift) and 100 for
+accessibility, best practices and SEO. Its one real finding was the name in
+the bar: a link labelled "Home" that shows "Gábor Ulenius", which voice
+control users cannot click by saying what they see. It now has no label of
+its own and is named by its words (`TopBar.tsx`); the menu keeps "Home".
+
+The rest is not for the site to fix:
+
+- **Cache lifetime and security headers.** GitHub Pages serves every file
+  with ten minutes of cache and takes no headers of the site's own (CSP,
+  HSTS, COOP, X-Frame-Options).
+- **Page weight.** The films are the site. The first one is downloaded whole
+  so it scrubs smoothly; the next one only once the visitor is on the
+  journey — an address with `#home` lands there, so a test of it counts both.
+- **Image sizes.** The cover's leaves come in two sizes and sharp (2×)
+  screens get the larger; the audit measures them against the leaves' size
+  in CSS pixels.
+- **Back/forward cache.** A film still downloading keeps the page out of it;
+  every link that leaves the site opens a new tab anyway.
+- **Unused or unminified JavaScript, some long tasks.** Browser extensions
+  (a password manager, an ad blocker, React DevTools). Test in a private
+  window without them.
