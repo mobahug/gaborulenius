@@ -81,7 +81,8 @@ const PortalTitle = ({
   useEffect(() => {
     const title = titleRef.current;
     if (!title) return;
-    let shown = true;
+    // Hidden until a frame places it (see the markup below).
+    let shown = false;
     const hide = () => {
       if (!shown) return;
       shown = false;
@@ -159,9 +160,12 @@ const PortalTitle = ({
     <>
       <div ref={ref} id={id} className="film-anchor" aria-hidden="true" />
       <div ref={placeRef} className="film-portal" data-motion="own">
+        {/* Not painted before the first frame decides where it is: drawn
+            fixed at the top, it would show there for a frame on arrival. */}
         <div
           ref={titleRef}
           className={`film-portal-title${className ? ` ${className}` : ""}`}
+          style={{ visibility: "hidden" }}
         >
           {children}
         </div>

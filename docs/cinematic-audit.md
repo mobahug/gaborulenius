@@ -744,8 +744,8 @@ The rest is not for the site to fix:
 
 Lighthouse's mobile score simulates a slow phone from a real, fast load,
 and what it counts as needed for the greeting (the largest paint) is every
-file that happened to arrive before the greeting was painted. Two things
-made the score swing between 96 and 99 from run to run:
+file that happened to arrive before the greeting was painted. Three things
+made the score swing between 90 and 99 from run to run:
 
 - **The rest of the app raced the greeting.** The app shell (navigation,
   journey, film layer, with MUI) was asked for while the cover was being
@@ -763,6 +763,15 @@ made the score swing between 96 and 99 from run to run:
   chose another encode) is stopped. In a test like GitHub Pages it is asked
   for at 0.33 s instead of 0.72 s, and the loader gives way to the film
   about 0.4 s sooner — on a phone, on a real connection, sooner still.
+
+- **A hidden title took the largest paint.** The journey's titles that
+  float above a film (`PortalTitle`) were drawn for one frame when they
+  arrived, before the first frame hid them — under the loader, but painted.
+  When the greeting had been painted before its font arrived (a little
+  smaller), that title was larger and became "the largest paint", 0.5 s
+  later and counting the whole app. They now arrive hidden. With a slow
+  font and a slow phone, the title took over in 8 runs of 8 before, in
+  none after.
 
 Measured with Lighthouse 13 (mobile, simulated), in a local server set up
 like GitHub Pages (HTTP/2, 140 ms to the first byte of each file, 50 Mb/s):
