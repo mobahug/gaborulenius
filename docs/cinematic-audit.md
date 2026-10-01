@@ -739,3 +739,40 @@ The rest is not for the site to fix:
 - **Unused or unminified JavaScript, some long tasks.** Browser extensions
   (a password manager, an ad blocker, React DevTools). Test in a private
   window without them.
+
+## 33. Mobile Lighthouse: the film first, the rest after the greeting (October 2026)
+
+Lighthouse's mobile score simulates a slow phone from a real, fast load,
+and what it counts as needed for the greeting (the largest paint) is every
+file that happened to arrive before the greeting was painted. Two things
+made the score swing between 96 and 99 from run to run:
+
+- **The rest of the app raced the greeting.** The app shell (navigation,
+  journey, film layer, with MUI) was asked for while the cover was being
+  rendered; on a fast connection its files arrived before the greeting
+  was painted and counted towards it (2.4–2.5 s simulated instead of
+  1.6 s). It is now asked for only once the cover has been shown
+  (`AfterCover`: the browser's largest-paint report for the cover; after
+  the next paint where there is no such report, and after a second in a
+  background tab).
+- **The loader waited for the app before the film.** The first film, which
+  the loader waits for, was asked for only once the app shell had arrived
+  and the film layer had started. It now starts with the page itself
+  (`startFirstFilm`), for a visitor starting at the top, and the film layer
+  takes the download over; a download the film layer does not want (it
+  chose another encode) is stopped. In a test like GitHub Pages it is asked
+  for at 0.33 s instead of 0.72 s, and the loader gives way to the film
+  about 0.4 s sooner — on a phone, on a real connection, sooner still.
+
+Measured with Lighthouse 13 (mobile, simulated), in a local server set up
+like GitHub Pages (HTTP/2, 140 ms to the first byte of each file, 50 Mb/s):
+
+| | before | after |
+| --- | --- | --- |
+| Score | 99, 99, 99, 99 | 100 in 6 runs of 6 |
+| Greeting (largest paint) | 1.71–1.73 s | 1.71–1.73 s |
+| Speed index | 2.67–2.74 s | 2.26–2.38 s |
+
+and on a fast connection (25 ms, 200 Mb/s): before 96–97 (greeting
+2.45–2.53 s), after 99–100 (1.61–1.64 s). What is left is GitHub Pages'
+first response and the loader itself, which waits for the film by design.

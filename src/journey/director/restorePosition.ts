@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { getFilmSection } from "../film/filmTimeline";
-import type { FilmId } from "../film/films";
 import { onDirectorFrame } from "./director";
+import {
+  isReturning,
+  POSITION_KEY,
+  readSavedPosition,
+  type SavedPosition,
+} from "./savedPosition";
 
 /*
  * Coming back to the page (a reload, back/forward) returns the visitor to
@@ -14,11 +19,8 @@ import { onDirectorFrame } from "./director";
  * themselves.
  */
 
-const KEY = "journey-position";
 /** How long the layout may keep settling after a return (ms). */
 const SETTLE_MS = 2500;
-
-type Saved = { id: FilmId; progress: number };
 
 const scrollInstantly = (top: number) => {
   // The page scrolls smoothly for links; a restore must not.
@@ -29,25 +31,9 @@ const scrollInstantly = (top: number) => {
   root.style.scrollBehavior = behaviour;
 };
 
-const read = (): Saved | null => {
-  try {
-    const raw = sessionStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as Saved) : null;
-  } catch {
-    return null;
-  }
-};
-
-const returning = () => {
-  const entry = performance.getEntriesByType("navigation")[0] as
-    | PerformanceNavigationTiming
-    | undefined;
-  return entry?.type === "reload" || entry?.type === "back_forward";
-};
-
 export const useRestorePosition = () => {
   useEffect(() => {
-    let current: Saved | null = null;
+    let current: SavedPosition | null = null;
     const watch = onDirectorFrame((frame) => {
       const section = getFilmSection(frame.activeChapter);
       if (!section) return;
@@ -59,14 +45,15 @@ export const useRestorePosition = () => {
     }, 40);
     const save = () => {
       try {
-        if (current) sessionStorage.setItem(KEY, JSON.stringify(current));
+        if (current)
+          sessionStorage.setItem(POSITION_KEY, JSON.stringify(current));
       } catch {
         // Private mode or storage disabled: nothing to come back to.
       }
     };
     window.addEventListener("pagehide", save);
 
-    const saved = returning() ? read() : null;
+    const saved = isReturning() ? readSavedPosition() : null;
     const hash = window.location.hash;
     const linked = !saved && hash.length > 1 ? hash.slice(1) : null;
     let restoring = saved !== null || linked !== null;

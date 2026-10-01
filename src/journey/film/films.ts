@@ -1,4 +1,5 @@
 import { assetUrl } from "../../utils/assets";
+import { filmSources, type Rendition } from "./filmSources";
 
 /**
  * The five films of the journey, in story order, and how each one is joined
@@ -76,7 +77,7 @@ export type Film = {
   id: FilmId;
   /** The film at full HD, lighter for slow connections, and the window of
    * it that phones held upright show. */
-  src: { hd: string; sd: string; portrait: string };
+  src: Record<Rendition, string>;
   /** Duration of the file in seconds. */
   duration: number;
   /** How this film joins the one before it. */
@@ -110,20 +111,10 @@ export type Film = {
 /** Frame proportions of every film (1880×1080 and 1128×648). */
 export const FRAME_ASPECT = 1880 / 1080;
 
-const sources = (id: FilmId) => ({
-  hd: assetUrl(`film/hd/${id}.mp4`),
-  sd: assetUrl(`film/sd/${id}.mp4`),
-  portrait: assetUrl(`film/portrait/${id}.mp4`),
-});
-
-/** The portrait encodes' shape (640 × 1080): a screen no wider than this
- * sees in them exactly what it sees of the full frame. */
-export const PORTRAIT_ASPECT = 640 / 1080;
-
 export const FILMS: readonly Film[] = [
   {
     id: "chase",
-    src: sources("chase"),
+    src: filmSources("chase"),
     // 193 frames at 24 fps.
     duration: 193 / 24,
     // The first film starts at the top of the page; nothing comes before it.
@@ -170,7 +161,7 @@ export const FILMS: readonly Film[] = [
   },
   {
     id: "neural",
-    src: sources("neural"),
+    src: filmSources("neural"),
     // 240 frames at 30 fps.
     duration: 8,
     // The pupil is the window: the first spark of the network and its
@@ -225,7 +216,7 @@ export const FILMS: readonly Film[] = [
   },
   {
     id: "explorer",
-    src: sources("explorer"),
+    src: filmSources("explorer"),
     // 240 frames at 30 fps.
     duration: 8,
     // The bright node's white → the sky's warm white; no black in between.
@@ -247,7 +238,7 @@ export const FILMS: readonly Film[] = [
   },
   {
     id: "work",
-    src: sources("work"),
+    src: filmSources("work"),
     // 239 frames at 30 fps.
     duration: 239 / 30,
     // The fish's mouth closes to black; the espresso surfaces from black.
@@ -271,7 +262,7 @@ export const FILMS: readonly Film[] = [
   },
   {
     id: "ending",
-    src: sources("ending"),
+    src: filmSources("ending"),
     // 239 frames at 30 fps.
     duration: 239 / 30,
     // The office film ends pushing into a monstera leaf; the ending opens on

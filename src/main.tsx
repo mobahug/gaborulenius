@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import AfterCover from "./components/AfterCover";
 import CoverSection from "./components/CoverSection";
+import { startFirstFilm } from "./journey/film/filmDownload";
 import { isQuickRead } from "./journey/quickRead";
 
 // Lazy boundary for the rest of the app so the cover (LCP element) can
@@ -11,6 +13,10 @@ const AppShell = React.lazy(() => import("./AppShell"));
 const QuickReadShell = React.lazy(() => import("./quickread/QuickReadShell"));
 
 const quickRead = isQuickRead();
+
+// The first film is what the page's loader waits for: it starts with the
+// page, not once the rest of the app has arrived too.
+if (!quickRead) startFirstFilm();
 
 // A page loaded before the site was updated asks for code files that the
 // update replaced (their names change with their contents) and are gone:
@@ -45,9 +51,11 @@ root.render(
     ) : (
       <>
         <CoverSection />
-        <React.Suspense fallback={null}>
-          <AppShell />
-        </React.Suspense>
+        <AfterCover>
+          <React.Suspense fallback={null}>
+            <AppShell />
+          </React.Suspense>
+        </AfterCover>
       </>
     )}
   </React.StrictMode>,

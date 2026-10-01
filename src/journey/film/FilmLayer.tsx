@@ -2,12 +2,18 @@ import { useEffect, useRef } from "react";
 import { onDirectorFrame } from "../director/director";
 import { filmRect, focusAt, windowGeometry } from "../director/frameMapping";
 import { hasFinePointer } from "../device";
-import { isModestConnection, wantsLightVideo } from "../../utils/connection";
+import { wantsLightVideo } from "../../utils/connection";
 import { smoothstep } from "../math";
 import { requestSceneFrame } from "../scrollTimeline";
 import { registerFilmVideo } from "./filmElements";
 import { createFilmDebug } from "./filmDebug";
-import { FILMS, PORTRAIT_ASPECT } from "./films";
+import { downloadFilm, dropFirstFilm, takeFirstFilm } from "./filmDownload";
+import { FILMS } from "./films";
+import {
+  isUpright,
+  type Rendition,
+  wideRendition as chooseWideRendition,
+} from "./filmSources";
 import { ScrubVideo } from "./scrubVideo";
 
 /** Scrolling faster than this (viewport heights per frame) is a jump, such
@@ -109,9 +115,8 @@ const FilmLayer = () => {
     // and the background download finishes (see `upgrade`). Saved data,
     // slow connections and very small memories stay with the lighter encodes.
     const light = wantsLightVideo();
-    const wideRendition = light || isModestConnection() ? "sd" : "hd";
+    const wideRendition = chooseWideRendition();
     const upgradeTo = !light && wideRendition === "sd" ? "hd" : null;
-    type Rendition = "sd" | "hd" | "portrait";
     const renditions: Rendition[] = FILMS.map(() => wideRendition);
     // Whether the screen is that narrow (known from the first frame on).
     let portrait: boolean | null = null;
@@ -178,44 +183,11 @@ const FilmLayer = () => {
       image.src = url;
     };
 
-    // Each film is downloaded whole before the video element gets it (as a
-    // blob URL), so every seek lands on frames already in memory. Streamed
-    // with range requests instead, a phone browser fetches the bytes of a
-    // seek only when it is asked for them, and the picture stalls while the
-    // visitor scrolls.
+    // Each film is downloaded whole (see downloadFilm).
     const downloads = FILMS.map(() => ({
       url: null as string | null,
       abort: null as AbortController | null,
     }));
-
-    /**
-     * The whole film as a blob, telling how much of it has arrived (the
-     * page's loader shows it for the first film, see index.html).
-     */
-    const readFilm = async (response: Response, index: number) => {
-      const total = Number(response.headers.get("content-length")) || 0;
-      if (!response.body || !total) return response.blob();
-      const reader = response.body.getReader();
-      const chunks: Uint8Array[] = [];
-      let loaded = 0;
-      let told = -1;
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        chunks.push(value);
-        loaded += value.length;
-        const progress = Math.min(1, loaded / total);
-        if (progress - told >= 0.01 || progress === 1) {
-          told = progress;
-          window.dispatchEvent(
-            new CustomEvent("filmprogress", { detail: { index, progress } }),
-          );
-        }
-      }
-      return new Blob(chunks as BlobPart[], {
-        type: response.headers.get("content-type") ?? "video/mp4",
-      });
-    };
 
     const load = (index: number) => {
       const video = layers[index]?.video;
@@ -223,7 +195,9 @@ const FilmLayer = () => {
       loadedAt[index] = performance.now();
       renditions[index] = portrait ? "portrait" : wideRendition;
       const source = FILMS[index].src[renditions[index]];
-      const controller = new AbortController();
+      // The first film may be on its way already, started with the page.
+      const early = index === 0 ? takeFirstFilm(source) : null;
+      const controller = early?.abort ?? new AbortController();
       downloads[index].abort = controller;
       const attach = (src: string) => {
         video.preload = "auto";
@@ -231,11 +205,7 @@ const FilmLayer = () => {
         video.load();
         requestSceneFrame();
       };
-      fetch(source, { signal: controller.signal })
-        .then((response) => {
-          if (!response.ok) throw new Error(`${response.status}`);
-          return readFilm(response, index);
-        })
+      (early?.blob ?? downloadFilm(source, index, controller.signal))
         .then((blob) => {
           if (loadedAt[index] === null || controller.signal.aborted) return;
           const url = URL.createObjectURL(blob);
@@ -355,8 +325,7 @@ const FilmLayer = () => {
       const { viewport, timeline, reduced, now } = frame;
       // Turned between upright and wide: a film loaded for the other shape
       // loads again for this one.
-      const upright =
-        viewport.vw / Math.max(1, viewport.vh) <= PORTRAIT_ASPECT + 0.001;
+      const upright = isUpright(viewport.vw, viewport.vh);
       if (upright !== portrait) {
         const turned = portrait !== null;
         portrait = upright;
@@ -417,6 +386,9 @@ const FilmLayer = () => {
           }
         }
       });
+      // A first film started with the page and not taken by now is not the
+      // one wanted here.
+      dropFirstFilm();
 
       // Let the first picture finish without competing with a full-HD copy.
       // Once the visitor scrolls, the usual upgrade can run.
@@ -663,6 +635,7 @@ const FilmLayer = () => {
       upgrades.forEach((_, index) => cancelUpgrade(index));
       layers.forEach((_, index) => registerFilmVideo(index, null));
       downloads.forEach((_, index) => release(index));
+      dropFirstFilm();
     };
   }, []);
 

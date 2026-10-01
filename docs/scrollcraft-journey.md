@@ -427,8 +427,8 @@ about three.
 - The first paint is a loader, in `index.html` itself so it needs no
   script: a morpho beating its wings over the jungle's greens, motes of
   light drifting down, and a thin gold ring that fills as the first film
-  arrives (FilmLayer reads the download as it streams and tells the page,
-  `filmprogress`). Once the film at the scroll's place plays
+  arrives (the download is read as it streams and tells the page,
+  `filmprogress`, see `filmDownload.ts`). Once the film at the scroll's place plays
   (`data-film-ready`) the loader's greens give way to the film and the
   cover, and the same morpho flies onto the greeting and settles on the
   last letter of "Gábor" (`#cover-name`), opening and closing its wings; a
@@ -445,7 +445,12 @@ about three.
   show). Pictures further down (the link cards) load as they come near;
   the other language's texts are fetched only after the first film plays.
 - The cover paints under it over a 48×27 placeholder of the chase's first frame.
-  The chase loads once the app has started; the next film once the visitor
+  The chase starts downloading with the page itself, before the rest of the
+  app (`startFirstFilm` in `main.tsx`; only for a visitor starting at the
+  top — not for a linked section, a return, reduced motion or quick read),
+  and the film layer takes that download over when it comes. The rest of
+  the app is asked for only once the cover has been shown (`AfterCover`),
+  so its files never hold up the greeting. The next film once the visitor
   starts scrolling; after that the current film first and its neighbours once
   it can show a frame (or after 2.5 s).
 - Jumps load nothing on the way: scrolling faster than 0.12 viewport heights

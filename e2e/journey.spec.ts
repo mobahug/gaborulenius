@@ -200,6 +200,26 @@ test("the journey loads its sections on the way to the end", async ({
   );
 });
 
+test("the first film starts with the page and is fetched once", async ({
+  page,
+}) => {
+  const asked: string[] = [];
+  page.on("request", (request) => asked.push(request.url()));
+  await page.goto("./?read=0");
+  // The loader lands once the film plays.
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-film-ready",
+    "true",
+    { timeout: 30_000 },
+  );
+  const film = asked.filter((url) => /\/film\/\w+\/chase\.mp4$/.test(url));
+  expect(film).toHaveLength(1);
+  // Asked for before the rest of the app, which brings the film layer.
+  const shell = asked.findIndex((url) => /\/assets\/AppShell-/.test(url));
+  expect(shell).toBeGreaterThan(-1);
+  expect(asked.indexOf(film[0])).toBeLessThan(shell);
+});
+
 test("on quick read a butterfly or two land once the page is still", async ({
   page,
 }) => {
