@@ -52,8 +52,8 @@ export default {
   aboutExperience: "{years} years of professional experience",
   aboutLanguages: "English (fluent) · Finnish (fluent) · Hungarian (native)",
   /* ---------- Project titles ---------- */
-  projectHusDatalakeTitle:
-    "Contributing to healthcare data platforms for real-time patient data access at major Finnish healthcare providers.",
+  projectPatientInsightsTitle:
+    "As primary developer, maintaining and extending a healthcare application that brings patient information from multiple systems into one view for healthcare professionals across several customer environments (product page in Finnish).",
   projectMedicalPocTitle:
     "Played a key role in an AI proof of concept at Helsinki’s New Children’s Hospital, helping clinicians find relevant information faster in medical documents.",
   projectIctDaysTitle:
@@ -180,16 +180,18 @@ export default {
 
   /* Event details */
   eventTietoCaretechP1:
-    "I work as a Full-Stack Developer in the healthcare domain, building cloud-native products that make patient data easier to search, operate and deliver across major Nordic healthcare environments.",
+    "I’m the primary developer of Lifecare Patient Insights, a healthcare application that brings patient information from multiple systems into one unified view for healthcare professionals, and I maintain and extend it across multiple customer environments.",
   eventTietoCaretechP2:
-    "My daily work spans frontend and backend development, data integrations, cloud infrastructure, release automation, observability and Agile-Scrum delivery.",
+    "My work spans React, TypeScript, Node.js, GraphQL, PostgreSQL and WebSockets, as well as Azure, Kubernetes, Terraform, CI/CD pipelines, security and production deployments. I also help maintain our shared UI component library.",
   eventTietoCaretechNotable: "Notable contributions:",
   eventTietoCaretechB1:
-    "Developed LLM-based AI prototypes, including an ICT Days demo and a New Children’s Hospital diagnostic-support proof of concept.",
+    "Set up two complete test environments on my own, from infrastructure provisioning and database seeding to pipelines and application deployments, and am now preparing another customer environment.",
   eventTietoCaretechB2:
-    "Made substantial contributions across patient-facing web applications, backend services and shared tooling for patient-data search, integrations, releases and observability.",
+    "Handle production releases and infrastructure changes, such as platform upgrades, traffic routing, search operations, private networking and secret rotation.",
   eventTietoCaretechB3:
-    "Delivered cloud infrastructure and production operations changes for QA and production environments, including platform upgrades, traffic routing, search operations, private networking and secret rotation.",
+    "Run several AI coding agents (Claude Code, Codex) in parallel, reviewing, testing and integrating their changes myself: the work moves much faster, and I stay responsible for what reaches production.",
+  eventTietoCaretechB4:
+    "Developed LLM-based AI prototypes, including an ICT Days demo and a New Children’s Hospital diagnostic-support proof of concept.",
   eventAnyhauP1:
     "Built a greenfield web application for booking pet-related services, in collaboration with the 2022 Diili winner, using Next.js, Material UI and MongoDB. The platform lets providers list services and customers book and pay online.",
   eventHiveP1:
@@ -259,10 +261,10 @@ export default {
   footerCopyright: "© {year} Gábor Ulenius. All rights reserved",
 
   /*Links */
-  linkThumbnailTitleTietoCaretechHus:
-    "An agile and cost-effective way to combine patient data from different systems? It already exists and this is how it works",
-  linkThumbnailDescriptionTietoCaretechHus:
-    "Finnish healthcare and the healthcare information systems suffer from the same basic problem: fragmentation.",
+  linkThumbnailTitleTietoCaretechPatientInsights:
+    "Lifecare Patient Insights – the patient’s story in one view",
+  linkThumbnailDescriptionTietoCaretechPatientInsights:
+    "Brings patient data from different systems, including decommissioned ones, into one easy-to-use view for clinicians. Product page in Finnish.",
   linkThumbnailTitleTietoCaretechPoc:
     "Generative AI pilot assists clinicians at New Children’s Hospital",
   linkThumbnailDescriptionTietoCaretechPoc:
@@ -297,7 +299,7 @@ export default {
   projectExplorerTag: "Hobby project · Mobile fieldwork app",
   projectExplorerPlayLink: "The Explorer on Google Play",
   projectWorkHeading: "Work projects",
-  workNodeHus: "Healthcare data platforms",
+  workNodePatientInsights: "Lifecare Patient Insights",
   workNodePoc: "Clinical AI proof of concept",
   workNodeIct: "LLM solution for ATK-päivät",
   workNodeAnyhau: "Anyhau booking platform",

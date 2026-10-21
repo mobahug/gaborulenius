@@ -28,15 +28,14 @@ type Project = {
 };
 
 /**
- * Pages the portfolio links to. The Tieto articles were taken down when
- * Tietoevry became Tieto, and Anyhau's site no longer answers: their copies
- * in the Wayback Machine stand in for them.
+ * Pages the portfolio links to. Tieto's page for Lifecare Patient Insights
+ * is in Finnish only. The AI article was taken down when Tietoevry became
+ * Tieto, and Anyhau's site no longer answers: their copies in the Wayback
+ * Machine stand in for them.
  */
 const LINKS = {
-  husArticleEN:
-    "https://web.archive.org/web/20260613184118/https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2021/an-agile-and-cost-effective-way-to-combine-patient-data-from-different-systems-it-already-exists-and-this-is-how-it-works/",
-  husArticleFI:
-    "https://web.archive.org/web/20260411211307/https://www.tietoevry.com/fi/asiakkaitamme/2019/HUS-kehittaa-kliinisen-datan-hyodyntamista-tietoallas-ratkaisulla/",
+  patientInsights:
+    "https://www.tieto.com/fi/toimialat/terveydenhuolto/lifecare-patient-insights/",
   aiArticle:
     "https://web.archive.org/web/20260313021142/https://www.tietoevry.com/en/newsroom/all-news-and-releases/articles/2024/02/ai-powered-healthcare/",
   anyhauEN:
@@ -48,10 +47,10 @@ const LINKS = {
 
 export const projects: Project[] = [
   {
-    id: "projectHusDatalakeTitle",
-    labelId: "workNodeHus",
-    hrefEN: LINKS.husArticleEN,
-    hrefFI: LINKS.husArticleFI,
+    id: "projectPatientInsightsTitle",
+    labelId: "workNodePatientInsights",
+    hrefEN: LINKS.patientInsights,
+    hrefFI: LINKS.patientInsights,
   },
   {
     id: "projectMedicalPocTitle",
@@ -118,6 +117,7 @@ const tietoCaretech: TimelineEvent = {
           "eventTietoCaretechB1",
           "eventTietoCaretechB2",
           "eventTietoCaretechB3",
+          "eventTietoCaretechB4",
         ].map((id) => (
           <ListItem key={id}>
             <ListItemText primary={<FormattedMessage id={id} />} />
@@ -127,14 +127,11 @@ const tietoCaretech: TimelineEvent = {
       <Grid container spacing={5} sx={{ pt: 8 }}>
         <Grid size={{ xs: 12, sm: 6 }}>
           <LinkThumbnail
-            id="linkThumbnailTitleTietoCaretechHus"
-            descriptionId="linkThumbnailDescriptionTietoCaretechHus"
-            image={assetUrl("hus-data-platform.webp")}
-            urlEN={LINKS.husArticleEN}
-            urlFI={LINKS.husArticleFI}
-            readingMinutes={7}
-            isArticle={true}
-            date="01.2021"
+            id="linkThumbnailTitleTietoCaretechPatientInsights"
+            descriptionId="linkThumbnailDescriptionTietoCaretechPatientInsights"
+            image={assetUrl("patient-insights.webp")}
+            urlEN={LINKS.patientInsights}
+            urlFI={LINKS.patientInsights}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>

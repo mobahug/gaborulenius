@@ -52,8 +52,8 @@ export default {
   aboutExperience: "{years} vuotta kokemusta ohjelmistokehityksestä",
   aboutLanguages: "Englanti (sujuva) · suomi (sujuva) · unkari (äidinkieli)",
   /* ---------- Työprojektit ---------- */
-  projectHusDatalakeTitle:
-    "Osallistun terveysdata-alustojen kehittämiseen, jotta potilasdata on reaaliaikaisesti saatavilla suurilla suomalaisilla terveydenhuollon toimijoilla.",
+  projectPatientInsightsTitle:
+    "Ylläpidän ja laajennan pääkehittäjänä sovellusta, joka kokoaa potilastiedot useista järjestelmistä yhteen näkymään terveydenhuollon ammattilaisille. Sovellus on käytössä useissa asiakasympäristöissä.",
   projectMedicalPocTitle:
     "Minulla oli keskeinen rooli tekoälyn konseptitodistuksessa Helsingin Uudessa lastensairaalassa: se auttaa kliinikoita löytämään olennaisen tiedon lääketieteellisistä asiakirjoista nopeammin.",
   projectIctDaysTitle:
@@ -182,16 +182,18 @@ export default {
 
   /* Tapahtumien kuvaukset */
   eventTietoCaretechP1:
-    "Työskentelen full stack -kehittäjänä terveydenhuollon alalla ja rakennan pilvinatiiveja tuotteita, jotka helpottavat potilasdatan hakua, ylläpitoa ja toimittamista suurissa pohjoismaisissa terveydenhuollon ympäristöissä.",
+    "Olen Lifecare Patient Insightsin pääkehittäjä. Sovellus kokoaa potilastiedot useista järjestelmistä yhteen yhtenäiseen näkymään terveydenhuollon ammattilaisille, ja ylläpidän ja laajennan sitä useissa asiakasympäristöissä.",
   eventTietoCaretechP2:
-    "Päivittäinen työni kattaa frontend- ja backend-kehityksen, dataintegraatiot, pilvi-infrastruktuurin, julkaisuautomaation ja valvonnan ketterässä Scrum-tiimissä.",
+    "Työhöni kuuluvat React, TypeScript, Node.js, GraphQL, PostgreSQL ja WebSocketit sekä Azure, Kubernetes, Terraform, CI/CD-putket, tietoturva ja tuotantojulkaisut. Lisäksi ylläpidän osaltani jaettua käyttöliittymäkomponenttikirjastoamme.",
   eventTietoCaretechNotable: "Merkittävimmät panokseni:",
   eventTietoCaretechB1:
-    "Kehitin LLM-pohjaisia tekoälyprototyyppejä, kuten demon ATK-päiville ja diagnostiikkaa tukevan konseptitodistuksen Uuteen lastensairaalaan.",
+    "Pystytin itsenäisesti kaksi kokonaista testiympäristöä infrastruktuurin provisioinnista ja tietokantojen esitäytöstä putkiin ja sovellusten käyttöönottoon asti. Parhaillaan valmistelen uutta asiakasympäristöä.",
   eventTietoCaretechB2:
-    "Tein laajasti kehitystyötä potilaille suunnattuihin verkkosovelluksiin, taustapalveluihin ja jaettuihin työkaluihin potilasdatan hakua, integraatioita, julkaisuja ja valvontaa varten.",
+    "Hoidan tuotantojulkaisut ja infrastruktuurimuutokset, kuten alustapäivitykset, liikenteen reitityksen, hakupalveluiden ylläpidon, yksityisverkot ja salaisuuksien säännöllisen vaihdon.",
   eventTietoCaretechB3:
-    "Toteutin pilvi-infrastruktuurin ja tuotannon ylläpidon muutoksia QA- ja tuotantoympäristöihin, kuten alustapäivityksiä, liikenteen reititystä, hakupalveluiden ylläpitoa, yksityisverkkoja ja salaisuuksien säännöllistä vaihtoa.",
+    "Käytän rinnakkain useita tekoälykoodausagentteja (Claude Code, Codex) ja katselmoin, testaan ja yhdistän niiden muutokset itse: työ etenee paljon nopeammin, ja vastuu tuotantoon päätyvästä koodista pysyy minulla.",
+  eventTietoCaretechB4:
+    "Kehitin LLM-pohjaisia tekoälyprototyyppejä, kuten demon ATK-päiville ja diagnostiikkaa tukevan konseptitodistuksen Uuteen lastensairaalaan.",
   eventAnyhauP1:
     "Rakensin alusta alkaen uuden verkkosovelluksen lemmikkipalvelujen varaamiseen yhteistyössä vuoden 2022 Diili-voittajan kanssa (Next.js, Material UI, MongoDB). Alustalla palveluntarjoajat voivat listata palvelunsa ja asiakkaat varata ja maksaa ne verkossa.",
   eventHiveP1:
@@ -261,10 +263,10 @@ export default {
   footerCopyright: "© {year} Gábor Ulenius. Kaikki oikeudet pidätetään",
 
   /* Linkit */
-  linkThumbnailTitleTietoCaretechHus:
-    "HUS kehittää kliinisen datan hyödyntämistä",
-  linkThumbnailDescriptionTietoCaretechHus:
-    "Ratkaisu mahdollistaa suurten tietomassojen analysoinnin terveydenhuoltoa koskevien ennusteiden ja merkittävien innovaatioiden luomiseksi.",
+  linkThumbnailTitleTietoCaretechPatientInsights:
+    "Lifecare Patient Insights – potilaan tarina yhdessä näkymässä",
+  linkThumbnailDescriptionTietoCaretechPatientInsights:
+    "Kokoaa potilastiedot eri järjestelmistä, myös käytöstä poistetuista, yhteen helppokäyttöiseen näkymään kliinikoille.",
   linkThumbnailTitleTietoCaretechPoc:
     "Generatiivisen tekoälyn pilotti auttaa Uuden lastensairaalan kliinikoita",
   linkThumbnailDescriptionTietoCaretechPoc:
@@ -299,7 +301,7 @@ export default {
   projectExplorerTag: "Harrastusprojekti · Mobiilisovellus kenttätyöhön",
   projectExplorerPlayLink: "The Explorer Google Playssa",
   projectWorkHeading: "Työprojektit",
-  workNodeHus: "Terveysdata-alustat",
+  workNodePatientInsights: "Lifecare Patient Insights",
   workNodePoc: "Kliinisen tekoälyn konseptitodistus",
   workNodeIct: "LLM-ratkaisu ATK-päiville",
   workNodeAnyhau: "Anyhaun varausalusta",
