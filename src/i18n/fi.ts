@@ -41,12 +41,12 @@ export default {
   /* ---------- Etusivu ---------- */
   homeGreeting: "…full stack -kehittäjä Espoosta.",
   homeSubtitle:
-    "Töissä Tieto Caretechillä: rakennan pilvinatiiveja terveysdata-alustoja ja tekoälyprototyyppejä sekä huolehdin luotettavasta pilvitoimituksesta.",
+    "Töissä Tieto Caretechillä: kehitän terveydenhuollon ammattilaisten Lifecare Patient Insightsia React-käyttöliittymistä Azure-infrastruktuuriin asti.",
   homeBtnExplore: "Tutustu töihini",
   /* ---------- Minusta ---------- */
   aboutHeading: "Minusta",
   aboutBody:
-    "Olen kehittänyt terveysdata-alustoja Suomen suurimmille terveydenhuollon toimijoille ja parantanut datan saatavuutta <b>React</b>- ja <b>TypeScript</b>-käyttöliittymillä, <b>Node.js</b>-palveluilla, jaetuilla paketeilla ja <b>Azure</b>-infrastruktuurilla. Osaamiseeni kuuluvat myös <b>GraphQL</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b> ja pilvitoimitus. Olen työskennellyt LLM-pohjaisten tekoälyprototyyppien parissa, kuten ATK-päiville tehdyn demon ja Uudessa lastensairaalassa pilotoidun diagnostiikkatyökalun, joka nopeuttaa oireisiin perustuvia hakuja.",
+    "Tieto Caretechillä olen Lifecare Patient Insightsin pääkehittäjä: sovellus kokoaa potilastiedot useista järjestelmistä yhteen näkymään terveydenhuollon ammattilaisille. Työskentelen koko pinon parissa: <b>React</b>/<b>TypeScript</b>, <b>Node.js</b>, <b>GraphQL</b>, <b>PostgreSQL</b> ja <b>Azure</b> (<b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b>) testiympäristöistä tuotantojulkaisuihin. Lisäksi olen kehittänyt LLM-pohjaisia tekoälyprototyyppejä, kuten ATK-päiville tehdyn demon ja Uudessa lastensairaalassa pilotoidun diagnostiikkatyökalun, joka nopeuttaa oireisiin perustuvia hakuja.",
   aboutLocation: "Espoo, Suomi",
   aboutEducation: "Hive Helsingin alumni",
   aboutExperience: "{years} vuotta kokemusta ohjelmistokehityksestä",

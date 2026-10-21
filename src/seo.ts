@@ -33,7 +33,7 @@ export const SEO_BY_LOCALE: Record<AppLocale, SeoContent> = {
     title:
       "Gábor Ulenius | Full-Stack Developer in Finland | Healthcare Data & AI",
     description:
-      "Portfolio of Gábor Ulenius, Full-Stack Developer in Espoo, Finland specializing in healthcare data platforms, cloud delivery, web applications and AI solutions.",
+      "Portfolio of Gábor Ulenius, Full-Stack Developer in Espoo, Finland: primary developer of Lifecare Patient Insights at Tieto Caretech. Healthcare, cloud and AI.",
     ogLocale: "en_US",
     ogLocaleAlternate: "fi_FI",
     imageAlt:
@@ -43,7 +43,7 @@ export const SEO_BY_LOCALE: Record<AppLocale, SeoContent> = {
     title:
       "Gábor Ulenius | Full stack -kehittäjä Suomessa | Terveysdata ja tekoäly",
     description:
-      "Gábor Uleniuksen portfolio: espoolainen full stack -kehittäjä, jonka osaamisalueita ovat terveysdata-alustat, pilvitoimitus, verkkosovellukset ja tekoäly.",
+      "Gábor Uleniuksen portfolio: espoolainen full stack -kehittäjä ja Lifecare Patient Insightsin pääkehittäjä Tieto Caretechillä. Terveydenhuolto, pilvi ja tekoäly.",
     ogLocale: "fi_FI",
     ogLocaleAlternate: "en_US",
     imageAlt:
@@ -60,6 +60,7 @@ export const RECRUITER_KEYWORDS = [
   "healthcare software developer",
   "AI developer",
   "Tieto Caretech",
+  "Lifecare Patient Insights",
   "Espoo",
 ].join(", ");
 
@@ -101,7 +102,7 @@ export const getStructuredData = (locale: AppLocale) => {
         ],
         jobTitle: "Full-Stack Developer",
         description:
-          "Espoo-based Full-Stack Developer at Tieto Caretech working on cloud-native healthcare data platforms, AI prototypes and reliable cloud delivery for major Nordic healthcare environments.",
+          "Espoo-based Full-Stack Developer at Tieto Caretech and primary developer of Lifecare Patient Insights, which brings patient information from multiple systems into one view for healthcare professionals.",
         url: SITE_URL,
         image: PROFILE_IMAGE_URL,
         email: `mailto:${EMAIL}`,
@@ -119,6 +120,7 @@ export const getStructuredData = (locale: AppLocale) => {
           name: "Tieto Caretech",
         },
         knowsAbout: [
+          "Lifecare Patient Insights",
           "Web application development",
           "Backend services",
           "Cloud delivery",

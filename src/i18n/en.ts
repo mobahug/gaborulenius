@@ -41,12 +41,12 @@ export default {
   /* ---------- Home titles ---------- */
   homeGreeting: "…a Full-Stack Developer based in Espoo.",
   homeSubtitle:
-    "Currently at Tieto Caretech, building cloud-native healthcare data platforms, AI prototypes, and reliable cloud delivery.",
+    "Currently at Tieto Caretech, developing Lifecare Patient Insights for healthcare professionals, from React UIs to Azure infrastructure.",
   homeBtnExplore: "Explore My Work",
   /* ---------- About titles ---------- */
   aboutHeading: "About Me",
   aboutBody:
-    "Contributed to healthcare data platforms for some of Finland’s largest healthcare providers, improving data accessibility through <b>React</b>/<b>TypeScript</b> UIs, <b>Node.js</b> services, shared packages, and <b>Azure</b> infrastructure. Proficient in <b>GraphQL</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b>, and cloud delivery. Worked on LLM-based AI prototypes, including a demo at ICT Days and a diagnostic tool piloted at the New Children’s Hospital for faster symptom-based searches.",
+    "At Tieto Caretech, primary developer of Lifecare Patient Insights, which brings patient information from many systems into one view for healthcare professionals. Hands-on across the stack: <b>React</b>/<b>TypeScript</b>, <b>Node.js</b>, <b>GraphQL</b>, <b>PostgreSQL</b> and <b>Azure</b> (<b>Docker</b>, <b>Kubernetes</b>, <b>Terraform</b>, <b>Helm</b>), from test environments to production releases. Worked on LLM-based AI prototypes, including a demo at ICT Days and a diagnostic tool piloted at the New Children’s Hospital for faster symptom-based searches.",
   aboutLocation: "Espoo, Finland",
   aboutEducation: "Hive Helsinki Alumni",
   aboutExperience: "{years} years of professional experience",
